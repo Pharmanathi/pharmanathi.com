@@ -1,5 +1,8 @@
 export COMPOSE_FILE := local.yml
 
+buildlocal:
+	docker compose build
+
 runlocal:
 	docker compose up -d
 

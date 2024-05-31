@@ -68,7 +68,7 @@ class Apihelper {
     print('API code: ${response.statusCode}');
     print('API body: ${response.body}');
 
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
     } else {
       handleError(context, response);
