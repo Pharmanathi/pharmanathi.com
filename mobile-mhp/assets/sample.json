@@ -1,0 +1,265 @@
+{
+  "appointments": [
+    {
+      "title": "Thabang S",
+      "subtext1": "09AM - 09:30AM",
+      "subtext2": "Online Appointment",
+      "details": "F - 28ys - 165cm - 60kg",
+      "clinic_name": "Alberton Hospital",
+      "clinic_address": "Clinix Lesedi 7940 chris hani Road Diepkloof Zone 6 Diepmeadow 1862 ",
+      "appiontment_date": "Thursday, 11 July 2023",
+      "time": "09:00AM - 10:00AM",
+      "consult_details": "Pain in the middle of the stomach, already consumed painkiller for the past two days"
+    },
+    {
+      "title": "Tshego T",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "In Person Visit",
+      "details": "F - 28ys - 165cm - 60kg",
+      "clinic_name": "Lesedi Hospital",
+      "clinic_address": "Clinix Lesedi 7940 chris hani Road Diepkloof Zone 6 Diepmeadow 1862 ",
+      "appiontment_date": "Thursday, 11 July 2023",
+      "time": "09:00AM - 10:00AM",
+      "consult_details": "Pain in the middle of the stomach, already consumed painkiller for the past two days"
+    },
+    {
+      "title": "Son Min",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "M - 35ys - 175cm - 70kg",
+      "clinic_name": "Sunrise Medical Center",
+      "clinic_address": "123 Health Street, Wellness City",
+      "appiontment_date": "Friday, 12 July 2023",
+      "time": "02:30PM - 03:30PM",
+      "consult_details": "Fatigue and difficulty sleeping, seeking advice on better sleep patterns"
+    },
+    {
+      "title": "Vee Pan",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "M - 40ys - 180cm - 75kg",
+      "clinic_name": "City Wellness Clinic",
+      "clinic_address": "Avenue Health Plaza, 789 Oak Street",
+      "appiontment_date": "Monday, 15 July 2023",
+      "time": "11:00AM - 12:00PM",
+      "consult_details": "High blood pressure, need prescription refill"
+    },
+    {
+      "title": "John Doe",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "In Person Visit",
+      "details": "F - 32ys - 168cm - 55kg",
+      "clinic_name": "Evergreen Medical Center",
+      "clinic_address": "Greenview Avenue, Health District",
+      "appiontment_date": "Wednesday, 17 July 2023",
+      "time": "03:00PM - 04:00PM",
+      "consult_details": "Allergic reaction, need advice on alternative medications"
+    },
+    {
+      "title": "Lerato Joe",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "M - 45ys - 175cm - 80kg",
+      "clinic_name": "Maple Grove Hospital",
+      "clinic_address": "Grove Street, Maple Town",
+      "appiontment_date": "Saturday, 20 July 2023",
+      "time": "10:30AM - 11:30AM",
+      "consult_details": "Chronic back pain, considering physical therapy"
+    },
+    {
+      "title": "Tumi Shongwe",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "F - 29ys - 160cm - 50kg",
+      "clinic_name": "Pineview Health Center",
+      "clinic_address": "Pine Avenue, Wellness Village",
+      "appiontment_date": "Monday, 22 July 2023",
+      "time": "01:30PM - 02:30PM",
+      "consult_details": "Migraine headaches, seeking preventive measures"
+    },
+    {
+      "title": "Thabang Shongwe",
+      "subtext1": "09AM - 09:30AM",
+      "subtext2": "Online Appointment",
+      "details": "M - 55ys - 175cm - 78kg",
+      "clinic_name": "Hilltop Family Clinic",
+      "clinic_address": "Summit Road, Hillside Heights",
+      "appiontment_date": "Thursday, 25 July 2023",
+      "time": "09:30AM - 10:30AM",
+      "consult_details": "Arthritis pain, considering joint supplements"
+    },
+    {
+      "title": "Lee Joe",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "In Person Visit",
+      "details": "F - 38ys - 165cm - 58kg",
+      "clinic_name": "Valley View Medical Center",
+      "clinic_address": "Valley Street, Health Valley",
+      "appiontment_date": "Sunday, 28 July 2023",
+      "time": "02:00PM - 03:00PM",
+      "consult_details": "Digestive issues, seeking dietary advice"
+    },
+    {
+      "title": "Son Min",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "M - 42ys - 178cm - 72kg",
+      "clinic_name": "Riverbank Wellness Clinic",
+      "clinic_address": "River Road, Riverside Town",
+      "appiontment_date": "Tuesday, 30 July 2023",
+      "time": "11:30AM - 12:30PM",
+      "consult_details": "Stress and anxiety, looking for relaxation techniques"
+    },
+    {
+      "title": "Vee Pan",
+      "subtext1": "10AM - 10:30AM",
+      "subtext2": "Online Appointment",
+      "details": "F - 33ys - 162cm - 53kg",
+      "clinic_name": "Golden Gate Medical Center",
+      "clinic_address": "Golden Avenue, Health District",
+      "appiontment_date": "Friday, 2 August 2023",
+      "time": "03:30PM - 04:30PM",
+      "consult_details": "Sleep disorder, need advice on improving sleep quality"
+    }
+  ],
+  "otherData": [
+    {
+      "time": "12:00 PM",
+      "name": "Thabang Shongwe",
+      "appointmentTime": "09:00am - 09:30am",
+      "imageURL": "https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 2 August 2023",
+      "status": "InPerson"
+    },
+    {
+      "time": "1:30 PM",
+      "name": "Tshego Tjotjo",
+      "appointmentTime": "10:30am - 11:00am",
+      "imageURL":"https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 2 August 2023",
+      "status": "Online"
+    },
+    {
+      "time": "1:30 PM",
+      "name": "Vuyelwa Pan",
+      "appointmentTime": "10:30am - 11:00am",
+      "imageURL":"https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 2 August 2023",
+      "status": "Online"
+    },
+    {
+      "time": "1:30 PM",
+      "name": "John Doe",
+      "appointmentTime": "10:30am - 11:00am",
+      "imageURL":"https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 3 August 2023",
+      "status": "Online"
+    },
+    {
+      "time": "3:00 PM",
+      "name": "Jane Smith",
+      "appointmentTime": "01:30pm - 02:00pm",
+      "imageURL":"https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 2 August 2023",
+      "status": "Completed"
+    },
+    {
+      "time": "4:30 PM",
+      "name": "Alice Johnson",
+      "appointmentTime": "03:00pm - 03:30pm",
+      "imageURL":"https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 25 August 2023",
+      "status": "InPerson"
+    }
+  ],
+  "monthlyStats": [
+    {
+      "month": "January",
+      "onlineConsultation": 30.20,
+      "inPersonVisit": 80.20
+    },
+    {
+      "month": "February",
+      "onlineConsultation": 10,
+      "inPersonVisit": 80
+    },
+    {
+      "month": "March",
+      "onlineConsultation": 67,
+      "inPersonVisit": 67
+    },
+    {
+      "month": "April",
+      "onlineConsultation": 90.7,
+      "inPersonVisit": 9.7
+    },
+    {
+      "month": "May",
+      "onlineConsultation": 54.29,
+      "inPersonVisit": 74.29
+    },
+    {
+      "month": "June",
+      "onlineConsultation": 32.2,
+      "inPersonVisit": 90.2
+    },
+    {
+      "month": "July",
+      "onlineConsultation": 12,
+      "inPersonVisit": 50
+    }
+  ],
+  "patients": [
+    {
+      "name": "John Doe",
+      "details": "M - 25ys - 172cm - 70kg",
+      "imageUrl": "https://example.com/john_doe.jpg",
+      "status": "online"
+    },
+    {
+      "name": "Jane Smith",
+      "details": "F - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "online"
+    },
+    {
+      "name": "Thabo TM",
+      "details": "M - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline"
+    },
+    {
+      "name": "Jane gail",
+      "details": "F - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "online"
+    },
+    {
+      "name": "Tumi Shongwe",
+      "details": "F - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline"
+    },
+    {
+      "name": "Thabang Shongwe",
+      "details": "M - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "online"
+    },
+    {
+      "name": "Lerato Smith",
+      "details": "F - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "online"
+    },
+    {
+      "name": "Jane Smith",
+      "details": "F - 28ys - 165cm - 60kg",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline"
+    }
+  ]
+}
+
+
+  

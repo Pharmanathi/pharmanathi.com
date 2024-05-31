@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+docker compose -f production.yml down
+curl -d "content=:warning: Going down...:sleeping:&username=AWS test.pharmanathi.com" -X POST https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2
+sudo poweroff

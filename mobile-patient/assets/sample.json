@@ -1,0 +1,294 @@
+{
+  "chats_details": [
+    {
+      "name": "John Doe",
+      "details": "why do you always go quiet after we...",
+      "imageUrl": "https://example.com/john_doe.jpg",
+      "status": "online",
+      "time": "7 min"
+    },
+    {
+      "name": "Jane Smith",
+      "title": "this is a short text to you",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "online",
+      "time": "27 min"
+    },
+    {
+      "name": "Thabo TM",
+      "details": "come fetch me later when you get off",
+      "imageUrl": "https://example.com/thabo_tm.jpg",
+      "status": "offline",
+      "time": "30 min"
+    },
+    {
+      "name": "Jane Gail",
+      "details": "I got your text, see you at the gym",
+      "imageUrl": "https://example.com/jane_gail.jpg",
+      "status": "online",
+      "time": "32 min"
+    },
+    {
+      "name": "Tumi Shongwe",
+      "details": "Ntwana, do you wanna hang out tonight",
+      "imageUrl": "https://example.com/tumi_shongwe.jpg",
+      "status": "offline",
+      "time": "40 min"
+    },
+    {
+      "name": "Thabang Shongwe",
+      "details": "where have you been, man",
+      "imageUrl": "https://example.com/thabang_shongwe.jpg",
+      "status": "online",
+      "time": "45 min"
+    },
+    {
+      "name": "Lerato Smith",
+      "details": "babe, I missed you",
+      "imageUrl": "https://example.com/lerato_smith.jpg",
+      "status": "online",
+      "time": "4 hours"
+    },
+    {
+      "name": "Jane Smith",
+      "details": "can I see you later today, I got something for you",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline",
+      "time": "8 hours"
+    }
+  ],
+  "doctors": [
+    {
+      "name": "John Doe",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/john_doe.jpg",
+      "status": "online",
+      "distance": "7 ",
+      "rating": "4.8",
+      "location": "London",
+      "experience": "20"
+    },
+    {
+      "name": "Jane Smith",
+      "title": "Ophthalmologist",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline",
+      "distance": "27 ",
+      "rating": "4.2",
+      "location": "Sandton",
+      "experience": "25"
+    },
+    {
+      "name": "Thabo TM",
+      "title": "Gynecologist",
+      "imageUrl": "https://example.com/thabo_tm.jpg",
+      "status": "offline",
+      "distance": "5 ",
+      "rating": "4.7",
+      "location": "Pretoria",
+      "experience": "10"
+    },
+    {
+      "name": "Jane Gail",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/jane_gail.jpg",
+      "status": "online",
+      "distance": "47 ",
+      "rating": "4.5",
+      "location": "Auckland",
+      "experience": "7"
+    },
+    {
+      "name": "Tumi Shongwe",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/tumi_shongwe.jpg",
+      "status": "online",
+      "distance": "97 ",
+      "rating": "3.8",
+      "location": "Rosebank",
+      "experience": "9"
+    },
+    {
+      "name": "Thabang Shongwe",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/thabang_shongwe.jpg",
+      "status": "offline",
+      "distance": "3 ",
+      "rating": "4.1",
+      "location": "Bloemfontein",
+      "experience": "20"
+    },
+    {
+      "name": "Lerato Smith",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/lerato_smith.jpg",
+      "status": "online",
+      "distance": "103 ",
+      "rating": "3.8",
+      "location": "johannesburg",
+      "experience": "10"
+    },
+    {
+      "name": "Jane Smith",
+      "title": "Pathologist",
+      "imageUrl": "https://example.com/jane_smith.jpg",
+      "status": "offline",
+      "distance": "27 ",
+      "rating": "3.9",
+      "location": "Alberton",
+      "experience": "12"
+    }
+  ],
+  "recent_mp": [
+    {
+      "title": "Thabang S",
+      "date": "20 Noveber 2023",
+      "visit_type": "Online Appointment",
+      "time": "09:00AM - 10:00AM"
+    },
+    {
+      "title": "Tshego T",
+      "date":  "12 December 2023",
+      "visit_type": "In Person Visit",
+      "time": "09:00AM - 10:00AM"
+    },
+    {
+      "title": "John Doe",
+      "date":  "02 December 2024",
+      "visit_type": "In Person Visit",
+      "time": "03:00PM - 04:00PM"
+    },
+    {
+      "title": "Lee Joe",
+      "date":  "10 january 2024",
+      "visit_type": "In Person Visit",
+      "time": "02:00PM - 03:00PM"
+    }
+  ],
+    "otherData": [
+      {
+        "time": "12:00 PM",
+        "name": "Thabang Shongwe",
+        "title": "Pathologist",
+        "clinic_name": "Golden Gate Medical Center",
+        "clinic_address": "Golden Avenue, Health District",
+        "date": "Monday 15 Deceber 2023",
+        "appointmentTime": "09:00am - 09:30am",
+        "consult_details": "Pain in the middle of the stomach, already consumed painkiller for the past two days",
+        "imageURL": "https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 2 August 2023",
+        "status": "upcoming"
+      },
+      {
+        "time": "1:30 PM",
+        "name": "Tshego Tjotjo",
+        "title": "Gynecologist",
+        "clinic_name": "Riverbank Wellness Clinic",
+        "clinic_address": "River Road, Riverside Town",
+        "date": "Friday 12 December 2023",
+        "appointmentTime": "10:30am - 11:00am",
+        "consult_details": "Fatigue and difficulty sleeping, seeking advice on better sleep patterns",
+        "imageURL":"https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 2 August 2023",
+        "status": "Completed"
+      },
+      {
+        "time": "1:30 PM",
+        "name": "Vuyelwa Pan",
+        "title": "Gynecologist",
+        "clinic_name": "Valley View Medical Center",
+        "clinic_address": "Valley Street, Health Valley",
+        "date": "tuesday 1 Jan 2024",
+        "appointmentTime": "10:30am - 11:00am",
+        "consult_details": "High blood pressure, need prescription refill",
+        "imageURL":"https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 2 August 2023",
+        "status": "upcoming"
+      },
+      {
+        "time": "1:30 PM",
+        "name": "John Doe",
+        "title": "Pathologist",
+        "clinic_name": "Hilltop Family Clinic",
+        "clinic_address": "Summit Road, Hillside Heights",
+        "date": "wedsnday 12 may 2023",
+        "appointmentTime": "10:30am - 11:00am",
+        "consult_details": "High blood pressure, need prescription refill",
+        "imageURL":"https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 3 August 2023",
+        "status": "upcoming"
+      },
+      {
+        "time": "3:00 PM",
+        "name": "Jane Smith",
+        "title": "Gynecologist",
+        "clinic_name": "Pineview Health Center",
+        "clinic_address": "Pine Avenue, Wellness Village",
+        "date": "Monday 02 Jan 2024",
+        "appointmentTime": "01:30pm - 02:00pm",
+        "consult_details": "Allergic reaction, need advice on alternative medications",
+        "imageURL":"https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 2 August 2023",
+        "status": "Completed"
+      },
+      {
+        "time": "4:30 PM",
+        "name": "Alice Johnson",
+        "title": "Ophthalmologist",
+        "clinic_name": "Maple Grove Hospital",
+        "clinic_address": "Grove Street, Maple Town",
+        "date": "Thursday 05 Jan 2024",
+        "appointmentTime": "03:00pm - 03:30pm",
+        "consult_details": "Chronic back pain, considering physical therapy",
+        "imageURL":"https://example.com/john_doe.jpg",
+        "appiontment_date": "Friday, 25 August 2023",
+        "status": "upcoming"
+        
+      }
+    ],
+    "recent_search":[
+      {
+        "title": "Gynaecology",
+        "count": "210",
+        "borderColor": "#0000FF",
+        "backgroundColor": "#B7D9F5"
+      },
+      {
+        "title": "Radiology",
+        "count": "210",
+        "borderColor": "#008000",
+        "backgroundColor": "#C8F0C8"
+      },
+      {
+        "title": "Neurology",
+        "count": "210",
+        "borderColor": "#800080",
+        "backgroundColor": "#F7BBFC"
+      },
+      {
+        "title": "Gastrenterology",
+        "count": "210",
+        "borderColor": "#FFFF00",
+        "backgroundColor": "#FFFFC8"
+      },
+      {
+        "title": "Neurology",
+        "count": "210",
+        "borderColor": "#FFFF00",
+        "backgroundColor": "#FFFFC8"
+      },
+      {
+        "title": "Pulmonology",
+        "count": "210",
+        "borderColor": "#FFFF00",
+        "backgroundColor": "#FFFFC8"
+      },
+      {
+        "title": "somatologyst",
+        "count": "210",
+        "borderColor": "#FFFF00",
+        "backgroundColor": "#FFFFC8"
+      }
+    ]
+    
+}

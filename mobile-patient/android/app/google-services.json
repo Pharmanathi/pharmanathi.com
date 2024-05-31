@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "710242232170",
+    "project_id": "pharmanathi-b3482",
+    "storage_bucket": "pharmanathi-b3482.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710242232170:android:be3df334ab3d95d3906713",
+        "android_client_info": {
+          "package_name": "com.pharmanathi.patient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710242232170-rbhb0q23dhtvho3c6433vver2v66o9io.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pharmanathi.patient",
+            "certificate_hash": "54251fd2de3e4f0d1bf50c295286c6bab85944db"
+          }
+        },
+        {
+          "client_id": "710242232170-19c4e3gd3erdv6dao1t2j2r0evi5u1c4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfeCpK99McKfVY56TXukDed1FWh7lt-Js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710242232170-19c4e3gd3erdv6dao1t2j2r0evi5u1c4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "710242232170-8032k2cvkpqudds2m5148h3b3nl625h0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.clientPharmanathi.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
