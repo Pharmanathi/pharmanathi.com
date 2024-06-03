@@ -5,14 +5,18 @@ env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 
+defaults:
+  run:
+    working-directory: ./pharmanathi.com
+
 on:
   pull_request:
     branches: ['dev', 'main']
-    paths-ignore: ['docs/**']
+    paths-ignore: ['pharmanathi.com/docs/**']
 
   push:
     branches: ['dev', 'main']
-    paths-ignore: ['docs/**']
+    paths-ignore: ['pharmanathi.com/docs/**']
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
