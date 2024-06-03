@@ -24,6 +24,9 @@ concurrency:
 
 jobs:
   linter:
+    defaults:
+      run:
+        working-directory: ./pharmanathi.com
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
