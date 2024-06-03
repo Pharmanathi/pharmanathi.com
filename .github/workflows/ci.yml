@@ -12,14 +12,14 @@ defaults:
 on:
   pull_request:
     branches: ['dev', 'main']
-    paths: 
+    paths:
       - 'pharmanthi.com/'
       - '.pre-commit-config.yaml'
       - '!pharmanathi.com/docs/**'
 
   push:
     branches: ['dev', 'main']
-    paths: 
+    paths:
       - 'pharmanthi.com/'
       - '.pre-commit-config.yaml'
       - '!pharmanathi.com/docs/**'
