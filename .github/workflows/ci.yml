@@ -24,9 +24,6 @@ concurrency:
 
 jobs:
   linter:
-    defaults:
-      run:
-        working-directory: ./pharmanathi.com
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
@@ -38,8 +35,6 @@ jobs:
           python-version: '3.11'
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
-        with:
-          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('pharmanathi.com/.pre-commit-config.yaml') }}
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:

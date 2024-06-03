@@ -46,10 +46,11 @@ repos:
 
   - repo: https://github.com/Riverside-Healthcare/djLint
     rev: v1.34.0
-    files: ^pharmanthi.com/
     hooks:
       - id: djlint-reformat-django
+        files: ^pharmanthi.com/
       - id: djlint-django
+        files: ^pharmanthi.com/
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
