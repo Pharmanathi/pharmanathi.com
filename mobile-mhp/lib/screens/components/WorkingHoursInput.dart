@@ -96,7 +96,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
               if (selectedTime != null) {
                 setState(() {
                   startTimes[i] = selectedTime;
-                  _saveTimes(); 
+                  _saveTimes();
                   widget.onTimeChanged([
                     '${startTimes[i].hour}:${startTimes[i].minute}',
                     '${endTimes[i].hour}:${endTimes[i].minute}'
@@ -186,7 +186,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         elevation: 0,
-        backgroundColor: Colors.grey[100], 
+        backgroundColor: Colors.grey[100],
       ),
       child: Text(selectedTime.format(context)),
     );

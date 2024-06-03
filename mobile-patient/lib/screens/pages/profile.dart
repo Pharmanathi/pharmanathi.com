@@ -245,7 +245,7 @@ class _MyProfileState extends State<MyProfile> {
                             child:
                                 buildSectionTile('Appointments', Icons.person)),
                       ),
-        
+
                      buildDivider(),
                       //pill reminder.............................
                       GestureDetector(
@@ -269,7 +269,7 @@ class _MyProfileState extends State<MyProfile> {
                       //Manage Schedule.............................
                       GestureDetector(
                         onTap: () {
-                          
+
                         },
                         //insureance plan
                         child: Container(

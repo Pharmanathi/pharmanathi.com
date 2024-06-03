@@ -22,7 +22,7 @@ class UserProvider with ChangeNotifier {
   String? backendToken;
 
 
- 
+
 
   //* Method to set user information and store backend token securely
   Future<void> setUserInformation(String email, String name, String picture, String backendToken) async {
@@ -40,7 +40,7 @@ class UserProvider with ChangeNotifier {
     //* Store the backend token securely
     await _secureStorage.write(key: 'backend_token', value: backendToken);
 
-    notifyListeners(); 
+    notifyListeners();
   }
 
   //* Method to retrieve stored backend token
@@ -63,7 +63,7 @@ class UserProvider with ChangeNotifier {
     return doctorId;
   }
 
- 
+
   //* Method to check if it's the first time sign-in
   Future<bool> isFirstTimeSignIn() async {
     //* Check if any of the required user information is empty

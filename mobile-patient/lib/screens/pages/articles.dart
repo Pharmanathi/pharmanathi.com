@@ -23,7 +23,7 @@ class _MyArticlesState extends State<MyArticles> {
     return Scaffold(
       body: Column(
         children: [
-          
+
         ],
       ),
       //  CustomBottomNavigationBar

@@ -30,7 +30,7 @@ class Apihelper {
 
   static String? retrieveLocaAPIToken(BuildContext context){
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    return userProvider.backendToken; 
+    return userProvider.backendToken;
   }
 
   static Future<http.Response> httpRequestWithAuthorization(
@@ -40,7 +40,7 @@ class Apihelper {
     String requestBody,
   ) async {
     String authorizationToken = '';
-    
+
     final tokenString = Apihelper.retrieveLocaAPIToken(context);
 
     if (tokenString != null) {
@@ -168,4 +168,3 @@ void setUserDataProxy(Map<String, dynamic> userData, context) {
   final userProvider = Provider.of<UserProvider>(context, listen: false);
   userProvider.setUserData(userData);
 }
-

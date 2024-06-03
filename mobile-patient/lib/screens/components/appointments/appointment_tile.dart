@@ -53,7 +53,7 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String alteredname = ApiHelper.toTitleCase(name);
-    
+
     return GestureDetector(
       onTap: () {
         // Navigate to OnlineConsultation page with corresponding data
@@ -113,7 +113,7 @@ class ProfileCard extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
 
-                                     radius: 30, 
+                                     radius: 30,
                               ),
                               SizedBox(
                                 width: 7,

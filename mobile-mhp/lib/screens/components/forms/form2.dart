@@ -100,7 +100,7 @@ class Form2State extends State<Form2> {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   )),
-              obscureText: true, 
+              obscureText: true,
             ),
             SizedBox(height: 20),
             // Confirm password input field
@@ -116,7 +116,7 @@ class Form2State extends State<Form2> {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   )),
-              obscureText: true, 
+              obscureText: true,
             ),
             SizedBox(height: 20),
           ],

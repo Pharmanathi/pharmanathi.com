@@ -12,4 +12,3 @@ class ImageDataProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-

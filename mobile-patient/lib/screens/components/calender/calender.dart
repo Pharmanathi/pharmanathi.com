@@ -37,8 +37,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     currentYear = DateTime.now().year;
     kFirstDay = DateTime(currentYear, 1, 1);
     kLastDay = DateTime(currentYear, 12, 31);
-    _focusedDay = DateTime.now(); 
-    _selectedDay = _focusedDay; 
+    _focusedDay = DateTime.now();
+    _selectedDay = _focusedDay;
     _selectedTimeSlots = ValueNotifier([]);
 
     // Fetch availability for the default selected day
