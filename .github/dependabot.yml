@@ -5,7 +5,7 @@ version: 2
 updates:
   # Update GitHub actions in workflows
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    directory: 'pharmanathi.com/'
     # Every weekday
     schedule:
       interval: 'daily'
@@ -16,7 +16,7 @@ updates:
   # https://github.com/dependabot/dependabot-core/issues/2178
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/local/django` directory
-    directory: 'compose/local/django/'
+    directory: 'pharmanathi.com/compose/local/django/'
     # Every weekday
     schedule:
       interval: 'daily'
@@ -29,7 +29,7 @@ updates:
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/local/docs` directory
-    directory: 'compose/local/docs/'
+    directory: 'pharmanathi.com/compose/local/docs/'
     # Every weekday
     schedule:
       interval: 'daily'
@@ -42,21 +42,21 @@ updates:
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/local/node` directory
-    directory: 'compose/local/node/'
+    directory: 'pharmanathi.com/compose/local/node/'
     # Every weekday
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/production/aws` directory
-    directory: 'compose/production/aws/'
+    directory: 'pharmanathi.com/compose/production/aws/'
     # Every weekday
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/production/django` directory
-    directory: 'compose/production/django/'
+    directory: 'pharmanathi.com/compose/production/django/'
     # Every weekday
     schedule:
       interval: 'daily'
@@ -69,14 +69,14 @@ updates:
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/production/postgres` directory
-    directory: 'compose/production/postgres/'
+    directory: 'pharmanathi.com/compose/production/postgres/'
     # Every weekday
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the `compose/production/traefik` directory
-    directory: 'compose/production/traefik/'
+    directory: 'pharmanathi.com/compose/production/traefik/'
     # Every weekday
     schedule:
       interval: 'daily'
@@ -85,7 +85,7 @@ updates:
   - package-ecosystem: 'pip'
     # Look for a `requirements.txt` in the `root` directory
     # also 'setup.cfg', 'runtime.txt' and 'requirements/*.txt'
-    directory: '/'
+    directory: 'pharmanathi.com/'
     # Every weekday
     schedule:
       interval: 'daily'
