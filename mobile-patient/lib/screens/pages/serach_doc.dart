@@ -20,7 +20,7 @@ class _SearchDoctorState extends State<SearchDoctor> {
  Future<List<SpecialistDetails>> loadSpecialist() async {
   // Load the JSON file
   String jsonString = await rootBundle.loadString('assets/sample.json');
-  
+
   // Parse the JSON data
   List<dynamic> jsonList = jsonDecode(jsonString)['recent_search'];
 

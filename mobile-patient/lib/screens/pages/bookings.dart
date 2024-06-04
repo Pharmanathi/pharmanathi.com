@@ -104,12 +104,12 @@ class _BookingsState extends State<Bookings> {
       content: Text('your appointment has been booked successfully!'),
       duration: Duration(seconds: 5),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.green, 
+      backgroundColor: Colors.green,
     ),
   );
 }
  void _onSuccessNavigation( ) {
-  Navigator.pushReplacementNamed(context, '/appointment'); 
+  Navigator.pushReplacementNamed(context, '/appointment');
 }
 
 

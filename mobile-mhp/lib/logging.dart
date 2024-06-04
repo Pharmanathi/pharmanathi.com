@@ -13,7 +13,7 @@ class CustomPrinter extends LogPrinter {
     var color = PrettyPrinter.defaultLevelColors[event.level];
     var emoji = PrettyPrinter.defaultLevelEmojis[event.level];
     var message = event.message;
-    
+
     return [color!('$emoji  $className : $message')];
   }
 }

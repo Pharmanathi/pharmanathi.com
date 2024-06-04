@@ -109,4 +109,3 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
-

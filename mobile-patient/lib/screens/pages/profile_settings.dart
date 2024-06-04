@@ -187,7 +187,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           ),
                         ),
                         buildDivider(),
-      
+
                         //account setting...........
                         GestureDetector(
                           onTap: () async {},
@@ -196,7 +196,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   'Account settings', Icons.border_color)),
                         ),
                         buildDivider(),
-      
+
                         //notifications.............................
                         GestureDetector(
                           onTap: () {
@@ -207,7 +207,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   'Notification', Icons.notifications)),
                         ),
                         buildDivider(),
-      
+
                         //support....................
                         GestureDetector(
                           onTap: () {
@@ -218,7 +218,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   buildSectionTile('Support ', Icons.help)),
                         ),
                         buildDivider(),
-      
+
                         //private policy .............................
                         // Container(
                         //   child: Container(
@@ -226,7 +226,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         //           'Private Policy', Icons.gpp_maybe)),
                         // ),
                         // buildDivider(),
-      
+
                         // log out........................
                         GestureDetector(
                           onTap: () {

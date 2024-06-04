@@ -25,7 +25,7 @@ abstract class ApiHelper {
 
   static String? retrieveLocaAPIToken(BuildContext context){
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    return userProvider.backendToken; 
+    return userProvider.backendToken;
   }
 
   static Future<http.Response> httpRequestWithAuthorization(

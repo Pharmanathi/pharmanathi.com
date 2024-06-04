@@ -54,7 +54,7 @@ class BookingAPIService {
 
       if (response.statusCode == 201) {
         onSuccess?.call();
-      } 
+      }
       _requestBody.clear();
     } catch (error) {
       ApiHelper.handleException(context, error,);

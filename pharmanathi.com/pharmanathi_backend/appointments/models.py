@@ -91,7 +91,8 @@ class Appointment(BaseCustomModel):
     reason = models.CharField(max_length=500)
     payment_process = models.CharField(max_length=2, choices=PAYMENT_PROCESSES_CHOICES)
 
-    # @TODO: verification that patient is not self.
+    # @TODO: verification that patient is not self. Meaning, patient should not be
+    # able to book an appointment with themselves.
     @property
     def end_time(self) -> datetime.time:
         return self.start_time + timedelta(minutes=self.appointment_type.duration)

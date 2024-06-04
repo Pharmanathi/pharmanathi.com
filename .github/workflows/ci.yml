@@ -5,14 +5,24 @@ env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 
+defaults:
+  run:
+    working-directory: ./pharmanathi.com
+
 on:
   pull_request:
     branches: ['dev', 'main']
-    paths-ignore: ['docs/**']
+    paths:
+      - 'pharmanthi.com/'
+      - '.pre-commit-config.yaml'
+      - '!pharmanathi.com/docs/**'
 
   push:
     branches: ['dev', 'main']
-    paths-ignore: ['docs/**']
+    paths:
+      - 'pharmanthi.com/'
+      - '.pre-commit-config.yaml'
+      - '!pharmanathi.com/docs/**'
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -29,6 +39,10 @@ jobs:
         uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.11'
+
+      - name: Test paths
+        run:  pwd && ls -al
+
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 

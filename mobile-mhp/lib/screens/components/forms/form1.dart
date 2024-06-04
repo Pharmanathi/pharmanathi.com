@@ -33,12 +33,12 @@ class Form1State extends State<Form1> {
   @override
   void didUpdateWidget(Form1 oldWidget) {
     if (oldWidget.currentIndex != widget.currentIndex) {
-       print('Updated CurrentIndex in form1: ${widget.currentIndex}'); 
+       print('Updated CurrentIndex in form1: ${widget.currentIndex}');
       updateForm();
     }
     super.didUpdateWidget(oldWidget);
   }
-  
+
 
   void updateForm() {
     if (!isFormCompleted) {
@@ -60,7 +60,7 @@ class Form1State extends State<Form1> {
   Widget build(BuildContext context) {
     // Logging currentIndex here
     print('CurrentIndex inside form1: ${widget.currentIndex}');
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

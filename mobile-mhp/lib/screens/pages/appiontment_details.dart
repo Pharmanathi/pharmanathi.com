@@ -118,9 +118,9 @@ class OnlineConsultation extends StatelessWidget {
                           children: [
                             Text(
                               patientName,
-                              maxLines: 1, 
+                              maxLines: 1,
                               overflow: TextOverflow
-                                  .ellipsis, 
+                                  .ellipsis,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),

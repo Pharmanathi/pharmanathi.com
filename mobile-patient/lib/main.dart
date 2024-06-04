@@ -47,7 +47,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
+
   Future<bool> _checkFirstTimeSignIn() async {
     //* Obtain an instance of UserProvider
     final userProvider = UserProvider();
@@ -76,13 +76,13 @@ class _MyAppState extends State<MyApp> {
                 initialRoute = '/home_page';
               }
             }
-            
+
             return Navigator(
               initialRoute: initialRoute,
               onGenerateRoute: (settings) {
                 try {
                   switch (settings.name) {
-                    case '/onboarding': 
+                    case '/onboarding':
                       return MaterialPageRoute(
                         builder: (context) => OnboardScreen(
                           currentIndex: 0,
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
                           texts: OnboardScreen.sampleTexts,
                         ),
                       );
-                    case '/signIn': 
+                    case '/signIn':
                       return MaterialPageRoute(
                         builder: (context) => GoogleSignInWidget(),
                       );

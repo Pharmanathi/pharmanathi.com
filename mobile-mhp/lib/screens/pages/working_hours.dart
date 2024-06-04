@@ -101,7 +101,7 @@ class _WorkingHoursState extends State<WorkingHours> {
       content: Text('Schedule saved successfully!'),
       duration: Duration(seconds: 5),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.green, 
+      backgroundColor: Colors.green,
     ),
   );
 }
