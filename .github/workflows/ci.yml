@@ -12,11 +12,11 @@ defaults:
 on:
   pull_request:
     branches: ['dev', 'main']
-    paths-ignore: ['!pharmanathi.com/docs/**', 'mobile-patient', mobile-mhp]
+    paths-ignore: ['!pharmanathi.com/docs/**', 'mobile-patient/**', 'mobile-mhp/**']
 
   push:
     branches: ['dev', 'main']
-    paths-ignore: ['!pharmanathi.com/docs/**', 'mobile-patient', 'mobile-mhp']
+    paths-ignore: ['!pharmanathi.com/docs/**', 'mobile-patient/**', 'mobile-mhp/**']
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
