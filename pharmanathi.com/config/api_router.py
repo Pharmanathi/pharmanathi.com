@@ -1,10 +1,8 @@
 from django.conf import settings
 from django.urls import path
-from pharmanathi_backend.appointments.views import (
-    AppointmentTypeViewSet,
-    AppointmentViewSet,
-    TimeSlotViewSet,
-)
+from rest_framework.routers import DefaultRouter, SimpleRouter
+
+from pharmanathi_backend.appointments.views import AppointmentTypeViewSet, AppointmentViewSet, TimeSlotViewSet
 from pharmanathi_backend.users.api.views import (
     AddressModelViewset,
     GoogleLoginView,
@@ -13,7 +11,6 @@ from pharmanathi_backend.users.api.views import (
     SpecialityModelViewset,
     UserViewSet,
 )
-from rest_framework.routers import DefaultRouter, SimpleRouter
 
 if settings.DEBUG:
     router = DefaultRouter()
