@@ -3,10 +3,8 @@ import datetime
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
-from django.db.models import CharField, EmailField, URLField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
@@ -19,11 +17,11 @@ class User(BaseCustomModel, AbstractUser):
     """
 
     # First and last name do not cover name patterns around the globe
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = CharField(_("First name"), blank=True, max_length=255)
-    last_name = CharField(_("Last name"), blank=True, max_length=255)
-    email = EmailField(_("email address"), unique=True)
-    _profile_pic = URLField(null=True, blank=True)
+    name = models.CharField(_("Name of User"), blank=True, max_length=255)
+    first_name = models.CharField(_("First name"), blank=True, max_length=255)
+    last_name = models.CharField(_("Last name"), blank=True, max_length=255)
+    email = models.EmailField(_("email address"), unique=True)
+    _profile_pic = models.URLField(null=True, blank=True)
     username = None  # type: ignore
 
     sa_id_no_13_digits_validator = [
@@ -31,7 +29,7 @@ class User(BaseCustomModel, AbstractUser):
         MinLengthValidator(limit_value=13, message="Must be exactly 13 digits."),
     ]
     sa_id_no = models.IntegerField("South African ID Number", null=True, validators=sa_id_no_13_digits_validator)
-    initials = CharField("Initials", max_length=5, null=True)
+    initials = models.CharField("Initials", max_length=5, null=True)
 
     TITLE_CHOICES = (
         ("Mr", "Mr"),
@@ -39,10 +37,10 @@ class User(BaseCustomModel, AbstractUser):
         ("Mrs", "Mrs"),
         ("Ms", "Ms"),
     )
-    title = CharField("Title", max_length=5, null=True, choices=TITLE_CHOICES)
+    title = models.CharField("Title", max_length=5, null=True, choices=TITLE_CHOICES)
 
-    contact_no = CharField("Contact Number", max_length=15, null=True)
-    university = CharField("University", max_length=100, null=True)
+    contact_no = models.CharField("Contact Number", max_length=15, null=True)
+    university = models.CharField("University", max_length=100, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -60,7 +58,7 @@ class User(BaseCustomModel, AbstractUser):
 
     @property
     def is_doctor(self) -> bool:
-        return Doctor.objects.filter(user=self).exists()
+        return hasattr(self, "doctor_profile")
 
 
 class Speciality(BaseCustomModel):
@@ -94,8 +92,9 @@ class Doctor(BaseCustomModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
-    hpcsa_no = CharField("HPCSA No.", max_length=5, null=True)
-    mp_no = CharField("Mp No.", max_length=5, null=True)
+    hpcsa_no = models.CharField("HPCSA No.", max_length=5, null=True)
+    mp_no = models.CharField("Mp No.", max_length=5, null=True)
+    _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         pseudo = self.user.email
@@ -105,9 +104,7 @@ class Doctor(BaseCustomModel):
 
     @property
     def is_verified(self) -> bool:
-        # Should be a result of some computation, probably checking a verification model or so,
-        # or another attribute such as _is_verified. No matter what it is, it should not be public.
-        return True
+        return self._is_verified
 
     @property
     def upcoming_appointments(self) -> models.query.QuerySet:
