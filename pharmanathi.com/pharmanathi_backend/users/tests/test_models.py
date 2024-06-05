@@ -1,4 +1,5 @@
 import pytest
+
 from pharmanathi_backend.users.models import User
 
 pytestmark = pytest.mark.django_db

@@ -16,6 +16,7 @@ from django.utils.translation import gettext_lazy as _
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
 from pharmanathi_backend.users.forms import UserAdminChangeForm
 from pharmanathi_backend.users.models import User
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
 from pharmanathi_backend.users.tests.factories import FutureDateByDOWFactory, UserFactory
 from pharmanathi_backend.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
@@ -239,3 +240,19 @@ def test_social_doctor_can_retrive_token(auth_app_name, oauth_social_apps, api_c
 
 
 # @TODO test_social_doctor_can_retrive_token with existing user
+
+
+def test_get_appointments_fails_if_mhp_unverified(unverified_mhp_client):
+    response = unverified_mhp_client.get("/api/appointments/")
+    assert response.status_code == 403
+    assert response.data["detail"] == IsVerifiedDoctor.message
+
+
+def test_get_appointments_passes_for_verified_mhp(verified_mhp_client, doctor_with_appointment_random):
+    mhp = doctor_with_appointment_random
+    appointment = mhp.appointment_set.first()
+    client = verified_mhp_client
+    client.force_authenticate(user=mhp.user)
+    response = client.get("/api/appointments/")
+    assert response.status_code == 200
+    assert appointment.id in map(lambda a: a["id"], response.data)
