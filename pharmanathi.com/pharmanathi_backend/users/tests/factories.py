@@ -44,6 +44,8 @@ class UserFactory(DjangoModelFactory):
 
 
 class DoctorFactory(DjangoModelFactory):
+    _is_verified = False
+
     class Meta:
         model = Doctor
 
