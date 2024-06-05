@@ -65,13 +65,14 @@ def verified_mhp_client(simple_doctor):
 
 @pytest.fixture
 def unverified_mhp_client():
-    user = DoctorFactory(_is_verified=False).user
+    _user = DoctorFactory(_is_verified=False).user
 
     class APIClientDoctor(APIClient):
+        user = _user
         EmailAddress.objects.create(user=user, email=user.email, verified=True)
 
     client = APIClientDoctor()
-    client.force_authenticate(user=user)
+    client.force_authenticate(user=client.user)
     return client
 
 

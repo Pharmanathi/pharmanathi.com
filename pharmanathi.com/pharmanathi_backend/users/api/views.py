@@ -58,7 +58,6 @@ class DoctorModelViewSet(ModelViewSet):
         if user_is_doctor(self.request):
             return super().get_serializer_class()
 
-        print(Doctor.objects.all())
         return DoctorPublicListSerializer
 
     @action(detail=True, methods=["GET"])
@@ -80,7 +79,7 @@ class DoctorModelViewSet(ModelViewSet):
 
 
 class PublicDoctorModelViewSet(DoctorModelViewSet):
-    queryset = Doctor.objects.all()  # TODO: filter(is_verified=True)
+    queryset = Doctor.objects.filter(_is_verified=True).prefetch_related("user", "practicelocations", "specialities")
     permission_classes = [permissions.IsAuthenticated]
 
 
