@@ -124,7 +124,9 @@ class TimeSlotViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.G
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = models.Appointment.objects.all()
+    queryset = models.Appointment.objects.filter(doctor___is_verified=True).prefetch_related(
+        "appointment_type", "doctor", "patient"
+    )
     serializer_class = serializers.AppointmentSerializer
 
     def get_permissions(self):

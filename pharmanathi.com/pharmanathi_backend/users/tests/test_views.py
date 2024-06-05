@@ -17,7 +17,7 @@ from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFact
 from pharmanathi_backend.users.forms import UserAdminChangeForm
 from pharmanathi_backend.users.models import User
 from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.users.tests.factories import FutureDateByDOWFactory, UserFactory
+from pharmanathi_backend.users.tests.factories import DoctorFactory, FutureDateByDOWFactory, UserFactory
 from pharmanathi_backend.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
@@ -253,6 +253,43 @@ def test_get_appointments_passes_for_verified_mhp(verified_mhp_client, doctor_wi
     appointment = mhp.appointment_set.first()
     client = verified_mhp_client
     client.force_authenticate(user=mhp.user)
+    response = client.get("/api/appointments/")
+    assert response.status_code == 200
+    assert appointment.id in map(lambda a: a["id"], response.data)
+
+
+def test_patients_cant_list_unverified_mhp(authenticated_user_api_client):
+    unverified_mhp = DoctorFactory(_is_verified=False)
+    response = authenticated_user_api_client.get("/api/doctors/")
+    assert response.status_code == 200
+    assert unverified_mhp.id not in map(lambda d: d["id"], response.data)
+
+
+def test_patients_can_list_verified_mhp(authenticated_user_api_client):
+    verified_mhp = DoctorFactory(_is_verified=True)
+    response = authenticated_user_api_client.get("/api/doctors/")
+    assert response.status_code == 200
+    assert verified_mhp.id in map(lambda d: d["id"], response.data)
+
+
+def test_patients_cant_see_unverified_mhp_appoinments(authenticated_user_api_client, doctor_with_appointment_random):
+    mhp = doctor_with_appointment_random
+    mhp._is_verified = False
+    mhp.save()
+    appointment = mhp.appointment_set.first()
+    patient = appointment.patient
+    client = authenticated_user_api_client
+    client.force_authenticate(user=patient)
+    response = client.get("/api/appointments/")
+    assert response.status_code == 200
+    assert appointment.id not in map(lambda a: a["id"], response.data)
+
+
+def test_patients_can_see_verified_mhp_appoinments(authenticated_user_api_client, doctor_with_appointment_random):
+    appointment = doctor_with_appointment_random.appointment_set.first()
+    patient = appointment.patient
+    client = authenticated_user_api_client
+    client.force_authenticate(user=patient)
     response = client.get("/api/appointments/")
     assert response.status_code == 200
     assert appointment.id in map(lambda a: a["id"], response.data)
