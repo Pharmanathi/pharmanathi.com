@@ -24,6 +24,9 @@ localps:
 sync_mhp_spec:
 	@docker compose run --rm django python manage.py runscript sync_specialities
 
+sync_social_apps:
+	docker compose run --rm django python manage.py runscript sync_social_apps
+
 migrations:
 	@docker compose run --rm django python manage.py makemigrations
 
