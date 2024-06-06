@@ -4,6 +4,7 @@ from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
 from pharmanathi_backend.utils import user_is_doctor
 
 from . import serializers
@@ -123,8 +124,16 @@ class TimeSlotViewSet(mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.G
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = models.Appointment.objects.all()
+    queryset = models.Appointment.objects.filter(doctor___is_verified=True).prefetch_related(
+        "appointment_type", "doctor", "patient"
+    )
     serializer_class = serializers.AppointmentSerializer
+
+    def get_permissions(self):
+        computed_permissions = super().get_permissions()
+        if self.request.user.is_doctor:
+            computed_permissions.append(IsVerifiedDoctor())
+        return computed_permissions
 
     def get_serializer(self, *args, **kwargs):
         if self.request.method in permissions.SAFE_METHODS:

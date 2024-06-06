@@ -35,19 +35,45 @@ def api_client():
 
 
 @pytest.fixture
-def authenticated_user_api_client(api_client):
+def authenticated_user_api_client():
     class APIClientWithUser(APIClient):
         user = UserFactory()
         EmailAddress.objects.create(user=user, email=user.email, verified=True)
 
-    api_client = APIClientWithUser()
-    api_client.force_authenticate(user=api_client.user)
-    return api_client
+    client = APIClientWithUser()
+    client.force_authenticate(user=client.user)
+    return client
 
 
 @pytest.fixture
 def simple_doctor(db):
-    return DoctorFactory()
+    return DoctorFactory(_is_verified=True)
+
+
+@pytest.fixture
+def verified_mhp_client(simple_doctor):
+    assert simple_doctor.is_verified is True, "Received unverified doctor. Expected verified."
+
+    class APIClientDoctor(APIClient):
+        user = simple_doctor.user
+        EmailAddress.objects.create(user=user, email=user.email, verified=True)
+
+    client = APIClientDoctor()
+    client.force_authenticate(user=client.user)
+    return client
+
+
+@pytest.fixture
+def unverified_mhp_client():
+    _user = DoctorFactory(_is_verified=False).user
+
+    class APIClientDoctor(APIClient):
+        user = _user
+        EmailAddress.objects.create(user=user, email=user.email, verified=True)
+
+    client = APIClientDoctor()
+    client.force_authenticate(user=client.user)
+    return client
 
 
 @pytest.fixture

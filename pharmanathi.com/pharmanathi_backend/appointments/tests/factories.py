@@ -16,7 +16,7 @@ def get_random_time_str(low_hour=1, high_hour=17, minutes_choices=None):
 
 
 class TimeSlotFactory(DjangoModelFactory):
-    doctor = SubFactory(DoctorFactory)
+    doctor = SubFactory(DoctorFactory, _is_verified=True)
     day = factory.fuzzy.FuzzyChoice(range(1, 8))
 
     @factory.lazy_attribute

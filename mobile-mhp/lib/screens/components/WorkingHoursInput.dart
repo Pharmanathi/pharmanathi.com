@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, use_super_parameters, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pharma_nathi/logging.dart';
 
-typedef MyBuilder = void Function(BuildContext context, void Function() getTimeslots);
+import '../../services/working_hours_api.dart';
+
+typedef MyBuilder = void Function(
+    BuildContext context, void Function() getTimeslots);
 
 class WorkingHoursInput extends StatefulWidget {
   final MyBuilder builder;
@@ -34,25 +35,37 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
   @override
   void initState() {
     super.initState();
+    _fetchAndSaveApiData();
+  }
+
+  Future<void> _fetchAndSaveApiData() async {
+    final schedule = await WorkingHourApiService.fetchScheduleFromApi(context);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    schedule.forEach((day, timeslots) {
+      final startTimes = timeslots.map((ts) => ts.split(',')[0]).toList();
+      final endTimes = timeslots.map((ts) => ts.split(',')[1]).toList();
+
+      prefs.setStringList('${day}_startTimes', startTimes);
+      prefs.setStringList('${day}_endTimes', endTimes);
+    });
+
+    // Load the saved settings after fetching and saving the data
     _loadSavedSettings();
   }
 
-   //* Load saved settings from SharedPreferences
   void _loadSavedSettings() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
       isAvailable = _prefs.getBool('${widget.day}_isAvailable') ?? false;
-      //* Load saved times
       _loadSavedTimes();
     });
   }
 
-  //* Save settings to SharedPreferences
   void _saveSettings() {
     _prefs.setBool('${widget.day}_isAvailable', isAvailable);
   }
 
-   //* Save selected times to SharedPreferences
   void _saveTimes() {
     _prefs.setStringList(
       '${widget.day}_startTimes',
@@ -64,10 +77,11 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
     );
   }
 
-  //* Load saved start and end times from SharedPreferences
   void _loadSavedTimes() {
-    final List<String>? savedStartTimes = _prefs.getStringList('${widget.day}_startTimes');
-    final List<String>? savedEndTimes = _prefs.getStringList('${widget.day}_endTimes');
+    final List<String>? savedStartTimes =
+        _prefs.getStringList('${widget.day}_startTimes');
+    final List<String>? savedEndTimes =
+        _prefs.getStringList('${widget.day}_endTimes');
 
     if (savedStartTimes != null && savedEndTimes != null) {
       startTimes = savedStartTimes.map((time) {
@@ -92,7 +106,8 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
       timeRows.add(
         Row(
           children: [
-            _buildTimePicker('Start Time', startTimes[i], (TimeOfDay? selectedTime) {
+            _buildTimePicker('Start Time', startTimes[i],
+                (TimeOfDay? selectedTime) {
               if (selectedTime != null) {
                 setState(() {
                   startTimes[i] = selectedTime;
@@ -105,7 +120,8 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
               }
             }),
             SizedBox(width: 15),
-            _buildTimePicker('End Time', endTimes[i], (TimeOfDay? selectedTime) {
+            _buildTimePicker('End Time', endTimes[i],
+                (TimeOfDay? selectedTime) {
               if (selectedTime != null) {
                 setState(() {
                   endTimes[i] = selectedTime;
@@ -162,10 +178,9 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
               ElevatedButton(
                 onPressed: _addTimeRow,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(6),
-                  elevation: 0,
-                  backgroundColor:Colors.transparent
-                ),
+                    padding: EdgeInsets.all(6),
+                    elevation: 0,
+                    backgroundColor: Colors.transparent),
                 child: Icon(
                   Icons.add,
                   color: Colors.grey,
@@ -179,8 +194,8 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
     );
   }
 
-  Widget _buildTimePicker(
-      String label, TimeOfDay selectedTime, ValueChanged<TimeOfDay?> onChanged) {
+  Widget _buildTimePicker(String label, TimeOfDay selectedTime,
+      ValueChanged<TimeOfDay?> onChanged) {
     return ElevatedButton(
       onPressed: () => _showTimePicker(selectedTime, onChanged),
       style: ElevatedButton.styleFrom(

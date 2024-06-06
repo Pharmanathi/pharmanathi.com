@@ -24,7 +24,7 @@ router.register("addresses", AddressModelViewset)
 router.register("practice-locations", PracticeLocationModelViewset, "practicelocations")
 router.register("appointment-types", AppointmentTypeViewSet, "appointment-types")
 router.register("timeslots", TimeSlotViewSet, "timeslots")
-router.register("appointments", AppointmentViewSet, "timeslots")
+router.register("appointments", AppointmentViewSet, "appointments")
 
 
 app_name = "api"

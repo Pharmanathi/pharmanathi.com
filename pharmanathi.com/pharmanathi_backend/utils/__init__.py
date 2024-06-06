@@ -14,7 +14,6 @@ def user_is_doctor(req: request) -> bool:
     Returns:
         bool: _description_
     """
-    print(f"------> {req.user.is_authenticated}  --->> {req.user.is_doctor}")
     if not req.user.is_authenticated:
         return False
 

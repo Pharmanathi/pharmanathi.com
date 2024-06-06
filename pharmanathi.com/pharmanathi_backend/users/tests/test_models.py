@@ -9,7 +9,7 @@ def test_user_get_absolute_url(user: User):
     assert user.get_absolute_url() == f"/users/{user.pk}/"
 
 
-def test_is_doctor_fails_if_no_doctor_profile(user):
+def test_is_doctor_False_if_no_doctor_profile(user):
     assert user.is_doctor is False
 
 
