@@ -53,8 +53,8 @@ class APIService {
     return [startDate, endDate];
   }
 
-  static Future<void> sendDataToBackendFromJSONFile(
-      BuildContext context,  {VoidCallback? onSuccess}) async {
+  static Future<void> sendDataToBackendFromJSONFile(BuildContext context,
+      {VoidCallback? onSuccess}) async {
     try {
       _requestBody['doctor'] =
           http_helpers.getUserInfo(context)?['doctor_profile']['id'] as int;
@@ -62,7 +62,8 @@ class APIService {
       String requestBodyJsonString = jsonEncode(_requestBody);
       log.i('Sending JSON data to backend:\n$requestBodyJsonString');
 
-      var response = await http_helpers.Apihelper.fetchData(context, (context) async {
+      var response =
+          await http_helpers.Apihelper.fetchData(context, (context) async {
         return await http_helpers.Apihelper.httpRequestWithAuthorization(
           context,
           '${http_helpers.apiBaseURL}/appointment-types/',
@@ -100,7 +101,33 @@ class APIService {
 
       _requestBody.clear();
     } catch (error) {
-       http_helpers.Apihelper.handleException(context, error);
+      http_helpers.Apihelper.handleException(context, error);
     }
+  }
+
+  static Future<Map<String, dynamic>?> fetchDataFromBackend(
+      BuildContext context) async {
+    try {
+      var response =
+          await http_helpers.Apihelper.fetchData(context, (context) async {
+        return await http_helpers.Apihelper.httpRequestWithAuthorization(
+          context,
+          '${http_helpers.apiBaseURL}/appointment-types/',
+          'GET',
+          '',
+        );
+      });
+
+      if (response.statusCode == 200) {
+        log.i('Data fetched successfully');
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        http_helpers.Apihelper.handleError(context, response);
+      }
+    } catch (error) {
+      http_helpers.Apihelper.handleException(context, error);
+    }
+    return null;
   }
 }

@@ -27,6 +27,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
   void initState() {
     super.initState();
     //* Initialize text controllers with saved values or defaults
+    _fetchAndSaveValues();
     _loadSavedValues();
     //* Add listeners to text controllers
     consultationFeeController.addListener(_saveValues);
@@ -88,10 +89,28 @@ class _ManageAppointmentState extends State<ManageAppointment> {
     }
   }
 
+  Future<void> _fetchAndSaveValues() async {
+    try {
+      var fetchedData = await APIService.fetchDataFromBackend(context);
+
+      if (fetchedData != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('consultationFee', fetchedData['cost']);
+        prefs.setString('noShowFee', fetchedData['no_show_cost']);
+        prefs.setInt('appointmentDuration', fetchedData['duration']);
+        prefs.setString('selectedDateRange',
+            '${fetchedData['start_date']} - ${fetchedData['end_date']}');
+        prefs.setString('selectedRadioButton',
+            fetchedData['is_run_forever'] ? 'Forever' : 'Within a date range');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
   Future<void> _loadSavedValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      //* Get saved values or set defaults for consultation fee and no show fee
       consultationFeeController.text =
           prefs.getString('consultationFee') ?? '0';
       noShowFeeController.text = prefs.getString('noShowFee') ?? '0';
