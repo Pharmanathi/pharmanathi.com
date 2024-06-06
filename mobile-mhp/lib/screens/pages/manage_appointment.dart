@@ -19,17 +19,14 @@ class _ManageAppointmentState extends State<ManageAppointment> {
   TextEditingController consultationFeeController = TextEditingController();
   TextEditingController noShowFeeController = TextEditingController();
   int appointmentDuration = 0;
-  String selectedRadioButton = '';
+  String selectedRadioButton = 'Continue indefinitely'; 
   String selectedDateRange = '';
   String selectedAppointmentType = '';
 
   @override
   void initState() {
     super.initState();
-    //* Initialize text controllers with saved values or defaults
     _fetchAndSaveValues();
-    _loadSavedValues();
-    //* Add listeners to text controllers
     consultationFeeController.addListener(_saveValues);
     noShowFeeController.addListener(_saveValues);
   }
@@ -41,7 +38,6 @@ class _ManageAppointmentState extends State<ManageAppointment> {
     _saveValues();
   }
 
-  //* Function to show date picker
   Future<void> _selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
@@ -91,35 +87,73 @@ class _ManageAppointmentState extends State<ManageAppointment> {
 
   Future<void> _fetchAndSaveValues() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       var fetchedData = await APIService.fetchDataFromBackend(context);
 
-      if (fetchedData != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('consultationFee', fetchedData['cost']);
-        prefs.setString('noShowFee', fetchedData['no_show_cost']);
-        prefs.setInt('appointmentDuration', fetchedData['duration']);
-        prefs.setString('selectedDateRange',
-            '${fetchedData['start_date']} - ${fetchedData['end_date']}');
-        prefs.setString('selectedRadioButton',
-            fetchedData['is_run_forever'] ? 'Forever' : 'Within a date range');
+      if (fetchedData != null && fetchedData.isNotEmpty) {
+        var data = fetchedData[0];
+        print('Fetched data: $data');
+        setState(() {
+          consultationFeeController.text = data['cost'] ?? '';
+          noShowFeeController.text = data['no_show_cost'] ?? '';
+          appointmentDuration = data['duration'] ?? 0;
+          selectedDateRange =
+              '${_formatDate(data['start_date'])} - ${_formatDate(data['end_date'])}';
+          selectedRadioButton = data['is_run_forever']
+              ? 'Continue indefinitely'
+              : 'Within a date range';
+        });
+
+        await prefs.clear();
+        await prefs.setString(
+            'consultationFee', consultationFeeController.text);
+        await prefs.setString('noShowFee', noShowFeeController.text);
+        await prefs.setInt('appointmentDuration', appointmentDuration);
+        await prefs.setString('selectedDateRange', selectedDateRange);
+        await prefs.setString('selectedRadioButton', selectedRadioButton);
+      } else {
+        print('No data fetched, using defaults');
+        setState(() {
+          consultationFeeController.text = '';
+          noShowFeeController.text = '';
+          appointmentDuration = 0;
+          selectedDateRange = '';
+          selectedRadioButton = '';
+        });
+
+        await prefs.clear();
+        await prefs.setString('consultationFee', '');
+        await prefs.setString('noShowFee', '');
+        await prefs.setInt('appointmentDuration', 0);
+        await prefs.setString('selectedDateRange', '');
+        await prefs.setString('selectedRadioButton', '');
       }
     } catch (error) {
       print('Error fetching data: $error');
+      setState(() {
+        consultationFeeController.text = '';
+        noShowFeeController.text = '';
+        appointmentDuration = 0;
+        selectedDateRange = '';
+        selectedRadioButton = '';
+      });
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      await prefs.setString('consultationFee', '');
+      await prefs.setString('noShowFee', '');
+      await prefs.setInt('appointmentDuration', 0);
+      await prefs.setString('selectedDateRange', '');
+      await prefs.setString('selectedRadioButton', '');
     }
   }
 
-  Future<void> _loadSavedValues() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      consultationFeeController.text =
-          prefs.getString('consultationFee') ?? '0';
-      noShowFeeController.text = prefs.getString('noShowFee') ?? '0';
-      appointmentDuration = prefs.getInt('appointmentDuration') ?? 0;
-      selectedDateRange =
-          prefs.getString('selectedDateRange') ?? 'Select a Range';
-      selectedRadioButton =
-          prefs.getString('selectedRadioButton') ?? 'Within a date range';
-    });
+  String _formatDate(String date) {
+    DateTime parsedDate = DateTime.parse(date);
+    String day = parsedDate.day.toString().padLeft(2, '0');
+    String month = _getMonthName(parsedDate.month);
+    String year = parsedDate.year.toString();
+    return '$day $month ';
   }
 
   Future<void> _updateSelectedRadioButton(String newRadioButton) async {
@@ -128,6 +162,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
     setState(() {
       selectedRadioButton = newRadioButton;
     });
+    _saveValues();
   }
 
   Future<void> _updateSelectedDateRange(String newDateRange) async {
@@ -140,11 +175,12 @@ class _ManageAppointmentState extends State<ManageAppointment> {
 
   Future<void> _saveValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('consultationFee', consultationFeeController.text);
-    prefs.setString('noShowFee', noShowFeeController.text);
-    prefs.setInt('appointmentDuration', appointmentDuration);
-    prefs.setString('selectedDateRange', selectedDateRange);
-    prefs.setString('selectedRadioButton', selectedRadioButton);
+    await prefs.clear();
+    await prefs.setString('consultationFee', consultationFeeController.text);
+    await prefs.setString('noShowFee', noShowFeeController.text);
+    await prefs.setInt('appointmentDuration', appointmentDuration);
+    await prefs.setString('selectedDateRange', selectedDateRange);
+    await prefs.setString('selectedRadioButton', selectedRadioButton);
   }
 
   @override

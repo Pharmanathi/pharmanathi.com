@@ -105,7 +105,7 @@ class APIService {
     }
   }
 
-  static Future<Map<String, dynamic>?> fetchDataFromBackend(
+  static Future<List<Map<String, dynamic>>?> fetchDataFromBackend(
       BuildContext context) async {
     try {
       var response =
@@ -120,8 +120,8 @@ class APIService {
 
       if (response.statusCode == 200) {
         log.i('Data fetched successfully');
-        var data = jsonDecode(response.body);
-        return data;
+        var data = jsonDecode(response.body) as List;
+        return data.cast<Map<String, dynamic>>();
       } else {
         http_helpers.Apihelper.handleError(context, response);
       }
