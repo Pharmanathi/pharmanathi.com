@@ -17,7 +17,7 @@ django-model-utils==4.5.1  # https://github.com/jazzband/django-model-utils
 django-allauth==0.61.1  # https://github.com/pennersr/django-allauth
 dj-rest-auth[with_social]==6.0.0 # https://github.com/iMerica/dj-rest-auth
 pyjwt[crypto]==2.8.0 # https://github.com/jpadilla/pyjwt
-django-crispy-forms==2.0  # https://github.com/django-crispy-forms/django-crispy-forms
+django-crispy-forms==2.1  # https://github.com/django-crispy-forms/django-crispy-forms
 crispy-bootstrap5==2024.2  # https://github.com/django-crispy-forms/crispy-bootstrap5
 django-redis==5.4.0  # https://github.com/jazzband/django-redis
 # Django REST Framework
