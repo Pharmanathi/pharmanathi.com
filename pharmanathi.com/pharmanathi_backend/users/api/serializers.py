@@ -13,15 +13,13 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         exclude = ["user", "date_created"]
 
 
-class UserSerializer(serializers.ModelSerializer[UserType]):
+class UserSerializer(serializers.ModelSerializer):
     is_doctor = serializers.BooleanField(read_only=True)
     doctor_profile = DoctorProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-
         exclude = ["password", "groups", "name", "_profile_pic"]
-
         extra_kwargs = {
             "url": {"view_name": "api:user-detail", "lookup_field": "pk"},
         }
@@ -40,12 +38,20 @@ class DoctorModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        # fields = ["id", "is_verified", "specialities", "user"]
         exclude = ["date_created"]
 
 
 class DoctorPublicListSerializer(DoctorModelSerializer):
     user = UserSerializerSimplified()
+    has_consulted_before = serializers.SerializerMethodField()
+
+    def get_has_consulted_before(self, obj):
+        request = self.context.get('request', None)
+        if request is not None:
+            patient_id = request.query_params.get('patient_id', None)
+            if patient_id:
+                return obj.has_consulted_before(patient_id)
+        return False
 
     def to_representation(self, instance):
         from pharmanathi_backend.appointments.models import AppointmentType
@@ -61,7 +67,7 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ["user", "is_verified", "specialities", "practicelocations", "id"]
+        fields = ["user", "is_verified", "specialities", "practicelocations", "id", "has_consulted_before"]
 
 
 class DoctorAppointmentSerializer(DoctorPublicListSerializer):
