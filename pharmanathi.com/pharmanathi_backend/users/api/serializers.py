@@ -13,7 +13,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         exclude = ["user", "date_created"]
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer[UserType]):
     is_doctor = serializers.BooleanField(read_only=True)
     doctor_profile = DoctorProfileSerializer(read_only=True)
 

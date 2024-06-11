@@ -115,6 +115,7 @@ class Doctor(BaseCustomModel):
     def has_consulted_before(self, patient_id):
         return self.appointment_set.filter(patient__id=patient_id).exists()
 
+
     def get_busy_slots_on(self, dt: datetime.date) -> list[tuple]:
         return [appointment.timeslot_repr for appointment in self.upcoming_appointments.filter(start_time__date=dt)]
 
