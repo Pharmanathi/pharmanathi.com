@@ -46,11 +46,9 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
     has_consulted_before = serializers.SerializerMethodField()
 
     def get_has_consulted_before(self, obj):
-        request = self.context.get('request', None)
-        if request is not None:
-            patient_id = request.query_params.get('patient_id', None)
-            if patient_id:
-                return obj.has_consulted_before(patient_id)
+        request = self.context.get("request", None)
+        if request and request.user:
+            return obj.has_consulted_before(request.user.id)
         return False
 
     def to_representation(self, instance):

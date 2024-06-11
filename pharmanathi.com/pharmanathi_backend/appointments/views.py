@@ -178,13 +178,5 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         if selected_timeslot not in available_slots:
             return Response({"detail": "Selected timeslot is unavailable"}, status=400)
         
-         # Update the doctor's 'has_consulted_before' attribute to True
-        doctor_id = prepared_appointment_data["doctor"]
-        doctor = models.Doctor.objects.get(id=doctor_id)
-        if not doctor.has_consulted_before(prepared_appointment_data["patient"]):
-             doctor.has_consulted_before = True
-             doctor.save(update_fields=["has_consulted_before"])
-
- 
         sz_appointment.save()
         return Response(serializers.AppointmentPublicSerializer(sz_appointment.instance).data, status=201)
