@@ -60,7 +60,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         context,
       );
 
-      // Debugging print
       print('Availability:');
       for (var slot in availability) {
         print('${slot[0]} - ${slot[1]}');
