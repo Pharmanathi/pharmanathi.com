@@ -87,7 +87,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.google",
 ]
 
-LOCAL_APPS = ["pharmanathi_backend.users", "pharmanathi_backend.appointments"]
+LOCAL_APPS = ["pharmanathi_backend.users", "pharmanathi_backend.appointments", "pharmanathi_backend.adminsite"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
