@@ -18,6 +18,15 @@ CELERY_FLOWER_PASSWORD=debug
 # Django
 # ------------------------------------------------------------------------------
 DJANGO_ALLOWED_HOST=*
+# Add amins using the fomat names1-email1_names2-email2
+ADMINS="Nehemie Balukidi-alfred.nehemie@gmail.com_Peridot Admin-peridot.pharmanathi@gmail.com"
+SERVER_EMAIL=me@nehemie.dev
+DEFAULT_FROM_EMAIL=me@nehemie.dev
+EMAIL_HOST_USER=me@nehemie.dev
+EMAIL_HOST_PASSWORD="pass@Namecheap_#6"
+EMAIL_HOST=mail.privateemail.com
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
 
 # Social Apps
 # ------------------------------------------------------------------------------
@@ -25,3 +34,9 @@ SOCIAL_APP_GOOGLE_MHP_ANDROID='provider=google,name=google_mhp_android,client_id
 SOCIAL_APP_GOOGLE_MHP_IOS='provider=google,name=google_mhp_ios,client_id=710242232170-pbobuv9pdmnr66qmp5t3doac506ap4ca.apps.googleusercontent.com,secret=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'
 SOCIAL_APP_GOOGLE_PATIENT_IOS='provider=google,name=google_patient_ios,client_id=710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com,secret=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'
 SOCIAL_APP_GOOGLE_PATIENT_ANDROID='provider=google,name=google_patient_android,client_id=710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com,secret=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'
+
+
+# ANYMAIL-MAILGUN
+# ------------------------------------------------------------------------------
+MAILGUN_API_KEY="dd258fd48d9209b776c9fae44c265e8e-51356527-7dda6284"
+MAILGUN_SENDING_DOMAIN="mg.nehemie.dev"
