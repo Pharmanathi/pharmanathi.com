@@ -10,4 +10,20 @@ function logout(){
     })
 }
 
+function loadUnverifiedMHPs(){
+    location.href = "/custom-admin/MHPs/unverified"
+}
+
+function renderDataTable(id){
+    new DataTable(id);
+}
+
+function loadUser(id){
+    location.href = `/custom-admin/users/detail/${id}`
+}
+
 document.querySelector("#btn-logout-modal-logout").addEventListener("click", logout)
+$(".unverified-mhp-table-row").on("click", e => {
+    const MHPID = e.currentTarget.dataset.mhpId
+    loadUser(MHPID)
+})
