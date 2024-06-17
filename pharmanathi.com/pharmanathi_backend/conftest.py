@@ -2,8 +2,7 @@ import datetime
 
 import pytest
 from allauth.socialaccount.models import EmailAddress, SocialAccount, SocialApp
-from rest_framework.test import APIClient
-
+from django.test import Client
 from pharmanathi_backend.appointments.tests.factories import (
     AppointmentFactory,
     AppointmentTypeFactory,
@@ -11,7 +10,12 @@ from pharmanathi_backend.appointments.tests.factories import (
     get_random_time_str,
 )
 from pharmanathi_backend.users.models import User
-from pharmanathi_backend.users.tests.factories import DoctorFactory, FutureDateByDOWFactory, UserFactory
+from pharmanathi_backend.users.tests.factories import (
+    DoctorFactory,
+    FutureDateByDOWFactory,
+    UserFactory,
+)
+from rest_framework.test import APIClient
 
 
 @pytest.fixture(autouse=True)
@@ -32,6 +36,23 @@ def patient(user):
 @pytest.fixture
 def api_client():
     return APIClient()
+
+
+@pytest.fixture
+def web_client():
+    return Client()
+
+
+@pytest.fixture
+def staff_web_client():
+    staff_user = UserFactory(is_staff=True)
+
+    class StaffWebClient(Client):
+        user = staff_user
+
+    client = StaffWebClient()
+    client.force_login(user=staff_user)
+    return client
 
 
 @pytest.fixture
