@@ -19,7 +19,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
   TextEditingController consultationFeeController = TextEditingController();
   TextEditingController noShowFeeController = TextEditingController();
   int appointmentDuration = 0;
-  String selectedRadioButton = 'Continue indefinitely'; 
+  String selectedRadioButton = 'Continue indefinitely';
   String selectedDateRange = '';
   String selectedAppointmentType = '';
 

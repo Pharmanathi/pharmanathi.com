@@ -177,7 +177,6 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
         if selected_timeslot not in available_slots:
             return Response({"detail": "Selected timeslot is unavailable"}, status=400)
-        
-        
+
         sz_appointment.save()
         return Response(serializers.AppointmentPublicSerializer(sz_appointment.instance).data, status=201)

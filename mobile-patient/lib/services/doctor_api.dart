@@ -26,7 +26,7 @@ Future<List<DoctorDetail>> fetchDoctors(BuildContext context) async {
 
         doctors.add(
           DoctorDetail(
-            has_consulted_before: doctorData['has_consulted_before'], 
+            has_consulted_before: doctorData['has_consulted_before'],
             doctorId: doctorData['id'],
             appointmentType: appointmentTypeId,
             name:
