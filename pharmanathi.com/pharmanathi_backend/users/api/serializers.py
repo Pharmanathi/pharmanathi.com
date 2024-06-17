@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from pharmanathi_backend.users.models import (
     Address,
     Doctor,
+    InvalidationReason,
     PracticeLocation,
     Speciality,
 )
@@ -11,7 +12,16 @@ from rest_framework import serializers
 User = get_user_model()
 
 
+class InvalidationReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InvalidationReason
+        fields = "__all__"
+        ordering = ["-date_created", "is_resolved", "date_modified"]
+
+
 class DoctorProfileSerializer(serializers.ModelSerializer):
+    invalidationreason_set = InvalidationReasonSerializer(many=True, read_only=True)
+
     class Meta:
         model = Doctor
         exclude = ["user", "date_created"]

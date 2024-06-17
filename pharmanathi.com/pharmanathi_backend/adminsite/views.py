@@ -6,7 +6,7 @@ from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404, render
 from pharmanathi_backend.users.api.serializers import UserSerializer
-from pharmanathi_backend.users.models import Doctor, User
+from pharmanathi_backend.users.models import Doctor, InvalidationReason, User
 
 admin_logger = logging.getLogger("")
 
@@ -55,29 +55,55 @@ def user_detail(request, user_id):
     return render(
         request,
         "adminsite-2/user-detail.html",
-        {"user": UserSerializer(get_object_or_404(User.objects.prefetch_related("doctor_profile"), pk=user_id)).data},
+        {
+            "user": UserSerializer(
+                get_object_or_404(
+                    User.objects.prefetch_related("doctor_profile", "doctor_profile__invalidationreason_set"),
+                    pk=user_id,
+                )
+            ).data
+        },
     )
 
 
 @staff_member_required
 def validate_mhp_profile(request, mhp_id):
+    # fail if has unresolved validation errors
+    if InvalidationReason.objects.filter(mhp__id=mhp_id, is_resolved=False).exists():
+        return JsonResponse(
+            {"detail": "This MP has one or more unresolved Invalidation Reasons. They must be resolved first."},
+            status=403,
+        )
     try:
         mhp = Doctor.objects.get(id=mhp_id)
         mhp.mark_as_vefified()
         admin_logger.info(f"{request.user} verified MHP {mhp}")
         return HttpResponse(status=200)
     except Exception as e:
-        admin_logger.info(f"{request.user} tried to verify MHP with ID {mhp_id} but faile with error: <{e}>")
+        admin_logger.info(f"{request.user} tried to verify MHP with ID {mhp_id} but failed with error: <{e}>")
         return JsonResponse({"detail": str(e)}, status=500)
+
+
+import json
 
 
 @staff_member_required
 def invalidate_mhp_profile(request, mhp_id):
     try:
+        invalidation_reason = json.loads(request.body.decode("utf-8")).get("reason")
         mhp = Doctor.objects.get(id=mhp_id)
-        mhp.invalidate_mhp_profile()
+        mhp.invalidate_mhp_profile(request.user, invalidation_reason)
         admin_logger.info(f"{request.user} invalidated MHP {mhp}")
         return HttpResponse(status=200)
     except Exception as e:
-        admin_logger.info(f"{request.user} tried to invalidate MHP with ID {mhp_id} but faile with error: <{e}>")
+        admin_logger.info(f"{request.user} tried to invalidate MHP with ID {mhp_id} but failed with error: <{e}>")
+        return JsonResponse({"detail": str(e)}, status=500)
+
+
+@staff_member_required
+def resolve_invalidation_reason(request, ir_id):
+    try:
+        InvalidationReason.objects.filter(id=ir_id).update(is_resolved=True, resolved_by=request.user)
+        return HttpResponse(status=200)
+    except Exception as e:
         return JsonResponse({"detail": str(e)}, status=500)

@@ -1,6 +1,8 @@
-import pytest
+from unittest.mock import patch
 
+import pytest
 from pharmanathi_backend.users.api.serializers import UserSerializer
+from pharmanathi_backend.users.models import InvalidationReason
 
 pytestmark = pytest.mark.django_db
 
@@ -54,7 +56,7 @@ def test_validate_mhp_profile(staff_web_client, unverified_mhp_client):
     # @TODO: test that notification instruction was triggered
     mhp_profile = unverified_mhp_client.user.doctor_profile
     assert mhp_profile.is_verified is False
-    res = staff_web_client.get(f"/custom-admin/MHPs/actions/{mhp_profile.id}/mark-verified/")
+    res = staff_web_client.get(f"/custom-admin/MHPs/{mhp_profile.id}/mark-verified/")
     assert res.status_code == 200
     mhp_profile.refresh_from_db(fields=["_is_verified"])
     assert mhp_profile.is_verified is True
@@ -64,8 +66,30 @@ def test_invalidate_mhp_profile(staff_web_client, verified_mhp_client):
     # @TODO: test that notification instruction was triggered
     mhp_profile = verified_mhp_client.user.doctor_profile
     assert mhp_profile.is_verified is True
-    res = staff_web_client.get(f"/custom-admin/MHPs/actions/{mhp_profile.id}/invalidate/")
-    assert res.status_code == 200
+    with patch(
+        "pharmanathi_backend.users.models.set_rejection_reason_task.delay"
+    ) as patched_set_rejection_reason_task:
+        invalidation_reason = "some reasons"
+        res = staff_web_client.post(
+            f"/custom-admin/MHPs/{mhp_profile.id}/invalidate/",
+            {"reason": invalidation_reason},
+            content_type="application/json",
+        )
+        assert res.status_code == 200
+
     mhp_profile.refresh_from_db(fields=["_is_verified"])
     assert mhp_profile.is_verified is False
+    # Assert was called with the right args
+    patched_set_rejection_reason_task.assert_called_with(mhp_profile.id, invalidation_reason, staff_web_client.user.id)
 
+
+def test_fail_to_validate_profile_if_pending_rejection_message(staff_web_client, unresolved_invalidation_reason):
+    res = staff_web_client.get(f"/custom-admin/MHPs/{unresolved_invalidation_reason.mhp.id}/mark-verified/")
+    assert res.status_code == 403
+
+
+def test_resolve_invalidation_reason(staff_web_client, unresolved_invalidation_reason):
+    res = staff_web_client.get(f"/custom-admin/IRs/{unresolved_invalidation_reason.id}/resolve/")
+    assert res.status_code == 200
+    unresolved_invalidation_reason.refresh_from_db()
+    assert unresolved_invalidation_reason.is_resolved

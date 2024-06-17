@@ -6,7 +6,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from pharmanathi_backend.users.managers import UserManager
-from pharmanathi_backend.users.tasks import mail_user_task
+from pharmanathi_backend.users.tasks import mail_user_task, set_rejection_reason_task
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 
@@ -73,12 +73,15 @@ class Speciality(BaseCustomModel):
 
 class Address(BaseCustomModel):
     line_1 = models.CharField(max_length=100, null=False)
-    line_2 = models.CharField(max_length=100, null=True)
+    line_2 = models.CharField(max_length=100, null=True, blank=True)
     suburb = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     province = models.CharField(max_length=50)
-    lat = models.DecimalField(decimal_places=10, max_digits=13)
-    long = models.DecimalField(decimal_places=10, max_digits=13)
+    lat = models.DecimalField(decimal_places=13, max_digits=16)
+    long = models.DecimalField(decimal_places=13, max_digits=16)
+
+    def __str__(self):
+        return f"{self.line_1}{ ', ' + self.line_2 if self.line_2 else ''}, {self.city}, {self.province}"
 
 
 class PracticeLocation(BaseCustomModel):
@@ -93,8 +96,8 @@ class Doctor(BaseCustomModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
-    hpcsa_no = models.CharField("HPCSA No.", max_length=5, null=True)
-    mp_no = models.CharField("Mp No.", max_length=5, null=True)
+    hpcsa_no = models.CharField("HPCSA No.", max_length=5)
+    mp_no = models.CharField("Mp No.", max_length=5)
     _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -160,19 +163,20 @@ class Doctor(BaseCustomModel):
             """
         mail_user_task.delay(self.user.email, "Medical Health Professional Profile Validated", message, message)
 
-    def invalidate_mhp_profile(self):
+    def invalidate_mhp_profile(self, creator, reason):
         assert self.pk
+        assert creator, "Provide the InvalidationReason.creator value"
+        assert reason, "Cannot invalidate MP profile without providing a reason."
+
         if self.is_verified is False:
             return
 
         self._is_verified = False
         self.save()
-        message = """
+        message = f"""
             Your MHP Profile has been invalidate for the following reasons:
             <br><br>
-            - Reason 1<br>
-            - Reason 2<br>
-            - Reason 3<br>
+            {reason}
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
@@ -181,3 +185,15 @@ class Doctor(BaseCustomModel):
             Kindest regards,
             """
         mail_user_task.delay(self.user.email, "Medical Health Professional Profile Invalidation", message, message)
+        set_rejection_reason_task.delay(self.id, reason, creator.id)
+
+
+class InvalidationReason(BaseCustomModel):
+    mhp = models.ForeignKey(Doctor, on_delete=models.PROTECT, null=False)
+    text = models.TextField(null=False)
+    is_resolved = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="creator")
+    resolved_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="resolver", null=True)
+
+    def __str__(self):
+        return f"({'resolved' if self.is_resolved else 'unresolved'})Invalidation Reason for {self.mhp}: {self.text[:15]}..."
