@@ -2,7 +2,6 @@
 Base settings to build other settings files upon.
 """
 
-import sys
 from pathlib import Path
 
 import environ
