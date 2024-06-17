@@ -1,0 +1,15 @@
+.clickable-card, .cliackable-table-row {
+    cursor: pointer;
+}
+
+.clickable-card:hover {
+    box-shadow: 0 .15rem 1.75rem 0 rgba(246, 194, 62, .15) !important;
+}
+
+.cliackable-table-row:hover {
+    background-color: rgb(52 90 203 / 11%);
+}
+
+#nav-tabContent.tab-content > .active {
+    display: flex!important;
+}
