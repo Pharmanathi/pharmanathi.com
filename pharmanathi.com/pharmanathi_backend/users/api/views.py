@@ -11,6 +11,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -18,8 +19,6 @@ from rest_framework.exceptions import APIException
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-
-from pharmanathi_backend.utils import user_is_doctor
 
 from ..models import Address, Doctor, PracticeLocation, Speciality
 from .serializers import (
@@ -176,6 +175,14 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
         # should they be signinng in or up as doctor, create their doctor profile
         if sign_as_doctor:
             Doctor.objects.get_or_create(user=user)
+            from pharmanathi_backend.users.tasks import mail_admins_task
+
+            message = "A new Medical Health Professional was registered."
+            mail_admins_task.delay(
+                "New MHP registration",
+                message,
+                message,
+            )
 
         return attrs
 
