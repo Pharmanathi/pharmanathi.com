@@ -9,13 +9,13 @@ User = get_user_model()
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     specialities = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Doctor
         exclude = ["user", "date_created"]
 
     def get_specialities(self, obj):
-        return [speciality.name for speciality in obj.specialities.all()]   
+        return [speciality.name for speciality in obj.specialities.all()]
 
 
 class UserSerializer(serializers.ModelSerializer[UserType]):
@@ -39,10 +39,12 @@ class UserSerializerSimplified(UserSerializer):
         model = User
         fields = ["first_name", "last_name", "contact_no", "initials", "title", "id"]
 
+
 class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
         fields = ["name"]
+
 
 class DoctorModelSerializer(serializers.ModelSerializer):
     is_verified = serializers.BooleanField(read_only=True)
@@ -91,6 +93,7 @@ class SpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
         fields = "__all__"
+
 
 class AddressModelSerializer(serializers.ModelSerializer):
     class Meta:
