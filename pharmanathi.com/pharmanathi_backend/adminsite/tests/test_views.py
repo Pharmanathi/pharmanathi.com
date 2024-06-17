@@ -1,4 +1,5 @@
 import pytest
+from pharmanathi_backend.users.api.serializers import UserSerializer
 
 from pharmanathi_backend.users.api.serializers import UserSerializer
 
