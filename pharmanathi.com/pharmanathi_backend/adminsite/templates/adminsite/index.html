@@ -1,4 +1,5 @@
 {% extends 'adminsite/layout.html' %}
+{% load static %}
 
 {% block page_title %} Pharmanathi Admin Dashboard {% endblock %}
 {% block main_content %}
@@ -12,13 +13,13 @@
 
     <!-- Pending Requests Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card clickable-card border-left-warning shadow h-100 py-2" onclick="loadUnverifiedMHPs()">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Unverified MHPs</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.unverifed_mhps }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-user-md fa-2x text-gray-300"></i>
@@ -28,4 +29,14 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block page_specific_js %}
+
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
 {% endblock %}
