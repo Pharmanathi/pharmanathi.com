@@ -34,9 +34,14 @@ class UserSerializerSimplified(UserSerializer):
         model = User
         fields = ["first_name", "last_name", "contact_no", "initials", "title", "id"]
 
+class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Speciality
+        fields = ["name"]
 
 class DoctorModelSerializer(serializers.ModelSerializer):
     is_verified = serializers.BooleanField(read_only=True)
+    specialities = SimpleSpecialityModelSerializer(many=True)
 
     class Meta:
         model = Doctor
@@ -46,6 +51,7 @@ class DoctorModelSerializer(serializers.ModelSerializer):
 
 class DoctorPublicListSerializer(DoctorModelSerializer):
     user = UserSerializerSimplified()
+    specialities = SimpleSpecialityModelSerializer(many=True)
 
     def to_representation(self, instance):
         from pharmanathi_backend.appointments.models import AppointmentType
@@ -66,6 +72,7 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
 
 class DoctorAppointmentSerializer(DoctorPublicListSerializer):
     user = UserSerializerSimplified()
+    specialities = SimpleSpecialityModelSerializer(many=True)
 
     class Meta:
         model = Doctor
@@ -79,13 +86,6 @@ class SpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
         fields = "__all__"
-
-
-class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Speciality
-        fields = "name"
-
 
 class AddressModelSerializer(serializers.ModelSerializer):
     class Meta:
