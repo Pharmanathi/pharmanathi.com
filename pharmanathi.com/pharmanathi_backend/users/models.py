@@ -5,8 +5,8 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
+from pharmanathi_backend.users.tasks import mail_user_task
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 
@@ -142,3 +142,42 @@ class Doctor(BaseCustomModel):
             set[str]: A set of slots that are presumed not clashing with any other appointments
         """
         return self.get_possible_appointment_slots_on(dt, duration) - set(self.get_busy_slots_on(dt))
+
+    # TODO; Provide text and HTML versions for the messages below
+    def mark_as_vefified(self):
+        assert self.pk
+        if self.is_verified is True:
+            return
+
+        self._is_verified = True
+        self.save()
+        message = """
+            Your MHP Profile has been validated.
+            <br><br>
+            Should you require any further assitance, please feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            <br><br>
+            Kindest regards,
+            """
+        mail_user_task.delay(self.user.email, "Medical Health Professional Profile Validated", message, message)
+
+    def invalidate_mhp_profile(self):
+        assert self.pk
+        if self.is_verified is False:
+            return
+
+        self._is_verified = False
+        self.save()
+        message = """
+            Your MHP Profile has been invalidate for the following reasons:
+            <br><br>
+            - Reason 1<br>
+            - Reason 2<br>
+            - Reason 3<br>
+            <br>
+            Please make the required adjustment to validate your MHP profile.
+            <br><br>
+            Should you require any further assitance, pleae feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            <br><br>
+            Kindest regards,
+            """
+        mail_user_task.delay(self.user.email, "Medical Health Professional Profile Invalidation", message, message)
