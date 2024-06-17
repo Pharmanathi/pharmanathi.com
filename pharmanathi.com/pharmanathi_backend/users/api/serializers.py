@@ -8,9 +8,14 @@ User = get_user_model()
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
+    specialities = serializers.SerializerMethodField()
+    
     class Meta:
         model = Doctor
         exclude = ["user", "date_created"]
+
+    def get_specialities(self, obj):
+        return [speciality.name for speciality in obj.specialities.all()]   
 
 
 class UserSerializer(serializers.ModelSerializer[UserType]):
