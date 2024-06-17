@@ -216,17 +216,6 @@ CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
-# EMAIL_TIMEOUT = 5
-EMAIL_SUBJECT_PREFIX = "[Pharmanathi]"
-SERVER_EMAIL = env.str("SERVER_EMAIL")
-DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
-EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
-EMAIL_HOST = "mail.privateemail.com"  # env.str("EMAIL_HOST")
-EMAIL_USE_TLS = True
-EMAIL_PORT = env.str("EMAIL_PORT")
-
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -381,13 +370,26 @@ SPECTACULAR_SETTINGS = {
 }
 # EMAIL and ANYMAIL
 # ------------------------------------------------------------------------------
-ANYMAIL = {
-    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY"),
-    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
-    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN"),
-}
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
+EMAIL_TIMEOUT = 5
+
+EMAIL_SUBJECT_PREFIX = "[Pharmanathi]"
+SERVER_EMAIL = env.str("SERVER_EMAIL")
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = "mail.privateemail.com"  # env.str("EMAIL_HOST")
+EMAIL_USE_TLS = True
+EMAIL_PORT = env.str("EMAIL_PORT")
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY"),
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
+    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN"),
+}
