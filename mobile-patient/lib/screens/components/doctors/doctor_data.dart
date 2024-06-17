@@ -8,11 +8,13 @@ class DoctorDetail {
   final String location;
   final String experience;
   final int doctorId;
+  final bool has_consulted_before;
   final int appointmentType;
 
   DoctorDetail(
       {required this.name,
       required this.distance,
+      required this.has_consulted_before,
       required this.appointmentType,
       required this.location,
       required this.experience,

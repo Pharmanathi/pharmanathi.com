@@ -63,6 +63,7 @@ class CustomDoctorCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DoctorDetails(
+                        has_consulted_before: doctorDetails.has_consulted_before,
                         name: doctorDetails.name,
                         appointmentType: doctorDetails.appointmentType,
                         doctorId: doctorDetails.doctorId,
