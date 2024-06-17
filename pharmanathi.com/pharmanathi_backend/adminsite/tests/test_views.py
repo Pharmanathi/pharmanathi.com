@@ -1,4 +1,5 @@
 import pytest
+
 from pharmanathi_backend.users.api.serializers import UserSerializer
 
 pytestmark = pytest.mark.django_db
@@ -67,3 +68,4 @@ def test_invalidate_mhp_profile(staff_web_client, verified_mhp_client):
     assert res.status_code == 200
     mhp_profile.refresh_from_db(fields=["_is_verified"])
     assert mhp_profile.is_verified is False
+
