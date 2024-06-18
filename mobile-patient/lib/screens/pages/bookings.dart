@@ -653,7 +653,7 @@ class _BookingsState extends State<Bookings> {
                                 return AlertDialog(
                                   title: Text("Confirm Booking"),
                                   content: Text(
-                                      "Do you want to proceed with booking the appointment? By proceeding, you grant this Medical Professional permission to access both your medical and personal information. However, all information will remain strictly confidential."),
+                                      "By proceeding, you grant this Medical Professional permission to access both your medical and personal information. However, all information will remain strictly confidential."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
