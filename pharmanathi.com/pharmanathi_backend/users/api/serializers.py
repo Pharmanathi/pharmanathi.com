@@ -41,7 +41,7 @@ class UserSerializerSimplified(UserSerializer):
 class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
-        fields = ["name"]
+        fields = ["id", "name"]
 
 
 class DoctorModelSerializer(serializers.ModelSerializer):
