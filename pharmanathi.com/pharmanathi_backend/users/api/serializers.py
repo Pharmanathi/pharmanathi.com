@@ -7,7 +7,15 @@ from pharmanathi_backend.users.models import User as UserType
 User = get_user_model()
 
 
+class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Speciality
+        fields = ["id", "name"]
+
+
 class DoctorProfileSerializer(serializers.ModelSerializer):
+    specialities = SimpleSpecialityModelSerializer(many=True)
+
     class Meta:
         model = Doctor
         exclude = ["user", "date_created"]
@@ -35,6 +43,7 @@ class UserSerializerSimplified(UserSerializer):
 
 class DoctorModelSerializer(serializers.ModelSerializer):
     is_verified = serializers.BooleanField(read_only=True)
+    specialities = SimpleSpecialityModelSerializer(many=True)
 
     class Meta:
         model = Doctor
@@ -83,12 +92,6 @@ class SpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
         fields = "__all__"
-
-
-class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Speciality
-        fields = "name"
 
 
 class AddressModelSerializer(serializers.ModelSerializer):
