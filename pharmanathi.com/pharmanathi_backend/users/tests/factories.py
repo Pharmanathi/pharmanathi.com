@@ -44,6 +44,8 @@ class UserFactory(DjangoModelFactory):
 
 
 class DoctorFactory(DjangoModelFactory):
+    hpcsa_no = factory.fuzzy.FuzzyText(length=5)
+    mp_no = factory.fuzzy.FuzzyText(length=5)
     _is_verified = False
 
     class Meta:

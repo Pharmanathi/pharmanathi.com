@@ -19,3 +19,13 @@ def test_is_doctor_on_simple_doctor(simple_doctor):
 
 def test_is_doctor_on_social_doctor(social_simple_doctor):
     assert social_simple_doctor.user.is_doctor is True
+
+
+def test_has_consulted_before_is_True_if_consulted(doctor_with_appointment_random):
+    appointment_patient = doctor_with_appointment_random.appointment_set.first().patient
+    assert doctor_with_appointment_random.has_consulted_before(appointment_patient.id) is True
+
+
+def test_has_consulted_before_is_False_if_never_consulted(simple_doctor, patient):
+    simple_doctor.appointment_set.all().delete()
+    assert simple_doctor.has_consulted_before(patient.id) is False

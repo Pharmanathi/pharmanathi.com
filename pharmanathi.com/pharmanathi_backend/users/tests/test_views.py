@@ -293,3 +293,20 @@ def test_patients_can_see_verified_mhp_appoinments(authenticated_user_api_client
     response = client.get("/api/appointments/")
     assert response.status_code == 200
     assert appointment.id in map(lambda a: a["id"], response.data)
+
+
+def test_has_consulted_before_is_False_if_never_consulted(authenticated_user_api_client, verified_doctor):
+    verified_doctor.appointment_set.all().delete()
+    res = authenticated_user_api_client.get("/api/doctors/")
+    doctor_payload = list(filter(lambda d: d.get("id") == verified_doctor.id, res.data))[0]
+    print(doctor_payload)
+    assert doctor_payload.get("has_consulted_before") is False
+
+
+def test_has_consulted_before_is_True_if_consulted_before(api_client, doctor_with_appointment_random):
+    patient = doctor_with_appointment_random.appointment_set.first().patient
+    api_client.force_authenticate(user=patient)
+    res = api_client.get("/api/doctors/")
+    doctor_payload = list(filter(lambda d: d.get("id") == doctor_with_appointment_random.id, res.data))[0]
+    print(doctor_payload)
+    assert doctor_payload.get("has_consulted_before") is True

@@ -18,6 +18,7 @@ class DoctorDetails extends StatefulWidget {
   final String experience;
   final int doctorId;
   final int appointmentType;
+  final bool has_consulted_before;
 
   const DoctorDetails({
     Key? key,
@@ -26,6 +27,7 @@ class DoctorDetails extends StatefulWidget {
     required this.appointmentType,
     required this.doctorId,
     required this.location,
+    required this.has_consulted_before,
     required this.experience,
     required this.imageUrl,
     required this.status,
@@ -337,6 +339,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           builder: (context) => Bookings(
                             appointmentType: widget.appointmentType,
                             name: widget.name,
+                            has_consulted_before: widget.has_consulted_before,
                             doctorId: widget.doctorId,
                             title: widget.title,
                             imageUrl: widget.imageUrl,
