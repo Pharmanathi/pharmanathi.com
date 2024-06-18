@@ -18,6 +18,7 @@ class Bookings extends StatefulWidget {
   final String distance;
   final String rating;
   final String location;
+  final bool has_consulted_before;
   final String experience;
   final ValueNotifier<List<String>> selectedTimeSlots;
   final DateTime selectedDay;
@@ -29,6 +30,7 @@ class Bookings extends StatefulWidget {
     required this.title,
     required this.doctorId,
     required this.appointmentType,
+    required this.has_consulted_before,
     required this.imageUrl,
     required this.status,
     required this.distance,
@@ -98,20 +100,21 @@ class _BookingsState extends State<Bookings> {
       selectedDay = widget.selectedDay;
     });
   }
-   void _showSuccessMessage() {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('your appointment has been booked successfully!'),
-      duration: Duration(seconds: 5),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.green,
-    ),
-  );
-}
- void _onSuccessNavigation( ) {
-  Navigator.pushReplacementNamed(context, '/appointment');
-}
 
+  void _showSuccessMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('your appointment has been booked successfully!'),
+        duration: Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void _onSuccessNavigation() {
+    Navigator.pushReplacementNamed(context, '/appointment');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -606,39 +609,72 @@ class _BookingsState extends State<Bookings> {
                           int doctorId = widget.doctorId;
                           int appointmentType = widget.appointmentType;
 
-                          //* Modify typeOfPayment based on the api requirements
+                          // Modify typeOfPayment based on the api requirements
                           String modifyTypeOfPayment(String typeOfPayment) {
-                            //* Modify typeOfPayment based on the condition
+                            // Modify typeOfPayment based on the condition
                             if (typeOfPayment == 'Before Visit') {
                               return 'BV';
                             } else if (typeOfPayment == 'After Visit') {
                               return 'AV';
                             }
-                            //* Return the original typeOfPayment if no modification is needed
+                            // Return the original typeOfPayment if no modification is needed
                             return typeOfPayment;
                           }
 
                           String modifiedPaymentType =
                               modifyTypeOfPayment(typeOfPayment);
 
-                          //* Update the JSON data with new inputs
-                          BookingAPIService.updateRequestBody(
-                            appointmentType: appointmentType,
-                            reasonForVisit: reasonForVisit,
-                            appointmentDay: dayOfAppiontment,
-                            doctorName: doctorName,
-                            doctorId: doctorId,
-                            timeOfAppointment: timeOfTheAppointment,
-                            typeOfPayment: modifiedPaymentType,
-                            uploadedEHRFiles: _pickedFile,
-                          );
+                          // Function to update and send booking data
+                          void bookAppointment() {
+                            // Update the JSON data with new inputs
+                            BookingAPIService.updateRequestBody(
+                              appointmentType: appointmentType,
+                              reasonForVisit: reasonForVisit,
+                              appointmentDay: dayOfAppiontment,
+                              doctorName: doctorName,
+                              doctorId: doctorId,
+                              timeOfAppointment: timeOfTheAppointment,
+                              typeOfPayment: modifiedPaymentType,
+                              uploadedEHRFiles: _pickedFile,
+                            );
 
-                          //* Now send the updated JSON data to the backend
-                          BookingAPIService.sendBookingDataToBackend(context,
-                              onSuccess: () {
-                            _showSuccessMessage();
-                           _onSuccessNavigation();
-                          });
+                            // Now send the updated JSON data to the backend
+                            BookingAPIService.sendBookingDataToBackend(context,
+                                onSuccess: () {
+                              _showSuccessMessage();
+                              _onSuccessNavigation();
+                            });
+                          }
+
+                          if (!widget.has_consulted_before) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Confirm Booking"),
+                                  content: Text(
+                                      "Do you want to proceed with booking the appointment? By proceeding, you grant this Medical Professional permission to access both your medical and personal information. However, all information will remain strictly confidential."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Cancel"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        bookAppointment();
+                                      },
+                                      child: Text("Proceed"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            bookAppointment();
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF6F7ED7),
@@ -661,7 +697,7 @@ class _BookingsState extends State<Bookings> {
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
