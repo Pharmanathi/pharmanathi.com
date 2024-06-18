@@ -6,6 +6,7 @@ from pharmanathi_backend.users.models import User as UserType
 
 User = get_user_model()
 
+
 class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
@@ -18,7 +19,6 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         exclude = ["user", "date_created"]
-
 
 
 class UserSerializer(serializers.ModelSerializer[UserType]):
@@ -52,7 +52,6 @@ class DoctorModelSerializer(serializers.ModelSerializer):
 
 class DoctorPublicListSerializer(DoctorModelSerializer):
     user = UserSerializerSimplified()
-    specialities = SimpleSpecialityModelSerializer(many=True)
     has_consulted_before = serializers.SerializerMethodField()
 
     def get_has_consulted_before(self, obj):
@@ -80,7 +79,6 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
 
 class DoctorAppointmentSerializer(DoctorPublicListSerializer):
     user = UserSerializerSimplified()
-    specialities = SimpleSpecialityModelSerializer(many=True)
 
     class Meta:
         model = Doctor
