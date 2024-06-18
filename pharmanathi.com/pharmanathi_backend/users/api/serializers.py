@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
-    specialities = serializers.SerializerMethodField()
+    specialities = SimpleSpecialityModelSerializer(many=True)
 
     class Meta:
         model = Doctor
