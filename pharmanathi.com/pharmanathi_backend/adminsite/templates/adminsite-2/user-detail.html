@@ -131,15 +131,15 @@
                     <div class="card-header">Invalidation History</div>
                     <div class="card-body">
                         <div class="timeline">
-                            {% if user.doctor_profile.invalidationreason_set %}
+                            {% if user.doctor_profile.invalidationreason_set|length > 0 %}
                                 {% for ir in user.doctor_profile.invalidationreason_set %}
                                 <div class="timeline-item">
-                                    <div class="timeline-item-marker"><!-- j, Y. G:i-->
+                                    <div class="timeline-item-marker">
                                         <p>{{ ir.date_created|time }}</p>
                                         <div class="timeline-item-marker-text"><script>document.write((new Date("{{ir.date_created}}")).toString().substring(0, 16))</script></div>
                                         <div class="timeline-item-marker-indicator"><i data-feather="{% if ir.is_resolved is True %}check{% else %}x{% endif %}"></i></div>
                                     </div>
-                                    <div class="timeline-item-content">{{ ir.text }}{{ ir.is_resolved }}</div>
+                                    <div class="timeline-item-content">{{ ir.text_unquoted|linebreaksbr }}</div>
                                     {% if ir.is_resolved is False %}
                                     <div class="row">
                                         <button class="btn btn-primary btn-xs btn-ir-resolver" data-ir-id="{{ ir.id }}">resolve</button>
@@ -149,7 +149,6 @@
                                 {% endfor %}
                             {% else %}
                                <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
-                               {{ user.doctor_profile.invalidationreason_set }}
                             {% endif %}
                         </div>
                     </div>

@@ -104,7 +104,7 @@ document.querySelector("#btn-mhp-invalidate-mhp-profile").addEventListener("clic
 document.getElementById("btn-confirm-mhp-invalidate-mhp-profile").addEventListener("click", e => {
     const form = new FormData(document.querySelector("[name='frm-invalidate-mhp']"))
     const mhpId = form.get("mhp")
-    const reason_text = form.get("reason")
+    const reason_text = encodeURIComponent(form.get("reason"))
     invalidateMHPProfile(mhpId, reason_text)
 })
 

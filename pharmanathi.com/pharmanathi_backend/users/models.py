@@ -1,4 +1,5 @@
 import datetime
+from urllib.parse import unquote_plus
 
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxLengthValidator, MinLengthValidator
@@ -168,15 +169,13 @@ class Doctor(BaseCustomModel):
         assert creator, "Provide the InvalidationReason.creator value"
         assert reason, "Cannot invalidate MP profile without providing a reason."
 
-        if self.is_verified is False:
-            return
-
         self._is_verified = False
         self.save()
+        temp_invaliadtion = InvalidationReason(text=reason)
         message = f"""
             Your MHP Profile has been invalidate for the following reasons:
             <br><br>
-            {reason}
+            {temp_invaliadtion.text_email}
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
@@ -197,3 +196,11 @@ class InvalidationReason(BaseCustomModel):
 
     def __str__(self):
         return f"({'resolved' if self.is_resolved else 'unresolved'})Invalidation Reason for {self.mhp}: {self.text[:15]}..."
+
+    @property
+    def text_unquoted(self):
+        return unquote_plus(self.text)
+
+    @property
+    def text_email(self):
+        return self.text_unquoted.replace("\n", "<br>")

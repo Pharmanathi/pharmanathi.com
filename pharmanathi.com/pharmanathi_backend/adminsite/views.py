@@ -38,7 +38,7 @@ def main(request):
 
 
 @staff_member_required()
-def unverified_mhps(request):
+def list_unverified_mhps(request):
     return render(
         request,
         "adminsite-2/mhp-unverified.html",
@@ -51,7 +51,7 @@ def unverified_mhps(request):
 
 
 @staff_member_required
-def user_detail(request, user_id):
+def get_user_detail(request, user_id):
     return render(
         request,
         "adminsite-2/user-detail.html",

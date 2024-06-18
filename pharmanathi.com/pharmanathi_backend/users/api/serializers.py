@@ -13,10 +13,12 @@ User = get_user_model()
 
 
 class InvalidationReasonSerializer(serializers.ModelSerializer):
+    text_unquoted = serializers.CharField(read_only=True)
+
     class Meta:
         model = InvalidationReason
         fields = "__all__"
-        ordering = ["-date_created", "is_resolved", "date_modified"]
+        ordering = ["-date_created", "is_resolved", "date_modified", "text_unquoted"]
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
