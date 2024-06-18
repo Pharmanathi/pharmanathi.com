@@ -14,7 +14,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         model = Doctor
         exclude = ["user", "date_created"]
 
-    def get_specialities(self, obj):
+    # remove this
         return [speciality.name for speciality in obj.specialities.all()]
 
 
