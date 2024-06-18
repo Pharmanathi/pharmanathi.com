@@ -6,6 +6,11 @@ from pharmanathi_backend.users.models import User as UserType
 
 User = get_user_model()
 
+class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Speciality
+        fields = ["id", "name"]
+
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     specialities = SimpleSpecialityModelSerializer(many=True)
@@ -14,8 +19,6 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         model = Doctor
         exclude = ["user", "date_created"]
 
-    # remove this
-        return [speciality.name for speciality in obj.specialities.all()]
 
 
 class UserSerializer(serializers.ModelSerializer[UserType]):
@@ -36,12 +39,6 @@ class UserSerializerSimplified(UserSerializer):
     class Meta:
         model = User
         fields = ["first_name", "last_name", "contact_no", "initials", "title", "id"]
-
-
-class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Speciality
-        fields = ["id", "name"]
 
 
 class DoctorModelSerializer(serializers.ModelSerializer):
