@@ -8,7 +8,7 @@ Future<List<DoctorDetail>> fetchDoctors(BuildContext context) async {
     final String apiUrl = ApiHelper.getApiBaseUrl();
     final response = await ApiHelper.httpRequestWithAuthorization(
       context,
-      '$apiUrl/doctors',
+      '$apiUrl/doctors/',
       'GET',
       '',
     );

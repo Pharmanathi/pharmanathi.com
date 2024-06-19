@@ -7,7 +7,7 @@ import factory.fuzzy
 from django.contrib.auth import get_user_model
 from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
-from pharmanathi_backend.users.models import Doctor
+from pharmanathi_backend.users.models import Doctor, InvalidationReason
 
 
 class UserFactory(DjangoModelFactory):
@@ -82,3 +82,13 @@ def FutureDateByDOWFactory(day_of_the_week, with_time: datetime.time = False) ->
         MAX_ITERATIONS -= 1
 
     return future_date
+
+
+class InvalidationReasonFactory(DjangoModelFactory):
+    mhp = SubFactory(DoctorFactory)
+    created_by = SubFactory(UserFactory)
+    is_resolved = False
+    resolved_by = SubFactory(UserFactory)
+
+    class Meta:
+        model = InvalidationReason
