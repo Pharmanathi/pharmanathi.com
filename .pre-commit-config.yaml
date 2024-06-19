@@ -6,49 +6,84 @@ repos:
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: end-of-file-fixer
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       # - id: check-json
       - id: check-toml
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: check-xml
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: check-yaml
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: debug-statements
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: check-builtin-literals
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: check-case-conflict
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: check-docstring-first
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: detect-private-key
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
 
   - repo: https://github.com/adamchainz/django-upgrade
     rev: '1.15.0'
     hooks:
       - id: django-upgrade
         args: ['--target-version', '4.2']
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:
       - id: pyupgrade
         args: [--py311-plus]
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
 
   - repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
       - id: black
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
       - id: isort
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.1.0
     hooks:
       - id: flake8
+        files: ^tests/.*$
 
   - repo: https://github.com/Riverside-Healthcare/djLint
     rev: v1.34.0
     hooks:
       - id: djlint-reformat-django
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
       - id: djlint-django
+        files: ^pharmanathi.com/.*$
+        exclude: ^pharmanathi.com/adminsite-template/.*$
+        # TODO: revisit the ignored rules below at some point
+        args: [--ignore=H006,H013,H019,H031,T002,T003]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:

@@ -13,3 +13,7 @@
 #nav-tabContent.tab-content > .active {
     display: flex!important;
 }
+
+.toast-container {
+    z-index: 99999;
+}
