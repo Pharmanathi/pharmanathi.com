@@ -13,6 +13,7 @@ from pharmanathi_backend.users.models import User
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
     FutureDateByDOWFactory,
+    InvalidationReasonFactory,
     UserFactory,
 )
 from rest_framework.test import APIClient
@@ -165,3 +166,9 @@ def social_patient(db, patient):
 def social_simple_doctor(db, simple_doctor):
     social_account, _ = SocialAccount.objects.get_or_create(user=simple_doctor.user)
     return social_account
+
+
+@pytest.fixture
+def unresolved_invalidation_reason(unverified_mhp_client):
+    unverified_mhp = unverified_mhp_client.user.doctor_profile
+    return InvalidationReasonFactory(mhp=unverified_mhp)
