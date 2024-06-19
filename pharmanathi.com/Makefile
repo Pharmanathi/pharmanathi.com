@@ -33,7 +33,6 @@ migrations:
 migrate:
 	@docker compose run --rm django python manage.py migrate
 
-
 pre-commit:
 	@docker compose run --rm django pre-commit run --show-diff-on-failure --color=always --all-files
 
