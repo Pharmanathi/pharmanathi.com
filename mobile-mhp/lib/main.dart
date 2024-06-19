@@ -31,20 +31,24 @@ Future<void> main() async {
   // Load environment variables
   await dotenv.load();
 
-  // Set preferred orientation before initializing Firebase
+  //* Set preferred orientation before initializing Firebase
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // Initialize Firebase
+  //* Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  //* Initialize Sentry only in release mode
-  if (kReleaseMode) {
+  //* Sentry initialization parameters
+  String? sentryOn = dotenv.get("SENTRY_ON", fallback: kReleaseMode.toString());
+  bool isSentryEnabled =
+      sentryOn == 'true' || (sentryOn == null && kReleaseMode);
+
+  if (isSentryEnabled) {
     await SentryFlutter.init(
       (options) {
         options.dsn = dotenv.env['SENTRY_DSN']!;
-        options.environment = dotenv.env['ENVIRONMENT'];
+        options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
       },
       appRunner: () => runApp(
         MultiProvider(
@@ -57,7 +61,6 @@ Future<void> main() async {
       ),
     );
   } else {
-    //* Run the app without Sentry in non-release modes
     runApp(
       MultiProvider(
         providers: [
