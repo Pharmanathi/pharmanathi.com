@@ -135,6 +135,7 @@
 				A93C430085F49F5EE232542B /* Pods */,
 				1E12AC7812F84DA101054C87 /* GoogleService-Info.plist */,
 				49FE226AA9FF4091FA0A4B0D /* Frameworks */,
+				E0F18EB12C22E7C900EBFFD1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -173,6 +174,15 @@
 				988DF615F8EB5494E5E0128A /* Pods-RunnerTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E0F18EB12C22E7C900EBFFD1 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E9A2C6DCA42D421FC8002A80 /* Pods_Runner.framework */,
+				CCC0F2EC7AC7C972B821616E /* Pods_RunnerTests.framework */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

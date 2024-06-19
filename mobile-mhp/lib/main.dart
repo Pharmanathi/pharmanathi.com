@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,6 +11,7 @@ import 'package:pharma_nathi/screens/components/forms/form4.dart';
 import 'package:pharma_nathi/screens/pages/onboard_page.dart';
 import 'package:pharma_nathi/screens/pages/signIn.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'helpers/http_helpers.dart';
 import 'screens/pages/appointments.dart';
 import 'screens/pages/earnings.dart';
@@ -32,21 +34,40 @@ Future<void> main() async {
   // Set preferred orientation before initializing Firebase
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ImageDataProvider()),
-        ChangeNotifierProvider(
-          create: (_) => UserProvider(),
+  //* Initialize Sentry only in release mode
+  if (kReleaseMode) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = dotenv.env['SENTRY_DSN']!;
+        options.environment = dotenv.env['ENVIRONMENT'];
+      },
+      appRunner: () => runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => ImageDataProvider()),
+            ChangeNotifierProvider(create: (_) => UserProvider()),
+          ],
+          child: const MyApp(),
         ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+      ),
+    );
+  } else {
+    //* Run the app without Sentry in non-release modes
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ImageDataProvider()),
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
