@@ -1,98 +1,97 @@
 {% extends "adminsite-2/base.html" %}
+
 {% load static %}
 
-{% block title %} $$#%^!%#^%&!#^!#*&#!!# {% endblock %}
-
+{% block title %}
+  $$#%^!%#^%&!#^!#*&#!!#
+{% endblock %}
 {% block main_content %}
-
-<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+  <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
     <div class="container-xl px-4">
-        <div class="page-header-content pt-4">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-auto mt-4">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon">
-                            <i class="fas fa-fw fa-user-md"></i>
-                        </div>
-                        Unverfied Medical Health Professionals
-                    </h1>
-                </div>
-            </div>
+      <div class="page-header-content pt-4">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-auto mt-4">
+            <h1 class="page-header-title">
+              <div class="page-header-icon">
+                <i class="fas fa-fw fa-user-md"></i>
+              </div>
+              Unverfied Medical Health Professionals
+            </h1>
+          </div>
         </div>
+      </div>
     </div>
-</header>
-<!-- Main page content-->
-<div class="container-xl px-4 mt-n10">
+  </header>
+  <!-- Main page content-->
+  <div class="container-xl px-4 mt-n10">
     <div class="card mb-4">
-        <div class="card-header">Extended DataTables</div>
-        <div class="card-body">
-            <table id="datatablesSimple" class="display">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Speciality</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Speciality</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    {% for mhp in unverified_mhps %}
-                    <tr class="unverified-mhp-table-row">
-                        <td>{{ mhp.user__email }}</td>
-                        <td>{{ mhp.user__first_name }}</td>
-                        <td>{{ mhp.user__last_name }}</td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark me-2">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <button class="btn btn-datatable btn-icon btn-transparent-dark btn-action-verify-mhp"
-                                data-user-id="{{ mhp.user__id }}">
-                                <i class="fa-solid fa-user-check"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+      <div class="card-header">Extended DataTables</div>
+      <div class="card-body">
+        <table id="datatablesSimple" class="display">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Speciality</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Speciality</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for mhp in unverified_mhps %}
+              <tr class="unverified-mhp-table-row">
+                <td>{{ mhp.user__email }}</td>
+                <td>{{ mhp.user__first_name }}</td>
+                <td>{{ mhp.user__last_name }}</td>
+                <td></td>
+                <td>
+                  <button class="btn btn-datatable btn-icon btn-transparent-dark me-2">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                  <button class="btn btn-datatable btn-icon btn-transparent-dark btn-action-verify-mhp"
+                          data-user-id="{{ mhp.user__id }}">
+                    <i class="fa-solid fa-user-check"></i>
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
-
 {% block template_page_specific_js_libs %}
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+          crossorigin="anonymous"></script>
 {% endblock %}
-
 {% block page_specific_js %}
-<script>
+  <script>
     window.addEventListener("DOMContentLoaded", (event) => {
-        // Simple-DataTables
-        // https://github.com/fiduswriter/Simple-DataTables/wiki
-        // https://fiduswriter.github.io/simple-datatables/documentation/
+      // Simple-DataTables
+      // https://github.com/fiduswriter/Simple-DataTables/wiki
+      // https://fiduswriter.github.io/simple-datatables/documentation/
 
-        const datatablesSimple = document.getElementById("datatablesSimple");
-        if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
-        }
+      const datatablesSimple = document.getElementById("datatablesSimple");
+      if (datatablesSimple) {
+        new simpleDatatables.DataTable(datatablesSimple);
+      }
     });
 
 
     document.querySelector("#btn-logout").addEventListener("click", logout)
     $("body").on("click", ".btn-action-verify-mhp", e => {
-        const UserId = e.currentTarget.dataset.userId
-        viewUser(UserId)
+      const UserId = e.currentTarget.dataset.userId
+      viewUser(UserId)
     })
-</script>
+  </script>
 {% endblock %}

@@ -1,217 +1,251 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>{% block title %} $$#%^!%#^%&!#^!#*&#!!# {% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet" />
+    <title>
+      {% block title %}
+        $$#%^!%#^%&!#^!#*&#!!#
+      {% endblock %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"
+          rel="stylesheet" />
     <link href="{% static 'adminsite-2/css/styles.css' %}" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="{% static 'adminsite-2/assets/img/favicon.png' %}" />
-    <script data-search-pseudo-elements="" defer=""
-        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="icon"
+          type="image/x-icon"
+          href="{% static 'adminsite-2/assets/img/favicon.png' %}" />
+    <script data-search-pseudo-elements=""
+            defer=""
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"
-        crossorigin="anonymous"></script>
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-    {% block custom_css_rules %}
-    {% endblock %}
-</head>
-
-<body class="nav-fixed">
+            crossorigin="anonymous"></script>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" />
+    {% block custom_css_rules %}{% endblock %}
+  </head>
+  <body class="nav-fixed">
     <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
-        id="sidenavAccordion">
-        <!-- Sidenav Toggle Button-->
-        <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle">
-            <i data-feather="menu"></i>
-        </button>
-        <!-- Navbar Brand-->
-        <!-- * * Tip * * You can use text or an image for your navbar brand.-->
-        <!-- * * * * * * When using an image, we recommend the SVG format.-->
-        <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-        <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="{% url 'customadminsite-home' %}">
-            <img style="height: 32px;" src="{% static 'images/pharmanathi-stack-logoblue.png' %}"
-                alt="Pharmanathi Letter Logo">
-        </a>
-        <!-- Navbar Search Input-->
-        <!-- * * Note: * * Visible only on and above the lg breakpoint-->
-        <form class="form-inline me-auto d-none d-lg-block me-3">
-            <div class="input-group input-group-joined input-group-solid">
-                <input class="form-control pe-0" type="search" placeholder="Search" aria-label="Search" />
-                <div class="input-group-text"><i data-feather="search"></i></div>
-            </div>
-        </form>
-        <!-- Navbar Items-->
-        <ul class="navbar-nav align-items-center ms-auto">
-            <!-- User Dropdown-->
-            <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
-                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
-                    href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false"><img class="img-fluid"
-                        src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" /></a>
-                <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
-                    aria-labelledby="navbarDropdownUserImage">
-                    <h6 class="dropdown-header d-flex align-items-center">
-                        <img class="dropdown-user-img"
-                            src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" />
-                        <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name">{{ request.user.first_name }} {{ request.user.last_name }}</div>
-                            <div class="dropdown-user-details-email">{{ request.user.email }}</div>
-                        </div>
-                    </h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#!">
-                        <div class="dropdown-item-icon">
-                            <i data-feather="settings"></i>
-                        </div>
-                        Account
-                    </a>
-                    <a id="btn-logout" class="dropdown-item" href="javascript:void(0);">
-                        <div class="dropdown-item-icon">
-                            <i data-feather="log-out"></i>
-                        </div>
-                        Logout
-                    </a>
-                </div>
-            </li>
-        </ul>
+         id="sidenavAccordion">
+      <!-- Sidenav Toggle Button-->
+      <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0"
+              id="sidebarToggle">
+        <i data-feather="menu"></i>
+      </button>
+      <!-- Navbar Brand-->
+      <!-- * * Tip * * You can use text or an image for your navbar brand.-->
+      <!-- * * * * * * When using an image, we recommend the SVG format.-->
+      <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
+      <a class="navbar-brand pe-3 ps-4 ps-lg-2"
+         href="{% url 'customadminsite-home' %}">
+        <img style="height: 32px"
+             src="{% static 'images/pharmanathi-stack-logoblue.png' %}"
+             alt="Pharmanathi Letter Logo" />
+      </a>
+      <!-- Navbar Search Input-->
+      <!-- * * Note: * * Visible only on and above the lg breakpoint-->
+      <form class="form-inline me-auto d-none d-lg-block me-3">
+        <div class="input-group input-group-joined input-group-solid">
+          <input class="form-control pe-0"
+                 type="search"
+                 placeholder="Search"
+                 aria-label="Search" />
+          <div class="input-group-text">
+            <i data-feather="search"></i>
+          </div>
+        </div>
+      </form>
+      <!-- Navbar Items-->
+      <ul class="navbar-nav align-items-center ms-auto">
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+          <a class="btn btn-icon btn-transparent-dark dropdown-toggle"
+             id="navbarDropdownUserImage"
+             href="javascript:void(0);"
+             role="button"
+             data-bs-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <img class="img-fluid"
+                 src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+               aria-labelledby="navbarDropdownUserImage">
+            <h6 class="dropdown-header d-flex align-items-center">
+              <img class="dropdown-user-img"
+                   src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" />
+              <div class="dropdown-user-details">
+                <div class="dropdown-user-details-name">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+                <div class="dropdown-user-details-email">{{ request.user.email }}</div>
+              </div>
+            </h6>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#!">
+              <div class="dropdown-item-icon">
+                <i data-feather="settings"></i>
+              </div>
+              Account
+            </a>
+            <a id="btn-logout" class="dropdown-item" href="javascript:void(0);">
+              <div class="dropdown-item-icon">
+                <i data-feather="log-out"></i>
+              </div>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
     </nav>
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sidenav shadow-right sidenav-light">
-                <div class="sidenav-menu">
-                    <div class="nav accordion" id="accordionSidenav">
-                        <!-- Sidenav Menu Heading (Account)-->
-                        <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                        <div class="sidenav-menu-heading d-sm-none">Account</div>
-                        <!-- Sidenav Link (Alerts)-->
-                        <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                        <a class="nav-link d-sm-none" href="#!">
-                            <div class="nav-link-icon"><i data-feather="bell"></i></div>
-                            Alerts
-                            <span class="badge bg-warning-soft text-warning ms-auto">4 New!</span>
-                        </a>
-                        <!-- Sidenav Link (Messages)-->
-                        <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                        <a class="nav-link d-sm-none" href="#!">
-                            <div class="nav-link-icon"><i data-feather="mail"></i></div>
-                            Messages
-                            <span class="badge bg-success-soft text-success ms-auto">2 New!</span>
-                        </a>
-                        <!-- Sidenav Menu Heading (Core)-->
-                        <div class="sidenav-menu-heading">Core</div>
-                        <!-- Sidenav Accordion (Dashboard)-->
-                        <a class="nav-link collapsed" href="{% url 'customadminsite-home' %}">
-                            <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                            Dashboard
-                        </a>
-                        <!-- Sidenav Heading (Custom)-->
-                        <div class="sidenav-menu-heading">Administration</div>
-
-                        <!-- Sidenav Accordion (MHPs)-->
-                        <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse"
-                            data-bs-target="#collapseMHPs" aria-expanded="false" aria-controls="collapseMHPs">
-                            <div class="nav-link-icon"><i data-feather="briefcase"></i></div>
-                            MHPs
-                            <div class="sidenav-collapse-arrow">
-                                <i class="fas fa-angle-down"></i>
-                            </div>
-                        </a>
-                        <div class="collapse" id="collapseMHPs" data-bs-parent="#accordionSidenav">
-                            <nav class="sidenav-menu-nested nav">
-                                <a class="nav-link" href="#!">All</a>
-                                <a class="nav-link" href="{% url 'customadminsite-mhps-unverified' %}">Unverified</a>
-                            </nav>
-                        </div>
-                    </div>
-                    <!-- Sidenav Footer-->
-                    <div class="sidenav-footer">
-                        <div class="sidenav-footer-content">
-                            <div class="sidenav-footer-subtitle">Logged in as:</div>
-                            <div class="sidenav-footer-title">{{ request.user.first_name }} {{ request.user.last_name }}
-                                {{ request.user.email }}</div>
-                        </div>
-                    </div>
-            </nav>
+      <div id="layoutSidenav_nav">
+        <nav class="sidenav shadow-right sidenav-light">
+          <div class="sidenav-menu">
+            <div class="nav accordion" id="accordionSidenav">
+              <!-- Sidenav Menu Heading (Account)-->
+              <!-- * * Note: * * Visible only on and above the sm breakpoint-->
+              <div class="sidenav-menu-heading d-sm-none">Account</div>
+              <!-- Sidenav Link (Alerts)-->
+              <!-- * * Note: * * Visible only on and above the sm breakpoint-->
+              <a class="nav-link d-sm-none" href="#!">
+                <div class="nav-link-icon">
+                  <i data-feather="bell"></i>
+                </div>
+                Alerts
+                <span class="badge bg-warning-soft text-warning ms-auto">4 New!</span>
+              </a>
+              <!-- Sidenav Link (Messages)-->
+              <!-- * * Note: * * Visible only on and above the sm breakpoint-->
+              <a class="nav-link d-sm-none" href="#!">
+                <div class="nav-link-icon">
+                  <i data-feather="mail"></i>
+                </div>
+                Messages
+                <span class="badge bg-success-soft text-success ms-auto">2 New!</span>
+              </a>
+              <!-- Sidenav Menu Heading (Core)-->
+              <div class="sidenav-menu-heading">Core</div>
+              <!-- Sidenav Accordion (Dashboard)-->
+              <a class="nav-link collapsed" href="{% url 'customadminsite-home' %}">
+                <div class="nav-link-icon">
+                  <i data-feather="activity"></i>
+                </div>
+                Dashboard
+              </a>
+              <!-- Sidenav Heading (Custom)-->
+              <div class="sidenav-menu-heading">Administration</div>
+              <!-- Sidenav Accordion (MHPs)-->
+              <a class="nav-link collapsed"
+                 href="javascript:void(0);"
+                 data-bs-toggle="collapse"
+                 data-bs-target="#collapseMHPs"
+                 aria-expanded="false"
+                 aria-controls="collapseMHPs">
+                <div class="nav-link-icon">
+                  <i data-feather="briefcase"></i>
+                </div>
+                MHPs
+                <div class="sidenav-collapse-arrow">
+                  <i class="fas fa-angle-down"></i>
+                </div>
+              </a>
+              <div class="collapse" id="collapseMHPs" data-bs-parent="#accordionSidenav">
+                <nav class="sidenav-menu-nested nav">
+                  <a class="nav-link" href="#!">All</a>
+                  <a class="nav-link" href="{% url 'customadminsite-mhps-unverified' %}">Unverified</a>
+                </nav>
+              </div>
+            </div>
+            <!-- Sidenav Footer-->
+            <div class="sidenav-footer">
+              <div class="sidenav-footer-content">
+                <div class="sidenav-footer-subtitle">Logged in as:</div>
+                <div class="sidenav-footer-title">
+                  {{ request.user.first_name }} {{ request.user.last_name }}
+                  {{ request.user.email }}
+                </div>
+              </div>
+            </div>
+          </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 99999;"></div>
-                <!-- Main page content-->
-                {% block main_content %}{% endblock %}
-            </main>
+          <main>
+            <div class="toast-container position-fixed top-0 end-0 p-3"
+                 style="z-index: 99999"></div>
+            <!-- Main page content-->
+            {% block main_content %}{% endblock %}
+          </main>
         </div>
-    </div>
-
-    <script data-cfasync="false"
-        src="{% static 'adminsite-2/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="{% static 'adminsite-2/js/scripts.js' %}"></script>
-
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    {% block template_page_specific_js_libs %}
-    <!-- JavaScript libraries from the template that are specific to the current page -->
-    {% endblock %}
-
-    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
-    <script src="{% static 'adminsite-2/js/litepicker.js' %}"></script>
-    <script src="https://assets.startbootstrap.com/js/sb-customizer.js"></script>
-    <sb-customizer project="sb-admin-pro"></sb-customizer>
-    <script src="{% static 'adminsite-2/js/custom.js' %}"></script>
-    <script>
+      </div>
+      <script data-cfasync="false"
+              src="{% static 'adminsite-2/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+              crossorigin="anonymous"></script>
+      <script src="{% static 'adminsite-2/js/scripts.js' %}"></script>
+      <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+      {% block template_page_specific_js_libs %}
+        <!-- JavaScript libraries from the template that are specific to the current page -->
+      {% endblock %}
+      <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"
+              crossorigin="anonymous"></script>
+      <script src="{% static 'adminsite-2/js/litepicker.js' %}"></script>
+      <script src="https://assets.startbootstrap.com/js/sb-customizer.js"></script>
+      <sb-customizer project="sb-admin-pro"></sb-customizer>
+      <script src="{% static 'adminsite-2/js/custom.js' %}"></script>
+      <script>
         // Set CSRF Token as global value
         GLOBAL_CONF.CSRF_TOKEN = "{{ csrf_token }}"
 
         // Keep track of the navigation link that was clicked so we
         // activate on the next page. Inspired from https://stackoverflow.com/a/5728626/5253580
         function getDomPath(el) {
-            var stack = [];
-            while (el.parentNode != null) {
-                var sibCount = 0;
-                var sibIndex = 0;
-                for (var i = 0; i < el.parentNode.childNodes.length; i++) {
-                    var sib = el.parentNode.childNodes[i];
-                    if (sib.nodeName == el.nodeName) {
-                        if (sib === el) {
-                            sibIndex = sibCount;
-                        }
-                        sibCount++;
-                    }
+          var stack = [];
+          while (el.parentNode != null) {
+            var sibCount = 0;
+            var sibIndex = 0;
+            for (var i = 0; i < el.parentNode.childNodes.length; i++) {
+              var sib = el.parentNode.childNodes[i];
+              if (sib.nodeName == el.nodeName) {
+                if (sib === el) {
+                  sibIndex = sibCount;
                 }
-                if (el.hasAttribute('id') && el.id != '') {
-                    stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
-                } else if (sibCount > 1) {
-                    stack.unshift(el.nodeName.toLowerCase() + ':eq(' + sibIndex + ')');
-                } else {
-                    stack.unshift(el.nodeName.toLowerCase());
-                }
-                el = el.parentNode;
+                sibCount++;
+              }
             }
-            return stack.slice(1); // removes the html element
+            if (el.hasAttribute('id') && el.id != '') {
+              stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
+            } else if (sibCount > 1) {
+              stack.unshift(el.nodeName.toLowerCase() + ':eq(' + sibIndex + ')');
+            } else {
+              stack.unshift(el.nodeName.toLowerCase());
+            }
+            el = el.parentNode;
+          }
+          return stack.slice(1); // removes the html element
         }
         document.addEventListener("click", e => {
-            if (e.target.tagName == "A" && Array.from(e.target.classList).indexOf("do-not-track-activation") == -1) {
-                const ElementPath = getDomPath(e.target)
-                localStorage.setItem("clickedALinkSelector", ElementPath.join(" "));
-            }
+          if (e.target.tagName == "A" && Array.from(e.target.classList).indexOf("do-not-track-activation") == -1) {
+            const ElementPath = getDomPath(e.target)
+            localStorage.setItem("clickedALinkSelector", ElementPath.join(" "));
+          }
         })
         const PreviouslyClickedALinkSelector = localStorage.getItem("clickedALinkSelector")
         if (PreviouslyClickedALinkSelector) {
-            localStorage.removeItem("clickedALinkSelector")
-            $(PreviouslyClickedALinkSelector).addClass("active")
-            try {
-                const Element = $(PreviouslyClickedALinkSelector).parent().parent()
-                Element.addClass("show")
-                Element.prev().removeClass("collapsed")
-            } catch (e) { }
+          localStorage.removeItem("clickedALinkSelector")
+          $(PreviouslyClickedALinkSelector).addClass("active")
+          try {
+            const Element = $(PreviouslyClickedALinkSelector).parent().parent()
+            Element.addClass("show")
+            Element.prev().removeClass("collapsed")
+          } catch (e) {}
         }
-    </script>
-    {% block page_specific_js %}
-    <script></script>{% endblock %}
-</body>
-
-</html>
+      </script>
+      {% block page_specific_js %}
+        <script></script>
+      {% endblock %}
+    </body>
+  </html>

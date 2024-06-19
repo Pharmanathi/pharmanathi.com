@@ -3,6 +3,8 @@ import datetime
 import pytest
 from allauth.socialaccount.models import EmailAddress, SocialAccount, SocialApp
 from django.test import Client
+from rest_framework.test import APIClient
+
 from pharmanathi_backend.appointments.tests.factories import (
     AppointmentFactory,
     AppointmentTypeFactory,
@@ -16,7 +18,6 @@ from pharmanathi_backend.users.tests.factories import (
     InvalidationReasonFactory,
     UserFactory,
 )
-from rest_framework.test import APIClient
 
 
 @pytest.fixture(autouse=True)

@@ -1,13 +1,8 @@
 from django.contrib.auth import get_user_model
-from pharmanathi_backend.users.models import (
-    Address,
-    Doctor,
-    InvalidationReason,
-    PracticeLocation,
-    Speciality,
-)
-from pharmanathi_backend.users.models import User as UserType
 from rest_framework import serializers
+
+from pharmanathi_backend.users.models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality
+from pharmanathi_backend.users.models import User as UserType
 
 User = get_user_model()
 
@@ -77,9 +72,7 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
 
     def to_representation(self, instance):
         from pharmanathi_backend.appointments.models import AppointmentType
-        from pharmanathi_backend.appointments.serializers import (
-            AppointmentTypeSerializer,
-        )
+        from pharmanathi_backend.appointments.serializers import AppointmentTypeSerializer
 
         repr = super().to_representation(instance)
         return {

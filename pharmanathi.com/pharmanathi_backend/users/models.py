@@ -6,6 +6,7 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import mail_user_task, set_rejection_reason_task
 from pharmanathi_backend.utils.helper_models import BaseCustomModel

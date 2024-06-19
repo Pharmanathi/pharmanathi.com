@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 import pytest
+
 from pharmanathi_backend.users.api.serializers import UserSerializer
 
 pytestmark = pytest.mark.django_db
