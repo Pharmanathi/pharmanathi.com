@@ -1,6 +1,7 @@
-from config import celery_app
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
+
+from config import celery_app
 
 
 @celery_app.task()

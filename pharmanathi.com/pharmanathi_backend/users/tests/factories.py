@@ -7,6 +7,7 @@ import factory.fuzzy
 from django.contrib.auth import get_user_model
 from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
+
 from pharmanathi_backend.users.models import Doctor, InvalidationReason
 
 

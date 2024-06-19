@@ -1,234 +1,257 @@
 {% extends "adminsite-2/base.html" %}
+
 {% load static %}
 
-{% block title %} Pharmanathi Admin: User Details {% endblock %}
+{% block title %}Pharmanathi Admin: User Details{% endblock %}
 {% block custom_css_rules %}
-<style>
+  <style>
     .timeline-item-marker-text {
-        width: 8rem!important;
+      width: 8rem !important;
     }
-</style>
+  </style>
 {% endblock %}
 {% block main_content %}
-<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+  <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-xl px-4">
-        <div class="page-header-content">
-            <div class="row align-items-center justify-content-between pt-3">
-                <div class="col-auto mb-3">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon">
-                            <i data-feather="user"></i>
-                        </div>
-                        User {{ user.first_name }} {{ user.last_name }}: Details
-                    </h1>
-                </div>
-            </div>
+      <div class="page-header-content">
+        <div class="row align-items-center justify-content-between pt-3">
+          <div class="col-auto mb-3">
+            <h1 class="page-header-title">
+              <div class="page-header-icon">
+                <i data-feather="user"></i>
+              </div>
+              User {{ user.first_name }} {{ user.last_name }}: Details
+            </h1>
+          </div>
         </div>
+      </div>
     </div>
-</header>
-<!-- Main page content-->
-<div class="container-xl px-4 mt-4">
+  </header>
+  <!-- Main page content-->
+  <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link do-not-track-activation active ms-0" data-bs-toggle="tab" data-bs-target="#nav-user-profile"
-            type="button" href="javascript:void(0);">User Profile</a>
-        <a class="nav-link do-not-track-activation" data-bs-toggle="tab" data-bs-target="#nav-user-mhp-profile"
-            type="button" href="javascript:void(0);">MHP Profile</a>
+      <a class="nav-link do-not-track-activation active ms-0"
+         data-bs-toggle="tab"
+         data-bs-target="#nav-user-profile"
+         type="button"
+         href="javascript:void(0);">User Profile</a>
+      <a class="nav-link do-not-track-activation"
+         data-bs-toggle="tab"
+         data-bs-target="#nav-user-mhp-profile"
+         type="button"
+         href="javascript:void(0);">MHP Profile</a>
     </nav>
     <hr class="mt-0 mb-4" />
     <div class="tab-content" id="nav-tabContent">
-        <div class="row tab-pane fade show active" id="nav-user-profile">
-            <div class="col-xl-4">
-                <!-- Profile picture card-->
-                <div class="card mb-4 mb-xl-0">
-                    <div class="card-header">Profile Picture</div>
-                    <div class="card-body text-center">
-                        <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2"
-                            src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" alt="" />
-                        <!-- Profile picture help block-->
-                        <div class="small font-italic text-muted mb-4">
-                            JPG or PNG no larger than 5 MB
-                        </div>
-                    </div>
-                </div>
+      <div class="row tab-pane fade show active" id="nav-user-profile">
+        <div class="col-xl-4">
+          <!-- Profile picture card-->
+          <div class="card mb-4 mb-xl-0">
+            <div class="card-header">Profile Picture</div>
+            <div class="card-body text-center">
+              <!-- Profile picture image-->
+              <img class="img-account-profile rounded-circle mb-2"
+                   src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}"
+                   alt="" />
+              <!-- Profile picture help block-->
+              <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
             </div>
-            <div class="col-xl-8">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">Account Details</div>
-                    <div class="card-body">
-                        <form>
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputFirstName">First name</label>
-                                    <input class="form-control" id="inputFirstName" type="text"
-                                        value="{{ user.first_name }}" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLastName">Last name</label>
-                                    <input class="form-control" id="inputLastName" type="text"
-                                        value="{{ user.last_name }}" />
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                <input class="form-control" id="inputEmailAddress" type="email"
-                                    value="{{ user.email }}" />
-                            </div>
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputPhone">Phone number</label>
-                                    <input class="form-control" id="inputPhone" type="tel"
-                                        value="{{ user.phone_number }}" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-
-        <div class="row tab-pane fade" id="nav-user-mhp-profile">
-            <div class="col-xl-4">
-                <!-- Profile picture card-->
-                <div class="card mb-4 mb-xl-0">
-                    <div class="card-header">Profile Picture</div>
-                    <div class="card-body text-center">
-                        <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2"
-                            src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}" alt="" />
-                        <!-- Profile picture help block-->
-                        <div class="small font-italic text-muted mb-4">
-                            JPG or PNG no larger than 5 MB
-                        </div>
-                    </div>
+        <div class="col-xl-8">
+          <!-- Account details card-->
+          <div class="card mb-4">
+            <div class="card-header">Account Details</div>
+            <div class="card-body">
+              <form>
+                <div class="row gx-3 mb-3">
+                  <div class="col-md-6">
+                    <label class="small mb-1" for="inputFirstName">First name</label>
+                    <input class="form-control"
+                           id="inputFirstName"
+                           type="text"
+                           value="{{ user.first_name }}" />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="small mb-1" for="inputLastName">Last name</label>
+                    <input class="form-control"
+                           id="inputLastName"
+                           type="text"
+                           value="{{ user.last_name }}" />
+                  </div>
                 </div>
-            </div>
-            <div class="col-xl-8">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">Practice Details</div>
-                    <div class="card-body">
-                        <form>
-                            <div class="row gx-3 mb-3">
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputFirstName">HSPCA No.</label>
-                                    <input class="form-control" id="inputFirstName" type="text"
-                                        value="{{ user.doctor_profile.hpcsa_no }}" />
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLastName">Medical No.</label>
-                                    <input class="form-control" id="inputLastName" type="text"
-                                        value="{{ user.doctor_profile.hpcsa_no }}" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="mb-3">
+                  <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                  <input class="form-control"
+                         id="inputEmailAddress"
+                         type="email"
+                         value="{{ user.email }}" />
                 </div>
-                <div class="card mb-4">
-                    <div class="card-header">Invalidation History</div>
-                    <div class="card-body">
-                        <div class="timeline">
-                            {% if user.doctor_profile.invalidationreason_set|length > 0 %}
-                                {% for ir in user.doctor_profile.invalidationreason_set %}
-                                <div class="timeline-item">
-                                    <div class="timeline-item-marker">
-                                        <p>{{ ir.date_created|time }}</p>
-                                        <div class="timeline-item-marker-text"><script>document.write((new Date("{{ir.date_created}}")).toString().substring(0, 16))</script></div>
-                                        <div class="timeline-item-marker-indicator"><i data-feather="{% if ir.is_resolved is True %}check{% else %}x{% endif %}"></i></div>
-                                    </div>
-                                    <div class="timeline-item-content">{{ ir.text_unquoted|linebreaksbr }}</div>
-                                    {% if ir.is_resolved is False %}
-                                    <div class="row">
-                                        <button class="btn btn-primary btn-xs btn-ir-resolver" data-ir-id="{{ ir.id }}">resolve</button>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                                {% endfor %}
-                            {% else %}
-                               <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
-                            {% endif %}
-                        </div>
-                    </div>
+                <div class="row gx-3 mb-3">
+                  <div class="col-md-6">
+                    <label class="small mb-1" for="inputPhone">Phone number</label>
+                    <input class="form-control"
+                           id="inputPhone"
+                           type="tel"
+                           value="{{ user.phone_number }}" />
+                  </div>
                 </div>
+              </form>
             </div>
-            <div class="col-xl-8">
-            </div>
-            <div class="col-xl-12 mt-4">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">MHP Profile Validation</div>
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <button class="btn btn-success flex-fill me-2" id="btn-mhp-validate-mhp-profile"
-                                data-mhp-id="{{ user.doctor_profile.id }}">
-                                <i class="fa-solid fa-user-check me-2"></i>
-                                Validate Profile</button>
-                            <button class="btn btn-danger flex-fill" id="btn-mhp-invalidate-mhp-profile"
-                                data-mhp-id="{{ user.doctor_profile.id }}">
-                                <i class="fa-solid fa-user-large-slash me-2"></i>
-                                Invalidate Profile</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="row tab-pane fade" id="nav-user-mhp-profile">
+        <div class="col-xl-4">
+          <!-- Profile picture card-->
+          <div class="card mb-4 mb-xl-0">
+            <div class="card-header">Profile Picture</div>
+            <div class="card-body text-center">
+              <!-- Profile picture image-->
+              <img class="img-account-profile rounded-circle mb-2"
+                   src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}"
+                   alt="" />
+              <!-- Profile picture help block-->
+              <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8">
+          <!-- Account details card-->
+          <div class="card mb-4">
+            <div class="card-header">Practice Details</div>
+            <div class="card-body">
+              <form>
+                <div class="row gx-3 mb-3">
+                  <div class="col-md-6">
+                    <label class="small mb-1" for="inputFirstName">HSPCA No.</label>
+                    <input class="form-control"
+                           id="inputFirstName"
+                           type="text"
+                           value="{{ user.doctor_profile.hpcsa_no }}" />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="small mb-1" for="inputLastName">Medical No.</label>
+                    <input class="form-control"
+                           id="inputLastName"
+                           type="text"
+                           value="{{ user.doctor_profile.hpcsa_no }}" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">Invalidation History</div>
+            <div class="card-body">
+              <div class="timeline">
+                {% if user.doctor_profile.invalidationreason_set|length > 0 %}
+                  {% for ir in user.doctor_profile.invalidationreason_set %}
+                    <div class="timeline-item">
+                      <div class="timeline-item-marker">
+                        <p>{{ ir.date_created|time }}</p>
+                        <div class="timeline-item-marker-text">
+                          <script>
+                            document.write((new Date("{{ir.date_created}}")).toString().substring(0, 16))
+                          </script>
+                        </div>
+                        <div class="timeline-item-marker-indicator">
+                          <i data-feather="{% if ir.is_resolved is True %}check{% else %}x{% endif %}"></i>
+                        </div>
+                      </div>
+                      <div class="timeline-item-content">{{ ir.text_unquoted|linebreaksbr }}</div>
+                      {% if ir.is_resolved is False %}
+                        <div class="row">
+                          <button class="btn btn-primary btn-xs btn-ir-resolver"
+                                  data-ir-id="{{ ir.id }}">resolve</button>
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8"></div>
+        <div class="col-xl-12 mt-4">
+          <!-- Account details card-->
+          <div class="card mb-4">
+            <div class="card-header">MHP Profile Validation</div>
+            <div class="card-body">
+              <div class="d-flex">
+                <button class="btn btn-success flex-fill me-2"
+                        id="btn-mhp-validate-mhp-profile"
+                        data-mhp-id="{{ user.doctor_profile.id }}">
+                  <i class="fa-solid fa-user-check me-2"></i>
+                  Validate Profile
+                </button>
+                <button class="btn btn-danger flex-fill"
+                        id="btn-mhp-invalidate-mhp-profile"
+                        data-mhp-id="{{ user.doctor_profile.id }}">
+                  <i class="fa-solid fa-user-large-slash me-2"></i>
+                  Invalidate Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-
-{% if user.doctor_profile %}
-<!-- Profile Invalidation Reason Modal -->
-<div class="modal fade" id="modal-profile-invaliadtion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  </div>
+  {% if user.doctor_profile %}
+    <!-- Profile Invalidation Reason Modal -->
+    <div class="modal fade"
+         id="modal-profile-invaliadtion"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                <div class="card card-icon">
-                    <div class="row no-gutters">
-                        <div class="col-auto card-icon-aside bg-primary">
-                            <i data-feather="slash"></i>
-                        </div>
-                        <div class="col">
-                            <div class="card-body py-5">
-                                <h5 class="card-title">Profile Invalidation Reason</h5>
-                                <p class="card-text">
-                                    Please specify the reason(s) for invaliadting this profile.
-                                    Note that invalidating a profile without a reason is not possible.
-                                    The provide reason(s) will be shared with the Medical Profesional.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+          <div class="modal-body">
+            <div class="card card-icon">
+              <div class="row no-gutters">
+                <div class="col-auto card-icon-aside bg-primary">
+                  <i data-feather="slash"></i>
                 </div>
-                <form id="frm-invalidate-mhp" name="frm-invalidate-mhp">
-                    <div class="mb-0">
-                        <input type="hidden" name="mhp" value="{{ user.doctor_profile.id }}">
-                        <label for="txt-invalidation-reason">Reason(s) for invalidation</label>
-                        <textarea class="form-control" name="reason" id="txt-invalidation-reason" rows="5"></textarea>
-                    </div>
-                </form>
-
+                <div class="col">
+                  <div class="card-body py-5">
+                    <h5 class="card-title">Profile Invalidation Reason</h5>
+                    <p class="card-text">
+                      Please specify the reason(s) for invaliadting this profile.
+                      Note that invalidating a profile without a reason is not possible.
+                      The provide reason(s) will be shared with the Medical Profesional.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" id="btn-confirm-mhp-invalidate-mhp-profile"
+            <form id="frm-invalidate-mhp" name="frm-invalidate-mhp">
+              <div class="mb-0">
+                <input type="hidden" name="mhp" value="{{ user.doctor_profile.id }}" />
+                <label for="txt-invalidation-reason">Reason(s) for invalidation</label>
+                <textarea class="form-control"
+                          name="reason"
+                          id="txt-invalidation-reason"
+                          rows="5"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary"
+                    id="btn-confirm-mhp-invalidate-mhp-profile"
                     type="button">Confirm</button>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
-{% endif %}
+  {% endif %}
 {% endblock %}
-
-{% block template_page_specific_js_libs %}
-
-{% endblock %}
-
-{% block page_specific_js %}
-
-{% endblock %}
-
+{% block template_page_specific_js_libs %}{% endblock %}
+{% block page_specific_js %}{% endblock %}
 <!-- PLEASE KEEP THIS FILE UP TO DATE -->

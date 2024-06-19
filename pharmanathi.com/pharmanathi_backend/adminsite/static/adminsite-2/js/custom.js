@@ -29,7 +29,7 @@ function markMHPAsVerified(mhpId) {
 function invalidateMHPProfile(mhpId, reason) {
     return fetch(`/custom-admin/MHPs/${mhpId}/invalidate/`, {
         method: "post",
-        headers: { 
+        headers: {
             ...GLOBAL_CONF.defaultHTTPRequestHeader(),
             "Content-Type": "application/json"
         },
@@ -78,7 +78,7 @@ function notify(message, title = "", type = "primary") {
 
 function resolveInvalidationReason(irId){
     return fetch(`/custom-admin/IRs/${irId}/resolve/`, {
-        headers: { 
+        headers: {
             ...GLOBAL_CONF.defaultHTTPRequestHeader()
         }
     })
