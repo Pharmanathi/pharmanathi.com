@@ -83,7 +83,7 @@ repos:
         files: ^pharmanathi.com/.*$
         exclude: ^pharmanathi.com/adminsite-template/.*$
         # TODO: revisit the ignored rules below at some point
-        args: [--ignore=H006,H013,H019,H031,T002,T003]
+        args: ["--ignore=H006,H013,H019,H031,T002,T003"]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
