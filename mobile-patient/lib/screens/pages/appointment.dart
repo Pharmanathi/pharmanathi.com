@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api, unused_local_variable
 import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
 import 'package:client_pharmanathi/screens/components/appointments/appointment_data.dart';
 import 'package:client_pharmanathi/screens/components/appointments/appointment_tile.dart';
@@ -14,7 +13,7 @@ class Appointments extends StatefulWidget {
 
 class _AppointmentsState extends State<Appointments> {
   String selectedButton = 'Completed';
-  Color primaryColor = Color(0xFFF7F9FC);
+  Color primaryColor = const Color(0xFFF7F9FC);
   int _selectedIndex = 2;
   int selectedDay = -1;
   bool isLoading = true;
@@ -47,6 +46,9 @@ class _AppointmentsState extends State<Appointments> {
       });
     } catch (e) {
       print('Error loading appointment data: $e');
+      setState(() {
+        isLoading = false;
+      });
       // Handle error as needed
     }
   }
@@ -63,13 +65,13 @@ class _AppointmentsState extends State<Appointments> {
     int currentYear = now.year;
 
     return Scaffold(
-      backgroundColor: Color(0xFFF7F9FC),
+      backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
         child: Column(
           children: [
             // heading container...............................
-            Padding(
-              padding: const EdgeInsets.all(22.0),
+            const Padding(
+              padding: EdgeInsets.all(22.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -87,12 +89,12 @@ class _AppointmentsState extends State<Appointments> {
             // Scrollable ProfileCard part
             Expanded(
               child: SingleChildScrollView(
-                child: appointmentData.isEmpty
-                    ? (appointmentData.isEmpty
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : appointmentData.isEmpty
                         ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -101,37 +103,37 @@ class _AppointmentsState extends State<Appointments> {
                                   width: 120,
                                   height: 120,
                                 ),
-                                SizedBox(height: 20),
-                                Text(
+                                const SizedBox(height: 20),
+                                const Text(
                                   'No appointments available',
                                   style: TextStyle(fontSize: 12),
                                 ),
                               ],
                             ),
-                          ))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: appointmentData.length,
-                        itemBuilder: (context, index) {
-                          final data = appointmentData[index];
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: appointmentData.length,
+                            itemBuilder: (context, index) {
+                              final data = appointmentData[index];
 
-                          return ProfileCard(
-                            time: data.time,
-                            name: data.name,
-                            date: data.date,
-                            appointmentTime: data.appointmentTime,
-                            imageURL: data.imageURL,
-                            consult_details: data.consult_details,
-                            clinic_name: data.clinic_name,
-                            clinic_address: data.clinic_address,
-                            status: data.status,
-                            title: data.title,
-                            appiontmenType: data.appiontmenType,
-                            otherData: appointmentData[index],
-                          );
-                        },
-                      ),
+                              return ProfileCard(
+                                time: data.time,
+                                name: data.name,
+                                date: data.date,
+                                appointmentTime: data.appointmentTime,
+                                imageURL: data.imageURL,
+                                consult_details: data.consult_details,
+                                clinic_name: data.clinic_name,
+                                clinic_address: data.clinic_address,
+                                status: data.status,
+                                title: data.title,
+                                appiontmenType: data.appiontmenType,
+                                otherData: appointmentData[index],
+                              );
+                            },
+                          ),
               ),
             ),
           ],
