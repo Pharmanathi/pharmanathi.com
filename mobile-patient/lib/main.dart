@@ -21,21 +21,22 @@ import 'helpers/api_helpers.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //* Load environment variables
+ //* Load environment variables
   await dotenv.load();
 
   //* Set preferred orientation before initializing Firebase
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+ 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-//* Sentry initialization parameters
-  String? sentryOn = dotenv.get("SENTRY_ON", fallback: kReleaseMode.toString());
-  bool isSentryEnabled =
-      sentryOn == 'true' || (sentryOn == null && kReleaseMode);
 
-  if (isSentryEnabled) {
+  //* Determine if Sentry should be enabled
+  String sentryOnSetting = dotenv.get("SENTRY_ON", fallback: 'false');
+  bool enableSentry = sentryOnSetting == "true" || kReleaseMode;
+
+  if (enableSentry) {
     await SentryFlutter.init(
       (options) {
         options.dsn = dotenv.env['SENTRY_DSN']!;
