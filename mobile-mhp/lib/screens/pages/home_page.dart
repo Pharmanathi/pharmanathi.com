@@ -85,9 +85,9 @@ class _HomePageState extends State<HomePage> {
         final appointmentType = appointment['appointment_type'];
 
         //* Check the type of appointment and increment the corresponding count
-        if (appointmentType == 1) {
+        if (appointmentType == 2) {
           inPersonVisitAppointmentsCount++;
-        } else if (appointmentType == 2) {
+        } else {
           onlineAppointmentsCount++;
         }
       }
