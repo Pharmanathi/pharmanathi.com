@@ -19,7 +19,7 @@ class GoogleSignInWidget extends StatefulWidget {
 }
 
 class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   static final String apiUrl = ApiHelper.getApiBaseUrl();
   GoogleSignInAccount? _currentUser;
