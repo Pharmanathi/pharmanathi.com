@@ -2,11 +2,13 @@
 
 import 'package:client_pharmanathi/screens/pages/onboard_page.dart';
 import 'package:client_pharmanathi/screens/pages/singnin_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'screens/components/UserProvider.dart';
 import 'firebase_options.dart';
@@ -19,24 +21,46 @@ import 'helpers/api_helpers.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //* Load environment variables
+ //* Load environment variables
   await dotenv.load();
 
   //* Set preferred orientation before initializing Firebase
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+ 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-      ],
-      child: MyApp(),
-    ),
-  );
+  //* Determine if Sentry should be enabled
+  String sentryOnSetting = dotenv.get("SENTRY_ON", fallback: 'false');
+  bool enableSentry = sentryOnSetting == "true" || kReleaseMode;
+
+  if (enableSentry) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = dotenv.env['SENTRY_DSN']!;
+        options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
+      },
+      appRunner: () => runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => UserProvider()),
+          ],
+          child: const MyApp(),
+        ),
+      ),
+    );
+  } else {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -47,7 +71,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   Future<bool> _checkFirstTimeSignIn() async {
     //* Obtain an instance of UserProvider
     final userProvider = UserProvider();
@@ -69,10 +92,10 @@ class _MyAppState extends State<MyApp> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-
-            String initialRoute = snapshot.data == true ? '/signIn' : '/onboarding';
-            if(dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev'){
-              if(ApiHelper.retrieveLocaAPIToken(context) != null ) {
+            String initialRoute =
+                snapshot.data == true ? '/signIn' : '/onboarding';
+            if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+              if (ApiHelper.retrieveLocaAPIToken(context) != null) {
                 initialRoute = '/home_page';
               }
             }
