@@ -33,7 +33,7 @@ EMAIL_PORT=587
 SOCIAL_APP_GOOGLE_MHP_ANDROID='provider=google,name=google_mhp_android,client_id=710242232170-19c4e3gd3erdv6dao1t2j2r0evi5u1c4.apps.googleusercontent.com,secret=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'
 SOCIAL_APP_GOOGLE_MHP_IOS='provider=google,name=google_mhp_ios,client_id=710242232170-pbobuv9pdmnr66qmp5t3doac506ap4ca.apps.googleusercontent.com,secret=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'
 SOCIAL_APP_GOOGLE_PATIENT_IOS='provider=google,name=google_patient_ios,client_id=710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com,secret=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'
-SOCIAL_APP_GOOGLE_PATIENT_ANDROID='provider=google,name=google_patient_android,client_id=710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com,secret=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'
+SOCIAL_APP_GOOGLE_PATIENT_ANDROID='provider=google,name=google_patient_android,client_id=710242232170-19c4e3gd3erdv6dao1t2j2r0evi5u1c4.apps.googleusercontent.com,secret=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'
 
 
 # ANYMAIL-MAILGUN
