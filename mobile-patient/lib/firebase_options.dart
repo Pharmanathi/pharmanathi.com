@@ -24,10 +24,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -52,14 +49,22 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCLmoD7QM-XguAdd0bdJ1-gyfDgATNjpfg',
-    appId: '1:710242232170:ios:f602ac81101a5b66906713',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBfeCpK99McKfVY56TXukDed1FWh7lt-Js',
+    appId: '1:710242232170:android:be3df334ab3d95d3906713',
     messagingSenderId: '710242232170',
     projectId: 'pharmanathi-b3482',
     storageBucket: 'pharmanathi-b3482.appspot.com',
-    androidClientId: '710242232170-cbhbtrfv234qotjtb2bgl44rsmn49re0.apps.googleusercontent.com',
-    iosClientId: '710242232170-fanmp9uub3174pdlko04u5taon9uldsn.apps.googleusercontent.com',
-    iosBundleId: 'com.pharmanathi.clientPharmanathi',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCLmoD7QM-XguAdd0bdJ1-gyfDgATNjpfg',
+    appId: '1:710242232170:ios:db657a82f8108c77906713',
+    messagingSenderId: '710242232170',
+    projectId: 'pharmanathi-b3482',
+    storageBucket: 'pharmanathi-b3482.appspot.com',
+    androidClientId: '710242232170-5b7ag0nh8sd216930nt2pvgktl3vo8jk.apps.googleusercontent.com',
+    iosClientId: '710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com',
+    iosBundleId: 'com.pharmanathi.patient',
   );
 }
