@@ -22,7 +22,7 @@ def run():
     pharmanthidotcom_site = Site.objects.get(id=settings.SITE_ID)
     for app in APPS:
         app_name = app["name"]
-        social_app, created = SocialApp.objects.get_or_create(
+        social_app, created = SocialApp.objects.update_or_create(
             name=app_name,
             defaults={
                 "settings": GOOGLE_DEFAULT_SCOPE,
