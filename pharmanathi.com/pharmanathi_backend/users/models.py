@@ -6,7 +6,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import mail_user_task, set_rejection_reason_task
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
@@ -98,8 +97,12 @@ class Doctor(BaseCustomModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
-    hpcsa_no = models.CharField("HPCSA No.", max_length=5)
-    mp_no = models.CharField("Mp No.", max_length=5)
+    hpcsa_no = models.CharField("HPCSA No.", max_length=12)  # HPCSA registration number]
+    # The mp_no below can be the same as hpcsa_no or the one their professinal body(PB)
+    # Provided them. For instance, a Pharmacist would enter their
+    # P NUMBER here. Hence, it seems we could just keep one field
+    # representing the number from their PB. @TODO:
+    mp_no = models.CharField("Mp No.", max_length=20)
     _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -116,6 +119,16 @@ class Doctor(BaseCustomModel):
     def upcoming_appointments(self) -> models.query.QuerySet:
         now_today = datetime.datetime.now()
         return self.appointment_set.filter(start_time__gte=now_today)
+
+    @property
+    def is_pharmacist(self):
+        # Using the hard-code value PHAR may not be the best thing to
+        return self.specialities.filter(symbol="PHAR").exists()
+
+    def run_auto_mp_verification_task(self):
+        from .tasks import auto_mp_verification_task
+
+        auto_mp_verification_task.delay(self.pk)
 
     def has_consulted_before(self, patient_id):
         return self.appointment_set.filter(patient__id=patient_id).exists()
@@ -208,3 +221,23 @@ class InvalidationReason(BaseCustomModel):
     @property
     def text_email(self):
         return self.text_unquoted.replace("\n", "<br>")
+
+
+class VerificationReport(BaseCustomModel):
+    mp = models.ForeignKey(Doctor, related_name="verification_reports", on_delete=models.PROTECT)
+    report = models.JSONField()
+
+    type_choices = [("pharma", "pharma"), ("hpcsa", "hpcsa")]
+    type = models.CharField(choices=type_choices, max_length=7, null=False, blank=False, editable=False)
+
+    @staticmethod
+    def det_verification_type(mp: Doctor):
+        """Determine the verification type to be used for a Medical Professional
+
+        Args:
+            mp (Doctor): Doctor(Medical Professional) instance
+        """
+        return "pharma" if mp.is_pharmacist else "hpcsa"
+
+    def __str__(self) -> str:
+        return f"VR({self.type})|{self.mp.user.email}|{self.date_created.strftime('%d %b %Y')}"

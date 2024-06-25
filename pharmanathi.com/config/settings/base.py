@@ -394,3 +394,7 @@ ANYMAIL = {
     "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
     "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN"),
 }
+
+# VERIFI
+# ------------------------------------------------------------------------------
+VERIFI_URL = env("VERIFI_URL", default="http://verifi:8000")
