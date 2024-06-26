@@ -52,6 +52,7 @@ def auto_mp_verification_task(mp_pk):
         - PR or issue for tests
         - Logging for failures
         - Production setup
+        - Squash Migrations
     """
     import requests
     from pharmanathi_backend.users.models import Doctor, VerificationReport
