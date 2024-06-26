@@ -35,6 +35,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 class AppointmentPublicSerializer(AppointmentSerializer):
     doctor = DoctorPublicListSerializer()
     patient = UserSerializerSimplified()
+    appointment_type = AppointmentTypeSerializer()
 
     class Meta:
         model = models.Appointment
