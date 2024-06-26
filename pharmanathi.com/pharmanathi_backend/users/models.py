@@ -227,7 +227,7 @@ class VerificationReport(BaseCustomModel):
     mp = models.ForeignKey(Doctor, related_name="verification_reports", on_delete=models.PROTECT)
     report = models.JSONField()
 
-    type_choices = [("pharma", "pharma"), ("hpcsa", "hpcsa")]
+    type_choices = [("SAPC", "SAPC"), ("HPCSA", "HPCSA")]
     type = models.CharField(choices=type_choices, max_length=7, null=False, blank=False, editable=False)
 
     @staticmethod
@@ -237,7 +237,7 @@ class VerificationReport(BaseCustomModel):
         Args:
             mp (Doctor): Doctor(Medical Professional) instance
         """
-        return "pharma" if mp.is_pharmacist else "hpcsa"
+        return "SAPC" if mp.is_pharmacist else "HPCSA"
 
     def __str__(self) -> str:
         return f"VR({self.type})|{self.mp.user.email}|{self.date_created.strftime('%d %b %Y')}"

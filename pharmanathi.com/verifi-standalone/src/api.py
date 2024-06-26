@@ -20,10 +20,10 @@ def verify():
     if identifier is None:
         return jsonify({"detail": "Missing or invalid `id` request argument"}), 400
 
-    if mp_type is None or mp_type not in ["pharma", "hpcsa"]:
+    if mp_type is None or mp_type not in ["SAPC", "HPCSA"]:
         return (
             jsonify(
-                {"detail": ("Missing or invalid `type` request argument. " "It must be one of `pharma` or `hpcsa`")}
+                {"detail": ("Missing or invalid `type` request argument. " "It must be one of `SAPC` or `HPCSA`")}
             ),
             400,
         )
@@ -37,9 +37,9 @@ def verify():
 
     try:
         verification_func = None
-        if mp_type == "pharma":
-            verification_func = process_pharma
-        elif mp_type == "hpcsa":
+        if mp_type == "SAPC":
+            verification_func = process_sapc
+        elif mp_type == "HPCSA":
             verification_func = process_hpcsa
         else:
             raise ValueError(f"Invalid value for request({mp_type})")
@@ -57,7 +57,7 @@ def verify():
     return jsonify(data)
 
 
-def process_pharma(driver, identifier):
+def process_sapc(driver, identifier):
     """Get a MP credentials from The South African Pharmacy Council
 
     Args:
@@ -75,7 +75,7 @@ def process_pharma(driver, identifier):
     report = {
         "datetime": datetime.datetime.now().isoformat(),
         "identifier": identifier,
-        "type": "pharma",
+        "type": "SAPC",
         "registration": {},
         "_logs": [],
     }
@@ -94,24 +94,25 @@ def process_pharma(driver, identifier):
 
     # Check if there is any result matching the specified PNUMBER(identifier)
     search_result_table_first_td = driver.find_element(By.CSS_SELECTOR, "#myTable tr:last-child td")
-    print(search_result_table_first_td.text)
     if "No records found" in search_result_table_first_td.text:
         # If no match, return an empty report
         log(f"Search for '{identifier}' returned no records")
         return report
     else:
         # Make sure the PNumber match
-        if identifier != search_result_table_first_td:
-            log(f"Search for '{identifier}' returned no records")
+        if identifier not in search_result_table_first_td.text:
+            log(f"Search for '{identifier}' returned non-matching PNumber: {search_result_table_first_td.text}")
+            return report
 
         # If there is a match, proceed to the `view` page
         view_button = driver.find_element(By.CSS_SELECTOR, "#myTable tr:last-child td:last-child a")
         webdriver.ActionChains(driver).pause(3).click(view_button).pause(3).perform()
 
-        # On the view page, collect table
+        # On the view page, go through the table and collect the data
         for tr in driver.find_elements(By.TAG_NAME, "tr"):
             report["registration"][tr.find_element(By.TAG_NAME, "th").text] = tr.find_element(By.TAG_NAME, "td").text
 
+        report["url"] = str(driver.current_url)
         return report
 
 
@@ -142,6 +143,7 @@ def process_hpcsa(driver, identifier):
     registrations = []
     current_registration = []
     table_index = 1
+
     for table in driver.find_elements(By.TAG_NAME, "table"):
         titles = []
 
@@ -166,7 +168,8 @@ def process_hpcsa(driver, identifier):
     return {
         "datetime": datetime.datetime.now().isoformat(),
         "identifier": identifier,
-        "type": "hpcsa",
+        "type": "HPCSA",
+        "url": REQ_URL,
         "profile": {
             "names": driver.find_element(By.ID, "NAME").text,
             "city": driver.find_element(By.ID, "CITY").text,
