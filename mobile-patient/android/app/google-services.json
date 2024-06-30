@@ -58,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "710242232170-7biaekna6nndpdksmpg6ljag4ono81ar.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pharmanathi.patient",
+            "certificate_hash": "055dad3752fcb31424ecea198f88bb1f556a1468"
+          }
+        },
+        {
           "client_id": "710242232170-j30o9sknbk8lo2eb7i5dem9o1itnr42d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
