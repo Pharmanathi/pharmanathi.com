@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com',
     iosBundleId: 'com.pharmanathi.patient',
   );
+
 }
