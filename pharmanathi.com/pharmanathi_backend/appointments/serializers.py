@@ -31,10 +31,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = models.Appointment
         fields = "__all__"
 
+class SimplifiedAppointmentTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.AppointmentType
+        fields = ['id', 'is_online'] 
 
 class AppointmentPublicSerializer(AppointmentSerializer):
     doctor = DoctorPublicListSerializer()
     patient = UserSerializerSimplified()
+    appointment_type = SimplifiedAppointmentTypeSerializer()
 
     class Meta:
         model = models.Appointment

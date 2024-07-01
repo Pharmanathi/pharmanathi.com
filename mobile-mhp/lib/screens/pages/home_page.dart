@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> monthlyStats = [];
   List<AppiontmentTile> appointmentData = [];
 
-
   Future<void> loadMonthlyStatsData() async {
     try {
       setState(() {
@@ -82,12 +81,13 @@ class _HomePageState extends State<HomePage> {
 
       //* Iterate over the fetched appointment data
       for (final appointment in fetchedAppointmentData) {
-        final appointmentType = appointment['appointment_type'];
+        final bool isOnlineAppointment =
+            appointment['appointment_type']['is_online'];
 
         //* Check the type of appointment and increment the corresponding count
-        if (appointmentType == 1) {
+        if (isOnlineAppointment == false) {
           inPersonVisitAppointmentsCount++;
-        } else if (appointmentType == 2) {
+        } else {
           onlineAppointmentsCount++;
         }
       }
