@@ -19,7 +19,7 @@ CELERY_FLOWER_PASSWORD=debug
 # ------------------------------------------------------------------------------
 DJANGO_ALLOWED_HOST=*
 # Add amins using the fomat names1-email1_names2-email2
-ADMINS="Nehemie Balukidi-alfred.nehemie@gmail.com_Peridot Admin-peridot.pharmanathi@gmail.com"
+ADMINS="Peridot Admin-peridot.pharmanathi@gmail.com"
 SERVER_EMAIL=me@nehemie.dev
 DEFAULT_FROM_EMAIL=me@nehemie.dev
 EMAIL_HOST_USER=me@nehemie.dev

@@ -175,15 +175,17 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
 
         # should they be signinng in or up as doctor, create their doctor profile
         if sign_as_doctor:
-            Doctor.objects.get_or_create(user=user)
-            from pharmanathi_backend.users.tasks import mail_admins_task
+            _, created = Doctor.objects.get_or_create(user=user)
 
-            message = "A new Medical Health Professional was registered."
-            mail_admins_task.delay(
-                "New MHP registration",
-                message,
-                message,
-            )
+            if created:
+                from pharmanathi_backend.users.tasks import mail_admins_task
+
+                message = "A new Medical Health Professional was registered."
+                mail_admins_task.delay(
+                    "New MHP registration",
+                    message,
+                    message,
+                )
 
         return attrs
 

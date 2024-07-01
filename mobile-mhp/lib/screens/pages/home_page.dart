@@ -82,12 +82,12 @@ class _HomePageState extends State<HomePage> {
 
       //* Iterate over the fetched appointment data
       for (final appointment in fetchedAppointmentData) {
-        final bool isOnlineAppointment = appointment['appointment_type']['is_online'];
+        final appointmentType = appointment['appointment_type'];
 
         //* Check the type of appointment and increment the corresponding count
-        if (isOnlineAppointment == false) {
+        if (appointmentType == 1) {
           inPersonVisitAppointmentsCount++;
-        } else {
+        } else if (appointmentType == 2) {
           onlineAppointmentsCount++;
         }
       }

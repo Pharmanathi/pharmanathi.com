@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:pharma_nathi/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../screens/components/UserProvider.dart';
 
@@ -76,11 +77,15 @@ class Apihelper {
     }
   }
 
-  static void handleException(BuildContext context, dynamic e) {
-    //* Handle exceptions
-    log.e('Exception occurred: $e');
-    // TODO: Implement Sentry or another error reporting framework
-  }
+ 
+ static void handleException(BuildContext context, dynamic e, [StackTrace? stackTrace]) {
+  //* Handle exceptions
+  log.e('Exception occurred: $e');
+  //* Report the exception to Sentry
+  Sentry.captureException(e, stackTrace: stackTrace);
+}
+
+
 
   static void handleError(BuildContext context, http.Response response) {
     String errorMessage;

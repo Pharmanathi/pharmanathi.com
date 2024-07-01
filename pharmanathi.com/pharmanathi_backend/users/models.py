@@ -67,7 +67,7 @@ class User(BaseCustomModel, AbstractUser):
 class Speciality(BaseCustomModel):
     id = models.SmallIntegerField(primary_key=True)
     name = models.CharField(max_length=100)
-    symbol = models.CharField(max_length=7)
+    symbol = models.CharField(max_length=15)
 
     def __str__(self) -> str:
         return f"{self.name}({self.symbol})"

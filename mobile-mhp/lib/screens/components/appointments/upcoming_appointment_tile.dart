@@ -66,19 +66,10 @@ class AppiontmentTile extends StatelessWidget {
       print('Error parsing start_time: $error');
     }
 
-    //* Extract is_online from appointment_types list
-    int appointmentType = 0; // Default value
-    if (json['doctor'] != null &&
-        json['doctor']['appointment_types'] is List &&
-        json['doctor']['appointment_types'].isNotEmpty) {
-      appointmentType =
-          json['doctor']['appointment_types'][0]['is_online'] ? 1 : 2;
-    }
-
     return AppiontmentTile(
       name: '${json['patient']['first_name']} ${json['patient']['last_name']}',
       patientdetails: json['details'] ?? 'patient details',
-      appointmentType: appointmentType,
+      appointmentType: json['appointment_type'] ?? '0',
       clinic_name: json['clinic_name'] ?? 'Default clinic_name',
       clinic_address: json['practicelocations'] ?? 'Default clinic_address',
       appiontment_date: formattedDate,
