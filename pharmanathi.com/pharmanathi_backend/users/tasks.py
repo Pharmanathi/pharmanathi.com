@@ -1,7 +1,8 @@
-from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
+
+from config import celery_app
 
 
 @celery_app.task()
@@ -55,6 +56,7 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
+
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
