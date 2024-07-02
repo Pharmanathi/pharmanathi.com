@@ -36,12 +36,17 @@
          data-bs-target="#nav-user-profile"
          type="button"
          href="javascript:void(0);">User Profile</a>
-      <a class="nav-link do-not-track-activation"
-         data-bs-toggle="tab"
-         data-bs-target="#nav-user-mhp-profile"
-         type="button"
-         href="javascript:void(0);">MHP Profile</a>
       {% if user.is_doctor %}
+        <a class="nav-link do-not-track-activation"
+           data-bs-toggle="tab"
+           data-bs-target="#nav-user-mhp-profile"
+           type="button"
+           href="javascript:void(0);">MHP Profile</a>
+        <a class="nav-link do-not-track-activation"
+           data-bs-toggle="tab"
+           data-bs-target="#nav-user-mhp-verification-reports"
+           type="button"
+           href="javascript:void(0);">Verification Reports</a>
         <a class="nav-link do-not-track-activation"
            data-bs-toggle="tab"
            data-bs-target="#nav-user-mhp-invalidation-hist"
@@ -152,7 +157,8 @@
                 </div>
               </div>
               <div class="card-footer d-flex align-items-center justify-content-between small">
-                <a class="text-white stretched-link" href="#!">View Report(s)</a>
+                <a class="text-white stretched-link"
+                   href="javascript:toVerificationReportsPanel();">View Report(s)</a>
                 <div class="text-white">
                   <i class="fas fa-angle-right"></i>
                 </div>
@@ -164,7 +170,8 @@
           <div class="card mb-4">
             <div class="card-header">Quick Links</div>
             <div class="list-group list-group-flush small">
-              <a class="list-group-item list-group-item-action" href="#!">
+              <a class="list-group-item list-group-item-action"
+                 href="javascript:toVerificationReportsPanel()">
                 <i class="fas fa-search fa-fw text-blue me-2"></i>
                 Verification Reports
               </a>
@@ -213,6 +220,37 @@
           </div>
         </div>
         <div class="col-xl-8"></div>
+      </div>
+      <div class="row tab-pane fade" id="nav-user-mhp-verification-reports">
+        <div class="col-xl-12">
+          <div class="card mb-4">
+            <div class="card-header">Invalidation History</div>
+            <div class="card-body">
+              <div class="timeline">
+                {% if user.doctor_profile.verification_reports|length > 0 %}
+                  {% for vr in user.doctor_profile.verification_reports|dictsortreversed:'date_created' %}
+                    <div class="timeline-item">
+                      <div class="timeline-item-marker">
+                        <p>{{ vr.date_created|time }}</p>
+                        <div class="timeline-item-marker-text">
+                          <script>
+                            document.write((new Date("{{vr.date_created}}")).toString().substring(0, 16))
+                          </script>
+                        </div>
+                        <div class="timeline-item-marker-indicator">
+                          <!-- No icon in step circle -->
+                        </div>
+                      </div>
+                      <div class="timeline-item-content">{{ vr.summary|urlize }}</div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row tab-pane fade" id="nav-user-mhp-invalidation-hist">
         <div class="col-xl-12">
@@ -327,6 +365,10 @@
   <script>
     function toInvalidationReasonsPanel() {
       document.querySelector("[data-bs-target='#nav-user-mhp-invalidation-hist']").click()
+    }
+
+    function toVerificationReportsPanel() {
+      document.querySelector("[data-bs-target='#nav-user-mhp-verification-reports']").click()
     }
   </script>
 {% endblock %}
