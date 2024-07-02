@@ -28,7 +28,7 @@ drf-spectacular==0.27.2  # https://github.com/tfranzel/drf-spectacular
 
 # Google Auth
 # --------------------------------------------------------------------------------
-google-auth==2.30.0
+google-auth==2.31.0
 
 # Anymail-Mailgun
 # --------------------------------------------------------------------------------
