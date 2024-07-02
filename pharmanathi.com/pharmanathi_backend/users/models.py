@@ -225,8 +225,9 @@ class InvalidationReason(BaseCustomModel):
 
 
 class VerificationReport(BaseCustomModel):
+    STR_SUM_END_SUCCESS_REPORT_TXT = "was SUCCESSFULL!"
     mp = models.ForeignKey(Doctor, related_name="verification_reports", on_delete=models.PROTECT)
-    report = models.JSONField()
+    report: models.JSONField = models.JSONField()
 
     type_choices = [("SAPC", "SAPC"), ("HPCSA", "HPCSA")]
     type = models.CharField(choices=type_choices, max_length=7, null=False, blank=False, editable=False)
@@ -242,3 +243,63 @@ class VerificationReport(BaseCustomModel):
 
     def __str__(self) -> str:
         return f"VR({self.type})|{self.mp.user.email}|{self.date_created.strftime('%d %b %Y')}"
+
+    def _summary_hpcsa(self) -> str:
+        """Returns a string summary of a HPCSA report"""
+        # Case: Not registration found
+        if self.report.get("profile").get("names") == "":
+            return "did not find any registration profile. MP does not seem to exist"
+
+        # Case: possible mismatch
+        db_names_set = set(self.mp.user.get_full_name().split(" "))
+        report_names = set(self.report.get("profile").get("names").split(" "))
+        match_percentage = (len(db_names_set.intersection(report_names)) * 100) // len(db_names_set)
+        if match_percentage < 50:
+            return (
+                f"returns a partial match of {match_percentage}%. A match of more than 50% is recommended"
+                "when comparing the names found on the HPCSA profile page."
+            )
+
+        # Case: exists but no active registration
+        has_active_registraion = False
+        for reg in self.report.get("registrations"):
+            if "REGISTRATION STATUS" in reg:
+                if reg.get("REGISTRATION STATUS") == "ACTIVE":
+                    has_active_registraion = True
+        if has_active_registraion is False:
+            return "found one or more registrations but none is active."
+
+        return self.STR_SUM_END_SUCCESS_REPORT_TXT
+
+    def _summary_sapc(self) -> str:
+        """Returns a string summary of a SAPC report"""
+        # Case: No records found
+        returned_no_record = "returned no records" in self.report.get("_logs")
+        registrion_is_empty = self.report.get("report") == {}
+        if returned_no_record or registrion_is_empty:
+            return "failed. No records were found"
+
+        # Case: Inactive
+        if self.report.get("registration").get("Status") != "Registered - Active":
+            return "seems to report an inactive registration"
+
+        # Case: profile belongs to a different MP
+        has_non_matching_surname = (
+            self.report.get("registration").get("Surname").lower() not in self.mp.user.last_name.lower()
+        )
+        has_non_matching_firstname = (
+            self.report.get("registration").get("First Name").lower() not in self.mp.user.first_name.lower()
+        )
+        if has_non_matching_firstname or has_non_matching_surname:
+            return "returned a what seems to be a different profile!"
+
+        return self.STR_SUM_END_SUCCESS_REPORT_TXT
+
+    def summary(self) -> str:
+        """Returns a string summary of a report"""
+        summary_start = f"{self.type.upper()} verification on MP {self.mp} with URL {self.report.get('url')} "
+        if self.type == "SAPC":
+            summary_end = self._summary_sapc()
+        else:
+            summary_end = self._summary_hpcsa()
+        return f"{summary_start} {summary_end}"
