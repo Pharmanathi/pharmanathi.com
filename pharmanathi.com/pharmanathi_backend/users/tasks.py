@@ -1,9 +1,10 @@
 import logging
 
-from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
+
+from config import celery_app
 
 admin_logger = logging.getLogger(__name__)  # TODO: target a more specific logger here, admin and/or sentry
 
@@ -59,6 +60,7 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
+
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()

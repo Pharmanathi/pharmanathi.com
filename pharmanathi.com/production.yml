@@ -63,7 +63,7 @@ services:
     <<: *django
     image: pharmanathi_backend_production_flower
     command: /start-flower
-  
+
   web-driver:
     image: selenium/standalone-chrome:4.8.1-20230306
     shm_size: 2gb
