@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/appointment.dart';
-import '../../screens/pages/appiontment_details.dart';
+import 'appiontment_details.dart';
 
 
 class AppointmentTile extends StatelessWidget {
@@ -16,14 +16,7 @@ class AppointmentTile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => OnlineConsultation(
-              patientName: appointment.name,
-              appointmentTime: appointment.time,
-              details: appointment.patientdetails,
-              clinic_name: appointment.clinic_name,
-              clinic_address: appointment.clinic_address,
-              appiontment_date: appointment.appointmentDate,
-              time: appointment.time,
-              consult_details: appointment.consult_details,
+             appointment:  appointment,
             ),
           ),
         );

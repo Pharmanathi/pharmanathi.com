@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'helpers/http_helpers.dart';
 import 'repositories/appointment_repository.dart';
-import 'screens/pages/appointments.dart';
+import 'views/screens/appointments.dart';
 import 'screens/pages/earnings.dart';
 import 'screens/pages/home_page.dart';
 import 'screens/pages/patient_list.dart';
