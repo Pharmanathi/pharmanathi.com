@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:intl/intl.dart';
 
 class Appointment {
@@ -29,29 +27,17 @@ class Appointment {
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
-
-    // Convert the UTC DateTime object to local time
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
-
-    // Format the date to "dd MMM yyyy" (e.g., "27 May 2023")
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
     final String formattedDate = dateFormatter.format(dateTimeLocal);
-
-    // Format the time to "HH:mm" (e.g., "13:30 MP")
     final DateFormat timeFormatter = DateFormat('HH:mm a', 'en_US');
     final String formattedTime = timeFormatter.format(dateTimeLocal);
 
-// Determines the status based on the current date and start time
     String determineStatus(Map<String, dynamic> json) {
       String status = '';
-
       try {
-        final String startDateTimeString = json['start_time'];
-        final String endDateTimeString = json['end_time'];
-
-        // Parse the start time and end time
-        final DateTime startDateTime = DateTime.parse(startDateTimeString);
-        final DateTime endDateTime = DateTime.parse(endDateTimeString);
+        final DateTime startDateTime = DateTime.parse(json['start_time']);
+        final DateTime endDateTime = DateTime.parse(json['end_time']);
         final DateTime currentDateTime = DateTime.now();
 
         if (currentDateTime.isAfter(startDateTime) &&
@@ -63,10 +49,8 @@ class Appointment {
           status = 'Completed';
         }
       } catch (error) {
-        // Handle parsing error
         print('Error parsing date time: $error');
       }
-
       return status;
     }
 

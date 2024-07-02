@@ -13,6 +13,7 @@ import 'package:pharma_nathi/screens/pages/signIn.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'helpers/http_helpers.dart';
+import 'repositories/appointment_repository.dart';
 import 'screens/pages/appointments.dart';
 import 'screens/pages/earnings.dart';
 import 'screens/pages/home_page.dart';
@@ -24,6 +25,7 @@ import 'screens/components/image_data.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'services/api_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,12 @@ Future<void> main() async {
 
   //* Set preferred orientation before initializing Firebase
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Initialize ApiProvider
+  ApiProvider apiProvider = ApiProvider();
+
+  //* Initialize AppointmentRepository
+  AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
 
   //* Initialize Firebase
   await Firebase.initializeApp(
@@ -54,6 +62,7 @@ Future<void> main() async {
           providers: [
             ChangeNotifierProvider(create: (_) => ImageDataProvider()),
             ChangeNotifierProvider(create: (_) => UserProvider()),
+            Provider.value(value: appointmentRepository),
           ],
           child: const MyApp(),
         ),
@@ -65,6 +74,7 @@ Future<void> main() async {
         providers: [
           ChangeNotifierProvider(create: (_) => ImageDataProvider()),
           ChangeNotifierProvider(create: (_) => UserProvider()),
+          Provider.value(value: appointmentRepository),
         ],
         child: const MyApp(),
       ),
