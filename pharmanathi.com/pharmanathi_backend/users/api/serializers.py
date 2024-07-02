@@ -18,9 +18,12 @@ class InvalidationReasonSerializer(serializers.ModelSerializer):
 
 
 class VerificationReportSerializer(serializers.ModelSerializer):
+    summary = serializers.CharField(read_only=True)
+
     class Meta:
         model = VerificationReport
         fields = "__all__"
+        ordering = ["-date_created"]
 
 
 class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
