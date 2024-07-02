@@ -2,10 +2,9 @@ import datetime
 import logging
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import F, Q
+from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404, render
-
 from pharmanathi_backend.users.api.serializers import UserSerializer
 from pharmanathi_backend.users.models import Doctor, InvalidationReason, User
 
@@ -61,8 +60,10 @@ def get_user_detail(request, user_id):
                 get_object_or_404(
                     User.objects.prefetch_related(
                         "doctor_profile",
-                        "doctor_profile__invalidationreason_set",
-                        "doctor_profile__verification_reports",
+                        Prefetch(
+                            "doctor_profile__invalidationreason_set",
+                            queryset=InvalidationReason.objects.filter(is_resolved=False),
+                        ),
                     ),
                     pk=user_id,
                 )
