@@ -59,7 +59,11 @@ def get_user_detail(request, user_id):
         {
             "user": UserSerializer(
                 get_object_or_404(
-                    User.objects.prefetch_related("doctor_profile", "doctor_profile__invalidationreason_set"),
+                    User.objects.prefetch_related(
+                        "doctor_profile",
+                        "doctor_profile__invalidationreason_set",
+                        "doctor_profile__verification_reports",
+                    ),
                     pk=user_id,
                 )
             ).data

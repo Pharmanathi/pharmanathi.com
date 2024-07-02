@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from pharmanathi_backend.users.models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality
 from pharmanathi_backend.users.models import User as UserType
+from pharmanathi_backend.users.models import VerificationReport
 
 User = get_user_model()
 
@@ -16,6 +17,12 @@ class InvalidationReasonSerializer(serializers.ModelSerializer):
         ordering = ["-date_created", "is_resolved", "date_modified", "text_unquoted"]
 
 
+class VerificationReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VerificationReport
+        fields = "__all__"
+
+
 class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speciality
@@ -25,6 +32,8 @@ class SimpleSpecialityModelSerializer(serializers.ModelSerializer):
 class DoctorProfileSerializer(serializers.ModelSerializer):
     specialities = SimpleSpecialityModelSerializer(many=True)
     invalidationreason_set = InvalidationReasonSerializer(many=True, read_only=True)
+    is_verified = serializers.BooleanField(read_only=True)
+    verification_reports = VerificationReportSerializer(many=True)
 
     class Meta:
         model = Doctor
