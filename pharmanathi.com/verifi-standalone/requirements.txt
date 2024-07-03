@@ -1,4 +1,4 @@
-Flask==3.0.3
-gunicorn==20.1.0
-selenium==4.8.2
-Werkzeug==2.2.3
+Flask==3.0.3 # https://github.com/pallets/flask
+gunicorn==22.0 # https://github.com/benoitc/gunicorn
+selenium==4.8.2 # https://github.com/SeleniumHQ/selenium
+Werkzeug==3.0.3 # https://github.com/pallets/werkzeug
