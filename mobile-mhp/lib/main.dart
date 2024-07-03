@@ -16,7 +16,7 @@ import 'helpers/http_helpers.dart';
 import 'repositories/appointment_repository.dart';
 import 'views/screens/appointments.dart';
 import 'screens/pages/earnings.dart';
-import 'screens/pages/home_page.dart';
+import 'views/screens/home_page.dart';
 import 'screens/pages/patient_list.dart';
 import 'screens/pages/profile.dart';
 
@@ -25,7 +25,7 @@ import 'screens/components/image_data.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'services/api_provider.dart';
+import 'services/appointment_api_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

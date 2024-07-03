@@ -15,7 +15,7 @@ class AppointmentTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OnlineConsultation(
+            builder: (context) => AppiontmentDetails(
              appointment:  appointment,
             ),
           ),
@@ -30,7 +30,7 @@ class AppointmentTile extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    appointment.time,
+                    appointment.appointmentTime,
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w100,
@@ -92,7 +92,7 @@ class AppointmentTile extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        appointment.time,
+                                        appointment.appointmentTime,
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ),
