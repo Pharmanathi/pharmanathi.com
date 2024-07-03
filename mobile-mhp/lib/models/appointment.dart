@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 
 class Appointment {
-  final String time;
   final String name;
   final String patientdetails;
   final String appointmentTime;
@@ -12,11 +11,12 @@ class Appointment {
   final String clinic_address;
   final String appointmentDate;
   final String patientName;
+  final bool isOnlineAppointment;
 
   Appointment({
-    required this.time,
     required this.name,
     required this.patientName,
+    required this.isOnlineAppointment,
     required this.patientdetails,
     required this.clinic_name,
     required this.clinic_address,
@@ -28,6 +28,10 @@ class Appointment {
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
+
+     List<dynamic> appointmentTypes = json['doctor']['appointment_types'];
+    Map<String, dynamic> appointmentType = appointmentTypes[0];
+    
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
@@ -57,12 +61,12 @@ class Appointment {
     }
 
     return Appointment(
+      isOnlineAppointment: appointmentType['is_online'],
       patientName:
           '${json['patient']['first_name']} ${json['patient']['last_name']}',
       clinic_name: json['clinic_name'] ?? 'Default clinic_name',
       clinic_address: json['practicelocations'] ?? 'Default clinic_address',
       consult_details: json['reason'] ?? 'Default consult_details',
-      time: formattedTime,
       patientdetails: json['details'] ?? 'patient details',
       name: '${json['patient']['first_name']} ${json['patient']['last_name']}',
       appointmentTime: formattedTime,

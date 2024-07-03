@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 
 import '../../models/appointment.dart';
-import '../../screens/components/buttons.dart';
+import 'buttons.dart';
 
-class OnlineConsultation extends StatelessWidget {
+class AppiontmentDetails extends StatelessWidget {
    final Appointment appointment;
 
-  const OnlineConsultation({super.key, required this.appointment});
+  const AppiontmentDetails({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +269,7 @@ class OnlineConsultation extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          appointment.time,
+                          appointment.appointmentTime,
                           style: TextStyle(
                               fontSize: 12,
                               color:
