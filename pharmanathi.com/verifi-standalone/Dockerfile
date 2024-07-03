@@ -8,7 +8,8 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
 COPY --chown=verifi:verifi ./requirements.txt /tmp/requirements.txt
-RUN apt update && pip install -r /tmp/requirements.txt
+RUN apt update && pip install --upgrade pip
+RUN pip install -r /tmp/requirements.txt
 
 RUN addgroup --system verifi \
     && adduser --system --ingroup verifi verifi
