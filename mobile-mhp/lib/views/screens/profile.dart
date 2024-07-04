@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters
 
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
-import 'package:pharma_nathi/screens/pages/manage_appointment.dart';
+import 'package:pharma_nathi/views/screens/manage_appointment.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/screens/components/image_data.dart';
-import '../../views/widjets/buttons.dart';
-import '../../views/widjets/navigationbar.dart';
+import '../widjets/buttons.dart';
+import '../widjets/navigationbar.dart';
 import 'account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

@@ -7,11 +7,11 @@ import 'package:pharma_nathi/screens/components/forms/form3.dart';
 import 'package:pharma_nathi/screens/components/forms/form4.dart';
 import 'package:pharma_nathi/screens/pages/onboard_page.dart';
 import 'package:pharma_nathi/screens/pages/signIn.dart';
-import 'package:pharma_nathi/screens/pages/earnings.dart';
+import 'package:pharma_nathi/views/screens/earnings.dart';
 import 'package:pharma_nathi/views/screens/appointments.dart';
 import 'package:pharma_nathi/views/screens/home_page.dart';
 import 'package:pharma_nathi/views/screens/patient_list.dart';
-import 'package:pharma_nathi/screens/pages/profile.dart';
+import 'package:pharma_nathi/views/screens/profile.dart';
 
 class AppRoutes {
   static const String onboarding = '/onboarding';
