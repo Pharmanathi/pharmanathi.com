@@ -11,7 +11,7 @@ import '../widjets/upcoming_appointment_tile.dart';
 import '../../services/user_api.dart';
 import '../../screens/components/UserProvider.dart';
 import '../../screens/components/bargraph/bargraph.dart';
-import '../../screens/components/navigationbar.dart';
+import '../widjets/navigationbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

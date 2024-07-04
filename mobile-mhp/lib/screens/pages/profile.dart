@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/screens/components/image_data.dart';
 import '../../views/widjets/buttons.dart';
-import '../components/navigationbar.dart';
+import '../../views/widjets/navigationbar.dart';
 import 'account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
