@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Send notification to Discord
         env:
-          DISCORD_WEBHOOK_URL: "https://discord.com/api/webhooks/1260035590800408617/k849heBnUIaLBcNmN8lJMZtPwiBorSbMeSJwPsIXuFpw6-TmVCdYmeaXzwPvb0JpdMlf/github"
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ "${{ github.event.action }}" == "created" || "${{ github.event.action }}" == "opened" ]; then
             COLOR=3066993  # Green for created
