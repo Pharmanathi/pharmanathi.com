@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/logging.dart';
+import 'package:provider/provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
+import '../screens/components/UserProvider.dart';
 
 class APIService {
   static final log = logger(APIService);
@@ -56,6 +58,7 @@ class APIService {
   static Future<void> sendDataToBackendFromJSONFile(BuildContext context,
       {VoidCallback? onSuccess}) async {
     try {
+      final userProvider = Provider.of<UserProvider>(context);
       _requestBody['doctor'] =
           http_helpers.getUserInfo(context)?['doctor_profile']['id'] as int;
 

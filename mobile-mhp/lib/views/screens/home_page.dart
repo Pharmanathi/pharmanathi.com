@@ -4,9 +4,11 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../blocs/user_bloc.dart';
 import '../../logging.dart';
 import '../../models/appointment.dart';
 import '../../repositories/appointment_repository.dart';
+import '../../repositories/user_repository.dart';
 import '../widjets/upcoming_appointment_tile.dart';
 import '../../services/user_api.dart';
 import '../../screens/components/UserProvider.dart';
@@ -22,12 +24,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late AppointmentRepository _appointmentRepository;
+  late UserRepository _userRepository;
+  late UserBloc _userBloc;
   final log = logger(HomePage);
   int _selectedIndex = 0;
   bool isLoading = true;
   String doctorName = 'Dr. Thabo Dube';
   int onlineAppointmentsCount = 0;
   int inPersonVisitAppointmentsCount = 0;
+  Map<String, dynamic> userData = {};
 
   List<Map<String, dynamic>> monthlyStats = [];
   List<Appointment> appointmentData = [];
@@ -61,13 +66,15 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _appointmentRepository = context.read<AppointmentRepository>();
+    _userRepository = Provider.of<UserRepository>(context, listen: false);
+    _userBloc = UserBloc(_userRepository);
     _loadData();
   }
 
   void _loadData() async {
     await _loadAppointmentData();
     await loadMonthlyStatsData();
-    fetchUserData(context);
+    await _fetchUserData(context);
   }
 
   Future<void> _loadAppointmentData() async {
@@ -89,6 +96,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _fetchUserData(BuildContext context) async {
+    try {
+      Map<String, dynamic> fetchedUserData =
+          await _userBloc.fetchUserData(context);
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider
+          .setUserData(fetchedUserData); 
+      setState(() {
+        userData = fetchedUserData;
+      });
+    } catch (e) {
+      log.e('Error fetching user data: $e');
+    }
+  }
+
   Future<void> loadDataFromJsonCompute(dynamic _) async {
     await _loadAppointmentData();
   }
@@ -104,8 +126,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    _userBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+
+    print('Username: ${userProvider.userData ?? 'Not loaded'}');
 
     return Scaffold(
       backgroundColor: Color(0xFFF7F9FC),
@@ -132,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Dr. ${userProvider.name}',
+                          'Dr. ${userProvider.userData['first_name'] ?? 'laoding...'}!',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

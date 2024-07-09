@@ -9,7 +9,9 @@ class UserProvider with ChangeNotifier {
   String? picture;
   String? backendToken;
   String _selectedAppointmentType = 'In Person Visit';
-  Map<String, dynamic>? _userData;
+  Map<String, dynamic> _userData = {};
+  Map<String, dynamic> get userData => _userData;
+  
 
   String get selectedAppointmentType => _selectedAppointmentType;
 
@@ -28,6 +30,12 @@ class UserProvider with ChangeNotifier {
     await _secureStorage.write(key: 'backend_token', value: backendToken);
 
     notifyListeners();
+  }
+
+  void setUserData(Map<String, dynamic> newUserData) {
+    _userData = newUserData;
+    notifyListeners();
+    print('inside provider : User data: $_userData');
   }
 
   //* Method to retrieve stored backend token
@@ -53,16 +61,6 @@ class UserProvider with ChangeNotifier {
         picture == null ||
         backendToken == null;
   }
-
-  // Method to set the user data
-  void setUserData(Map<String, dynamic> userData) {
-    _userData = userData;
-    print('User data: $_userData');
-    notifyListeners();
-  }
-
-  // Getter method to access the user data
-  Map<String, dynamic>? get userData => _userData;
 
   //* Method to set schedule data
   void setScheduleData(Map<String, List> scheduleData) {

@@ -32,10 +32,10 @@ Future<void> main() async {
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository);
+      await _runApp(appointmentRepository, userRepository);
     });
   } else {
-    await _runApp(appointmentRepository);
+    await _runApp(appointmentRepository, userRepository);
   }
 }
 
@@ -68,7 +68,7 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(AppointmentRepository appointmentRepository) async {
+Future<void> _runApp(AppointmentRepository appointmentRepository, UserRepository userRepository) async {
   runApp(
     MultiProvider(
       providers: [
