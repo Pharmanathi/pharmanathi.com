@@ -8,11 +8,19 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Notification
-        uses: th0th/notify-discord@v0.4.1
-        if: ${{ always() }}
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_JOB_NAME: "Build and deploy"
-          GITHUB_JOB_STATUS: ${{ job.status }}
+      - name: Print milestone information
+        run: |
+          echo "Milestone Title: ${{ github.event.milestone.title }}"
+          echo "Milestone Description: ${{ github.event.milestone.description }}"
+          echo "Milestone Due On: ${{ github.event.milestone.due_on }}"
+          echo "Milestone State: ${{ github.event.milestone.state }}"
+          echo "Milestone URL: ${{ github.event.milestone.html_url }}"
+          
+      # - name: Send Notification
+      #   uses: th0th/notify-discord@v0.4.1
+      #   if: ${{ always() }}
+      #   env:
+      #     DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #     GITHUB_ACTOR: ${{ github.actor }}
+      #     GITHUB_JOB_NAME: "Build and deploy"
+      #     GITHUB_JOB_STATUS: ${{ job.status }}
