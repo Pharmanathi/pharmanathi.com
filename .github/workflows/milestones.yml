@@ -22,7 +22,7 @@ jobs:
           fi
       
       - name: Get description
-        run: echo "milestone_description=$(jq -Rs . <<< 'The sprint was **${{ env.event_action }}** by **${{ github.event.sender.login }}**.\\n**:information_source:More info**:\\n*Due Date* ${{ github.event.milestone.due_on }}\\n*Description*:${{ github.event.milestone.description }}')" >> $GITHUB_ENV
+        run: echo "milestone_description=$(jq -Rs . <<< 'The sprint was **${{ env.event_action }}** by **${{ github.event.sender.login }}**. \(\n) **:information_source:More info**:\\n*Due Date* ${{ github.event.milestone.due_on }}\\n*Description*:${{ github.event.milestone.description }}')" >> $GITHUB_ENV
 
       - name: Send notification to Discord
         env:
