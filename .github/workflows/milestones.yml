@@ -8,25 +8,23 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send notification to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: Set env variables
         run: |
           if [ "${{ github.event.action }}" = "created" ]; then
             echo "embed_color=22423220" >> "$GITHUB_ENV"
             echo "event_action=started" >> "$GITHUB_ENV"
-            echo "we started $event_action - $embed_color"
           elif ["${{ github.event.action }}" = "opened" ]; then
             echo "embed_color=3066993" >> "$GITHUB_ENV"
             echo "event_action=opened" >> "$GITHUB_ENV"
-            echo "we opened $event_action - $embed_color"
           elif [ "${{ github.event.action }}" == "closed" ]; then
-            echo "action_state=yellow" >> "$GITHUB_ENV"
             echo "embed_color=3447003" >> "$GITHUB_ENV"
             echo "event_action=closed" >> "$GITHUB_ENV"
-            echo "we closed $event_action - $embed_color"
-            printf '%s\n' "$action_state" # This will output 'yellow'
           fi
+
+      - name: Send notification to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
           echo "Color is $embed_color"
           echo "Action is $event_action"
           curl -H "Content-Type: application/json" \
