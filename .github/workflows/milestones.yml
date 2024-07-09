@@ -1,8 +1,8 @@
-name: Milesone Notifier
+name: Milestone Notifier
 
 on:
   milestone:
-    types: [opened, closed]
+    types: [created, opened, closed]
 
 jobs:
   notify:
