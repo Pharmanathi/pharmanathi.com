@@ -42,7 +42,7 @@ jobs:
                             "url": "${{ github.event.sender.url }}"
                         },
                         "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
-                        "description": "The spint or milestone was **${{ github.event.action }}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ env.milestone_description }}",
+                        "description": ${{ env.milestone_description }},
                         "color": ${{ env.embed_color }},
                         "url": "${{ github.event.milestone.html_url }}"
                     }
