@@ -13,11 +13,11 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ "${{ github.event.action }}" == "created" || "${{ github.event.action }}" == "opened" ]; then
-            COLOR=3066993  # Green for created
-            ACTION="started"
+            echo "COLOR=3066993" >> "$GITHUB_ENV"
+            echo "ACTION=started" >> "$GITHUB_ENV"
           elif [ "${{ github.event.action }}" == "closed" ]; then
-            COLOR=3447003  # Blue for closed
-            ACTION="ended"
+            echo "COLOR=3447003" >> "$GITHUB_ENV"
+            echo "ACTION=closed" >> "$GITHUB_ENV"
           fi
           echo ${COLOR}
           echo ${ACTION}
