@@ -8,6 +8,32 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Send notification to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ "${{ github.event.action }}" == "created" || "${{ github.event.action }}" == "opened" ]; then
+            COLOR=3066993  # Green for created
+            ACTION="started"
+          elif [ "${{ github.event.action }}" == "closed" ]; then
+            COLOR=3447003  # Blue for closed
+            ACTION="ended"
+          fi
+
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+                "username": "GitHub Actions",
+                "embeds": [{
+                  "title": "Sprint '${{ github.event.milestone.title }}' was '${ACTION}' by '${{ github.event.sender.login }}'",
+                  "description": "For more information, [click here]('${{ github.event.milestone.html_url }}').",
+                  "color": '${COLOR}',
+                  "thumbnail": {
+                    "url": "'${{ github.event.sender.avatar_url }}'"
+                  }
+                }]
+              }' $DISCORD_WEBHOOK_URL
+      
       - name: Print milestone information
         run: |
           echo "Milestone Title: ${{ github.event.milestone.title }}"
