@@ -20,6 +20,9 @@ jobs:
             echo "embed_color=3066993" >> "$GITHUB_ENV"
             echo "event_action=closed" >> "$GITHUB_ENV"
           fi
+      
+      - name: Get description
+        run: echo "milestone_description=$(jq -Rs . <<<'${{ github.event.milestone.description }}')" >> $GITHUB_ENV
 
       - name: Send notification to Discord
         env:
@@ -39,7 +42,7 @@ jobs:
                             "url": "${{ github.event.sender.url }}"
                         },
                         "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
-                        "description": "The spint or milestone was **${{ github.event.action }}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
+                        "description": "The spint or milestone was **${{ github.event.action }}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ env.milestone_description }}",
                         "color": ${{ env.embed_color }},
                         "url": "${{ github.event.milestone.html_url }}"
                     }
