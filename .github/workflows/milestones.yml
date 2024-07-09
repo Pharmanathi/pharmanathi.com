@@ -15,6 +15,7 @@ jobs:
           echo "Milestone Due On: ${{ github.event.milestone.due_on }}"
           echo "Milestone State: ${{ github.event.milestone.state }}"
           echo "Milestone URL: ${{ github.event.milestone.html_url }}"
+          echo " ${{ github.event.milestone }}"
           
       # - name: Send Notification
       #   uses: th0th/notify-discord@v0.4.1
