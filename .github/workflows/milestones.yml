@@ -15,12 +15,15 @@ jobs:
           if [ "${{ github.event.action }}" = "created" ]; then
             echo "embed_color=22423220" >> "$GITHUB_ENV"
             echo "event_action=started" >> "$GITHUB_ENV"
+            echo "we started $event_action - $embed_color"
           elif ["${{ github.event.action }}" = "opened" ]; then
             echo "embed_color=3066993" >> "$GITHUB_ENV"
             echo "event_action=opened" >> "$GITHUB_ENV"
+            echo "we opened $event_action - $embed_color"
           elif [ "${{ github.event.action }}" == "closed" ]; then
             echo "embed_color=3447003" >> "$GITHUB_ENV"
             echo "event_action=closed" >> "$GITHUB_ENV"
+            echo "we closed $event_action - $embed_color"
           fi
           echo "Color is $embed_color"
           echo "Action is $event_action"
