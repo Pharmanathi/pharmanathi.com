@@ -19,7 +19,8 @@ jobs:
             COLOR=3447003  # Blue for closed
             ACTION="ended"
           fi
-
+          echo ${COLOR}
+          echo ${ACTION}
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
@@ -33,7 +34,7 @@ jobs:
                         },
                         "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
                         "description": "The spint or milestone was **${ACTION}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
-                        "color": "${COLOR}",
+                        "color": 3447003,
                         "url": "${{ github.event.milestone.html_url }}"
                     }
                   ]
