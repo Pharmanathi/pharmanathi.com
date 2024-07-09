@@ -11,7 +11,7 @@ jobs:
       - name: Set env variables
         run: |
           if [ "${{ github.event.action }}" = "created" ]; then
-            echo "embed_color=22423220" >> "$GITHUB_ENV"
+            echo "embed_color=15844367" >> "$GITHUB_ENV"
             echo "event_action=started" >> "$GITHUB_ENV"
           elif ["${{ github.event.action }}" = "opened" ]; then
             echo "embed_color=3066993" >> "$GITHUB_ENV"
