@@ -24,14 +24,19 @@ jobs:
           -X POST \
           -d '{
                 "username": "GitHub Actions",
-                "embeds": [{
-                  "title": "Sprint '${{ github.event.milestone.title }}' was '${ACTION}' by '${{ github.event.sender.login }}'",
-                  "description": "For more information, [click here]('${{ github.event.milestone.html_url }}').",
-                  "color": '${COLOR}',
-                  "thumbnail": {
-                    "url": "'${{ github.event.sender.avatar_url }}'"
-                  }
-                }]
+                "embeds": [
+                    {
+                        "author": {
+                            "name": "${{ github.event.sender.login }}",
+                            "icon_url": "${{ github.event.sender.avatar_url }}",
+                            "url": "${{ github.event.sender.url }}"
+                        },
+                        "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
+                        "description": "The spint or milestone was **${ACTION}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
+                        "color": "${COLOR}",
+                        "url": "${{ github.event.milestone.html_url }}"
+                    }
+                  ]
               }' $DISCORD_WEBHOOK_URL
       
       - name: Print milestone information
