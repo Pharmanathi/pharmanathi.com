@@ -13,14 +13,14 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ "${{ github.event.action }}" == "created" || "${{ github.event.action }}" == "opened" ]; then
-            echo "COLOR=3066993" >> "$GITHUB_ENV"
-            echo "ACTION=started" >> "$GITHUB_ENV"
+            echo "embed_color=3066993" >> "$GITHUB_ENV"
+            echo "event_action=started" >> "$GITHUB_ENV"
           elif [ "${{ github.event.action }}" == "closed" ]; then
-            echo "COLOR=3447003" >> "$GITHUB_ENV"
-            echo "ACTION=closed" >> "$GITHUB_ENV"
+            echo "embed_color=3447003" >> "$GITHUB_ENV"
+            echo "event_action=closed" >> "$GITHUB_ENV"
           fi
-          echo ${COLOR}
-          echo ${ACTION}
+          echo $embed_color
+          echo $event_action
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
@@ -33,8 +33,8 @@ jobs:
                             "url": "${{ github.event.sender.url }}"
                         },
                         "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
-                        "description": "The spint or milestone was **${ACTION}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
-                        "color": 3447003,
+                        "description": "The spint or milestone was **$event_action** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
+                        "color": $embed_color,
                         "url": "${{ github.event.milestone.html_url }}"
                     }
                   ]
