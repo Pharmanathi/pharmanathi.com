@@ -12,7 +12,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          if [ "${{ github.event.action }}" == "created" ] | ["${{ github.event.action }}" == "opened" ]; then
+          if [ "${{ github.event.action }}" = "created" ] | ["${{ github.event.action }}" = "opened" ]; then
             echo "embed_color=3066993" >> "$GITHUB_ENV"
             echo "event_action=started" >> "$GITHUB_ENV"
             echo "We created/opened"
