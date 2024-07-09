@@ -25,8 +25,8 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          echo "Color is $embed_color"
-          echo "Action is $event_action"
+          echo "Color is ${{ env.embed_color }}"
+          echo "Action is  ${{ env.event_action }}"
           curl -H "Content-Type: application/json" \
           -X POST \
           -d '{
@@ -40,7 +40,7 @@ jobs:
                         },
                         "title": "Sprint/Milestone ${{ github.event.milestone.title }}",
                         "description": "The spint or milestone was **${{ github.event.action }}** by **${{ github.event.sender.login }}**.\n:information_source: **More info**:\n*Due Date* ${{ github.event.milestone.due_on }}\n*Description*: ${{ github.event.milestone.description }}",
-                        "color": $embed_color,
+                        "color": ${{ env.embed_color }},
                         "url": "${{ github.event.milestone.html_url }}"
                     }
                   ]
