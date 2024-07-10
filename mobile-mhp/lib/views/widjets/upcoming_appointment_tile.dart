@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pharma_nathi/views/widjets/appiontment_details.dart';
 
 import '../../models/appointment.dart';

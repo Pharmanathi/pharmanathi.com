@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../../models/user.dart';
 
 class UserProvider with ChangeNotifier {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -9,9 +12,9 @@ class UserProvider with ChangeNotifier {
   String? picture;
   String? backendToken;
   String _selectedAppointmentType = 'In Person Visit';
-  Map<String, dynamic> _userData = {};
-  Map<String, dynamic> get userData => _userData;
-  
+
+  User? _user;
+  User? get user => _user;
 
   String get selectedAppointmentType => _selectedAppointmentType;
 
@@ -26,16 +29,22 @@ class UserProvider with ChangeNotifier {
     this.picture = picture;
     this.backendToken = backendToken;
 
-    //* Store the backend token securely
-    await _secureStorage.write(key: 'backend_token', value: backendToken);
+    try {
+      //* Store the backend token securely
+      await _secureStorage.write(key: 'backend_token', value: backendToken);
+    } catch (e) {
+      //* Handle any errors that occur during secure storage write operation
+      debugPrint('Error writing backend token: $e');
+    }
 
     notifyListeners();
   }
 
-  void setUserData(Map<String, dynamic> newUserData) {
-    _userData = newUserData;
+  //* Method to set user data
+  void setUserData(User user) {
+    _user = user;
     notifyListeners();
-    print('inside provider : User data: $_userData');
+    debugPrint('Inside provider : User data: $user');
   }
 
   //* Method to retrieve stored backend token
@@ -43,6 +52,8 @@ class UserProvider with ChangeNotifier {
     try {
       return await _secureStorage.read(key: 'backend_token');
     } catch (e) {
+      //* Handle any errors that occur during secure storage read operation
+      debugPrint('Error reading backend token: $e');
       return null;
     }
   }
@@ -64,7 +75,17 @@ class UserProvider with ChangeNotifier {
 
   //* Method to set schedule data
   void setScheduleData(Map<String, List> scheduleData) {
-    // Update schedule data
-    print('Schedule data updated: $scheduleData');
+    //* Update schedule data
+    debugPrint('Schedule data updated: $scheduleData');
   }
+}
+
+User? getUserInfo(BuildContext context) {
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  return userProvider.user; // Return single user, which is of type User?
+}
+
+void setUserDataProxy(User userData, BuildContext context) {
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  userProvider.setUserData(userData); // Pass User instance to setUserData
 }

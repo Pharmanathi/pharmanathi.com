@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class User {
   int id;
   bool isDoctor;
@@ -14,11 +12,11 @@ class User {
   String firstName;
   String lastName;
   String email;
-  int saIdNo;
-  String initials;
-  String title;
-  String contactNo;
-  String university;
+  int? saIdNo; // Make saIdNo nullable
+  String? initials;
+  String? title;
+  String? contactNo;
+  String? university;
   List<int> userPermissions;
 
   User({
@@ -35,11 +33,11 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.saIdNo,
-    required this.initials,
-    required this.title,
-    required this.contactNo,
-    required this.university,
+    this.saIdNo,
+    this.initials,
+    this.title,
+    this.contactNo,
+    this.university,
     required this.userPermissions,
   });
 
@@ -47,27 +45,37 @@ class User {
     return User(
       id: json['id'],
       isDoctor: json['is_doctor'],
-      doctorProfile: json['doctor_profile'] ,
-      lastLogin: json['last_login'] != null ? DateTime.parse(json['last_login']) : null,
+      doctorProfile: json['doctor_profile'] != null
+          ? DoctorProfile.fromJson(json['doctor_profile'])
+          : null,
+      lastLogin: json['last_login'] != null
+          ? DateTime.parse(json['last_login'])
+          : null,
       isSuperuser: json['is_superuser'],
       isStaff: json['is_staff'],
       isActive: json['is_active'],
-      dateJoined: json['date_joined'] != null ? DateTime.parse(json['date_joined']) : null,
-      dateCreated: json['date_created'] != null ? DateTime.parse(json['date_created']) : null,
-      dateModified: json['date_modified'] != null ? DateTime.parse(json['date_modified']) : null,
+      dateJoined: json['date_joined'] != null
+          ? DateTime.parse(json['date_joined'])
+          : null,
+      dateCreated: json['date_created'] != null
+          ? DateTime.parse(json['date_created'])
+          : null,
+      dateModified: json['date_modified'] != null
+          ? DateTime.parse(json['date_modified'])
+          : null,
       firstName: json['first_name'],
       lastName: json['last_name'],
       email: json['email'],
-      saIdNo: json['sa_id_no'],
+      saIdNo: json['sa_id_no'], // Allow saIdNo to be nullable
       initials: json['initials'],
       title: json['title'],
       contactNo: json['contact_no'],
       university: json['university'],
-      userPermissions: List<int>.from(json['user_permissions']),
+      userPermissions: json['user_permissions'] != null
+          ? List<int>.from(json['user_permissions'])
+          : [],
     );
   }
-
-  
 }
 
 class DoctorProfile {
@@ -85,6 +93,21 @@ class DoctorProfile {
     required this.practiceLocations,
   });
 
+  factory DoctorProfile.fromJson(Map<String, dynamic> json) {
+    return DoctorProfile(
+      id: json['id'],
+      specialities: json['specialities'] != null
+          ? (json['specialities'] as List)
+              .map((specialityJson) => Speciality.fromJson(specialityJson))
+              .toList()
+          : [],
+      hpcsaNo: json['hpcsa_no'],
+      mpNo: json['mp_no'],
+      practiceLocations: json['practice_locations'] != null
+          ? List<int>.from(json['practice_locations'])
+          : [],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -92,7 +115,7 @@ class DoctorProfile {
       'specialities': specialities.map((e) => e.toJson()).toList(),
       'hpcsa_no': hpcsaNo,
       'mp_no': mpNo,
-      'practicelocations': practiceLocations,
+      'practice_locations': practiceLocations,
     };
   }
 }

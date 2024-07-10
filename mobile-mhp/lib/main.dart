@@ -10,7 +10,7 @@ import 'helpers/http_helpers.dart';
 import 'repositories/appointment_repository.dart';
 import 'repositories/user_repository.dart';
 import 'routes/app_routes.dart';
-import 'services/appointment_api_provider.dart';
+import 'services/api_provider.dart';
 import 'screens/components/UserProvider.dart';
 import 'screens/components/image_data.dart';
 import 'firebase_options.dart';
@@ -26,7 +26,7 @@ Future<void> main() async {
 
   ApiProvider apiProvider = ApiProvider();
   AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
-  UserRepository userRepository = UserRepository();
+  UserRepository userRepository = UserRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
@@ -75,7 +75,7 @@ Future<void> _runApp(AppointmentRepository appointmentRepository, UserRepository
         ChangeNotifierProvider(create: (_) => ImageDataProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
-        Provider.value(value: UserRepository()), 
+        Provider.value(value: userRepository), 
       ],
       child: const MyApp(),
     ),
