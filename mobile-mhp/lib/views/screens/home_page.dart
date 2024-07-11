@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/const/color_const.dart';
 import 'package:pharma_nathi/models/user.dart';
 import 'package:provider/provider.dart';
 import '../../logging.dart';
@@ -136,7 +137,7 @@ class _HomePageState extends State<HomePage> {
     final userInfo = userProvider.user;
 
     return Scaffold(
-      backgroundColor: Color(0xFFF7F9FC),
+      backgroundColor: Pallet.BACKGROUND_COLOR,
       body: SafeArea(
         child: Column(
           children: [
