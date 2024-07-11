@@ -67,8 +67,8 @@ lib/
       widgets/
         appointment_tile.dart
         upcoming_appointment_tile.dart
-      utils/
-        http_helpers.dart
+    helpers/
+      http_helpers.dart
     routes/
       app_routes.dart
 
