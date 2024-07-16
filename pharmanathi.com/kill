@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script stops the sytem and kills the current server.
-# As it stands, it does not check whether this is prod or 
+# As it stands, it does not check whether this is prod or
 # test server. *** USE WITH CAUTION ***.
 
 DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"

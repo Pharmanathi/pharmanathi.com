@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# This script is used to run and configure the DNS for the test 
-# environment only. DO NOT use it to run the production workload 
+# This script is used to run and configure the DNS for the test
+# environment only. DO NOT use it to run the production workload
 # since it only updates test.pharmanathi.com.
-# To run it: 
+# To run it:
 #   - First ensure it is executable: chmod +x run-pharmanthi-test
 #   - Then run it, passing it options as follows: ./run-pharmanthi-test [--build] [--update]
 
@@ -56,4 +56,3 @@ echo Done
 
 printf "\n\n--------------------- Starting Docker services ----------------\n"
 docker compose -f production.yml up
-

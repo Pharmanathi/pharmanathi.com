@@ -84,7 +84,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
-    "allauth.socialaccount.providers.google"
+    "allauth.socialaccount.providers.google",
 ]
 
 LOCAL_APPS = ["pharmanathi_backend.users", "pharmanathi_backend.appointments", "pharmanathi_backend.adminsite"]
