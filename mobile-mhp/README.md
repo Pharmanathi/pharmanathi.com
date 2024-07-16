@@ -1,13 +1,12 @@
-# Pharma Nathi
+# Pharmanathi MP client
 
-Welcome to PharmaNathi! This application is designed to help medical professional to streamline and bring closer their practice to their patient.
+This repository contains the Flutter-based client for the Pharmanathi MP client.
 ## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Directory Structure](#directory-structure)
 - [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [Flutter CookBook](#flutter-cook-book)
+- [Useful Links ](#useful-links)
 
 ## Getting Started
 
@@ -20,6 +19,7 @@ Make sure you have the following software installed on your local machine:
 - [Flutter](https://flutter.dev/docs/get-started/install)
 - [Dart](https://dart.dev/get-dart)
 - [Android Studio](https://developer.android.com/studio) or [Visual Studio Code](https://code.visualstudio.com/)
+- [Xcode](https://developer.apple.com/xcode/) _**if your are running MacOs**_
 
 ### Installation
 
@@ -36,41 +36,61 @@ flutter pub get
 ## Directory-structure
 
 ```bash
-lib/
-  main.dart
-  .env.developent
-  .env.production
-  ios/
-  android/
-  assets/
-    images/
-  lib/
-    logging.dart
-    config/
-      color_const.dart
-    models/
-      appointment.dart
-      user.dart
-    repositories/
-      appointment_repository.dart
-      user_repository.dart
-    services/
-      api_provider.dart
-      auth_service.dart
-    blocs/
-      appointment_bloc.dart
-      user_bloc.dart
-    views/
-      screens/
-        appointment_screen.dart
-        login_screen.dart
-      widgets/
-        appointment_tile.dart
-        upcoming_appointment_tile.dart
-    helpers/
-      http_helpers.dart
-    routes/
-      app_routes.dart
+├── android
+├── assets
+├── ios
+├── lib
+  ├── blocs
+  │   ├── appointment_bloc.dart
+  │   └── user_bloc.dart
+  ├── config
+  │   └── color_const.dart
+  ├── firebase_options.dart
+  ├── helpers
+  │   └── http_helpers.dart
+  ├── logging.dart
+  ├── main.dart
+  ├── models
+  │   ├── appointment.dart
+  │   └── user.dart
+  ├── repositories
+  │   ├── appointment_repository.dart
+  │   └── user_repository.dart
+  ├── routes
+  │   └── app_routes.dart
+  ├── screens
+  │   ├── components
+  │   │   ├── UserProvider.dart
+  │   │   ├── bargraph
+  │   │   ├── forms
+  │   │   └── image_data.dart
+  │   └── pages
+  │       ├── onboard_page.dart
+  │       ├── signIn.dart
+  │       └── working_hours.dart
+  ├── services
+  │   ├── api_provider.dart
+  │   ├── manage_appointment_api.dart
+  │   ├── onboard_api.dart
+  │   └── working_hours_api.dart
+  └── views
+      ├── screens
+      │   ├── account.dart
+      │   ├── appointments.dart
+      │   ├── earnings.dart
+      │   ├── home_page.dart
+      │   ├── manage_appointment.dart
+      │   ├── patient_list.dart
+      │   └── profile.dart
+      └── widjets
+          ├── WorkingHoursInput.dart
+          ├── appiontment_details.dart
+          ├── appointment_tile.dart
+          ├── buttons.dart
+          ├── navigationbar.dart
+          ├── patiant_profile_tile.dart
+          ├── upcoming_appointment_tile.dart
+          └── weekdays.dart
 
 ```
 
@@ -88,7 +108,6 @@ lib/
 
 **assets/:** Contains project assets like images and vectors
 
-**logging.dart** holds configuration for our logging framework
 
 **Lib/**
 
@@ -96,9 +115,12 @@ lib/
 
  - **models/:** Contains data models for the application.
 
+ - **logging.dart** holds configuration for our logging framework
+
 - **repositories/:** Handles data operations and communication with data sources.
 
-- **services/:** Provides core services like API interaction and authentication.
+- **services/:** 
+    - **api_provider.dart :** encapsulate reusable logic that may not necessarily be tied to data access or storage. They can perform operations such as making HTTP requests
 
 - **blocs/:** Contains BLoC (Business Logic Component) files for managing state.
 
@@ -142,16 +164,8 @@ lib/
 - [flutter_lints](https://pub.dev/packages/flutter_lints): ^3.0.1
 - [change_app_package_name](https://pub.dev/packages/change_app_package_name): ^1.1.0
 
-## Contributing
 
-- Allways keep main up-to-date (git pull)
-- Create a new branch (git checkout -b feature-branch).
-- Commit your changes (git commit -m 'Add some feature').
-- Push to the branch (git push origin feature-branch).
-- Create a new Pull Request.
-- Wait for a review
-
-## Flutter CookBook
+## Useful Links
 
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
