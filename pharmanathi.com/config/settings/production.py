@@ -91,9 +91,10 @@ STORAGES = {
         "BACKEND": "pharmanathi_backend.utils.storages.MediaS3Storage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
 # MEDIA
 # ------------------------------------------------------------------------------
 MEDIA_URL = f"https://{aws_s3_domain}/media/"
