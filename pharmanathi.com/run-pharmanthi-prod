@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script is used to run and configure the DNS for the *production* environment.
-# To run it: 
+# To run it:
 #   - First ensure it is executable: chmod +x run-pharmanthi-prod
 #   - Then run it, passing it options as follows: ./run-pharmanthi-prod [--build] [--update]
 
@@ -59,4 +59,3 @@ echo Done
 
 printf "\n\n--------------------- Starting Docker services ----------------\n"
 docker compose -f production.yml up
-
