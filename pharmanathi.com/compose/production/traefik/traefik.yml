@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`pharmanathi.com`) || Host(`www.pharmanathi.com`)'
+      rule: 'Host(`pharmanathi.com`) || Host(`www.pharmanathi.com`) || Host(`test.pharmanathi.com`) || Host(`api.pharmanathi.com`)'
       entryPoints:
         - web-secure
       middlewares:

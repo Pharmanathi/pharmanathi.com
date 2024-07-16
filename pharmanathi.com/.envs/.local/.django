@@ -17,7 +17,7 @@ CELERY_FLOWER_PASSWORD=debug
 
 # Django
 # ------------------------------------------------------------------------------
-DJANGO_ALLOWED_HOST=*
+DJANGO_ALLOWED_HOSTS=127.0.0.1, localhost
 # Add amins using the fomat names1-email1_names2-email2
 ADMINS="Peridot Admin-peridot.pharmanathi@gmail.com"
 SERVER_EMAIL=me@nehemie.dev
