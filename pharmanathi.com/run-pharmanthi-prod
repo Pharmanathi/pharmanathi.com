@@ -7,18 +7,8 @@
 
 IP=$(curl -s ifconfig.me)
 
-export CLOUDFLARE_AUTH_EMAIL=
-export CLOUDFLARE_AUTH_KEY=
-export CLOUDFLARE_ZONE_ID=
-
-DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"
-
-# Cancel and Exit
-cleanup() {
-    printf "\n\nScript interrupted. Cleaning up...\n\n"
-    exit 1
-}
-trap cleanup SIGINT
+# Prepare environment
+source ./prepare-environment
 
 # Specify whether to collect latest code change using the --update flag
 # Note that this will first ensure the current branch is "main" before

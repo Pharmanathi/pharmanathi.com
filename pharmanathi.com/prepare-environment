@@ -1,0 +1,14 @@
+#/bin/bash
+# Configure environment variables
+
+export CLOUDFLARE_AUTH_EMAIL=alfred.nehemie@gmail.com
+export CLOUDFLARE_AUTH_KEY=b50325aa74bd7603b1a903fd459c7048ef4b0
+export CLOUDFLARE_ZONE_ID=3c67621dd98d57372f333deab865acf8
+export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"
+
+# Cancel and Exit
+cleanup() {
+    printf "\n\nScript interrupted. Cleaning up...\n\n"
+    exit 1
+}
+trap cleanup SIGINT
