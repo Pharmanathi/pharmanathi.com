@@ -2,8 +2,8 @@ import datetime
 
 from flask import Flask, jsonify, request
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 app = Flask(__name__)
 SELENIUM_GRID_HOST = "web-driver"
@@ -28,10 +28,9 @@ def verify():
             400,
         )
 
-    driver = webdriver.Remote(
-        desired_capabilities=DesiredCapabilities.CHROME,
-        command_executor="http://web-driver:4444",
-    )
+    options = ChromeOptions()
+    driver = webdriver.Remote(options=options, command_executor="http://web-driver:4444")
+
     driver.set_page_load_timeout(300)
     data = None
 
