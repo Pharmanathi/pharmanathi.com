@@ -41,6 +41,12 @@ fi
 printf "\n\n----------------------- Running Django Migrations --------------------\n"
 docker compose -f production.yml run --rm django python manage.py migrate
 
+printf "\n\n------------------------ Syncing Social Apps... ----------------------\n"
+docker compose -f production.yml run --rm django python manage.py runscript sync_social_apps
+
+printf "\n\n------------------------ Syncing Specialities... ----------------------\n"
+docker compose -f production.yml run --rm django python manage.py runscript sync_specialities
+
 printf "\n\n-------------------------- Notifying via Discord ---------------------\n"
 curl -X POST -H "Content-Type: application/json" \
     -d '{
@@ -57,5 +63,5 @@ curl -X POST -H "Content-Type: application/json" \
         }' $DISCORD_WEBHOOK_URL
 echo Done
 
-printf "\n\n--------------------- Starting Docker services ----------------\n"
+printf "\n\n------------------------ Starting Docker services -------------------\n"
 docker compose -f production.yml up

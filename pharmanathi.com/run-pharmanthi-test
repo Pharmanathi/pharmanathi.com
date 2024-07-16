@@ -16,13 +16,13 @@ source ./prepare-environment
 # Note that this will first ensure the current branch is "main" before
 # pulling and merging with remote.
 if [[ $* == *--update* ]]; then
-    printf "\n\n-------------- Getting System's latest version --------------\n"
+    printf "\n\n------------------- Getting System's latest version --------------------\n"
     git checkout main
     git pull
 fi
 
 
-printf "\n\n---------------- Started updating DNS settings ----------------"
+printf "\n\n--------------------- Started updating DNS settings ---------------------\n"
 # test.pharmanathi.com
 wget -O - https://raw.githubusercontent.com/Olfredos6/cloudflary.py/cli/cloudflary.py |python3 - \
 update --record-id 08091ddf5fe91083410bd7ccb5c7ae04 --payload "{\"content\": \"$IP\"}"
@@ -30,15 +30,21 @@ update --record-id 08091ddf5fe91083410bd7ccb5c7ae04 --payload "{\"content\": \"$
 
 # Rebuild images using the --build flag
 if [[ $* == *--build* ]]; then
-    printf "\n\n--------------- Cleaning and building images --------------\n"
+    printf "\n\n-------------------- Cleaning and building images --------------------\n"
     docker image prune --all --force
     docker compose -f production.yml build
 fi
 
-printf "\n\n----------------------- Running Django Migrations --------------------\n"
+printf "\n\n----------------------- Running Django Migrations ---------------------\n"
 docker compose -f production.yml run --rm django python manage.py migrate
 
-printf "\n\n-------------------------- Notifying via Discord ---------------------\n"
+printf "\n\n------------------------ Syncing Social Apps... -----------------------\n"
+docker compose -f production.yml run --rm django python manage.py runscript sync_social_apps
+
+printf "\n\n------------------------ Syncing Specialities... ----------------------\n"
+docker compose -f production.yml run --rm django python manage.py runscript sync_specialities
+
+printf "\n\n-------------------------- Notifying via Discord ----------------------\n"
 curl -X POST -H "Content-Type: application/json" \
     -d '{
             "username": "Pharmanathi Test Server Bot",
@@ -48,11 +54,11 @@ curl -X POST -H "Content-Type: application/json" \
                     "title": "Test Server Status",
                     "description": "The test server is starting...",
                     "color": 15844367,
-                    "url": "https://www.pharmanthi.com"
+                    "url": "https://test.pharmanthi.com"
                 }
               ]
         }' $DISCORD_WEBHOOK_URL
 echo Done
 
-printf "\n\n--------------------- Starting Docker services ----------------\n"
+printf "\n\n------------------------ Starting Docker services ---------------------\n"
 docker compose -f production.yml up
