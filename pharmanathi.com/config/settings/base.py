@@ -84,8 +84,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
-    "allauth.socialaccount.providers.google",
-    "anymail",
+    "allauth.socialaccount.providers.google"
 ]
 
 LOCAL_APPS = ["pharmanathi_backend.users", "pharmanathi_backend.appointments", "pharmanathi_backend.adminsite"]
@@ -221,7 +220,7 @@ X_FRAME_OPTIONS = "DENY"
 # Django Admin URL.
 ADMIN_URL = "admin/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = list(map(lambda e: (tuple(e.split("-"))), env.str("ADMINS").split("_")))
+ADMINS = list(map(lambda e: (tuple(e.split("-"))), env.str("ADMINS", default="").split("_")))
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
@@ -375,13 +374,13 @@ SPECTACULAR_SETTINGS = {
 EMAIL_TIMEOUT = 5
 
 EMAIL_SUBJECT_PREFIX = "[Pharmanathi]"
-SERVER_EMAIL = env.str("SERVER_EMAIL")
-DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL")
-EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
-EMAIL_HOST = "mail.privateemail.com"  # env.str("EMAIL_HOST")
+SERVER_EMAIL = env.str("SERVER_EMAIL", default="")
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="")
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
+EMAIL_HOST = "mail.privateemail.com"  # env.str("EMAIL_HOST", default="")
 EMAIL_USE_TLS = True
-EMAIL_PORT = env.str("EMAIL_PORT")
+EMAIL_PORT = env.str("EMAIL_PORT", default="")
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
@@ -390,9 +389,9 @@ EMAIL_BACKEND = env(
 )
 
 ANYMAIL = {
-    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY"),
+    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY", default=""),
     "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
-    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN"),
+    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN", default=""),
 }
 
 # VERIFI
