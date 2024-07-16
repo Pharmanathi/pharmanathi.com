@@ -298,7 +298,11 @@ class VerificationReport(BaseCustomModel):
     def summary(self) -> str:
         """Returns a string summary of a report"""
         summary_start = f"{self.type.upper()} verification on MP {self.mp} with URL {self.report.get('url')} "
-        if self.type == "SAPC":
+
+        # Case: Error occured, regardless of type
+        if "error" in self.report:
+            return self.report.get("error")
+        elif self.type == "SAPC":
             summary_end = self._summary_sapc()
         else:
             summary_end = self._summary_hpcsa()

@@ -45,9 +45,8 @@ def verify():
 
         data = verification_func(driver, identifier)
     except Exception as e:
-        print(e)
         return (
-            jsonify({"detail": "An error occured on my side. Please try again later."}),
+            jsonify({"error": f"Implementation Error: {str(e)}"}),
             500,
         )
     finally:

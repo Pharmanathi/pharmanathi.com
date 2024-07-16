@@ -69,5 +69,8 @@ def auto_mp_verification_task(mp_pk):
     verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}"
     admin_logger.info(f"Starting {verification_type} verification on MP {mp} with URL {verification_url}")
     verifi_response = requests.get(verification_url)
-    vr = VerificationReport.objects.create(mp=mp, type=verification_type, report=verifi_response.json())
+    verifi_response_json = verifi_response.json()
+    if verifi_response.status_code != 200:
+        admin_logger.error(f"Verification failed with error '{verifi_response_json.get('error')}' ")
+    vr = VerificationReport.objects.create(mp=mp, type=verification_type, report=verifi_response_json)
     return f"Created {vr}"
