@@ -97,7 +97,7 @@ services:
     command: /start-flower
 
   web-driver:
-    image: selenium/standalone-chrome:4.8.1-20230306
+    image: selenium/standalone-chrome:4.20.0-20240425
     restart: unless-stopped
     shm_size: 2gb
     ports:
