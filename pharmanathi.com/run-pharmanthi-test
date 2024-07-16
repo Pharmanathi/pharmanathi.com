@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# This script is used to run and configure the DNS for the test 
+# environment only. DO NOT use it to run the production workload 
+# since it only updates test.pharmanathi.com.
+# To run it: 
+#   - First ensure it is executable: chmod +x run-pharmanthi-test
+#   - Then run it, passing it options as follows: ./run-pharmanthi-test [--build] [--update]
+
+IP=$(curl -s ifconfig.me)
+
+export CLOUDFLARE_AUTH_EMAIL=
+export CLOUDFLARE_AUTH_KEY=
+export CLOUDFLARE_ZONE_ID=
+
+DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"
+
+# Cancel and Exit
+cleanup() {
+    printf "\n\nScript interrupted. Cleaning up...\n\n"
+    exit 1
+}
+trap cleanup SIGINT
+
+# Specify whether to collect latest code change using the --update flag
+# Note that this will first ensure the current branch is "main" before
+# pulling and merging with remote.
+if [[ $* == *--update* ]]; then
+    printf "\n\n-------------- Getting System's latest version --------------\n"
+    git checkout main
+    git pull
+fi
+
+
+printf "\n\n---------------- Started updating DNS settings ----------------"
+# test.pharmanathi.com
+wget -O - https://raw.githubusercontent.com/Olfredos6/cloudflary.py/cli/cloudflary.py |python3 - \
+update --record-id 08091ddf5fe91083410bd7ccb5c7ae04 --payload "{\"content\": \"$IP\"}"
+
+
+# Rebuild images using the --build flag
+if [[ $* == *--build* ]]; then
+    printf "\n\n--------------- Cleaning and building images --------------\n"
+    docker image prune --all --force
+    docker compose -f production.yml build
+fi
+
+printf "\n\n----------------------- Running Django Migrations --------------------\n"
+docker compose -f production.yml run --rm django python manage.py migrate
+
+printf "\n\n-------------------------- Notifying via Discord ---------------------\n"
+curl -X POST -H "Content-Type: application/json" \
+    -d '{
+            "username": "Pharmanathi Test Server Bot",
+            "avatar_url": "https://avatars.githubusercontent.com/u/93515101?s=400&u=e55ddea588763060b73a80603344f13045535310&v=4",
+            "embeds": [
+                {
+                    "title": "Test Server Status",
+                    "description": "The test server is started starting.",
+                    "color": 15844367,
+                    "url": "https://www.pharmanthi.com"
+                }
+              ]
+        }' $DISCORD_WEBHOOK_URL
+echo Done
+
+printf "\n\n--------------------- Starting Docker services ----------------\n"
+docker compose -f production.yml up
+

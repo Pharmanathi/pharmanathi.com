@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-git checkout dev
-git pull
-wget -O - https://raw.githubusercontent.com/Olfredos6/cloudflary.py/cli/cloudflary.py |python3 - update --record-id 04ddd7337b39d54f602ca52dcb9637b7 --payload "{\"content\": \"$(curl -s ifconfig.me)\"}"
-curl -d "content=:rotating_light: I am up and **Running**&username=AWS test.pharmanathi.com" -X POST https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2
-docker compose -f production.yml up --build
