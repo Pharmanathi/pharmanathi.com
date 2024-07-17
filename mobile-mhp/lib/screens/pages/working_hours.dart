@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/views/screens/profile.dart';
 import '../../services/working_hours_api.dart';
-import '../../views/widjets/WorkingHoursInput.dart';
-import '../../views/widjets/buttons.dart';
+import '../../views/widgets/WorkingHoursInput.dart';
+import '../../views/widgets/buttons.dart';
 
 class WorkingHours extends StatefulWidget {
   const WorkingHours({Key? key}) : super(key: key);

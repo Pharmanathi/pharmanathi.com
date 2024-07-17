@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../widjets/navigationbar.dart';
+import '../widgets/navigationbar.dart';
 
 
 

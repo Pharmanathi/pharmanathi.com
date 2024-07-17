@@ -6,8 +6,8 @@ import 'package:pharma_nathi/screens/pages/working_hours.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/screens/components/image_data.dart';
-import '../widjets/buttons.dart';
-import '../widjets/navigationbar.dart';
+import '../widgets/buttons.dart';
+import '../widgets/navigationbar.dart';
 import 'account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

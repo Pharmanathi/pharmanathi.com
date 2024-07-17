@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import '../../logging.dart';
 import '../../models/appointment.dart';
 import '../../repositories/appointment_repository.dart';
-import '../widjets/navigationbar.dart';
-import '../widjets/patiant_profile_tile.dart';
+import '../widgets/navigationbar.dart';
+import '../widgets/patiant_profile_tile.dart';
 
 class PatientList extends StatefulWidget {
   const PatientList({Key? key});

@@ -10,10 +10,10 @@ import '../../logging.dart';
 import '../../models/appointment.dart';
 import '../../repositories/appointment_repository.dart';
 import '../../repositories/user_repository.dart';
-import '../widjets/upcoming_appointment_tile.dart';
+import '../widgets/upcoming_appointment_tile.dart';
 import '../../screens/components/UserProvider.dart';
 import '../../screens/components/bargraph/bargraph.dart';
-import '../widjets/navigationbar.dart';
+import '../widgets/navigationbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
