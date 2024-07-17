@@ -104,7 +104,7 @@ flutter pub get
 
 **ios/:** Contains build for ios
 
-**models/:** Contains build for android
+**android/:** Contains build for android
 
 **assets/:** Contains project assets like images and vectors
 
