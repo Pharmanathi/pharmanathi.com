@@ -2,29 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../components/buttons.dart';
+import '../../models/appointment.dart';
+import '../../screens/components/buttons.dart';
 
 class OnlineConsultation extends StatelessWidget {
-  final String patientName;
-  final String appointmentTime;
-  final String details;
-  final String clinic_name;
-  final String clinic_address;
-  final String appiontment_date;
-  final String time;
-  final String consult_details;
+   final Appointment appointment;
 
-  const OnlineConsultation({
-    Key? key,
-    required this.patientName,
-    required this.appointmentTime,
-    required this.details,
-    required this.clinic_name,
-    required this.clinic_address,
-    required this.appiontment_date,
-    required this.time,
-    required this.consult_details,
-  }) : super(key: key);
+  const OnlineConsultation({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +101,7 @@ class OnlineConsultation extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              patientName,
+                              appointment.patientName,
                               maxLines: 1,
                               overflow: TextOverflow
                                   .ellipsis,
@@ -125,7 +109,7 @@ class OnlineConsultation extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              details,
+                              appointment.consult_details,
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -190,7 +174,7 @@ class OnlineConsultation extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(
-                                clinic_name,
+                                appointment.clinic_name,
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
@@ -204,7 +188,7 @@ class OnlineConsultation extends StatelessWidget {
                         child: Container(
                           width: 150,
                           child: Text(
-                            clinic_address,
+                            appointment.clinic_address,
                             style: TextStyle(
                                 fontSize: 12,
                                 color:
@@ -245,7 +229,7 @@ class OnlineConsultation extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          appiontment_date,
+                          appointment.appointmentDate,
                           style: TextStyle(
                               fontSize: 12,
                               color:
@@ -285,7 +269,7 @@ class OnlineConsultation extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          time,
+                          appointment.time,
                           style: TextStyle(
                               fontSize: 12,
                               color:
@@ -327,7 +311,7 @@ class OnlineConsultation extends StatelessWidget {
                         child: Container(
                           width: 200,
                           child: Text(
-                            consult_details,
+                            appointment.consult_details,
                             style: TextStyle(
                                 fontSize: 12,
                                 color:

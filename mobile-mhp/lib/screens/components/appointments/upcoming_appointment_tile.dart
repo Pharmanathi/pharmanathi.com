@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pharma_nathi/screens/pages/appiontment_details.dart';
+import 'package:pharma_nathi/views/widjets/appiontment_details.dart';
 
 class AppiontmentTile extends StatelessWidget {
   final String name;
@@ -82,25 +82,25 @@ class AppiontmentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        //* Navigate to OnlineConsultation page with corresponding data
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OnlineConsultation(
-              //* Pass the corresponding data to OnlineConsultation
-              patientName: name,
-              appointmentTime: time,
-              details: patientdetails,
-              clinic_name: clinic_name,
-              clinic_address: clinic_address,
-              appiontment_date: appiontment_date,
-              time: time,
-              consult_details: consult_details,
-            ),
-          ),
-        );
-      },
+      // onTap: () {
+      //   //* Navigate to OnlineConsultation page with corresponding data
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => OnlineConsultation(
+      //         //* Pass the corresponding data to OnlineConsultation
+      //         patientName: name,
+      //         appointmentTime: time,
+      //         details: patientdetails,
+      //         clinic_name: clinic_name,
+      //         clinic_address: clinic_address,
+      //         appiontment_date: appiontment_date,
+      //         time: time,
+      //         consult_details: consult_details,
+      //       ),
+      //     ),
+      //   );
+      // },
       child: Container(
         height: 100,
         width: 180,

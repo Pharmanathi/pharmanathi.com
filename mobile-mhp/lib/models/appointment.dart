@@ -11,10 +11,12 @@ class Appointment {
   final String consult_details;
   final String clinic_address;
   final String appointmentDate;
+  final String patientName;
 
   Appointment({
     required this.time,
     required this.name,
+    required this.patientName,
     required this.patientdetails,
     required this.clinic_name,
     required this.clinic_address,
@@ -55,6 +57,8 @@ class Appointment {
     }
 
     return Appointment(
+      patientName:
+          '${json['patient']['first_name']} ${json['patient']['last_name']}',
       clinic_name: json['clinic_name'] ?? 'Default clinic_name',
       clinic_address: json['practicelocations'] ?? 'Default clinic_address',
       consult_details: json['reason'] ?? 'Default consult_details',

@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
-import '../../views/widjets/appointment_tile.dart';
-import '../components/navigationbar.dart';
-import '../components/weekdays.dart';
+import '../widjets/appointment_tile.dart';
+import '../../screens/components/navigationbar.dart';
+import '../../screens/components/weekdays.dart';
 
 class Appointments extends StatefulWidget {
   @override
