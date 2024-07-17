@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
-import '../../logging.dart';
-import '../../models/appointment.dart';
-import '../../repositories/appointment_repository.dart';
-import '../widjets/navigationbar.dart';
-import '../widjets/patiant_profile_tile.dart';
+import '../../services/appointment_api.dart';
+import '../components/navigationbar.dart';
+import '../components/patients/patiant_profile_tile.dart';
+import '../components/patients/patient_data.dart';
 
 class PatientList extends StatefulWidget {
   const PatientList({Key? key});
@@ -18,12 +16,10 @@ class PatientList extends StatefulWidget {
 }
 
 class _PatientListState extends State<PatientList> {
-  late AppointmentRepository _appointmentRepository;
-  final log = logger(PatientList);
   int _selectedIndex = 2;
   bool isLoading = true;
 
-  List<Appointment> patientAppointments = [];
+  List<PatientData> patientData = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -31,36 +27,62 @@ class _PatientListState extends State<PatientList> {
     });
   }
 
-  Future<void> _loadPatientData() async {
+  //@TODO: need to use the correct endpiont when available
+  Future<List<PatientData>> _loadPatientData() async {
     try {
-      List<Appointment> fetchedAppointments =
-          await _appointmentRepository.fetchAppointments(context);
+      List<Map<String, dynamic>> fetchedAppointmentData =
+          await fetchAppointmentData(context);
+      List<PatientData> patientList = fetchedAppointmentData
+          .map((map) => PatientData.fromJson(map))
+          .toList();
 
       setState(() {
-        patientAppointments = _removeDuplicatePatients(fetchedAppointments);
+        patientData = patientList;
         isLoading = false;
       });
+
+      return patientList;
     } catch (e) {
-      log.e('Error loading appointment data: $e');
+      //* Display a user-friendly error message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content:
+                Text('Failed to load patient data. Please try again later.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      throw e;
     }
   }
 
-  List<Appointment> _removeDuplicatePatients(List<Appointment> appointments) {
+  // Function to filter and return unique patients
+  //This is a temp solution
+  List<PatientData> _removeDuplicatePatients(List<PatientData> patients) {
     final uniqueNames = <String>{};
-    final uniqueAppointments = <Appointment>[];
-    for (final appointment in appointments) {
-      if (!uniqueNames.contains(appointment.patientName)) {
-        uniqueNames.add(appointment.patientName);
-        uniqueAppointments.add(appointment);
+    final uniquePatients = <PatientData>[];
+    for (final patient in patients) {
+      if (!uniqueNames.contains(patient.name)) {
+        uniqueNames.add(patient.name);
+        uniquePatients.add(patient);
       }
     }
-    return uniqueAppointments;
+    return uniquePatients;
   }
 
   @override
   void initState() {
     super.initState();
-    _appointmentRepository = context.read<AppointmentRepository>();
     _loadPatientData();
   }
 
@@ -104,16 +126,16 @@ class _PatientListState extends State<PatientList> {
             Expanded(
               child: isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : patientAppointments.isEmpty
+                  : patientData.isEmpty
                       ? Center(
-                          child: Text('No Patients available',
-                              style: TextStyle(fontSize: 12)),
-                        )
+                          child: Text('No Patient available',
+                              style: TextStyle(fontSize: 12)))
                       : ListView.builder(
-                          itemCount: patientAppointments.length,
+                          itemCount: _removeDuplicatePatients(patientData).length,
                           itemBuilder: (BuildContext context, int index) {
-                            final appointment = patientAppointments[index];
-                            return PatientProfileTile(appointment: appointment);
+                            final uniquePatient =
+                                _removeDuplicatePatients(patientData)[index];
+                            return CustomCard(patient: uniquePatient);
                           },
                         ),
             ),

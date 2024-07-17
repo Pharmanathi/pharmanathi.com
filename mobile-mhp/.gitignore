@@ -1,6 +1,5 @@
 #Custom
-.env.production
-.env.development
+.env
 ios/build/XCBuildData
 pubspec.lock
 ios/Podfile.lock

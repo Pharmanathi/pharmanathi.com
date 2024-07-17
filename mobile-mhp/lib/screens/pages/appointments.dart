@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, unrelated_type_equality_checks
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:pharma_nathi/models/appointment.dart';
-import 'package:pharma_nathi/repositories/appointment_repository.dart';
-import '../widjets/appointment_tile.dart';
-import '../widjets/navigationbar.dart';
-import '../widjets/weekdays.dart';
+import 'package:pharma_nathi/services/appointment_api.dart';
+import '../components/navigationbar.dart';
+import '../components/appointments/appointment_tile.dart';
+import 'package:pharma_nathi/screens/components/appointments/appointment_data.dart';
+import '../components/weekdays.dart';
 
 class Appointments extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class Appointments extends StatefulWidget {
 }
 
 class _AppointmentsState extends State<Appointments> {
-  late AppointmentRepository _appointmentRepository;
   String selectedButton = 'InPerson';
   Color primaryColor = Color(0xFFF7F9FC);
   int _selectedIndex = 1;
@@ -23,8 +22,18 @@ class _AppointmentsState extends State<Appointments> {
   bool isLoading = true;
   String currentMonthYear = '';
   List<String> months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ];
 
   String selectedMonth = DateFormat('MMMM').format(DateTime.now());
@@ -34,7 +43,6 @@ class _AppointmentsState extends State<Appointments> {
   @override
   void initState() {
     super.initState();
-    _appointmentRepository = context.read<AppointmentRepository>();
     _loadAppointmentData();
   }
 
@@ -78,9 +86,14 @@ class _AppointmentsState extends State<Appointments> {
 
   void _loadAppointmentData() async {
     try {
-      List<Appointment> fetchedAppointments = await _appointmentRepository.fetchAppointments(context);
+      List<Map<String, dynamic>> fetchedAppointmentData =
+          await fetchAppointmentData(context);
+      List<Appointment> appointmentList = fetchedAppointmentData
+          .map((map) => Appointment.fromJson(map))
+          .toList();
+
       setState(() {
-        appointmentData = fetchedAppointments;
+        appointmentData = appointmentList;
         isLoading = false;
         _filterAppointments();
       });
@@ -265,8 +278,17 @@ class _AppointmentsState extends State<Appointments> {
                             itemCount: filteredAppointments.length,
                             itemBuilder: (context, index) {
                               final data = filteredAppointments[index];
-                              return AppointmentTile(
-                                appointment: data, // Pass appointment object here
+                              return ProfileCard(
+                                patientdetails: data.patientdetails,
+                                time: data.time,
+                                name: data.name,
+                                appointmentDate: data.appointmentDate,
+                                imageURL: data.imageURL,
+                                status: data.status,
+                                appointmentData: data,
+                                clinic_name: data.clinic_name,
+                                consult_details: data.consult_details,
+                                clinic_address: data.clinic_address,
                               );
                             },
                           ),

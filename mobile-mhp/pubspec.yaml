@@ -59,8 +59,7 @@ flutter:
   assets:
     - assets/sample.json
     - assets/images/
-    - .env.production
-    - .env.development
+    - .env
   uses-material-design: true
 
 icons_launcher:
