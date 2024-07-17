@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import '../services/api_provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
 import '../models/user.dart';
@@ -25,8 +26,9 @@ class UserRepository {
         http_helpers.Apihelper.handleError(context, response);
         return null;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       http_helpers.Apihelper.handleException(context, e);
+      await Sentry.captureException(e, stackTrace: stackTrace);
       return null;
     }
   }
