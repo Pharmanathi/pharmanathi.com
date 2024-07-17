@@ -3,10 +3,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import '../../models/appointment.dart';
+import 'package:pharma_nathi/screens/components/patients/patient_data.dart';
 
-class PatientProfileTile extends StatelessWidget {
-   final Appointment appointment;
+class CustomCard extends StatelessWidget {
+  final PatientData patient;
 
      //* Function to generate a random color
   Color getRandomColor() {
@@ -19,7 +19,7 @@ class PatientProfileTile extends StatelessWidget {
     );
   }
 
-  const PatientProfileTile({required this.appointment});
+  const CustomCard({required this.patient});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,13 +38,13 @@ class PatientProfileTile extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CircleAvatar(
-                              backgroundColor: appointment.imageURL.isNotEmpty
+                              backgroundColor: patient.imageUrl.isNotEmpty
                                   ? null // No background color if imageURL is available
                                   : getRandomColor(), // Random background color if imageURL is not available
-                              child: appointment.imageURL.isNotEmpty
-                                  ? Image.network(appointment.imageURL)
+                              child: patient.imageUrl.isNotEmpty
+                                  ? Image.network(patient.imageUrl)
                                   : Text(
-                                      appointment.name.isNotEmpty ? appointment.name[0] : '',
+                                      patient.name.isNotEmpty ? patient.name[0] : '',
                                       style: TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -60,7 +60,7 @@ class PatientProfileTile extends StatelessWidget {
                       height: 20,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: appointment.status == 'online'
+                        color: patient.status == 'online'
                             ? Colors.green
                             : Colors.grey,
                       ),
@@ -73,14 +73,14 @@ class PatientProfileTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    appointment.patientName,
+                    patient.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   Text(
-                    appointment.patientdetails,
+                    patient.details,
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14,

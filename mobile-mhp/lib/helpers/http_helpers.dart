@@ -164,3 +164,12 @@ class Apihelper {
   }
 }
 
+Map<String, dynamic>? getUserInfo(context) {
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  return userProvider.userData;
+}
+
+void setUserDataProxy(Map<String, dynamic> userData, context) {
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  userProvider.setUserData(userData);
+}
