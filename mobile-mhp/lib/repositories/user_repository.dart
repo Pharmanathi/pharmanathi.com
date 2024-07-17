@@ -10,12 +10,8 @@ class UserRepository {
   UserRepository(this.apiProvider);
 
   Future<User?> fetchUserData(BuildContext context) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/users/me/';
     try {
-      final response = await apiProvider.fetcUserData(
-          context,
-          (ctx) => http_helpers.Apihelper.httpRequestWithAuthorization(
-              ctx, apiEndpoint, 'GET', ''));
+      final response = await apiProvider.fetchUserData(context);
       if (response.statusCode == 200) {
         dynamic decodedData = json.decode(response.body);
         if (decodedData is Map) {
@@ -35,5 +31,3 @@ class UserRepository {
     }
   }
 }
-
-

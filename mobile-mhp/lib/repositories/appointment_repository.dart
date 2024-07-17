@@ -10,12 +10,8 @@ class AppointmentRepository {
   AppointmentRepository(this.apiProvider);
 
   Future<List<Appointment>> fetchAppointments(BuildContext context) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/appointments/';
     try {
-      final response = await apiProvider.fetchAppointmentData(
-          context,
-          (ctx) => http_helpers.Apihelper.httpRequestWithAuthorization(
-              ctx, apiEndpoint, 'GET', ''));
+      final response = await apiProvider.fetchAppointmentData(context);
       if (response.statusCode == 200) {
         dynamic decodedData = json.decode(response.body);
         if (decodedData is List &&
