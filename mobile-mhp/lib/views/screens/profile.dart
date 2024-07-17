@@ -99,7 +99,7 @@ class _MyProfileState extends State<MyProfile> {
     final userProvider = Provider.of<UserProvider>(context);
     final specialities = userProvider.user?.doctorProfile?.specialities;
 
-    String profession = 'Unknown';
+    String profession = 'Not Specified';
     if (specialities != null && specialities.isNotEmpty) {
       profession = specialities[0]
           .name; 
