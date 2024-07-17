@@ -36,11 +36,23 @@
          data-bs-target="#nav-user-profile"
          type="button"
          href="javascript:void(0);">User Profile</a>
-      <a class="nav-link do-not-track-activation"
-         data-bs-toggle="tab"
-         data-bs-target="#nav-user-mhp-profile"
-         type="button"
-         href="javascript:void(0);">MHP Profile</a>
+      {% if user.is_doctor %}
+        <a class="nav-link do-not-track-activation"
+           data-bs-toggle="tab"
+           data-bs-target="#nav-user-mhp-profile"
+           type="button"
+           href="javascript:void(0);">MHP Profile</a>
+        <a class="nav-link do-not-track-activation"
+           data-bs-toggle="tab"
+           data-bs-target="#nav-user-mhp-verification-reports"
+           type="button"
+           href="javascript:void(0);">Verification Reports</a>
+        <a class="nav-link do-not-track-activation"
+           data-bs-toggle="tab"
+           data-bs-target="#nav-user-mhp-invalidation-hist"
+           type="button"
+           href="javascript:void(0);">Invalidation & History</a>
+      {% endif %}
     </nav>
     <hr class="mt-0 mb-4" />
     <div class="tab-content" id="nav-tabContent">
@@ -103,17 +115,81 @@
         </div>
       </div>
       <div class="row tab-pane fade" id="nav-user-mhp-profile">
+        <div class="row">
+          <div class="col-lg-6 col-xl-3 mb-4">
+            <div class="card bg-{% if user.doctor_profile.is_verified %}success{% else %}danger{% endif %} text-white h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="me-3">
+                    <div class="text-white-75 small">Validation Status</div>
+                    <div class="text-lg fw-bold">
+                      {% if user.doctor_profile.is_verified %}
+                        valid
+                      {% else %}
+                        invalidated
+                      {% endif %}
+                    </div>
+                  </div>
+                  <i class="feather-xl text-white-50" data-feather="check-square"></i>
+                </div>
+              </div>
+              {% if not user.doctor_profile.is_verified %}
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                  <a class="text-white stretched-link"
+                     type="button"
+                     href="javascript:toInvalidationReasonsPanel();">View Reason(s)</a>
+                  <div class="text-white">
+                    <i class="fas fa-angle-right"></i>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-lg-6 col-xl-3 mb-4">
+            <div class="card bg-warning text-white h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="me-3">
+                    <div class="text-white-75 small">Verification Reports</div>
+                    <div class="text-lg fw-bold">{{ user.doctor_profile.verification_reports|length }}</div>
+                  </div>
+                  <i class="feather-xl text-white-50" data-feather="search"></i>
+                </div>
+              </div>
+              <div class="card-footer d-flex align-items-center justify-content-between small">
+                <a class="text-white stretched-link"
+                   href="javascript:toVerificationReportsPanel();">View Report(s)</a>
+                <div class="text-white">
+                  <i class="fas fa-angle-right"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-xl-4">
-          <!-- Profile picture card-->
-          <div class="card mb-4 mb-xl-0">
-            <div class="card-header">Profile Picture</div>
-            <div class="card-body text-center">
-              <!-- Profile picture image-->
-              <img class="img-account-profile rounded-circle mb-2"
-                   src="{% static 'adminsite-2/assets/img/illustrations/profiles/profile-1.png' %}"
-                   alt="" />
-              <!-- Profile picture help block-->
-              <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+          <div class="card mb-4">
+            <div class="card-header">Quick Links</div>
+            <div class="list-group list-group-flush small">
+              <a class="list-group-item list-group-item-action"
+                 href="javascript:toVerificationReportsPanel()">
+                <i class="fas fa-search fa-fw text-blue me-2"></i>
+                Verification Reports
+              </a>
+              <a class="list-group-item list-group-item-action"
+                 href="javascript:toInvalidationReasonsPanel();">
+                <i class="fas fa-user-alt-slash fa-fw text-danger me-2"></i>
+                Invalidation Reports
+              </a>
+              <a class="list-group-item list-group-item-action"
+                 href="javascript:void();">
+                <i class="fas fa-user fa-fw text-default me-2"></i>
+                User profile
+              </a>
+              <a class="list-group-item list-group-item-action"
+                 href="javascript:void();">
+                <i class="fas fa-users fa-fw text-purple me-2"></i>
+                All MPs
+              </a>
             </div>
           </div>
         </div>
@@ -140,6 +216,61 @@
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8"></div>
+      </div>
+      <div class="row tab-pane fade" id="nav-user-mhp-verification-reports">
+        <div class="col-xl-12">
+          <div class="card mb-4">
+            <div class="card-header">Invalidation History</div>
+            <div class="card-body">
+              <div class="timeline">
+                {% if user.doctor_profile.verification_reports|length > 0 %}
+                  {% for vr in user.doctor_profile.verification_reports|dictsortreversed:'date_created' %}
+                    <div class="timeline-item">
+                      <div class="timeline-item-marker">
+                        <p>{{ vr.date_created|time }}</p>
+                        <div class="timeline-item-marker-text">
+                          <script>
+                            document.write((new Date("{{vr.date_created}}")).toString().substring(0, 16))
+                          </script>
+                        </div>
+                        <div class="timeline-item-marker-indicator">
+                          <!-- No icon in step circle -->
+                        </div>
+                      </div>
+                      <div class="timeline-item-content">{{ vr.summary|urlize }}</div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row tab-pane fade" id="nav-user-mhp-invalidation-hist">
+        <div class="col-xl-12">
+          <div class="card mb-4">
+            <div class="card-header">MHP Profile Validation</div>
+            <div class="card-body">
+              <div class="d-flex">
+                <button class="btn btn-success flex-fill me-2"
+                        id="btn-mhp-validate-mhp-profile"
+                        data-mhp-id="{{ user.doctor_profile.id }}">
+                  <i class="fa-solid fa-user-check me-2"></i>
+                  Validate Profile
+                </button>
+                <button class="btn btn-danger flex-fill"
+                        id="btn-mhp-invalidate-mhp-profile"
+                        data-mhp-id="{{ user.doctor_profile.id }}">
+                  <i class="fa-solid fa-user-large-slash me-2"></i>
+                  Invalidate Profile
+                </button>
+              </div>
             </div>
           </div>
           <div class="card mb-4">
@@ -172,29 +303,6 @@
                 {% else %}
                   <p class="fw-100 mx-auto">This MP has no invalidation record.</p>
                 {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-8"></div>
-        <div class="col-xl-12 mt-4">
-          <!-- Account details card-->
-          <div class="card mb-4">
-            <div class="card-header">MHP Profile Validation</div>
-            <div class="card-body">
-              <div class="d-flex">
-                <button class="btn btn-success flex-fill me-2"
-                        id="btn-mhp-validate-mhp-profile"
-                        data-mhp-id="{{ user.doctor_profile.id }}">
-                  <i class="fa-solid fa-user-check me-2"></i>
-                  Validate Profile
-                </button>
-                <button class="btn btn-danger flex-fill"
-                        id="btn-mhp-invalidate-mhp-profile"
-                        data-mhp-id="{{ user.doctor_profile.id }}">
-                  <i class="fa-solid fa-user-large-slash me-2"></i>
-                  Invalidate Profile
-                </button>
               </div>
             </div>
           </div>
@@ -253,5 +361,14 @@
   {% endif %}
 {% endblock %}
 {% block template_page_specific_js_libs %}{% endblock %}
-{% block page_specific_js %}{% endblock %}
-<!-- PLEASE KEEP THIS FILE UP TO DATE -->
+{% block page_specific_js %}
+  <script>
+    function toInvalidationReasonsPanel() {
+      document.querySelector("[data-bs-target='#nav-user-mhp-invalidation-hist']").click()
+    }
+
+    function toVerificationReportsPanel() {
+      document.querySelector("[data-bs-target='#nav-user-mhp-verification-reports']").click()
+    }
+  </script>
+{% endblock %}

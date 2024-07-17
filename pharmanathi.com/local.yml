@@ -19,6 +19,7 @@ services:
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
+      - ./.envs/.verifi
     ports:
       - '8000:8000'
     command: /start
@@ -71,6 +72,7 @@ services:
       - redis
       - postgres
       - mailpit
+      - verifi
     ports: []
     command: /start-celeryworker
 
@@ -82,6 +84,7 @@ services:
       - redis
       - postgres
       - mailpit
+      - verifi
     ports: []
     command: /start-celerybeat
 
@@ -92,3 +95,20 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+
+  web-driver:
+    image: selenium/standalone-chrome:4.8.1-20230306
+    restart: unless-stopped
+    shm_size: 2gb
+    ports:
+      - 7900:7900
+
+  verifi:
+    depends_on:
+      - web-driver
+    build: ./verifi-standalone
+    volumes:
+      - ./verifi-standalone/src:/app:z
+    restart: unless-stopped
+    ports:
+      - 7901:8000

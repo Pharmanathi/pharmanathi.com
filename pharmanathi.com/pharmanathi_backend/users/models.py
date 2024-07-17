@@ -98,8 +98,12 @@ class Doctor(BaseCustomModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
-    hpcsa_no = models.CharField("HPCSA No.", max_length=5)
-    mp_no = models.CharField("Mp No.", max_length=5)
+    hpcsa_no = models.CharField("HPCSA No.", max_length=12)  # HPCSA registration number]
+    # The mp_no below can be the same as hpcsa_no or the one their professinal body(PB)
+    # Provided them. For instance, a Pharmacist would enter their
+    # P NUMBER here. Hence, it seems we could just keep one field
+    # representing the number from their PB. @TODO:
+    mp_no = models.CharField("Mp No.", max_length=20)
     _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -116,6 +120,16 @@ class Doctor(BaseCustomModel):
     def upcoming_appointments(self) -> models.query.QuerySet:
         now_today = datetime.datetime.now()
         return self.appointment_set.filter(start_time__gte=now_today)
+
+    @property
+    def is_pharmacist(self):
+        # Using the hard-code value PHAR may not be the best thing to
+        return self.specialities.filter(symbol="PHAR").exists()
+
+    def run_auto_mp_verification_task(self):
+        from .tasks import auto_mp_verification_task
+
+        auto_mp_verification_task.delay(self.pk)
 
     def has_consulted_before(self, patient_id):
         return self.appointment_set.filter(patient__id=patient_id).exists()
@@ -208,3 +222,84 @@ class InvalidationReason(BaseCustomModel):
     @property
     def text_email(self):
         return self.text_unquoted.replace("\n", "<br>")
+
+
+class VerificationReport(BaseCustomModel):
+    STR_SUM_END_SUCCESS_REPORT_TXT = "was SUCCESSFULL!"
+    mp = models.ForeignKey(Doctor, related_name="verification_reports", on_delete=models.PROTECT)
+    report: models.JSONField = models.JSONField()
+
+    type_choices = [("SAPC", "SAPC"), ("HPCSA", "HPCSA")]
+    type = models.CharField(choices=type_choices, max_length=7, null=False, blank=False, editable=False)
+
+    @staticmethod
+    def det_verification_type(mp: Doctor):
+        """Determine the verification type to be used for a Medical Professional
+
+        Args:
+            mp (Doctor): Doctor(Medical Professional) instance
+        """
+        return "SAPC" if mp.is_pharmacist else "HPCSA"
+
+    def __str__(self) -> str:
+        return f"VR({self.type})|{self.mp.user.email}|{self.date_created.strftime('%d %b %Y')}"
+
+    def _summary_hpcsa(self) -> str:
+        """Returns a string summary of a HPCSA report"""
+        # Case: Not registration found
+        if self.report.get("profile").get("names") == "":
+            return "did not find any registration profile. MP does not seem to exist"
+
+        # Case: possible mismatch
+        db_names_set = set(self.mp.user.get_full_name().split(" "))
+        report_names = set(self.report.get("profile").get("names").split(" "))
+        match_percentage = (len(db_names_set.intersection(report_names)) * 100) // len(db_names_set)
+        if match_percentage < 50:
+            return (
+                f"returns a partial match of {match_percentage}%. A match of more than 50% is recommended"
+                "when comparing the names found on the HPCSA profile page."
+            )
+
+        # Case: exists but no active registration
+        has_active_registraion = False
+        for reg in self.report.get("registrations"):
+            if "REGISTRATION STATUS" in reg:
+                if reg.get("REGISTRATION STATUS") == "ACTIVE":
+                    has_active_registraion = True
+        if has_active_registraion is False:
+            return "found one or more registrations but none is active."
+
+        return self.STR_SUM_END_SUCCESS_REPORT_TXT
+
+    def _summary_sapc(self) -> str:
+        """Returns a string summary of a SAPC report"""
+        # Case: No records found
+        returned_no_record = "returned no records" in self.report.get("_logs")
+        registrion_is_empty = self.report.get("report") == {}
+        if returned_no_record or registrion_is_empty:
+            return "failed. No records were found"
+
+        # Case: Inactive
+        if self.report.get("registration").get("Status") != "Registered - Active":
+            return "seems to report an inactive registration"
+
+        # Case: profile belongs to a different MP
+        has_non_matching_surname = (
+            self.report.get("registration").get("Surname").lower() not in self.mp.user.last_name.lower()
+        )
+        has_non_matching_firstname = (
+            self.report.get("registration").get("First Name").lower() not in self.mp.user.first_name.lower()
+        )
+        if has_non_matching_firstname or has_non_matching_surname:
+            return "returned a what seems to be a different profile!"
+
+        return self.STR_SUM_END_SUCCESS_REPORT_TXT
+
+    def summary(self) -> str:
+        """Returns a string summary of a report"""
+        summary_start = f"{self.type.upper()} verification on MP {self.mp} with URL {self.report.get('url')} "
+        if self.type == "SAPC":
+            summary_end = self._summary_sapc()
+        else:
+            summary_end = self._summary_hpcsa()
+        return f"{summary_start} {summary_end}"

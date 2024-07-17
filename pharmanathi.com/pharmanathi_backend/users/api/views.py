@@ -175,7 +175,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
 
         # should they be signinng in or up as doctor, create their doctor profile
         if sign_as_doctor:
-            _, created = Doctor.objects.get_or_create(user=user)
+            new_mp, created = Doctor.objects.get_or_create(user=user)
 
             if created:
                 from pharmanathi_backend.users.tasks import mail_admins_task
@@ -186,6 +186,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
                     message,
                     message,
                 )
+                new_mp.run_auto_mp_verification_task()
 
         return attrs
 
