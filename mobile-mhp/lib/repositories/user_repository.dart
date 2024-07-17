@@ -1,52 +1,39 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../services/api_provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
+import '../models/user.dart';
 
 class UserRepository {
-  static Future<Map<String, dynamic>> fetchUserData(BuildContext context) async {
-    try {
-      final response = await http_helpers.Apihelper.fetchData(context, (context) async {
-        return await http_helpers.Apihelper.httpRequestWithAuthorization(
-          context,
-          '${http_helpers.apiBaseURL}/users/me/',
-          'GET',
-          '',
-        );
-      });
+  final ApiProvider apiProvider;
 
+  UserRepository(this.apiProvider);
+
+  Future<User?> fetchUserData(BuildContext context) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/users/me/';
+    try {
+      final response = await apiProvider.fetcUserData(
+          context,
+          (ctx) => http_helpers.Apihelper.httpRequestWithAuthorization(
+              ctx, apiEndpoint, 'GET', ''));
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        dynamic decodedData = json.decode(response.body);
+        if (decodedData is Map) {
+          Map<String, dynamic> userMap = Map<String, dynamic>.from(decodedData);
+          return User.fromJson(userMap);
+        } else {
+          http_helpers.Apihelper.handleError(context, response);
+          return null;
+        }
       } else {
         http_helpers.Apihelper.handleError(context, response);
-        return {}; 
+        return null;
       }
     } catch (e) {
       http_helpers.Apihelper.handleException(context, e);
-      return {}; 
-    }
-  }
-
-  static Future<Map<String, dynamic>> updateUserData(BuildContext context, Map<String, dynamic> userData) async {
-    try {
-      final response = await http_helpers.Apihelper.fetchData(context, (context) async {
-        final String requestBody = json.encode(userData);
-        return await http_helpers.Apihelper.httpRequestWithAuthorization(
-          context,
-          '${http_helpers.apiBaseURL}/users/me/',
-          'POST', //@TODO: yet to figure out if its update/create
-          requestBody,
-        );
-      });
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        http_helpers.Apihelper.handleError(context, response);
-        return {}; 
-      }
-    } catch (e) {
-      http_helpers.Apihelper.handleException(context, e);
-      return {}; 
+      return null;
     }
   }
 }
+
+

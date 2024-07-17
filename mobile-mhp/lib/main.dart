@@ -4,16 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pharma_nathi/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'helpers/http_helpers.dart';
 import 'repositories/appointment_repository.dart';
 import 'repositories/user_repository.dart';
 import 'routes/app_routes.dart';
-import 'services/appointment_api_provider.dart';
+import 'services/api_provider.dart';
 import 'screens/components/UserProvider.dart';
 import 'screens/components/image_data.dart';
-import 'firebase_options.dart';
+
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -25,22 +26,25 @@ Future<void> main() async {
   await _initializeFirebase();
 
   ApiProvider apiProvider = ApiProvider();
-  AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
-  UserRepository userRepository = UserRepository();
+  AppointmentRepository appointmentRepository =
+      AppointmentRepository(apiProvider);
+  UserRepository userRepository = UserRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository);
+      await _runApp(appointmentRepository, userRepository);
     });
   } else {
-    await _runApp(appointmentRepository);
+    await _runApp(appointmentRepository, userRepository);
   }
 }
 
 Future<void> _loadEnvironmentVariables() async {
-  await dotenv.load();
+  // Load environment variables from appropriate .env file
+  await dotenv.load(
+      fileName: kReleaseMode ? '.env.production' : '.env.development');
 }
 
 Future<void> _setPreferredOrientation() async {
@@ -68,14 +72,15 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(AppointmentRepository appointmentRepository) async {
+Future<void> _runApp(AppointmentRepository appointmentRepository,
+    UserRepository userRepository) async {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ImageDataProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
-        Provider.value(value: UserRepository()), 
+        Provider.value(value: userRepository),
       ],
       child: const MyApp(),
     ),
@@ -107,7 +112,8 @@ class _MyAppState extends State<MyApp> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            String initialRoute = snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
+            String initialRoute =
+                snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
             if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
               if (Apihelper.retrieveLocaAPIToken(context) != null) {
                 initialRoute = AppRoutes.homePage;

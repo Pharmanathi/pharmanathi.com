@@ -1,36 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import '../models/user.dart';
 import '../repositories/user_repository.dart';
 
-
 class UserBloc {
-  final _userDataController = StreamController<Map<String, dynamic>>();
+  final UserRepository _userRepository;
+  final StreamController<User?> _userController = StreamController<User?>();
 
-  Stream<Map<String, dynamic>> get userDataStream => _userDataController.stream;
+  Stream<User?> get user => _userController.stream;
 
-  void fetchUserData(BuildContext context) async {
-    try {
-      final userData = await UserRepository.fetchUserData(context);
-      _userDataController.sink.add(userData);
-    } catch (e) {
-      debugPrint('Error fetching user data: $e');
-    }
-  }
+  UserBloc(this._userRepository);
 
-  Future<void> updateUserData(BuildContext context, Map<String, dynamic> updatedUserData) async {
-    try {
-      final updatedData = await UserRepository.updateUserData(context, updatedUserData);
-      fetchUserData(context); // Refresh user data after update
-      // @TODO: use data from the form during onboarding to update userData
-    } catch (e) {
-      debugPrint('Error updating user data: $e');
-    }
+  fetchUserData(BuildContext context) async {
+    final user = await _userRepository.fetchUserData(context);
+    _userController.sink.add(user);
   }
 
   void dispose() {
-    _userDataController.close();
+    _userController.close();
   }
 }
 
-final userBloc = UserBloc();

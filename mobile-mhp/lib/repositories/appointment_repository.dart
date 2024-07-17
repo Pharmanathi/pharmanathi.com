@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/appointment.dart';
-import '../services/appointment_api_provider.dart';
+import '../services/api_provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
 
 class AppointmentRepository {
