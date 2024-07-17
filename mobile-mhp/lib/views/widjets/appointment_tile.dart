@@ -1,52 +1,22 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:pharma_nathi/screens/components/appointments/appointment_data.dart';
-import '../../pages/appiontment_details.dart';
+import '../../models/appointment.dart';
+import 'appiontment_details.dart';
 
-class ProfileCard extends StatelessWidget {
-  final time;
-  final name;
-  final appointmentDate;
-  final imageURL;
-  final status;
-  final String clinic_name;
-  final String clinic_address;
-  final String consult_details;
-  final String patientdetails;
 
-  final Appointment appointmentData;
+class AppointmentTile extends StatelessWidget {
+  final Appointment appointment;
 
-  const ProfileCard(
-      {super.key, required this.appointmentData,
-      required this.appointmentDate,
-      required this.imageURL,
-      required this.patientdetails,
-      required this.clinic_name,
-      required this.consult_details,
-      required this.clinic_address,
-      required this.name,
-      required this.status,
-      required this.time});
+  const AppointmentTile({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //* Navigate to OnlineConsultation page with corresponding data
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OnlineConsultation(
-              //* Pass the corresponding data to OnlineConsultation
-              patientName: name,
-              appointmentTime: time,
-              details: patientdetails,
-              clinic_name: clinic_name,
-              clinic_address: clinic_address,
-              appiontment_date: appointmentDate,
-              time: time,
-              consult_details: consult_details,
+            builder: (context) => AppiontmentDetails(
+             appointment:  appointment,
             ),
           ),
         );
@@ -60,7 +30,7 @@ class ProfileCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    time,
+                    appointment.appointmentTime,
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w100,
@@ -112,7 +82,7 @@ class ProfileCard extends StatelessWidget {
                                         child: Container(
                                           width: 200,
                                           child: Text(
-                                            name,
+                                            appointment.name,
                                             style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -122,7 +92,7 @@ class ProfileCard extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        time,
+                                        appointment.appointmentTime,
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ),
@@ -136,11 +106,11 @@ class ProfileCard extends StatelessWidget {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: status == 'Upcoming'
+                                          color: appointment.status == 'Upcoming'
                                               ? const Color(0xFFECF7EF)
-                                              : status == 'In Progress'
+                                              : appointment.status == 'In Progress'
                                                   ? const Color(0xFF6F7ED7)
-                                                  : status == 'Completed'
+                                                  : appointment.status == 'Completed'
                                                       ? const Color(0xFFECF7EF)
                                                       : const Color(0xFFECF7EF),
                                           borderRadius: BorderRadius.circular(12),
@@ -148,15 +118,15 @@ class ProfileCard extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(6),
                                           child: Text(
-                                            status,
+                                            appointment.status,
                                             style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.normal,
-                                              color: status == 'Upcoming'
+                                              color: appointment.status == 'Upcoming'
                                                   ? Colors.grey
-                                                  : status == 'In Progress'
+                                                  : appointment.status == 'In Progress'
                                                       ? Colors.white
-                                                      : status == 'Completed'
+                                                      : appointment.status == 'Completed'
                                                           ? Colors.blue
                                                           : Colors.blue,
                                             ),

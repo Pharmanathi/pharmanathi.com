@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/manage_appointment_api.dart';
-import '../components/buttons.dart';
+import '../widjets/buttons.dart';
 
 class ManageAppointment extends StatefulWidget {
   @override
