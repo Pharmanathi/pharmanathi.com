@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pharma_nathi/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'helpers/http_helpers.dart';
@@ -13,7 +14,7 @@ import 'routes/app_routes.dart';
 import 'services/api_provider.dart';
 import 'screens/components/UserProvider.dart';
 import 'screens/components/image_data.dart';
-import 'firebase_options.dart';
+
 
 import 'package:firebase_core/firebase_core.dart';
 
