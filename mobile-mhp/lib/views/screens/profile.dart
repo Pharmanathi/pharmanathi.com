@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters
 
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
-import 'package:pharma_nathi/screens/pages/manage_appointment.dart';
+import 'package:pharma_nathi/views/screens/manage_appointment.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/screens/components/image_data.dart';
-import '../components/buttons.dart';
-import '../components/navigationbar.dart';
+import '../widgets/buttons.dart';
+import '../widgets/navigationbar.dart';
 import 'account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -97,9 +97,18 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImageDataProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
-    List<dynamic>? specialities =
-        userProvider.userData?['doctor_profile']['specialities'];
-    String profesion = specialities != null ? specialities.join(", ") : "UNVERIFIED";
+    final specialities = userProvider.user?.doctorProfile?.specialities;
+
+    String profession = 'Not Specified';
+    if (specialities != null && specialities.isNotEmpty) {
+      profession = specialities[0]
+          .name; 
+    }
+    //* Truncate the profession string if it's too long
+    const maxCharacters = 25; 
+    if (profession.length > maxCharacters) {
+      profession = '${profession.substring(0, maxCharacters)}...';
+    }
 
     return Scaffold(
       body: Stack(
@@ -163,7 +172,7 @@ class _MyProfileState extends State<MyProfile> {
                             SizedBox(
                               width: 170,
                               child: Text(
-                                'Dr. ${userProvider.name}',
+                                'Dr. ${userProvider.user?.firstName} ${userProvider.user?.lastName}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -173,10 +182,11 @@ class _MyProfileState extends State<MyProfile> {
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
-                                profesion ,
+                                profession,
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],

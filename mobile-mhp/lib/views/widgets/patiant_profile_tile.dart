@@ -3,10 +3,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pharma_nathi/screens/components/patients/patient_data.dart';
+import '../../models/appointment.dart';
 
-class CustomCard extends StatelessWidget {
-  final PatientData patient;
+class PatientProfileTile extends StatelessWidget {
+   final Appointment appointment;
 
      //* Function to generate a random color
   Color getRandomColor() {
@@ -19,7 +19,7 @@ class CustomCard extends StatelessWidget {
     );
   }
 
-  const CustomCard({required this.patient});
+  const PatientProfileTile({required this.appointment});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,13 +38,13 @@ class CustomCard extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CircleAvatar(
-                              backgroundColor: patient.imageUrl.isNotEmpty
+                              backgroundColor: appointment.imageURL.isNotEmpty
                                   ? null // No background color if imageURL is available
                                   : getRandomColor(), // Random background color if imageURL is not available
-                              child: patient.imageUrl.isNotEmpty
-                                  ? Image.network(patient.imageUrl)
+                              child: appointment.imageURL.isNotEmpty
+                                  ? Image.network(appointment.imageURL)
                                   : Text(
-                                      patient.name.isNotEmpty ? patient.name[0] : '',
+                                      appointment.name.isNotEmpty ? appointment.name[0] : '',
                                       style: TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -60,7 +60,7 @@ class CustomCard extends StatelessWidget {
                       height: 20,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: patient.status == 'online'
+                        color: appointment.status == 'online'
                             ? Colors.green
                             : Colors.grey,
                       ),
@@ -73,14 +73,14 @@ class CustomCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    patient.name,
+                    appointment.patientName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   Text(
-                    patient.details,
+                    appointment.patientdetails,
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14,

@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../components/navigationbar.dart';
+import '../widgets/navigationbar.dart';
+
+
 
 class Earnings extends StatefulWidget {
   const Earnings({super.key});
