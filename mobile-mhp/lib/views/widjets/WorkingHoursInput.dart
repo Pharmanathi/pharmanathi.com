@@ -35,27 +35,28 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
   @override
   void initState() {
     super.initState();
-    _fetchAndSaveApiData();
+    _initializePrefs();
+  }
+
+  Future<void> _initializePrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _fetchAndSaveApiData();
+    _loadSavedSettings();
   }
 
   Future<void> _fetchAndSaveApiData() async {
     final schedule = await WorkingHourApiService.fetchScheduleFromApi(context);
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     schedule.forEach((day, timeslots) {
       final startTimes = timeslots.map((ts) => ts.split(',')[0]).toList();
       final endTimes = timeslots.map((ts) => ts.split(',')[1]).toList();
 
-      prefs.setStringList('${day}_startTimes', startTimes);
-      prefs.setStringList('${day}_endTimes', endTimes);
+      _prefs.setStringList('${day}_startTimes', startTimes);
+      _prefs.setStringList('${day}_endTimes', endTimes);
     });
-
-    // Load the saved settings after fetching and saving the data
-    _loadSavedSettings();
   }
 
-  void _loadSavedSettings() async {
-    _prefs = await SharedPreferences.getInstance();
+  void _loadSavedSettings() {
     setState(() {
       isAvailable = _prefs.getBool('${widget.day}_isAvailable') ?? false;
       _loadSavedTimes();
