@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/logging.dart';
+import 'package:provider/provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
+import '../screens/components/UserProvider.dart';
 
 class APIService {
   static final log = logger(APIService);
@@ -56,8 +58,16 @@ class APIService {
   static Future<void> sendDataToBackendFromJSONFile(BuildContext context,
       {VoidCallback? onSuccess}) async {
     try {
-      _requestBody['doctor'] =
-          http_helpers.getUserInfo(context)?['doctor_profile']['id'] as int;
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final userInfo = userProvider.user;
+
+// Ensure userInfo is not null and has the expected structure before accessing the nested fields
+      if (userInfo != null && userInfo.doctorProfile != null) {
+        _requestBody['doctor'] = userInfo.doctorProfile!.id;
+      } else {
+        // Handle the case where userInfo or doctorProfile is null or not present
+        debugPrint('Error: doctorProfile is missing in userInfo.');
+      }
 
       String requestBodyJsonString = jsonEncode(_requestBody);
       log.i('Sending JSON data to backend:\n$requestBodyJsonString');

@@ -1,40 +1,39 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../models/appointment.dart';
 import '../services/api_provider.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
+import '../models/user.dart';
 
-class AppointmentRepository {
+class UserRepository {
   final ApiProvider apiProvider;
 
-  AppointmentRepository(this.apiProvider);
+  UserRepository(this.apiProvider);
 
-  Future<List<Appointment>> fetchAppointments(BuildContext context) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/appointments/';
+  Future<User?> fetchUserData(BuildContext context) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/users/me/';
     try {
-      final response = await apiProvider.fetchAppointmentData(
+      final response = await apiProvider.fetcUserData(
           context,
           (ctx) => http_helpers.Apihelper.httpRequestWithAuthorization(
               ctx, apiEndpoint, 'GET', ''));
       if (response.statusCode == 200) {
         dynamic decodedData = json.decode(response.body);
-        if (decodedData is List &&
-            decodedData.isNotEmpty &&
-            decodedData.first is Map) {
-          return decodedData
-              .map<Appointment>((json) => Appointment.fromJson(json))
-              .toList();
+        if (decodedData is Map) {
+          Map<String, dynamic> userMap = Map<String, dynamic>.from(decodedData);
+          return User.fromJson(userMap);
         } else {
           http_helpers.Apihelper.handleError(context, response);
-          return [];
+          return null;
         }
       } else {
         http_helpers.Apihelper.handleError(context, response);
-        return [];
+        return null;
       }
     } catch (e) {
       http_helpers.Apihelper.handleException(context, e);
-      return [];
+      return null;
     }
   }
 }
+
+
