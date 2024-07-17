@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../models/appointment.dart';
-import 'buttons.dart';
 
 class AppiontmentDetails extends StatelessWidget {
    final Appointment appointment;
