@@ -44,7 +44,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'PHARMA',
+                      'Welcome to',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
@@ -52,7 +52,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       ),
                     ),
                     Text(
-                      'NATHI',
+                      'PharmaNathi',
                       style: TextStyle(
                         fontSize: 23,
                         fontWeight: FontWeight.w900,
