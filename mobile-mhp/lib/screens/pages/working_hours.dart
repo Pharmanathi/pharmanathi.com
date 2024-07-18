@@ -171,10 +171,10 @@ class _WorkingHoursState extends State<WorkingHours> {
                 SizedBox(height: 20),
                 //* Buttons
                 MyButtonWidgets(
-                  buttonText1: 'SAVE',
-                  onPressed1: _sendScheduleToApi,
-                  buttonText2: 'Cancel',
-                  onPressed2: () {
+                  buttonTextPrimary: 'SAVE',
+                  onPressedPrimary: _sendScheduleToApi,
+                  buttonTextSecondary: 'Cancel',
+                  onPressedSecondary: () {
                     Navigator.pop(context);
                   },
                 ).buildButton(),

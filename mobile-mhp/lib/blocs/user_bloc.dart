@@ -4,12 +4,13 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../models/user.dart';
 import '../repositories/user_repository.dart';
 
-
 class UserBloc {
   final UserRepository _userRepository;
   final ValueNotifier<User?> _userNotifier = ValueNotifier<User?>(null);
+  final ValueNotifier<bool> _postStatusNotifier = ValueNotifier<bool>(false);
 
   ValueNotifier<User?> get userNotifier => _userNotifier;
+  ValueNotifier<bool> get postStatusNotifier => _postStatusNotifier;
 
   UserBloc(this._userRepository);
 
@@ -27,7 +28,19 @@ class UserBloc {
     }
   }
 
+
+  Future<void> postUserDetails(BuildContext context, User user) async {
+    try {
+      final success = await _userRepository.postUserDetails(context, user);
+      _postStatusNotifier.value = success;
+    } catch (e, stackTrace) {
+      _postStatusNotifier.value = false;
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
+  }
+
   void dispose() {
     _userNotifier.dispose();
+    _postStatusNotifier.dispose();
   }
 }

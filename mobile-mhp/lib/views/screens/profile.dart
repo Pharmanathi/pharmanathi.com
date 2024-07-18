@@ -59,16 +59,16 @@ class _MyProfileState extends State<MyProfile> {
           ),
           actions: <Widget>[
             MyButtonWidgets(
-              buttonText1: 'LOG OUT',
-              onPressed1: () {
+              buttonTextPrimary: 'LOG OUT',
+              onPressedPrimary: () {
                 // Close the dialog
                 Navigator.of(context).pop();
 
                 // Call the log-out function
                 _handleLogOut(context);
               },
-              buttonText2: 'Cancel',
-              onPressed2: () {
+              buttonTextSecondary: 'Cancel',
+              onPressedSecondary: () {
                 Navigator.of(context).pop();
               },
             ).buildButton(),
