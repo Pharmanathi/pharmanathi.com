@@ -3,16 +3,16 @@
 import 'package:flutter/material.dart';
 
 class MyButtonWidgets {
-  final String buttonText1;
-  final String buttonText2;
-  final VoidCallback onPressed1;
-  final VoidCallback onPressed2;
+  final String buttonTextPrimary;
+  final String buttonTextSecondary;
+  final VoidCallback onPressedPrimary;
+  final VoidCallback onPressedSecondary;
 
   MyButtonWidgets(
-      {required this.buttonText1,
-      required this.onPressed1,
-      required this.buttonText2,
-      required this.onPressed2});
+      {required this.buttonTextPrimary,
+      required this.onPressedPrimary,
+      required this.buttonTextSecondary,
+      required this.onPressedSecondary});
 
   Widget buildButton() {
     return Align(
@@ -20,13 +20,13 @@ class MyButtonWidgets {
       child: Column(
         children: [
           ElevatedButton(
-            onPressed: onPressed1,
+            onPressed: onPressedPrimary,
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF6F7ED7),
               minimumSize: Size(320, 50),
             ),
             child: Text(
-              buttonText1,
+              buttonTextPrimary,
               style: TextStyle(
                 color: Color(0xFFFFFFFF),
                 fontSize: 16,
@@ -38,7 +38,7 @@ class MyButtonWidgets {
             height: 17,
           ),
           ElevatedButton(
-            onPressed: onPressed2,
+            onPressed: onPressedSecondary,
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFFFFFFF),
               minimumSize: Size(320, 50),
@@ -49,7 +49,7 @@ class MyButtonWidgets {
               ),
             ),
             child: Text(
-              buttonText2,
+              buttonTextSecondary,
               style: TextStyle(
                 color: Color(0xFF6F7ED7),
                 fontSize: 16,

@@ -10,6 +10,7 @@ class UserProvider with ChangeNotifier {
   String? email;
   String? name;
   String? picture;
+    int? contact;
   String? backendToken;
   String _selectedAppointmentType = 'In Person Visit';
 
@@ -69,6 +70,7 @@ class UserProvider with ChangeNotifier {
     //* Check if any of the required user information is empty
     return email == null ||
         name == null ||
+        contact == null ||
         picture == null ||
         backendToken == null;
   }

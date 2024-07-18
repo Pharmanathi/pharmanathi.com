@@ -76,6 +76,30 @@ class User {
           : [],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'is_doctor': isDoctor,
+      'doctor_profile': doctorProfile?.toJson(),
+      'last_login': lastLogin?.toIso8601String(),
+      'is_superuser': isSuperuser,
+      'is_staff': isStaff,
+      'is_active': isActive,
+      'date_joined': dateJoined?.toIso8601String(),
+      'date_created': dateCreated?.toIso8601String(),
+      'date_modified': dateModified?.toIso8601String(),
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'sa_id_no': saIdNo,
+      'initials': initials,
+      'title': title,
+      'contact_no': contactNo,
+      'university': university,
+      'user_permissions': userPermissions,
+    };
+  }
 }
 
 class DoctorProfile {
