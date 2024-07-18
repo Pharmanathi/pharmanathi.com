@@ -32,4 +32,22 @@ class UserRepository {
       return null;
     }
   }
+
+  Future<bool> postUserDetails(BuildContext context, User user) async {
+    try {
+      final userDetails =
+          user.toJson(); // Ensure `toJson` method is defined in User model
+      final response = await apiProvider.postUserDetails(context, userDetails);
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        http_helpers.Apihelper.handleError(context, response);
+        return false;
+      }
+    } catch (e, stackTrace) {
+      http_helpers.Apihelper.handleException(context, e);
+      await Sentry.captureException(e, stackTrace: stackTrace);
+      return false;
+    }
+  }
 }

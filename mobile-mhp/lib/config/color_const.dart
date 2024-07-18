@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class Pallet {
   const Pallet._();
   // *Colors from Coolors palette
-  static const Color PRIMARY_COLOR = Color(0xFF6F7ED7);
+  static const Color PRIMARY_COLOR = Color.fromARGB(255, 101, 115, 207);
   static const Color SECONDARY_COLOR = Color(0xFF8D96A6);
   static const Color SUCCESS = Color(0xFF96D14E);
   static const Color BACKGROUND_COLOR = Color(0xFFF7F9FC);

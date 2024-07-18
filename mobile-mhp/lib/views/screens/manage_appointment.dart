@@ -632,8 +632,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   height: 2,
                 ),
                 MyButtonWidgets(
-                  buttonText1: 'Save',
-                  onPressed1: () {
+                  buttonTextPrimary: 'Save',
+                  onPressedPrimary: () {
                     //* Get all inputs
                     double? consultationFee =
                         double.tryParse(consultationFeeController.text);
@@ -682,8 +682,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                       _navigateToProfilePage();
                     });
                   },
-                  buttonText2: 'Cancel',
-                  onPressed2: () {
+                  buttonTextSecondary: 'Cancel',
+                  onPressedSecondary: () {
                     Navigator.pop(context);
                   },
                 ).buildButton(),
