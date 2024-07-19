@@ -1,5 +1,4 @@
-// Ignore certain lint rules
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables, file_names, unused_element, library_prefixes
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +7,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:provider/provider.dart';
 import '../../helpers/http_helpers.dart' as http_helpers;
+import '../../models/user.dart';
+import '../../repositories/user_repository.dart';
 
 class GoogleSignInWidget extends StatefulWidget {
   const GoogleSignInWidget({super.key});
@@ -18,12 +19,20 @@ class GoogleSignInWidget extends StatefulWidget {
 
 class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
   final log = logger(GoogleSignInWidget);
+  late UserRepository _userRepository;
+  List<User> user = [];
   final GoogleSignIn _googleSignIn =
       GoogleSignIn(scopes: ['email', 'profile', 'openid']);
   GoogleSignInAccount? _currentUser;
   String apiUrl =
-      dotenv.env['API_BASE_URL'] ?? " make sure you have the right url";
+      dotenv.env['API_BASE_URL'] ?? "make sure you have the right url";
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _userRepository = context.read<UserRepository>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +68,6 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
                             fontSize: 23,
                             fontWeight: FontWeight.w900,
                             color: Color.fromARGB(255, 247, 247, 251),
-
-                            /// Adjust the text color
                           ),
                         ),
                       ],
@@ -119,7 +126,7 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
     );
   }
 
-// Function to handle Google Sign-In process
+  // Function to handle Google Sign-In process
   Future<void> _signInWithGoogle() async {
     setState(() {
       _isLoading = true; // Show loading indicator
@@ -164,15 +171,15 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
         backendToken,
       );
 
-      // Close the loading dialog
-      Navigator.pop(context);
+      // Fetch user data using the obtained backend token
+      await _fetchUserData(context);
 
-      //* Check if it's the first time sign-in
+      // Check if it's the first time sign-in
       final isFirstTimeSignInResult = await userProvider.isFirstTimeSignIn();
 
       if (isFirstTimeSignInResult) {
-        //* If it's the first sign-in, navigate to the onboarding page
-        Navigator.pushNamed(
+        // If it's the first sign-in, navigate to the onboarding page
+        Navigator.pushReplacementNamed(
           context,
           '/onboarding',
           arguments: {
@@ -180,8 +187,8 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
           },
         );
       } else {
-        //* If it's not the first sign-in, navigate to the home page
-        Navigator.pushNamed(
+        // If it's not the first sign-in, navigate to the home page
+        Navigator.pushReplacementNamed(
           context,
           '/home_page',
           arguments: {
@@ -192,9 +199,6 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
     } catch (e) {
       // Handle errors
       log.e('Error during Google Sign-In: $e');
-
-      // Close the loading dialog
-      Navigator.pop(context);
 
       // Show an error snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -208,12 +212,29 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
       );
 
       // Navigate to the sign-in page in case of errors
-      Navigator.pushNamed(context, '/signIn');
+      Navigator.pushReplacementNamed(context, '/signIn');
     } finally {
       // Re-enable the button after the sign-in process
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _fetchUserData(BuildContext context) async {
+    try {
+      User? fetchedUser = await _userRepository.fetchUserData(context);
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      if (fetchedUser != null) {
+        userProvider.setUserData(fetchedUser);
+        setState(() {
+          user = [fetchedUser];
+          _isLoading = false;
+        });
+      }
+      log.i('userdata: $fetchedUser');
+    } catch (e) {
+      log.e('Error loading user data: $e');
     }
   }
 

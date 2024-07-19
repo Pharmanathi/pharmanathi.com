@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../helpers/http_helpers.dart' as http_helpers;
+import '../models/user.dart';
 
 class ApiProvider {
   Future<http.Response> fetchAppointmentData(BuildContext context) async {
@@ -17,9 +18,16 @@ class ApiProvider {
         context, apiEndpoint, 'GET', '');
   }
 
-  Future<http.Response> postUserDetails(BuildContext context, Map<String, dynamic> userDetails) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/users/';
+  Future<http.Response> updateUserDetails(BuildContext context, int userId, Map<String, dynamic> userDetails) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/doctors/$userId/';
     return await http_helpers.Apihelper.httpRequestWithAuthorization(
-        context, apiEndpoint, 'POST', json.encode(userDetails));
+      context, apiEndpoint, 'PATCH', json.encode(userDetails)
+    );
   }
+  Future<http.Response> fetchSpecialities(BuildContext context) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/specialities/';
+    return await http_helpers.Apihelper.httpRequestWithAuthorization(
+        context, apiEndpoint, 'GET', '');
+  }
+
 }
