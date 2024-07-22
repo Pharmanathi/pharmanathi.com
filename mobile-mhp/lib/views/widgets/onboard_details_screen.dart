@@ -205,13 +205,21 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(8.0),
                   children: [
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'HPCSA Number',
+                      style: TextStyle(color: Pallet.NEUTRAL_600,
+                       fontWeight: FontWeight.bold),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _hpcsaNoController,
                         decoration: InputDecoration(
-                            hintText: 'HPCSA Number',
-                            hintStyle: const TextStyle(color: Pallet.NEUTRAL_100),
+                            hintText: 'hpcsa number',
+                            hintStyle: const TextStyle(
+                                color: Pallet.NEUTRAL_100,
+                                fontWeight: FontWeight.normal),
                             filled: true,
                             fillColor: Pallet.BACKGROUND_50,
                             border: OutlineInputBorder(
@@ -226,14 +234,20 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                         },
                       ),
                     ),
+                    const Text(
+                      'MP Number',
+                      style: TextStyle(color: Pallet.NEUTRAL_600,
+                       fontWeight: FontWeight.bold),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _mpNoController,
                         decoration: InputDecoration(
-                            hintText: 'MP Number',
-                            hintStyle:
-                                const TextStyle(color: Pallet.NEUTRAL_100),
+                            hintText: 'mp number',
+                            hintStyle: const TextStyle(
+                                color: Pallet.NEUTRAL_100,
+                                fontWeight: FontWeight.normal),
                             filled: true,
                             fillColor: Pallet.BACKGROUND_50,
                             border: OutlineInputBorder(
@@ -243,6 +257,11 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
+                    const Text(
+                      'Specialities',
+                      style: TextStyle(color: Pallet.NEUTRAL_600,
+                       fontWeight: FontWeight.bold),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Consumer<SpecialityBloc>(
@@ -264,7 +283,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                   .toList(),
                               title: const Text('Select Specialities'),
                               selectedItemsTextStyle:
-                                  const TextStyle(color:Pallet.NEUTRAL_100),
+                                  const TextStyle(color: Pallet.NEUTRAL_100),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Pallet.BACKGROUND_50),
@@ -272,8 +291,10 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                 Icons.arrow_drop_down,
                                 color: Colors.black,
                               ),
-                              buttonText: const Text('Select Specialities',
-                              style: TextStyle(color:Pallet.NEUTRAL_100),),
+                              buttonText: const Text(
+                                'Select Specialities',
+                                style: TextStyle(color: Pallet.NEUTRAL_100),
+                              ),
                               onConfirm: (selected) {
                                 setState(() {
                                   _selectedSpecialities = selected;
@@ -286,22 +307,23 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     ),
                     const SizedBox(height: 16.0),
                     // const Text('Practice Locations',
-                    // style: TextStyle(color:Pallet.NEUTRAL_300),),
+                    // style: TextStyle(color:Pallet.NEUTRAL_600),),
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
-                        width: 200, 
-                        height: 30, 
+                        width: 200,
+                        height: 30,
                         child: ElevatedButton(
                           onPressed: () => _showAddLocationModal(context),
                           style: ElevatedButton.styleFrom(
-                            
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
-                          child: const Text('Add Practice Location',
-                          style: TextStyle(color:Pallet.NEUTRAL_400),),
+                          child: const Text(
+                            'Add Practice Location',
+                            style: TextStyle(color: Pallet.NEUTRAL_400),
+                          ),
                         ),
                       ),
                     ),
