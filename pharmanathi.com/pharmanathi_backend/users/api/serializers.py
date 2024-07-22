@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
 
 from pharmanathi_backend.users.models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality
@@ -69,7 +70,7 @@ class DoctorModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        exclude = ["date_created"]
+        exclude = ["date_created", "_is_verified"]
 
 
 class DoctorPublicListSerializer(DoctorModelSerializer):
@@ -134,3 +135,11 @@ class PracticeLocationModelSerializerWithExtAddress(serializers.ModelSerializer)
     class Meta:
         model = PracticeLocation
         fields = "__all__"
+
+    def create(self, validated_data):
+        """Explicit handling of nested Address object"""
+        with transaction.atomic():
+            address_data = validated_data.pop("address")
+            address = Address.objects.create(**address_data)
+            practice_location = PracticeLocation.objects.create(**validated_data, address=address)
+            return practice_location
