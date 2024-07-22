@@ -54,10 +54,8 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userInfo = userProvider.user;
 
-      List<Map<String, dynamic>> specialitiesData = _selectedSpecialities
-          .map((s) => {
-                'id': s.id,
-              })
+      List<int> specialitiesData = _selectedSpecialities
+          .map((s)  => s.id )
           .toList();
 
       final Map<String, dynamic> partialUpdates = {
@@ -67,7 +65,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
         'practice_locations': _selectedPracticeLocations,
       };
 
-      doctorBloc.updateUserDetails(context, userInfo?.id ?? 0, partialUpdates);
+      doctorBloc.updateUserDetails(context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
 
       doctorBloc.postStatusNotifier.addListener(() {
         if (doctorBloc.postStatusNotifier.value) {
