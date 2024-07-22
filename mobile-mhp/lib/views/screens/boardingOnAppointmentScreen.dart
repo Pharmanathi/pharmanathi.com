@@ -5,7 +5,7 @@ import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
 
 import '../widgets/buttons.dart';
-import 'onboarding_second_screen.dart';
+import 'boardingOnScehduleScreen.dart';
 import '../widgets/onboard_details_screen.dart';
 
 class OnboardScreen extends StatefulWidget {
@@ -99,7 +99,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                       'Let\'s get started!',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Pallet.NATURAL_FAINT,
                         fontWeight: FontWeight.normal,
                       ),
@@ -127,7 +127,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                           ),
                         );
                       },
-                    ).buildButton(),
+                    ).buildButtons(primaryFirst: false),
                   ],
                 ),
               ),

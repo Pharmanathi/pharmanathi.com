@@ -92,7 +92,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                       'running smoothly.',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Pallet.NATURAL_FAINT,
                         fontWeight: FontWeight.normal,
                       ),
@@ -120,7 +120,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                           ),
                         );
                       },
-                    ).buildButton(),
+                    ).buildButtons(primaryFirst: false),
                   ],
                 ),
               ),

@@ -132,7 +132,7 @@ class _MyAppState extends State<MyApp> {
                 snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
             if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
               if (Apihelper.retrieveLocaAPIToken(context) != null) {
-                initialRoute = AppRoutes.homePage;
+                initialRoute = AppRoutes.onboarding;
               }
             }
             return Navigator(
