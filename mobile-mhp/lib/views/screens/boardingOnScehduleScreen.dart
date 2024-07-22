@@ -107,20 +107,20 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyButtonWidgets(
-                      buttonTextSecondary: 'BACK',
+                      buttonTextSecondary: 'GET STARTED',
                       onPressedSecondary: () {
-                        Navigator.pop(context);
-                      },
-                      buttonTextPrimary: 'GET STARTED',
-                      onPressedPrimary: () {
-                        Navigator.push(
+                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => OnboardDetailsScreen(),
                           ),
                         );
                       },
-                    ).buildButtons(primaryFirst: false),
+                      buttonTextPrimary: 'BACK',
+                      onPressedPrimary: () {
+                         Navigator.pop(context);
+                      },
+                    ).buildButtons(primaryFirst: true),
                   ],
                 ),
               ),

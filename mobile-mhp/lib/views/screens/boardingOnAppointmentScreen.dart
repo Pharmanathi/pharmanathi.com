@@ -114,12 +114,8 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyButtonWidgets(
-                      buttonTextSecondary: 'SKIP',
+                      buttonTextSecondary: 'NEXT',
                       onPressedSecondary: () {
-                        skipOnboarding(context);
-                      },
-                      buttonTextPrimary: 'Next',
-                      onPressedPrimary: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -127,7 +123,11 @@ class _OnboardScreenState extends State<OnboardScreen> {
                           ),
                         );
                       },
-                    ).buildButtons(primaryFirst: false),
+                      buttonTextPrimary: 'SKIP',
+                      onPressedPrimary: () {
+                         skipOnboarding(context);
+                      },
+                    ).buildButtons(primaryFirst: true),
                   ],
                 ),
               ),
