@@ -16,6 +16,8 @@ from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
     FutureDateByDOWFactory,
     InvalidationReasonFactory,
+    PracticeLocationFactory,
+    SpecialityFactory,
     UserFactory,
 )
 
@@ -74,6 +76,29 @@ def simple_doctor(db):
 
 
 @pytest.fixture
+def speciality(db):
+    return SpecialityFactory()
+
+
+@pytest.fixture
+def doctor_with_speciality(simple_doctor, speciality):
+    simple_doctor.specialities.add(speciality)
+    return simple_doctor
+
+
+@pytest.fixture
+def practice_location(db):
+    return PracticeLocationFactory()
+
+
+@pytest.fixture
+def doctor_with_practice_location(simple_doctor):
+    practice_location = PracticeLocationFactory()
+    simple_doctor.practicelocations.add(practice_location)
+    return simple_doctor
+
+
+@pytest.fixture
 def verified_doctor(simple_doctor):
     simple_doctor._is_verified = True
     simple_doctor.save()
@@ -97,6 +122,20 @@ def verified_mhp_client(simple_doctor):
 @pytest.fixture
 def unverified_mhp_client():
     _user = DoctorFactory(_is_verified=False).user
+
+    class APIClientDoctor(APIClient):
+        user = _user
+        EmailAddress.objects.create(user=user, email=user.email, verified=True)
+
+    client = APIClientDoctor()
+    client.force_authenticate(user=client.user)
+    return client
+
+
+# https://docs.pytest.org/en/7.1.x/how-to/fixtures.html#fixtures-can-introspect-the-requesting-test-context
+@pytest.fixture(params=[True, False])
+def mhp_client(request):
+    _user = DoctorFactory(_is_verified=request.param).user
 
     class APIClientDoctor(APIClient):
         user = _user

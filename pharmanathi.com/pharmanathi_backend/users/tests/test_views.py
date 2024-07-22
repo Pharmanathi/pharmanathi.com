@@ -310,3 +310,34 @@ def test_has_consulted_before_is_True_if_consulted_before(api_client, doctor_wit
     doctor_payload = list(filter(lambda d: d.get("id") == doctor_with_appointment_random.id, res.data))[0]
     print(doctor_payload)
     assert doctor_payload.get("has_consulted_before") is True
+
+
+def test_mp_can_builk_update_doctor_profile(mhp_client, speciality):
+    # The bulk update includes updating the following models at once:
+    # - Doctor
+    # - PracticeLocation
+    # - Specialities
+    # This is usually triggered by the Mobile client
+    doctor = mhp_client.user.doctor_profile
+    payload = {
+        "hpcsa_no": "some value",
+        "specialities": [speciality.id],
+        "practice_locations": [
+            {
+                "name": "Netcare Unitas Hospital",
+                "address": {
+                    "line_1": " 866 Clifton Ave",
+                    "suburb": "Die Hoewes",
+                    "city": "Centurion",
+                    "postal_code": "0163",
+                    "province": "GP",
+                },
+            }
+        ],
+    }
+    response = mhp_client.patch(f"/api/doctors/{doctor.id}/", payload, format="json")
+    assert response.status_code == 200
+    doctor.refresh_from_db()
+    assert doctor.hpcsa_no == payload.get("hpcsa_no")
+    assert doctor.practicelocations.filter(name=payload.get("practice_locations")[0].get("name"))
+    assert speciality in doctor.specialities.all()
