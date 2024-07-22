@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
+import 'package:pharma_nathi/blocs/speciality_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
-import 'package:pharma_nathi/repositories/doctor_repository.dart';
-import 'package:pharma_nathi/services/api_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../models/user.dart';
@@ -15,42 +13,29 @@ class OnboardDetailsScreen extends StatefulWidget {
 }
 
 class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
-  late final DoctorBloc doctorBloc;
-  late Future<List<Speciality>> _specialitiesFuture;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _hpcsaNoController = TextEditingController();
   final TextEditingController _mpNoController = TextEditingController();
   List<Speciality> _selectedSpecialities = [];
-  List<int> _selectedPracticeLocations = [];
+  final List<Map<String, String>> _selectedPracticeLocations = [];
 
   @override
   void initState() {
     super.initState();
-    doctorBloc = DoctorBloc(DoctorRepository(ApiProvider()));
-    _specialitiesFuture = fetchSpecialities(context);
+    final specialityBloc = Provider.of<SpecialityBloc>(context, listen: false);
+    specialityBloc.fetchSpecialities(context);
   }
 
   @override
   void dispose() {
     _hpcsaNoController.dispose();
     _mpNoController.dispose();
-    doctorBloc.dispose();
     super.dispose();
-  }
-
-  Future<List<Speciality>> fetchSpecialities(BuildContext context) async {
-    final response = await ApiProvider().fetchSpecialities(context);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => Speciality.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load specialities');
-    }
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      final doctorBloc = Provider.of<DoctorBloc>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userInfo = userProvider.user;
 
@@ -74,7 +59,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('User details submitted successfully'),
-              backgroundColor: Colors.green,
+              backgroundColor: Pallet.SUCCESS,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               margin: const EdgeInsets.symmetric(vertical: 150),
@@ -87,7 +72,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('Failed to submit user details'),
-              backgroundColor: Pallet.DANGER_600,
+              backgroundColor: Pallet.DANGER_500,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               margin: const EdgeInsets.symmetric(vertical: 150),
@@ -101,9 +86,74 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
     }
   }
 
+  void _showAddLocationModal(BuildContext context) {
+    final TextEditingController postalCodeController = TextEditingController();
+    final TextEditingController streetController = TextEditingController();
+    final TextEditingController countryController = TextEditingController();
+    final TextEditingController provinceController = TextEditingController();
+    final TextEditingController cityController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add Practice Location'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: postalCodeController,
+                  decoration: const InputDecoration(labelText: 'Postal Code'),
+                ),
+                TextFormField(
+                  controller: streetController,
+                  decoration: const InputDecoration(labelText: 'Street'),
+                ),
+                TextFormField(
+                  controller: countryController,
+                  decoration: const InputDecoration(labelText: 'Country'),
+                ),
+                TextFormField(
+                  controller: provinceController,
+                  decoration: const InputDecoration(labelText: 'Province'),
+                ),
+                TextFormField(
+                  controller: cityController,
+                  decoration: const InputDecoration(labelText: 'City'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _selectedPracticeLocations.add({
+                    'postal_code': postalCodeController.text,
+                    'street': streetController.text,
+                    'country': countryController.text,
+                    'province': provinceController.text,
+                    'city': cityController.text,
+                  });
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Add Location'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<int> availablePracticeLocations = [1, 2, 3, 4, 5];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Onboarding Details'),
@@ -136,19 +186,18 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
               ),
               const SizedBox(height: 16.0),
               const Text('Specialities'),
-              FutureBuilder<List<Speciality>>(
-                future: _specialitiesFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+              Consumer<SpecialityBloc>(
+                builder: (context, specialityBloc, child) {
+                  if (specialityBloc.isLoading) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  } else if (specialityBloc.error != null) {
+                    return Center(
+                        child: Text('Error: ${specialityBloc.error}'));
+                  } else if (specialityBloc.specialities.isEmpty) {
                     return const Text('No specialities available');
                   } else {
-                    final specialities = snapshot.data!;
                     return MultiSelectDialogField<Speciality>(
-                      items: specialities
+                      items: specialityBloc.specialities
                           .map((speciality) => MultiSelectItem<Speciality>(
                               speciality, speciality.name))
                           .toList(),
@@ -174,25 +223,26 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
               ),
               const SizedBox(height: 16.0),
               const Text('Practice Locations'),
-              Wrap(
-                spacing: 8.0,
-                children: availablePracticeLocations.map((locationId) {
-                  return ChoiceChip(
-                    label: Text('Location $locationId'),
-                    selected: _selectedPracticeLocations.contains(locationId),
-                    onSelected: (selected) {
-                      setState(() {
-                        if (selected) {
-                          _selectedPracticeLocations.add(locationId);
-                        } else {
-                          _selectedPracticeLocations.remove(locationId);
-                        }
-                      });
-                    },
-                  );
-                }).toList(),
+              ElevatedButton(
+                onPressed: () => _showAddLocationModal(context),
+                child: const Text('Add Practice Location'),
               ),
               const SizedBox(height: 16.0),
+              Wrap(
+                spacing: 8.0,
+                children: _selectedPracticeLocations
+                    .map((location) => Chip(
+                          label: Text(
+                              '${location['street']}, ${location['city']}'),
+                          onDeleted: () {
+                            setState(() {
+                              _selectedPracticeLocations.remove(location);
+                            });
+                          },
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Submit'),
