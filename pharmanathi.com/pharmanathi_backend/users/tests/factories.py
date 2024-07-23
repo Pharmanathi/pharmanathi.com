@@ -49,7 +49,7 @@ class AddressFactory(DjangoModelFactory):
     line_2 = factory.fuzzy.FuzzyText(length=70)
     suburb = factory.fuzzy.FuzzyText(length=25)
     city = factory.fuzzy.FuzzyText(length=25)
-    province = factory.fuzzy.FuzzyChoice(Address.Province)
+    province = factory.fuzzy.FuzzyChoice(Address.ProvinceChoice)
 
     class Meta:
         model = Address
