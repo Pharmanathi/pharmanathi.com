@@ -5,16 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pharma_nathi/firebase_options.dart';
+import 'package:pharma_nathi/repositories/speciality_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'blocs/doctor_bloc.dart';
+import 'blocs/speciality_bloc.dart';
 import 'helpers/http_helpers.dart';
 import 'repositories/appointment_repository.dart';
+import 'repositories/doctor_repository.dart';
 import 'repositories/user_repository.dart';
 import 'routes/app_routes.dart';
 import 'services/api_provider.dart';
 import 'screens/components/UserProvider.dart';
 import 'screens/components/image_data.dart';
-
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -29,15 +32,19 @@ Future<void> main() async {
   AppointmentRepository appointmentRepository =
       AppointmentRepository(apiProvider);
   UserRepository userRepository = UserRepository(apiProvider);
+  SpecialityRepository specialityRepository = SpecialityRepository(apiProvider);
+  DoctorRepository doctorRepository = DoctorRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository, userRepository);
+      await _runApp(appointmentRepository, userRepository, specialityRepository,
+          doctorRepository);
     });
   } else {
-    await _runApp(appointmentRepository, userRepository);
+    await _runApp(appointmentRepository, userRepository, specialityRepository,
+        doctorRepository);
   }
 }
 
@@ -72,15 +79,24 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(AppointmentRepository appointmentRepository,
-    UserRepository userRepository) async {
+Future<void> _runApp(
+    AppointmentRepository appointmentRepository,
+    UserRepository userRepository,
+    SpecialityRepository specialityRepository,
+    DoctorRepository doctorRepository) async {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ImageDataProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider<SpecialityBloc>(
+            create: (_) => SpecialityBloc(specialityRepository)),
+             ChangeNotifierProvider<DoctorBloc>(
+            create: (_) => DoctorBloc(doctorRepository)),
         Provider.value(value: appointmentRepository),
         Provider.value(value: userRepository),
+        Provider.value(value: specialityRepository),
+        Provider.value(value: doctorRepository),
       ],
       child: const MyApp(),
     ),

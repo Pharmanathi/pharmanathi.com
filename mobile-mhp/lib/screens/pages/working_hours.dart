@@ -87,25 +87,24 @@ class _WorkingHoursState extends State<WorkingHours> {
   }
 
   //* Method to send schedule to API
- void _sendScheduleToApi() {
-  WorkingHourApiService.sendSchedule(schedule, context, onSuccess: () {
-    _showSuccessMessage();
-    _navigateToProfilePage();
-  });
-}
+  void _sendScheduleToApi() {
+    WorkingHourApiService.sendSchedule(schedule, context, onSuccess: () {
+      _showSuccessMessage();
+      _navigateToProfilePage();
+    });
+  }
 
   //* Method to show a success message using a SnackBar
- void _showSuccessMessage() {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Schedule saved successfully!'),
-      duration: Duration(seconds: 5),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.green,
-    ),
-  );
-}
-
+  void _showSuccessMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Schedule saved successfully!'),
+        duration: Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
 
   //* Method to navigate to the profile page
   void _navigateToProfilePage() {
@@ -177,7 +176,7 @@ class _WorkingHoursState extends State<WorkingHours> {
                   onPressedSecondary: () {
                     Navigator.pop(context);
                   },
-                ).buildButton(),
+                ).buildButtons(primaryFirst: true),
               ],
             ),
           ),
