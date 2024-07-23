@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
+import 'package:pharma_nathi/views/screens/boardingOnScehduleScreen.dart';
 
 import '../widgets/buttons.dart';
-import 'boardingOnScehduleScreen.dart';
-import '../widgets/onboard_details_screen.dart';
+
 
 class OnboardScreen extends StatefulWidget {
   final log = logger(OnboardScreen);

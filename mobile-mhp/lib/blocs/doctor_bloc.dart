@@ -11,11 +11,11 @@ class DoctorBloc extends ChangeNotifier {
 
   DoctorBloc(this._doctorRepository);
 
-  Future<void> updateUserDetails(BuildContext context, int userId,
+  Future<void> updateDoctorDetails(BuildContext context, int doctorid,
       Map<String, dynamic> userDetails) async {
     try {
-      final success = await _doctorRepository.updateUserDetails(
-          context, userId, userDetails);
+      final success = await _doctorRepository.updateDoctorDetails(
+          context, doctorid, userDetails);
       _postStatusNotifier.value = success;
       notifyListeners();
     } catch (e, stackTrace) {

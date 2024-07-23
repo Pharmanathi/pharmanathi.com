@@ -18,8 +18,8 @@ class ApiProvider {
         context, apiEndpoint, 'GET', '');
   }
 
-  Future<http.Response> updateUserDetails(BuildContext context, int userId, Map<String, dynamic> userDetails) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/doctors/$userId/';
+  Future<http.Response> updateDoctorDetails(BuildContext context, int doctorid, Map<String, dynamic> userDetails) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/doctors/$doctorid/';
     return await http_helpers.Apihelper.httpRequestWithAuthorization(
       context, apiEndpoint, 'PATCH', json.encode(userDetails)
     );

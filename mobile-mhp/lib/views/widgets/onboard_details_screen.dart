@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
 import 'package:pharma_nathi/blocs/speciality_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/views/widgets/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../models/user.dart';
 import '../../screens/components/UserProvider.dart';
-import 'buttons.dart';
 
 class OnboardDetailsScreen extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
   final TextEditingController _mpNoController = TextEditingController();
   List<Speciality> _selectedSpecialities = [];
   final List<Map<String, String>> _selectedPracticeLocations = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -34,8 +35,12 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
       final doctorBloc = Provider.of<DoctorBloc>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userInfo = userProvider.user;
@@ -49,12 +54,16 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
       final Map<String, dynamic> partialUpdates = {
         'hpcsa_no': _hpcsaNoController.text,
         'mp_no': _mpNoController.text,
-        // 'specialities': specialitiesData,
+        'specialities': specialitiesData,
         'practice_locations': _selectedPracticeLocations,
       };
 
-      doctorBloc.updateUserDetails(
+      await doctorBloc.updateDoctorDetails(
           context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
+
+      setState(() {
+        _isLoading = false;
+      });
 
       doctorBloc.postStatusNotifier.addListener(() {
         if (doctorBloc.postStatusNotifier.value) {
@@ -169,7 +178,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 70, right: 80),
+                    padding: const EdgeInsets.only(top: 70, right: 75),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -186,10 +195,10 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                           ),
                         ),
                         const Text(
-                          'Onboarding Details',
+                          'Professional Details',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24.0,
+                            fontSize: 22.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -208,18 +217,21 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     const SizedBox(height: 16.0),
                     const Text(
                       'HPCSA Number',
-                      style: TextStyle(color: Pallet.NEUTRAL_600,
-                       fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _hpcsaNoController,
                         decoration: InputDecoration(
-                            hintText: 'hpcsa number',
+                            hintText: 'HPCSA Number',
                             hintStyle: const TextStyle(
                                 color: Pallet.NEUTRAL_100,
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10),
                             filled: true,
                             fillColor: Pallet.BACKGROUND_50,
                             border: OutlineInputBorder(
@@ -236,18 +248,21 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     ),
                     const Text(
                       'MP Number',
-                      style: TextStyle(color: Pallet.NEUTRAL_600,
-                       fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _mpNoController,
                         decoration: InputDecoration(
-                            hintText: 'mp number',
+                            hintText: 'MP Number',
                             hintStyle: const TextStyle(
                                 color: Pallet.NEUTRAL_100,
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10),
                             filled: true,
                             fillColor: Pallet.BACKGROUND_50,
                             border: OutlineInputBorder(
@@ -259,8 +274,10 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     const SizedBox(height: 16.0),
                     const Text(
                       'Specialities',
-                      style: TextStyle(color: Pallet.NEUTRAL_600,
-                       fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -286,14 +303,14 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                   const TextStyle(color: Pallet.NEUTRAL_100),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Pallet.BACKGROUND_50),
+                                  color: Pallet.BACKGROUND_50,),
                               buttonIcon: const Icon(
                                 Icons.arrow_drop_down,
                                 color: Colors.black,
                               ),
                               buttonText: const Text(
                                 'Select Specialities',
-                                style: TextStyle(color: Pallet.NEUTRAL_100),
+                                style: TextStyle(color: Pallet.NEUTRAL_100, fontSize: 10),
                               ),
                               onConfirm: (selected) {
                                 setState(() {
@@ -306,8 +323,6 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    // const Text('Practice Locations',
-                    // style: TextStyle(color:Pallet.NEUTRAL_600),),
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -343,10 +358,12 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                           .toList(),
                     ),
                     const SizedBox(height: 24.0),
-                    MyButtonWidgets(
-                      buttonTextPrimary: 'Submit',
-                      onPressedPrimary: _submitForm,
-                    ).buildButtons(primaryFirst: false),
+                    _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : MyButtonWidgets(
+                            buttonTextPrimary: 'Submit',
+                            onPressedPrimary: _submitForm,
+                          ).buildButtons(primaryFirst: false),
                   ],
                 ),
               ),
