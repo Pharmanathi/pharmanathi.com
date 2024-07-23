@@ -85,10 +85,10 @@ class DoctorModelViewSet(ModelViewSet):
         should_update_practice_locations = False
 
         # Dealing with nested relationships requires custom handling.
-        # Hence, if any of `spcialities` or `practice_locations` is
+        # Hence, if any of `specialities` or `practice_locations` is
         # present in the payload, we will extract them to be processed
-        # seprately. If the Model ever changes to include or remove
-        # a nested realtionship, this code might require reviewing
+        # separately. If the Model ever changes to include or remove
+        # a nested realtionship, this code might require reviewing.
         if "specialities" in data:
             # expects a list of PKs, not a dictionary
             data_specialities = data.pop("specialities")
@@ -150,7 +150,7 @@ class PublicDoctorModelViewSet(DoctorModelViewSet):
         if user_is_doctor(self.request):
             # Because we would like to allow non-verified doctors to update their details
             # At the same time, we are only returning a queryset that will always return
-            # only them as Doctor
+            # only them as existing Doctor. They would know about other doctors his way.
             return Doctor.objects.filter(pk=self.request.user.doctor_profile.id)
 
         return super().get_queryset()
