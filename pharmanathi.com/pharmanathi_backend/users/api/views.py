@@ -8,6 +8,7 @@ from dj_rest_auth.registration.serializers import SocialLoginSerializer
 from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
+from django.db.models import Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
@@ -21,7 +22,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from pharmanathi_backend.utils import user_is_doctor
 
-from ..models import Address, Doctor, PracticeLocation, Speciality
+from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
@@ -36,7 +37,12 @@ User = get_user_model()
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
     serializer_class = UserSerializer
-    queryset = User.objects.all().prefetch_related("doctor_profile")
+    queryset = User.objects.all().prefetch_related(
+        "doctor_profile",
+        "doctor_profile__invalidationreason_set",
+        "doctor_profile__verification_reports",
+        "doctor_profile__specialities",
+    )
     lookup_field = "pk"
 
     def get_queryset(self, *args, **kwargs):
@@ -45,7 +51,28 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
 
     @action(detail=False)
     def me(self, request):
-        serializer = UserSerializer(request.user, context={"request": request})
+        # Due to the nature of the /api/users/me, the user requesting
+        # data about themselves has low chances of needing to see:
+        #   - Invalidation reasons that have been resolved(the client will
+        #     generally only need to inform them of pending issues)
+        #   - Verificaition reports. Those are for use only.
+        serializer = UserSerializer(
+            User.objects.filter(pk=request.user.pk)
+            .prefetch_related(
+                Prefetch(
+                    "doctor_profile__invalidationreason_set",
+                    queryset=InvalidationReason.objects.select_related()
+                    .filter(is_resolved=False)
+                    .order_by("date_created"),
+                ),
+                Prefetch(
+                    "doctor_profile__verification_reports",
+                    queryset=VerificationReport.objects.filter(mp=0),
+                ),
+            )
+            .first(),
+            context={"request": request},
+        )
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
