@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from pharmanathi_backend.users.models import Doctor, InvalidationReason
+from pharmanathi_backend.users.models import Doctor, InvalidationReason, VerificationReport
 
 
 class UserFactory(DjangoModelFactory):
@@ -93,3 +93,11 @@ class InvalidationReasonFactory(DjangoModelFactory):
 
     class Meta:
         model = InvalidationReason
+
+
+class VerificationReportFactory(DjangoModelFactory):
+    mp = SubFactory(DoctorFactory)
+    report = {}
+
+    class Meta:
+        model = VerificationReport

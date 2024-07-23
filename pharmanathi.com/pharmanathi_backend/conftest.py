@@ -173,3 +173,10 @@ def social_simple_doctor(db, simple_doctor):
 def unresolved_invalidation_reason(unverified_mhp_client):
     unverified_mhp = unverified_mhp_client.user.doctor_profile
     return InvalidationReasonFactory(mhp=unverified_mhp)
+
+
+@pytest.fixture
+def resolved_invalidation_reason(unverified_mhp_client, staff_web_client):
+    resolver = staff_web_client.user
+    unverified_mhp = unverified_mhp_client.user.doctor_profile
+    return InvalidationReasonFactory(mhp=unverified_mhp, is_resolved=True, resolved_by=resolver)

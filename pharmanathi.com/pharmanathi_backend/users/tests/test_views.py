@@ -17,7 +17,13 @@ from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFact
 from pharmanathi_backend.users.forms import UserAdminChangeForm
 from pharmanathi_backend.users.models import User
 from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.users.tests.factories import DoctorFactory, FutureDateByDOWFactory, UserFactory
+from pharmanathi_backend.users.tests.factories import (
+    DoctorFactory,
+    FutureDateByDOWFactory,
+    InvalidationReasonFactory,
+    UserFactory,
+    VerificationReportFactory,
+)
 from pharmanathi_backend.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
@@ -310,3 +316,28 @@ def test_has_consulted_before_is_True_if_consulted_before(api_client, doctor_wit
     doctor_payload = list(filter(lambda d: d.get("id") == doctor_with_appointment_random.id, res.data))[0]
     print(doctor_payload)
     assert doctor_payload.get("has_consulted_before") is True
+
+
+# @TODO use mhp_client from https://github.com/Pharmanathi/pharmanathi.com/pull/232 wherever possible.
+def test_users_me_only_returns_unresolved_invalidations(unverified_mhp_client, staff_web_client):
+    user = unverified_mhp_client.user
+    unresolved_ir = InvalidationReasonFactory(mhp=user.doctor_profile, is_resolved=False)
+    resolved_ir = InvalidationReasonFactory(
+        mhp=user.doctor_profile, is_resolved=True, resolved_by=staff_web_client.user
+    )
+    response = unverified_mhp_client.get("/api/users/me/")
+    assert response.status_code == 200
+    returned_invalidation_reasons_IDs = map(
+        lambda ir: ir.get("id"), response.data.get("doctor_profile").get("invalidationreason_set")
+    )
+    assert unresolved_ir.id in returned_invalidation_reasons_IDs
+    assert resolved_ir.id not in returned_invalidation_reasons_IDs
+
+
+def test_users_me_always_returns_empty_verification_reports(unverified_mhp_client):
+    user = unverified_mhp_client.user
+    vr = VerificationReportFactory(mp=user.doctor_profile)
+    response = unverified_mhp_client.get("/api/users/me/")
+    print("\n", response.data, "\n")
+    assert response.status_code == 200
+    assert response.data.get("doctor_profile").get("verification_reports") == []
