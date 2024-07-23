@@ -65,7 +65,6 @@ class User(BaseCustomModel, AbstractUser):
 
 
 class Speciality(BaseCustomModel):
-    # id = models.SmallIntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=15)
 
@@ -74,7 +73,7 @@ class Speciality(BaseCustomModel):
 
 
 class Address(BaseCustomModel):
-    class Province(models.TextChoices):
+    class ProvinceChoice(models.TextChoices):
         EASTERN_CAPE = "EC", "Eastern Cape"
         FREE_STATE = "FS", "Free State"
         GAUTENG = "GP", "Gauteng"
@@ -88,7 +87,7 @@ class Address(BaseCustomModel):
     line_2 = models.CharField(max_length=100, null=True, blank=True)
     suburb = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
-    province = models.CharField(max_length=3, choices=Province)
+    province = models.CharField(max_length=3, choices=ProvinceChoice)
     lat = models.DecimalField(decimal_places=13, max_digits=16, null=True)
     long = models.DecimalField(decimal_places=13, max_digits=16, null=True)
 
@@ -218,7 +217,7 @@ class Doctor(BaseCustomModel):
         """Updates the specialities the MP is assciated with
 
         Args:
-            speciality_list (list): a list of specialites
+            speciality_list (list): a list of specialities
             :warning: if empty list, the effect is to clear the associations
 
         Returns:
