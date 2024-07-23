@@ -223,6 +223,11 @@ class InvalidationReason(BaseCustomModel):
     def text_email(self):
         return self.text_unquoted.replace("\n", "<br>")
 
+    def mark_resolved(self, resolver: User):
+        if resolver.is_staff is False:
+            raise Exception("Non-staff cannot resolve invalidation reasons!")
+        return InvalidationReason.objects.filter(pk=self.pk).update(is_resolved=True, resolved_by=resolver)
+
 
 class VerificationReport(BaseCustomModel):
     STR_SUM_END_SUCCESS_REPORT_TXT = "was SUCCESSFULL!"

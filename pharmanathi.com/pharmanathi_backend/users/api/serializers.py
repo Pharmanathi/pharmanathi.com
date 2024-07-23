@@ -1,7 +1,14 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from pharmanathi_backend.users.models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality
+from pharmanathi_backend.users.models import (
+    Address,
+    BaseCustomModel,
+    Doctor,
+    InvalidationReason,
+    PracticeLocation,
+    Speciality,
+)
 from pharmanathi_backend.users.models import User as UserType
 from pharmanathi_backend.users.models import VerificationReport
 
@@ -49,7 +56,20 @@ class UserSerializer(serializers.ModelSerializer[UserType]):
 
     class Meta:
         model = User
-        exclude = ["password", "groups", "name", "_profile_pic"]
+        exclude = [
+            "_profile_pic",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+            "date_created",
+            "date_joined",
+            "date_modified",
+            "groups",
+            "last_login",
+            "name",
+            "password",
+            "user_permissions",
+        ]
         extra_kwargs = {
             "url": {"view_name": "api:user-detail", "lookup_field": "pk"},
         }
