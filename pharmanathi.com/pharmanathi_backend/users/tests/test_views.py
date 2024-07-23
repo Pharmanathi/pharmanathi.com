@@ -338,6 +338,5 @@ def test_users_me_always_returns_empty_verification_reports(unverified_mhp_clien
     user = unverified_mhp_client.user
     vr = VerificationReportFactory(mp=user.doctor_profile)
     response = unverified_mhp_client.get("/api/users/me/")
-    print("\n", response.data, "\n")
     assert response.status_code == 200
     assert response.data.get("doctor_profile").get("verification_reports") == []
