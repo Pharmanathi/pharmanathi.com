@@ -110,7 +110,7 @@ def invalidate_mhp_profile(request, mhp_id):
 @staff_member_required
 def resolve_invalidation_reason(request, ir_id):
     try:
-        InvalidationReason.objects.filter(id=ir_id).update(is_resolved=True, resolved_by=request.user)
+        InvalidationReason.objects.filter(id=ir_id).first().mark_resolved(request.user)
         return HttpResponse(status=200)
     except Exception as e:
         return JsonResponse({"detail": str(e)}, status=500)
