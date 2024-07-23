@@ -90,7 +90,6 @@ def test_fail_to_validate_profile_if_pending_rejection_message(staff_web_client,
 
 def test_resolve_invalidation_reason(staff_web_client, unresolved_invalidation_reason):
     res = staff_web_client.get(f"/custom-admin/IRs/{unresolved_invalidation_reason.id}/resolve/")
-    print(dir(res), res.content, res.reason_phrase)
     assert res.status_code == 200
     unresolved_invalidation_reason.refresh_from_db()
     assert unresolved_invalidation_reason.is_resolved

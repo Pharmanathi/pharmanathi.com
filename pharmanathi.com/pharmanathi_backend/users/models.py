@@ -225,7 +225,7 @@ class InvalidationReason(BaseCustomModel):
 
     def mark_resolved(self, resolver: User):
         if resolver.is_staff is False:
-            raise Exception("Non-staff cannot resolve invalidation reasons!")
+            raise Exception("Cannot set a non-staff user as resolver of an invalidation reason.")
         return InvalidationReason.objects.filter(pk=self.pk).update(is_resolved=True, resolved_by=resolver)
 
 
