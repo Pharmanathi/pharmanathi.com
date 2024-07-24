@@ -1,24 +1,32 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
 # This script stops the sytem and kills the current server.
 # As it stands, it does not check whether this is prod or
 # test server. *** USE WITH CAUTION ***.
 
 DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"
 
-curl -X POST -H "Content-Type: application/json" \
-    -d '{
-            "username": "Pharmanathi Server Killer Bot",
-            "avatar_url": "https://avatars.githubusercontent.com/u/93515101?s=400&u=e55ddea588763060b73a80603344f13045535310&v=4",
-            "embeds": [
-                {
-                    "title": ":warning::warning::warning::warning:",
-                    "description": "Server going down. Please check status of [test.pharmanthi.com](https://test.pharmanathi.com) as well as the [production pharmanthi.com](https://pharmanathi.com) to ensure the resulting state is desired.",
-                    "color": 15548997,
-                    "url": "https://www.pharmanthi.com"
-                }
-              ]
-        }' $DISCORD_WEBHOOK_URL
+# curl -X POST -H "Content-Type: application/json" \
+#     -d '{
+#             "username": "Pharmanathi Server Killer Bot",
+#             "avatar_url": "https://avatars.githubusercontent.com/u/93515101?s=400&u=e55ddea588763060b73a80603344f13045535310&v=4",
+#             "embeds": [
+#                 {
+#                     "title": ":warning::warning::warning::warning:",
+#                     "description": "Server going down. Please check status of [test.pharmanthi.com](https://test.pharmanathi.com) as well as the [production pharmanthi.com](https://pharmanathi.com) to ensure the resulting state is desired.",
+#                     "color": 15548997,
+#                     "url": "https://www.pharmanthi.com"
+#                 }
+#               ]
+#         }' $DISCORD_WEBHOOK_URL
 
-docker compose -f production.yml down
-sudo poweroff
+# docker compose -f production.yml down
+
+if [[ $* == *--poweroff* ]]; then
+    echo "poweing down"
+    sudo poweroff
+fi

@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
 
-# This script is used to run and configure the DNS for the test
-# environment only. DO NOT use it to run the production workload
-# since it only updates test.pharmanathi.com.
-# To run it:
-#   - First ensure it is executable: chmod +x run-pharmanthi-test
-#   - Then run it, passing it options as follows: ./run-pharmanthi-test [--build] [--update]
+set -o errexit
+set -o pipefail
+set -o nounset
 
 IP=$(curl -s ifconfig.me)
 
 # Prepare environment
 source ./prepare-environment
 
-# Specify whether to collect latest code change using the --update flag
-# Note that this will first ensure the current branch is "main" before
-# pulling and merging with remote.
 if [[ $* == *--update* ]]; then
     printf "\n\n------------------- Getting System's latest version --------------------\n"
     git checkout main
@@ -30,9 +24,12 @@ update --record-id 08091ddf5fe91083410bd7ccb5c7ae04 --payload "{\"content\": \"$
 
 # Rebuild images using the --build flag
 if [[ $* == *--build* ]]; then
-    printf "\n\n-------------------- Cleaning and building images --------------------\n"
-    docker image prune --all --force
-    docker compose -f production.yml build
+    printf "\n\n--------------- Cleaning and building images --------------\n"
+    if [[ $* == *--clean* ]]; then
+        printf "Applying --clean option, removing existing images\n"
+        docker image prune --all --force
+    fi
+    docker compose -f production.yml build $DOCKER_BUILD_NO_CACHE
 fi
 
 printf "\n\n----------------------- Running Django Migrations ---------------------\n"
@@ -61,4 +58,4 @@ curl -X POST -H "Content-Type: application/json" \
 echo Done
 
 printf "\n\n------------------------ Starting Docker services ---------------------\n"
-docker compose -f production.yml up
+exec docker compose -f production.yml up
