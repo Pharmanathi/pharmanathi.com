@@ -22,7 +22,12 @@ wget -O - https://raw.githubusercontent.com/Olfredos6/cloudflary.py/cli/cloudfla
 update --record-id 08091ddf5fe91083410bd7ccb5c7ae04 --payload "{\"content\": \"$IP\"}"
 
 
-# Rebuild images using the --build flag
+# Rebuild images using the --build/--no-cache/--clean flags
+DOCKER_BUILD_NO_CACHE=""
+if [[ $* == *--no-cache* ]]; then
+    DOCKER_BUILD_NO_CACHE="--no-cache"
+fi
+
 if [[ $* == *--build* ]]; then
     printf "\n\n--------------- Cleaning and building images --------------\n"
     if [[ $* == *--clean* ]]; then
