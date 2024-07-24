@@ -88,8 +88,4 @@ You must set the DSN url in production.
 
 ## Deployment
 
-The following details how to deploy this application.
-
-### Docker
-
-See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+See [build/deployment documentation](./deploy.md) for details.
