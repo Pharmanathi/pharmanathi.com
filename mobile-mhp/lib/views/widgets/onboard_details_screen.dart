@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
 import 'package:pharma_nathi/blocs/speciality_bloc.dart';
@@ -57,7 +59,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
             'postal_code': location['postal_code'],
             'line_1': location['line_1'],
             'suburb': location['suburb'],
-             'country': location['country'],
+            'country': location['country'],
             'city': location['city'],
             'province': location['province'],
           },
@@ -72,14 +74,13 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
         'practice_locations': practiceLocationsData,
       };
 
-      await doctorBloc.updateDoctorDetails(
-          context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
-
-      setState(() {
-        _isLoading = false;
-      });
+      final Completer<void> completer = Completer<void>();
 
       doctorBloc.postStatusNotifier.addListener(() {
+        if (!completer.isCompleted) {
+          completer.complete();
+        }
+
         if (doctorBloc.postStatusNotifier.value) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -93,8 +94,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
               ),
             ),
           );
-          Navigator.pushReplacementNamed(
-              context, '/home_page'); 
+          Navigator.pushReplacementNamed(context, '/home_page');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -109,8 +109,17 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
             ),
           );
         }
-        doctorBloc.postStatusNotifier
-            .removeListener(() {}); 
+
+        doctorBloc.postStatusNotifier.removeListener(() {});
+      });
+
+      await doctorBloc.updateDoctorDetails(
+          context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
+
+      await completer.future;
+
+      setState(() {
+        _isLoading = false;
       });
     }
   }
@@ -122,7 +131,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController countryController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
-    String selectedProvince = "EC"; 
+    String selectedProvince = "EC";
 
     showDialog(
       context: context,
@@ -380,7 +389,8 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                               ),
                               buttonText: const Text(
                                 'Select Specialities',
-                                style: TextStyle(color: Pallet.NEUTRAL_100, fontSize: 10),
+                                style: TextStyle(
+                                    color: Pallet.NEUTRAL_100, fontSize: 10),
                               ),
                               onConfirm: (selected) {
                                 setState(() {
