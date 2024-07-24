@@ -86,7 +86,7 @@ class MyButtonWidgets {
     }
     if (showSecondary && secondaryButton != null) {
       if (buttons.isNotEmpty) {
-        buttons.add(SizedBox(height: 17));
+        buttons.add(SizedBox(height: 7));
       }
       buttons.add(secondaryButton);
     }

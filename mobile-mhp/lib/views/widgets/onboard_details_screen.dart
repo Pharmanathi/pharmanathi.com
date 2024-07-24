@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
 import 'package:pharma_nathi/blocs/speciality_bloc.dart';
@@ -45,16 +47,31 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userInfo = userProvider.user;
 
-      List<int> specialitiesData = _selectedSpecialities
-          .map((s)  => s.id )
-          .toList();
+      List<int> specialitiesData =
+          _selectedSpecialities.map((s) => s.id).toList();
+
+      final List<Map<String, dynamic>> practiceLocationsData =
+          _selectedPracticeLocations.map((location) {
+        return {
+          'address': {
+            'postal_code': location['postal_code'],
+            'line_1': location['line_1'],
+            'suburb': location['suburb'],
+             'country': location['country'],
+            'city': location['city'],
+            'province': location['province'],
+          },
+          'name': location['name'],
+        };
+      }).toList();
 
       final Map<String, dynamic> partialUpdates = {
         'hpcsa_no': _hpcsaNoController.text,
         'mp_no': _mpNoController.text,
         'specialities': specialitiesData,
-        'practice_locations': _selectedPracticeLocations,
+        'practice_locations': practiceLocationsData,
       };
+
       await doctorBloc.updateDoctorDetails(
           context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
 
@@ -76,6 +93,8 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
               ),
             ),
           );
+          Navigator.pushReplacementNamed(
+              context, '/home_page'); 
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -90,16 +109,20 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
             ),
           );
         }
+        doctorBloc.postStatusNotifier
+            .removeListener(() {}); 
       });
     }
   }
 
   void _showAddLocationModal(BuildContext context) {
     final TextEditingController postalCodeController = TextEditingController();
-    final TextEditingController streetController = TextEditingController();
+    final TextEditingController line1Controller = TextEditingController();
+    final TextEditingController suburbController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
     final TextEditingController countryController = TextEditingController();
-    final TextEditingController provinceController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
+    String selectedProvince = "EC"; 
 
     showDialog(
       context: context,
@@ -114,16 +137,63 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                   decoration: const InputDecoration(labelText: 'Postal Code'),
                 ),
                 TextFormField(
-                  controller: streetController,
+                  controller: line1Controller,
                   decoration: const InputDecoration(labelText: 'Street'),
+                ),
+                TextFormField(
+                  controller: suburbController,
+                  decoration: const InputDecoration(labelText: 'Suburb'),
+                ),
+                TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Practice Name'),
                 ),
                 TextFormField(
                   controller: countryController,
                   decoration: const InputDecoration(labelText: 'Country'),
                 ),
-                TextFormField(
-                  controller: provinceController,
+                DropdownButtonFormField<String>(
                   decoration: const InputDecoration(labelText: 'Province'),
+                  value: selectedProvince,
+                  items: [
+                    const DropdownMenuItem(
+                      value: "EC",
+                      child: Text("Eastern Cape"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "FS",
+                      child: Text("Free State"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "GP",
+                      child: Text("Gauteng"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "KZN",
+                      child: Text("KwaZulu-Natal"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "LP",
+                      child: Text("Limpopo"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "NC",
+                      child: Text("Northern Cape"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "NW",
+                      child: Text("North-West"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "WC",
+                      child: Text("Western Cape"),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedProvince = value!;
+                    });
+                  },
                 ),
                 TextFormField(
                   controller: cityController,
@@ -144,9 +214,11 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                 setState(() {
                   _selectedPracticeLocations.add({
                     'postal_code': postalCodeController.text,
-                    'street': streetController.text,
+                    'line_1': line1Controller.text,
+                    'suburb': suburbController.text,
+                    'name': nameController.text,
                     'country': countryController.text,
-                    'province': provinceController.text,
+                    'province': selectedProvince,
                     'city': cityController.text,
                   });
                 });
@@ -299,8 +371,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                               selectedItemsTextStyle:
                                   const TextStyle(color: Pallet.NEUTRAL_100),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Pallet.BACKGROUND_50,),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Pallet.BACKGROUND_50,
+                              ),
                               buttonIcon: const Icon(
                                 Icons.arrow_drop_down,
                                 color: Colors.black,
@@ -344,8 +417,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       spacing: 8.0,
                       children: _selectedPracticeLocations
                           .map((location) => Chip(
-                                label: Text(
-                                    '${location['street']}, ${location['city']}'),
+                                label: Text('${location['name']}'),
                                 onDeleted: () {
                                   setState(() {
                                     _selectedPracticeLocations.remove(location);
