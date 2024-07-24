@@ -14,7 +14,7 @@ class CodeVersionMiddleware:
 
         # Inject the version in the response header
         if settings.GIT_CODE_VERSION is None:
-            logger.warn("settings.GIT_CODE_VERSION was never set")
+            logger.warning("settings.GIT_CODE_VERSION was never set")
 
         response.headers.setdefault("X-SCV", settings.GIT_CODE_VERSION)
         return response
