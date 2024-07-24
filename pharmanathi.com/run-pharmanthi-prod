@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
-# This script is used to run and configure the DNS for the *production* environment.
-# To run it:
-#   - First ensure it is executable: chmod +x run-pharmanthi-prod
-#   - Then run it, passing it options as follows: ./run-pharmanthi-prod [--build] [--update]
+set -o errexit
+set -o pipefail
+set -o nounset
 
 IP=$(curl -s ifconfig.me)
 
 # Prepare environment
 source ./prepare-environment
 
-# Specify whether to collect latest code change using the --update flag
-# Note that this will first ensure the current branch is "main" before
-# pulling and merging with remote.
 if [[ $* == *--update* ]]; then
     printf "\n\n-------------- Getting System's latest version --------------\n"
     git checkout main
@@ -31,11 +27,19 @@ python3 cloudflary.py update --record-id 04ddd7337b39d54f602ca52dcb9637b7 --payl
 rm cloudflary.py
 
 
-# Rebuild images using the --build flag
+# Rebuild images using the --build/--no-cache/--clean flags
+DOCKER_BUILD_NO_CACHE=""
+if [[ $* == *--no-cache* ]]; then 
+    DOCKER_BUILD_NO_CACHE="--no-cache"
+fi
+
 if [[ $* == *--build* ]]; then
     printf "\n\n--------------- Cleaning and building images --------------\n"
-    docker image prune --all --force
-    docker compose -f production.yml build
+    if [[ $* == *--clean* ]]; then
+        printf "Applying --clean option, removing existing images\n"
+        docker image prune --all --force
+    fi
+    docker compose -f production.yml build $DOCKER_BUILD_NO_CACHE
 fi
 
 printf "\n\n----------------------- Running Django Migrations --------------------\n"
@@ -61,7 +65,7 @@ curl -X POST -H "Content-Type: application/json" \
                 }
               ]
         }' $DISCORD_WEBHOOK_URL
-echo Done
+printf Done
 
 printf "\n\n------------------------ Starting Docker services -------------------\n"
-docker compose -f production.yml up
+exec docker compose -f production.yml up
