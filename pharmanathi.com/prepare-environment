@@ -1,10 +1,15 @@
 #/bin/bash
-# Configure environment variables
 
+# Configure environment variables
 export CLOUDFLARE_AUTH_EMAIL=alfred.nehemie@gmail.com
 export CLOUDFLARE_AUTH_KEY=b50325aa74bd7603b1a903fd459c7048ef4b0
 export CLOUDFLARE_ZONE_ID=3c67621dd98d57372f333deab865acf8
 export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/1211395784495333376/VTNGY4KtmfKPY2nQoT7EUwip3Srv2BXIlkw5SNrWq7iTbDJbzPWyENN6chB7IKWq5pM2"
+
+# Keep track of the current Git commit SHA of code
+# as version of code running as the stack
+export GIT_CODE_VERSION=$(git rev-parse --short HEAD)
+echo "GIT_CODE_VERSION=${GIT_CODE_VERSION}" >  .envs/.production/.version
 
 # Cancel and Exit
 cleanup() {
