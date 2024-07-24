@@ -23,6 +23,6 @@ curl -X POST -H "Content-Type: application/json" \
 docker compose -f production.yml down
 
 if [[ $* == *--poweroff* ]]; then
-    print "Powering down the host down... GOODBYE 👋🏼"
+    printf "Powering down the host down... GOODBYE 👋🏼"
     sudo poweroff
 fi
