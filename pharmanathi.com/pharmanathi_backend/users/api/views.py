@@ -7,7 +7,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from dj_rest_auth.registration.serializers import SocialLoginSerializer
 from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
@@ -27,6 +27,7 @@ from .serializers import (
     DoctorModelSerializer,
     DoctorPublicListSerializer,
     PracticeLocationModelSerializer,
+    PracticeLocationModelSerializerWithExtAddress,
     SpecialityModelSerializer,
     UserSerializer,
 )
@@ -51,7 +52,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
 
 class DoctorModelViewSet(ModelViewSet):
     serializer_class = DoctorModelSerializer
-    queryset = Doctor.objects.all()
+    queryset = Doctor.objects.prefetch_related("user", "practicelocations", "specialities").all()
     permission_classes = [permissions.IsAdminUser]
 
     def get_serializer_class(self):
@@ -77,10 +78,82 @@ class DoctorModelViewSet(ModelViewSet):
         duration = doctor.appointmenttype_set.first().duration  # Since we're restricting them to one App. Type
         return Response(doctor.get_available_slots_on(appointment_date, duration))
 
+    def partial_update(self, request, *args, **kwargs):
+        doctor = self.get_object()
+        data = request.data.copy()
+        should_update_specialities = False
+        should_update_practice_locations = False
+
+        # Dealing with nested relationships requires custom handling.
+        # Hence, if any of `specialities` or `practice_locations` is
+        # present in the payload, we will extract them to be processed
+        # separately. If the Model ever changes to include or remove
+        # a nested realtionship, this code might require reviewing.
+        if "specialities" in data:
+            # expects a list of PKs, not a dictionary
+            data_specialities = data.pop("specialities")
+            if len(list(filter(lambda s: type(s) != int, data_specialities))) > 0:
+                # TODO: log client_name and issue
+                return Response({"detail": "List of specialities must only contain integers"}, 400)
+
+            specialities = Speciality.objects.filter(pk__in=data_specialities)
+            if specialities.exists() is False or specialities.count() != len(data_specialities):
+                # TODO: log client_name and issue
+                return Response({"detail": "Speciality not found"}, 404)
+
+            should_update_specialities = True
+
+        if "practice_locations" in data:
+            # On this one, we handle newly created practice locations or
+            # those that already exists. Hence, the list practice_locations
+            # can contain:
+            #     - int: an integer pointing to an existing practice location
+            #     - dict: a payload representing a new practice practice location
+            practice_locations = []
+            practice_locations_data = data.pop("practice_locations")
+            requested_locations_list = list(filter(lambda l: type(l) == int, practice_locations_data))
+            found_locations = PracticeLocation.objects.filter(pk__in=requested_locations_list)
+            if requested_locations_list:
+                if len(requested_locations_list) != found_locations.count():
+                    # TODO: log client_name and issue
+                    return Response({"detail": "Practice Location not found"}, 404)
+
+            new_locations = list(filter(lambda l: type(l) == dict, practice_locations_data))
+            pl_serializer = PracticeLocationModelSerializerWithExtAddress(data=new_locations, many=True)
+            pl_serializer.is_valid(raise_exception=True)
+            should_update_practice_locations = True
+
+        with transaction.atomic():
+            if should_update_specialities:
+                doctor.update_specialities(list(specialities))
+
+            if should_update_practice_locations:
+                pl_serializer.save()
+                practice_locations = practice_locations + list(pl_serializer.instance)
+                doctor.update_practice_locations(practice_locations)
+
+            # update the Doctor model instance if anything left
+            if data:
+                doctor_serializer = self.get_serializer_class()(doctor, data=data, partial=True)
+                doctor_serializer.is_valid(raise_exception=True)
+                doctor_serializer.save()
+
+        doctor = Doctor.objects.prefetch_related("practicelocations", "specialities", "user").get(pk=doctor.pk)
+        return Response(self.get_serializer_class()(doctor).data)
+
 
 class PublicDoctorModelViewSet(DoctorModelViewSet):
     queryset = Doctor.objects.filter(_is_verified=True).prefetch_related("user", "practicelocations", "specialities")
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if user_is_doctor(self.request):
+            # Because we would like to allow non-verified doctors to update their details
+            # At the same time, we are only returning a queryset that will always return
+            # only them as existing Doctor. They would know about other doctors his way.
+            return Doctor.objects.filter(pk=self.request.user.doctor_profile.id)
+
+        return super().get_queryset()
 
 
 class SpecialityModelViewset(RetrieveModelMixin, ListModelMixin, GenericViewSet):
@@ -94,7 +167,7 @@ class AddressModelViewset(ModelViewSet):
 
 
 class PracticeLocationModelViewset(ModelViewSet):
-    serializer_class = PracticeLocationModelSerializer
+    serializer_class = PracticeLocationModelSerializerWithExtAddress
 
     def get_queryset(self):
         is_doctor = self.request.user.doctor

@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from pharmanathi_backend.users.models import Doctor, InvalidationReason
+from pharmanathi_backend.users.models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality
 
 
 class UserFactory(DjangoModelFactory):
@@ -44,15 +44,41 @@ class UserFactory(DjangoModelFactory):
         django_get_or_create = ["email"]
 
 
+class AddressFactory(DjangoModelFactory):
+    line_1 = factory.fuzzy.FuzzyText(length=70)
+    line_2 = factory.fuzzy.FuzzyText(length=70)
+    suburb = factory.fuzzy.FuzzyText(length=25)
+    city = factory.fuzzy.FuzzyText(length=25)
+    province = factory.fuzzy.FuzzyChoice(Address.ProvinceChoice)
+
+    class Meta:
+        model = Address
+
+
+class PracticeLocationFactory(DjangoModelFactory):
+    name = factory.fuzzy.FuzzyText(length=40)
+    address = SubFactory(AddressFactory)
+
+    class Meta:
+        model = PracticeLocation
+
+
+class SpecialityFactory(DjangoModelFactory):
+    name = factory.fuzzy.FuzzyText(length=100)
+    symbol = factory.fuzzy.FuzzyText(length=15)
+
+    class Meta:
+        model = Speciality
+
+
 class DoctorFactory(DjangoModelFactory):
     hpcsa_no = factory.fuzzy.FuzzyText(length=5)
     mp_no = factory.fuzzy.FuzzyText(length=5)
     _is_verified = False
+    user = SubFactory(UserFactory)
 
     class Meta:
         model = Doctor
-
-    user = SubFactory(UserFactory)
 
 
 def FutureDateByDOWFactory(day_of_the_week, with_time: datetime.time = False) -> datetime.date | datetime.datetime:

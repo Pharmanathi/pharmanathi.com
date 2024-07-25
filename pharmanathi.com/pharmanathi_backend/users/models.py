@@ -65,7 +65,6 @@ class User(BaseCustomModel, AbstractUser):
 
 
 class Speciality(BaseCustomModel):
-    id = models.SmallIntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=15)
 
@@ -74,13 +73,23 @@ class Speciality(BaseCustomModel):
 
 
 class Address(BaseCustomModel):
+    class ProvinceChoice(models.TextChoices):
+        EASTERN_CAPE = "EC", "Eastern Cape"
+        FREE_STATE = "FS", "Free State"
+        GAUTENG = "GP", "Gauteng"
+        KWAZULU_NATAL = "KZN", "KwaZulu-Natal"
+        LIMPOPO = "LP", "Limpopo"
+        NORTHERN_CAPE = "NC", "Northern Cape"
+        NORTH_WEST = "NW", "North-West"
+        WESTERN_CAPE = "WC", "Western Cape"
+
     line_1 = models.CharField(max_length=100, null=False)
     line_2 = models.CharField(max_length=100, null=True, blank=True)
     suburb = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
-    province = models.CharField(max_length=50)
-    lat = models.DecimalField(decimal_places=13, max_digits=16)
-    long = models.DecimalField(decimal_places=13, max_digits=16)
+    province = models.CharField(max_length=3, choices=ProvinceChoice)
+    lat = models.DecimalField(decimal_places=13, max_digits=16, null=True)
+    long = models.DecimalField(decimal_places=13, max_digits=16, null=True)
 
     def __str__(self):
         return f"{self.line_1}{ ', ' + self.line_2 if self.line_2 else ''}, {self.city}, {self.province}"
@@ -203,6 +212,24 @@ class Doctor(BaseCustomModel):
             """
         mail_user_task.delay(self.user.email, "Medical Health Professional Profile Invalidation", message, message)
         set_rejection_reason_task.delay(self.id, reason, creator.id)
+
+    def update_specialities(self, speciality_list: list[Speciality]):
+        """Updates the specialities the MP is assciated with
+
+        Args:
+            speciality_list (list): a list of specialities
+            :warning: if empty list, the effect is to clear the associations
+
+        Returns:
+            None
+        """
+        self.specialities.clear()
+        self.specialities.add(*speciality_list)
+
+    def update_practice_locations(self, location_list: list[Speciality]):
+        """Same as self.update_specialities but for locations"""
+        self.practicelocations.clear()
+        self.practicelocations.add(*location_list)
 
 
 class InvalidationReason(BaseCustomModel):
