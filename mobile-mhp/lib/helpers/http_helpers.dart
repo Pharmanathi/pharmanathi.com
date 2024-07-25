@@ -17,6 +17,7 @@ final String appLabel =
 
 class Apihelper {
   static final log = logger(Apihelper);
+
   static Future<http.Response> fetchData(
     BuildContext context,
     Future<http.Response> Function(BuildContext) apiCall,
@@ -29,7 +30,7 @@ class Apihelper {
     }
   }
 
-  static String? retrieveLocaAPIToken(BuildContext context){
+  static String? retrieveLocaAPIToken(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return userProvider.backendToken;
   }
@@ -37,7 +38,7 @@ class Apihelper {
   static Future<http.Response> httpRequestWithAuthorization(
     BuildContext context,
     String url,
-    String method, // 'GET' or 'POST'
+    String method, // 'GET', 'POST', or 'PATCH'
     String requestBody,
   ) async {
     String authorizationToken = '';
@@ -58,13 +59,17 @@ class Apihelper {
       'Device-IP': await _getDeviceIP(),
     };
 
-    if (method == 'POST') {
+    if (method == 'POST' || method == 'PATCH') {
       headers['Content-Type'] = 'application/json';
     }
 
     final response = method == 'GET'
         ? await http.get(Uri.parse(url), headers: headers)
-        : await http.post(Uri.parse(url), headers: headers, body: requestBody);
+        : method == 'POST'
+            ? await http.post(Uri.parse(url),
+                headers: headers, body: requestBody)
+            : await http.patch(Uri.parse(url),
+                headers: headers, body: requestBody);
 
     print('API code: ${response.statusCode}');
     print('API body: ${response.body}');
@@ -77,15 +82,13 @@ class Apihelper {
     }
   }
 
- 
- static void handleException(BuildContext context, dynamic e, [StackTrace? stackTrace]) {
-  //* Handle exceptions
-  log.e('Exception occurred: $e');
-  //* Report the exception to Sentry
-  Sentry.captureException(e, stackTrace: stackTrace);
-}
-
-
+  static void handleException(BuildContext context, dynamic e,
+      [StackTrace? stackTrace]) {
+    // Handle exceptions
+    log.e('Exception occurred: $e');
+    // Report the exception to Sentry
+    Sentry.captureException(e, stackTrace: stackTrace);
+  }
 
   static void handleError(BuildContext context, http.Response response) {
     String errorMessage;
@@ -143,7 +146,7 @@ class Apihelper {
     }
   }
 
-// Function to asynchronously retrieve the device's IP address
+  // Function to asynchronously retrieve the device's IP address
   static Future<String> _getDeviceIP() async {
     try {
       // Retrieve the device's IP address
@@ -163,4 +166,3 @@ class Apihelper {
     return 'Unknown';
   }
 }
-

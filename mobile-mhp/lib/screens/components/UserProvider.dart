@@ -68,11 +68,10 @@ class UserProvider with ChangeNotifier {
   //* Method to check if it's the first time sign-in
   Future<bool> isFirstTimeSignIn() async {
     //* Check if any of the required user information is empty
-    return email == null ||
-        name == null ||
-        contact == null ||
-        picture == null ||
-        backendToken == null;
+    return user?.doctorProfile?.hashCode == null ||
+        user?.doctorProfile?.mpNo == null ||
+        user?.doctorProfile?.specialities == null ||
+        user?.doctorProfile?.practiceLocations == null;
   }
 
   //* Method to set schedule data

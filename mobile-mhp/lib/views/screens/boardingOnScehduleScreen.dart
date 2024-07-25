@@ -92,7 +92,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                       'running smoothly.',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Pallet.NATURAL_FAINT,
                         fontWeight: FontWeight.normal,
                       ),
@@ -107,20 +107,20 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyButtonWidgets(
-                      buttonTextSecondary: 'BACK',
+                      buttonTextSecondary: 'GET STARTED',
                       onPressedSecondary: () {
-                        Navigator.pop(context);
-                      },
-                      buttonTextPrimary: 'GET STARTED',
-                      onPressedPrimary: () {
-                        Navigator.push(
+                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => OnboardDetailsScreen(),
                           ),
                         );
                       },
-                    ).buildButton(),
+                      buttonTextPrimary: 'BACK',
+                      onPressedPrimary: () {
+                         Navigator.pop(context);
+                      },
+                    ).buildButtons(primaryFirst: true),
                   ],
                 ),
               ),
