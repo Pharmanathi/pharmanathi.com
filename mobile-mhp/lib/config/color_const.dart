@@ -9,6 +9,7 @@ class Pallet {
   static const Color SECONDARY_COLOR = Color(0xFF8D96A6);
   static const Color SUCCESS = Color(0xFF96D14E);
   static const Color BACKGROUND_COLOR = Color(0xFFF7F9FC);
+  static const Color BACKGROUND_50 = Color(0xFFF7F9FC);
   static const Color WARNING = Color(0xFFFCDC620);
   static const Color NATURAL_FAINT = Color(0xFFFF4F7FA);
   static const Color PRAMARY_50 = Color(0xFFFF1F2FB);

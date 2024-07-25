@@ -1,7 +1,12 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
 import 'package:pharma_nathi/blocs/speciality_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/views/widgets/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../models/user.dart';
@@ -18,6 +23,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
   final TextEditingController _mpNoController = TextEditingController();
   List<Speciality> _selectedSpecialities = [];
   final List<Map<String, String>> _selectedPracticeLocations = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -33,28 +39,48 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
       final doctorBloc = Provider.of<DoctorBloc>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userInfo = userProvider.user;
 
-      List<Map<String, dynamic>> specialitiesData = _selectedSpecialities
-          .map((s) => {
-                'id': s.id,
-              })
-          .toList();
+      List<int> specialitiesData =
+          _selectedSpecialities.map((s) => s.id).toList();
+
+      final List<Map<String, dynamic>> practiceLocationsData =
+          _selectedPracticeLocations.map((location) {
+        return {
+          'address': {
+            'postal_code': location['postal_code'],
+            'line_1': location['line_1'],
+            'suburb': location['suburb'],
+            'country': location['country'],
+            'city': location['city'],
+            'province': location['province'],
+          },
+          'name': location['name'],
+        };
+      }).toList();
 
       final Map<String, dynamic> partialUpdates = {
         'hpcsa_no': _hpcsaNoController.text,
         'mp_no': _mpNoController.text,
         'specialities': specialitiesData,
-        'practice_locations': _selectedPracticeLocations,
+        'practice_locations': practiceLocationsData,
       };
 
-      doctorBloc.updateUserDetails(context, userInfo?.id ?? 0, partialUpdates);
+      final Completer<void> completer = Completer<void>();
 
       doctorBloc.postStatusNotifier.addListener(() {
+        if (!completer.isCompleted) {
+          completer.complete();
+        }
+
         if (doctorBloc.postStatusNotifier.value) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -68,6 +94,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
               ),
             ),
           );
+          Navigator.pushReplacementNamed(context, '/home_page');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -82,16 +109,29 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
             ),
           );
         }
+
+        doctorBloc.postStatusNotifier.removeListener(() {});
+      });
+
+      await doctorBloc.updateDoctorDetails(
+          context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
+
+      await completer.future;
+
+      setState(() {
+        _isLoading = false;
       });
     }
   }
 
   void _showAddLocationModal(BuildContext context) {
     final TextEditingController postalCodeController = TextEditingController();
-    final TextEditingController streetController = TextEditingController();
+    final TextEditingController line1Controller = TextEditingController();
+    final TextEditingController suburbController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
     final TextEditingController countryController = TextEditingController();
-    final TextEditingController provinceController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
+    String selectedProvince = "EC";
 
     showDialog(
       context: context,
@@ -106,16 +146,63 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                   decoration: const InputDecoration(labelText: 'Postal Code'),
                 ),
                 TextFormField(
-                  controller: streetController,
+                  controller: line1Controller,
                   decoration: const InputDecoration(labelText: 'Street'),
+                ),
+                TextFormField(
+                  controller: suburbController,
+                  decoration: const InputDecoration(labelText: 'Suburb'),
+                ),
+                TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Practice Name'),
                 ),
                 TextFormField(
                   controller: countryController,
                   decoration: const InputDecoration(labelText: 'Country'),
                 ),
-                TextFormField(
-                  controller: provinceController,
+                DropdownButtonFormField<String>(
                   decoration: const InputDecoration(labelText: 'Province'),
+                  value: selectedProvince,
+                  items: [
+                    const DropdownMenuItem(
+                      value: "EC",
+                      child: Text("Eastern Cape"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "FS",
+                      child: Text("Free State"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "GP",
+                      child: Text("Gauteng"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "KZN",
+                      child: Text("KwaZulu-Natal"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "LP",
+                      child: Text("Limpopo"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "NC",
+                      child: Text("Northern Cape"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "NW",
+                      child: Text("North-West"),
+                    ),
+                    const DropdownMenuItem(
+                      value: "WC",
+                      child: Text("Western Cape"),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedProvince = value!;
+                    });
+                  },
                 ),
                 TextFormField(
                   controller: cityController,
@@ -136,9 +223,11 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                 setState(() {
                   _selectedPracticeLocations.add({
                     'postal_code': postalCodeController.text,
-                    'street': streetController.text,
+                    'line_1': line1Controller.text,
+                    'suburb': suburbController.text,
+                    'name': nameController.text,
                     'country': countryController.text,
-                    'province': provinceController.text,
+                    'province': selectedProvince,
                     'city': cityController.text,
                   });
                 });
@@ -155,100 +244,210 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Onboarding Details'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _hpcsaNoController,
-                decoration: const InputDecoration(labelText: 'HPCSA Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your HPCSA Number';
-                  }
-                  return null;
-                },
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 130,
+              color: Pallet.PRIMARY_COLOR,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 70, right: 75),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 50),
+                          child: GestureDetector(
+                            child: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                        const Text(
+                          'Professional Details',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _mpNoController,
-                decoration: const InputDecoration(labelText: 'MP Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your MP Number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              const Text('Specialities'),
-              Consumer<SpecialityBloc>(
-                builder: (context, specialityBloc, child) {
-                  if (specialityBloc.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (specialityBloc.error != null) {
-                    return Center(
-                        child: Text('Error: ${specialityBloc.error}'));
-                  } else if (specialityBloc.specialities.isEmpty) {
-                    return const Text('No specialities available');
-                  } else {
-                    return MultiSelectDialogField<Speciality>(
-                      items: specialityBloc.specialities
-                          .map((speciality) => MultiSelectItem<Speciality>(
-                              speciality, speciality.name))
-                          .toList(),
-                      title: const Text('Select Specialities'),
-                      selectedItemsTextStyle:
-                          const TextStyle(color: Colors.black),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.blue,
-                          width: 2,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  padding: const EdgeInsets.all(8.0),
+                  children: [
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'HPCSA Number',
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _hpcsaNoController,
+                        decoration: InputDecoration(
+                            hintText: 'HPCSA Number',
+                            hintStyle: const TextStyle(
+                                color: Pallet.NEUTRAL_100,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10),
+                            filled: true,
+                            fillColor: Pallet.BACKGROUND_50,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            )),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your HPCSA Number';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const Text(
+                      'MP Number',
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _mpNoController,
+                        decoration: InputDecoration(
+                            hintText: 'MP Number',
+                            hintStyle: const TextStyle(
+                                color: Pallet.NEUTRAL_100,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10),
+                            filled: true,
+                            fillColor: Pallet.BACKGROUND_50,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            )),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Specialities',
+                      style: TextStyle(
+                          color: Pallet.NEUTRAL_300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<SpecialityBloc>(
+                        builder: (context, specialityBloc, child) {
+                          if (specialityBloc.isLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (specialityBloc.error != null) {
+                            return Center(
+                                child: Text('Error: ${specialityBloc.error}'));
+                          } else if (specialityBloc.specialities.isEmpty) {
+                            return const Text('No specialities available');
+                          } else {
+                            return MultiSelectDialogField<Speciality>(
+                              items: specialityBloc.specialities
+                                  .map((speciality) =>
+                                      MultiSelectItem<Speciality>(
+                                          speciality, speciality.name))
+                                  .toList(),
+                              title: const Text('Select Specialities'),
+                              selectedItemsTextStyle:
+                                  const TextStyle(color: Pallet.NEUTRAL_100),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Pallet.BACKGROUND_50,
+                              ),
+                              buttonIcon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.black,
+                              ),
+                              buttonText: const Text(
+                                'Select Specialities',
+                                style: TextStyle(
+                                    color: Pallet.NEUTRAL_100, fontSize: 10),
+                              ),
+                              onConfirm: (selected) {
+                                setState(() {
+                                  _selectedSpecialities = selected;
+                                });
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 200,
+                        height: 30,
+                        child: ElevatedButton(
+                          onPressed: () => _showAddLocationModal(context),
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                          ),
+                          child: const Text(
+                            'Add Practice Location',
+                            style: TextStyle(color: Pallet.NEUTRAL_400),
+                          ),
                         ),
                       ),
-                      buttonText: const Text('Select Specialities'),
-                      onConfirm: (selected) {
-                        setState(() {
-                          _selectedSpecialities = selected;
-                        });
-                      },
-                    );
-                  }
-                },
+                    ),
+                    const SizedBox(height: 16.0),
+                    Wrap(
+                      spacing: 8.0,
+                      children: _selectedPracticeLocations
+                          .map((location) => Chip(
+                                label: Text('${location['name']}'),
+                                onDeleted: () {
+                                  setState(() {
+                                    _selectedPracticeLocations.remove(location);
+                                  });
+                                },
+                              ))
+                          .toList(),
+                    ),
+                    const SizedBox(height: 24.0),
+                    _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : MyButtonWidgets(
+                            buttonTextPrimary: 'Submit',
+                            onPressedPrimary: _submitForm,
+                          ).buildButtons(primaryFirst: false),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16.0),
-              const Text('Practice Locations'),
-              ElevatedButton(
-                onPressed: () => _showAddLocationModal(context),
-                child: const Text('Add Practice Location'),
-              ),
-              const SizedBox(height: 16.0),
-              Wrap(
-                spacing: 8.0,
-                children: _selectedPracticeLocations
-                    .map((location) => Chip(
-                          label: Text(
-                              '${location['street']}, ${location['city']}'),
-                          onDeleted: () {
-                            setState(() {
-                              _selectedPracticeLocations.remove(location);
-                            });
-                          },
-                        ))
-                    .toList(),
-              ),
-              const SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Submit'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

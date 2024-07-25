@@ -71,7 +71,7 @@ class _MyProfileState extends State<MyProfile> {
               onPressedSecondary: () {
                 Navigator.of(context).pop();
               },
-            ).buildButton(),
+            ).buildButtons(primaryFirst: true),
           ],
         );
       },

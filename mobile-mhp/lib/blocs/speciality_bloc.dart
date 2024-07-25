@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart'; 
 import '../models/user.dart';
 import '../repositories/speciality_repository.dart';
 
@@ -16,15 +17,21 @@ class SpecialityBloc with ChangeNotifier {
 
   Future<void> fetchSpecialities(BuildContext context) async {
     _isLoading = true;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
+
     try {
       _specialities = await specialityRepository.fetchSpecialities(context);
       _error = null;
-    } catch (e) {
+    } catch (e, stackTrace) {
       _error = e.toString();
+      await Sentry.captureException(e, stackTrace: stackTrace); 
     } finally {
       _isLoading = false;
-      notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
     }
   }
 }
