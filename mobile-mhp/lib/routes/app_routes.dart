@@ -1,10 +1,6 @@
 // lib/src/routes/app_routes.dart
 
 import 'package:flutter/material.dart';
-import 'package:pharma_nathi/screens/components/forms/form1.dart';
-import 'package:pharma_nathi/screens/components/forms/form2.dart';
-import 'package:pharma_nathi/screens/components/forms/form3.dart';
-import 'package:pharma_nathi/screens/components/forms/form4.dart';
 import 'package:pharma_nathi/views/screens/boardingOnAppointmentScreen.dart';
 import 'package:pharma_nathi/screens/pages/signIn.dart';
 import 'package:pharma_nathi/views/screens/earnings.dart';
