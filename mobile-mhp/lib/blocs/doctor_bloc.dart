@@ -20,7 +20,7 @@ class DoctorBloc extends ChangeNotifier {
       notifyListeners();
     } catch (e, stackTrace) {
       _postStatusNotifier.value = false;
-      await Sentry.captureException(e, stackTrace: stackTrace);
+       Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 

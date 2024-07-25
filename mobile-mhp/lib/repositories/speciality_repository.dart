@@ -17,7 +17,7 @@ class SpecialityRepository {
         return data.map((json) => Speciality.fromJson(json)).toList();
       } else {
         // Capture non-successful responses
-        await Sentry.captureMessage(
+         Sentry.captureMessage(
           'Failed to load specialities: ${response.statusCode} ${response.body}',
           level: SentryLevel.error,
         );
@@ -25,7 +25,7 @@ class SpecialityRepository {
       }
     } catch (e, stackTrace) {
       // Capture exceptions
-      await Sentry.captureException(e, stackTrace: stackTrace);
+       Sentry.captureException(e, stackTrace: stackTrace);
       throw Exception('Failed to load specialities');
     }
   }

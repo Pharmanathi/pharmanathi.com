@@ -17,7 +17,7 @@ class DoctorRepository {
         return true;
       } else {
         // Capture non-successful responses
-        await Sentry.captureMessage(
+         Sentry.captureMessage(
           'Failed to update doctor details: ${response.statusCode} ${response.body}',
           level: SentryLevel.error,
         );
@@ -25,7 +25,7 @@ class DoctorRepository {
       }
     } catch (e, stackTrace) {
       // Capture exceptions
-      await Sentry.captureException(e, stackTrace: stackTrace);
+       Sentry.captureException(e, stackTrace: stackTrace);
       return false;
     }
   }

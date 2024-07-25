@@ -21,7 +21,7 @@ class UserBloc {
     } catch (e, stackTrace) {
       // Handle error
       _userNotifier.value = null;
-      await Sentry.captureException(
+       Sentry.captureException(
         e,
         stackTrace: stackTrace,
       );

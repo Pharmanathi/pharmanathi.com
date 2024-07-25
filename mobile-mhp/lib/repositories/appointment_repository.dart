@@ -31,7 +31,7 @@ class AppointmentRepository {
       }
     } catch (e, stackTrace) {
       http_helpers.Apihelper.handleException(context, e);
-      await Sentry.captureException(e, stackTrace: stackTrace);
+       Sentry.captureException(e, stackTrace: stackTrace);
       return [];
     }
   }

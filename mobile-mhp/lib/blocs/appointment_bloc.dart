@@ -21,7 +21,7 @@ class AppointmentBloc {
     } catch (e, stackTrace) {
       // Handle error
       _appointmentsNotifier.value = null;
-      await Sentry.captureException(
+       Sentry.captureException(
         e,
         stackTrace: stackTrace,
       );

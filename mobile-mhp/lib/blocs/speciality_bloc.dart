@@ -26,7 +26,7 @@ class SpecialityBloc with ChangeNotifier {
       _error = null;
     } catch (e, stackTrace) {
       _error = e.toString();
-      await Sentry.captureException(e, stackTrace: stackTrace); 
+       Sentry.captureException(e, stackTrace: stackTrace); 
     } finally {
       _isLoading = false;
       WidgetsBinding.instance.addPostFrameCallback((_) {
