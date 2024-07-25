@@ -28,19 +28,7 @@ class UserBloc {
     }
   }
 
-
-  Future<void> postUserDetails(BuildContext context, User user) async {
-    try {
-      final success = await _userRepository.postUserDetails(context, user);
-      _postStatusNotifier.value = success;
-    } catch (e, stackTrace) {
-      _postStatusNotifier.value = false;
-      await Sentry.captureException(e, stackTrace: stackTrace);
-    }
-  }
-
   void dispose() {
     _userNotifier.dispose();
-    _postStatusNotifier.dispose();
   }
 }

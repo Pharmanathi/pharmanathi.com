@@ -686,7 +686,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   onPressedSecondary: () {
                     Navigator.pop(context);
                   },
-                ).buildButton(),
+                ).buildButtons(primaryFirst: true),
               ],
             ),
           ),

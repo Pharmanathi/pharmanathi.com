@@ -340,3 +340,34 @@ def test_users_me_always_returns_empty_verification_reports(unverified_mhp_clien
     response = unverified_mhp_client.get("/api/users/me/")
     assert response.status_code == 200
     assert response.data.get("doctor_profile").get("verification_reports") == []
+
+
+def test_mp_can_builk_update_doctor_profile(mhp_client, speciality):
+    # The bulk update includes updating the following models at once:
+    # - Doctor
+    # - PracticeLocation
+    # - Specialities
+    # This is usually triggered by the Mobile client
+    doctor = mhp_client.user.doctor_profile
+    payload = {
+        "hpcsa_no": "some value",
+        "specialities": [speciality.id],
+        "practice_locations": [
+            {
+                "name": "Netcare Unitas Hospital",
+                "address": {
+                    "line_1": " 866 Clifton Ave",
+                    "suburb": "Die Hoewes",
+                    "city": "Centurion",
+                    "postal_code": "0163",
+                    "province": "GP",
+                },
+            }
+        ],
+    }
+    response = mhp_client.patch(f"/api/doctors/{doctor.id}/", payload, format="json")
+    assert response.status_code == 200
+    doctor.refresh_from_db()
+    assert doctor.hpcsa_no == payload.get("hpcsa_no")
+    assert doctor.practicelocations.filter(name=payload.get("practice_locations")[0].get("name"))
+    assert speciality in doctor.specialities.all()
