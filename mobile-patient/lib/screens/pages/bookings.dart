@@ -6,6 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:client_pharmanathi/screens/components/calender/calender.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../Repository/payment_repository.dart';
+import '../../blocs/payment_bloc.dart';
+import '../../services/api_provider.dart';
 import '../components/calender/events.dart';
 
 class Bookings extends StatefulWidget {
@@ -65,6 +69,36 @@ class _BookingsState extends State<Bookings> {
   void handleButtonTap(int index) {
     setState(() {
       selectedButtonIndex = index;
+    });
+  }
+
+  // Method to modify the type of payment based on the API requirements
+  String modifyTypeOfPayment(String typeOfPayment) {
+    if (typeOfPayment == 'Before Visit') {
+      return 'BV';
+    } else if (typeOfPayment == 'After Visit') {
+      return 'AV';
+    }
+    return typeOfPayment;
+  }
+
+  // Method to handle booking appointment
+  void bookAppointment(String doctorName, String reasonForVisit, int doctorId,
+      int appointmentType, String modifiedPaymentType) {
+    BookingAPIService.updateRequestBody(
+      appointmentType: appointmentType,
+      reasonForVisit: reasonForVisit,
+      appointmentDay: dayOfAppiontment,
+      doctorName: doctorName,
+      doctorId: doctorId,
+      timeOfAppointment: timeOfTheAppointment,
+      typeOfPayment: modifiedPaymentType,
+      uploadedEHRFiles: _pickedFile,
+    );
+
+    BookingAPIService.sendBookingDataToBackend(context, onSuccess: () {
+      _showSuccessMessage();
+      _onSuccessNavigation();
     });
   }
 
@@ -599,101 +633,94 @@ class _BookingsState extends State<Bookings> {
                         ],
                       ),
                     ),
-
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Get all inputs
-                          String doctorName = widget.name;
-                          String reasonForVisit = reasonForVisitControler.text;
-                          int doctorId = widget.doctorId;
-                          int appointmentType = widget.appointmentType;
-
-                          // Modify typeOfPayment based on the api requirements
-                          String modifyTypeOfPayment(String typeOfPayment) {
-                            // Modify typeOfPayment based on the condition
-                            if (typeOfPayment == 'Before Visit') {
-                              return 'BV';
-                            } else if (typeOfPayment == 'After Visit') {
-                              return 'AV';
-                            }
-                            // Return the original typeOfPayment if no modification is needed
-                            return typeOfPayment;
-                          }
-
-                          String modifiedPaymentType =
-                              modifyTypeOfPayment(typeOfPayment);
-
-                          // Function to update and send booking data
-                          void bookAppointment() {
-                            // Update the JSON data with new inputs
-                            BookingAPIService.updateRequestBody(
-                              appointmentType: appointmentType,
-                              reasonForVisit: reasonForVisit,
-                              appointmentDay: dayOfAppiontment,
-                              doctorName: doctorName,
-                              doctorId: doctorId,
-                              timeOfAppointment: timeOfTheAppointment,
-                              typeOfPayment: modifiedPaymentType,
-                              uploadedEHRFiles: _pickedFile,
-                            );
-
-                            // Now send the updated JSON data to the backend
-                            BookingAPIService.sendBookingDataToBackend(context,
-                                onSuccess: () {
-                              _showSuccessMessage();
-                              _onSuccessNavigation();
-                            });
-                          }
-
-                          if (!widget.has_consulted_before) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Confirm Booking"),
-                                  content: Text(
-                                      "By proceeding, you grant this Medical Professional permission to access both your medical and personal information. However, all information will remain strictly confidential."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text("Cancel"),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        bookAppointment();
-                                      },
-                                      child: Text("Proceed"),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            bookAppointment();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6F7ED7),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 100.0, vertical: 15.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: BlocProvider(
+                        create: (context) => PaymentBloc(
+                          PaymentRepository(ApiProvider()),
+                          context, // Pass BuildContext to the PaymentBloc
                         ),
-                        child: Text(
-                          "Book Appointment",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        child: BlocListener<PaymentBloc, PaymentState>(
+                          listener: (context, state) {
+                            if (state is PaymentSuccess) {
+                              if (!widget.has_consulted_before) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Confirm Booking"),
+                                      content: Text(
+                                        "By proceeding, you grant this Medical Professional permission to access both your medical and personal information. However, all information will remain strictly confidential.",
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Cancel"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            bookAppointment(
+                                              widget.name,
+                                              reasonForVisitControler.text,
+                                              widget.doctorId,
+                                              widget.appointmentType,
+                                              modifyTypeOfPayment(
+                                                  typeOfPayment),
+                                            );
+                                          },
+                                          child: Text("Proceed"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                bookAppointment(
+                                  widget.name,
+                                  reasonForVisitControler.text,
+                                  widget.doctorId,
+                                  widget.appointmentType,
+                                  modifyTypeOfPayment(typeOfPayment),
+                                );
+                              }
+                            } else if (state is PaymentFailure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Payment failed: ${state.error}'),
+                                ),
+                              );
+                            }
+                          },
+                          child: ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<PaymentBloc>(context).add(
+                                InitializePayment(
+                                  5000, // Example amount
+                                  context, // Pass BuildContext to InitializePayment
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6F7ED7),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 100.0, vertical: 15.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              elevation: 0,
+                              textStyle: TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.bold),
+                            ),
+                            child: Text(
+                              "Book Appointment",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
