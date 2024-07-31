@@ -9,6 +9,12 @@ import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import '../screens/components/UserProvider.dart';
 
+
+final String apiBaseURL =
+    dotenv.get("API_BASE_URL", fallback: "backend_api_env_var_unset");
+final String appLabel =
+    dotenv.get("APP_LABEL", fallback: "app_label_env_var_unset");
+    
 abstract class ApiHelper {
   static final Logger _logger = getLogger(ApiHelper);
 
