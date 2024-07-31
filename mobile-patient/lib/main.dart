@@ -1,66 +1,81 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
-
-import 'package:client_pharmanathi/screens/pages/onboard_page.dart';
-import 'package:client_pharmanathi/screens/pages/singnin_page.dart';
+import 'package:client_pharmanathi/Repository/payment_repository.dart';
+import 'package:client_pharmanathi/blocs/payment_bloc.dart';
+import 'package:client_pharmanathi/services/api_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-
 import 'screens/components/UserProvider.dart';
 import 'firebase_options.dart';
-import 'screens/pages/appointment.dart';
-import 'screens/pages/doctors.dart';
-import 'screens/pages/home_page.dart';
-import 'screens/pages/profile_settings.dart';
 import 'helpers/api_helpers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
- //* Load environment variables
+  await _loadEnvironmentVariables();
+  await _setPreferredOrientation();
+  await _initializeFirebase();
+
+  ApiProvider apiProvider = ApiProvider();
+  PaymentRepository paymentRepository = PaymentRepository(apiProvider);
+
+  bool enableSentry = _shouldEnableSentry();
+
+  if (enableSentry) {
+    await _initializeSentry(() async {
+      await _runApp(paymentRepository);
+    });
+  } else {
+    await _runApp(paymentRepository);
+  }
+}
+
+Future<void> _loadEnvironmentVariables() async {
   await dotenv.load();
+}
 
-  //* Set preferred orientation before initializing Firebase
+Future<void> _setPreferredOrientation() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+}
 
- 
+Future<void> _initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+}
 
-  //* Determine if Sentry should be enabled
+bool _shouldEnableSentry() {
   String sentryOnSetting = dotenv.get("SENTRY_ON", fallback: 'false');
-  bool enableSentry = sentryOnSetting == "true" || kReleaseMode;
+  return sentryOnSetting == "true" || kReleaseMode;
+}
 
-  if (enableSentry) {
-    await SentryFlutter.init(
-      (options) {
-        options.dsn = dotenv.env['SENTRY_DSN']!;
-        options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
-      },
-      appRunner: () => runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => UserProvider()),
-          ],
-          child: const MyApp(),
+Future<void> _initializeSentry(Future<void> Function() appRunner) async {
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = dotenv.env['SENTRY_DSN']!;
+      options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
+    },
+    appRunner: appRunner,
+  );
+}
+
+Future<void> _runApp(PaymentRepository paymentRepository) async {
+  runApp(
+    MultiProvider(
+      providers: [
+        BlocProvider<PaymentBloc>(
+          create: (context) => PaymentBloc(paymentRepository,context),
         ),
-      ),
-    );
-  } else {
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => UserProvider()),
-        ],
-        child: const MyApp(),
-      ),
-    );
-  }
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -72,10 +87,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<bool> _checkFirstTimeSignIn() async {
-    //* Obtain an instance of UserProvider
-    final userProvider = UserProvider();
-
-    //* Check if it's the first time sign-in
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return await userProvider.isFirstTimeSignIn();
   }
 
@@ -83,69 +95,26 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRoutes.generateRoute,
       home: FutureBuilder<bool>(
-        //* Check if it's the first time signing
         future: _checkFirstTimeSignIn(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox.shrink(); //* Return an empty SizedBox
+            return const SizedBox.shrink();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             String initialRoute =
-                snapshot.data == true ? '/signIn' : '/onboarding';
+                snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
             if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
               if (ApiHelper.retrieveLocaAPIToken(context) != null) {
-                initialRoute = '/home_page';
+                initialRoute = AppRoutes.homePage;
               }
             }
 
             return Navigator(
               initialRoute: initialRoute,
-              onGenerateRoute: (settings) {
-                try {
-                  switch (settings.name) {
-                    case '/onboarding':
-                      return MaterialPageRoute(
-                        builder: (context) => OnboardScreen(
-                          currentIndex: 0,
-                          headings: OnboardScreen.sampleHeadings,
-                          texts: OnboardScreen.sampleTexts,
-                        ),
-                      );
-                    case '/signIn':
-                      return MaterialPageRoute(
-                        builder: (context) => GoogleSignInWidget(),
-                      );
-                    case '/home_page':
-                      return MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      );
-                    case '/doctors':
-                      return MaterialPageRoute(
-                        builder: (context) => Doctors(),
-                      );
-                    case '/appointment':
-                      return MaterialPageRoute(
-                        builder: (context) => Appointments(),
-                      );
-                    case '/profile_settings':
-                      return MaterialPageRoute(
-                        builder: (context) => ProfileSetting(),
-                      );
-                    default:
-                      return null;
-                  }
-                } catch (e) {
-                  // print('Error navigating to ${settings.name}: $e');
-
-                  //* Close the loading indicator on error
-                  Navigator.pop(context);
-
-                  //* Return null to handle the error route
-                  return null;
-                }
-              },
+              onGenerateRoute: AppRoutes.generateRoute,
             );
           }
         },
