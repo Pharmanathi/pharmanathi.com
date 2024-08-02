@@ -89,7 +89,12 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.google",
 ]
 
-LOCAL_APPS = ["pharmanathi_backend.users", "pharmanathi_backend.appointments", "pharmanathi_backend.adminsite"]
+LOCAL_APPS = [
+    "pharmanathi_backend.users",
+    "pharmanathi_backend.appointments",
+    "pharmanathi_backend.payments",
+    "pharmanathi_backend.adminsite",
+]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -400,3 +405,15 @@ ANYMAIL = {
 # VERIFI
 # ------------------------------------------------------------------------------
 VERIFI_URL = env("VERIFI_URL", default="http://verifi:8000")
+
+
+# PAYMENT PROVIDERS
+# ------------------------------------------------------------------------------
+PAYMENT_USER_EMAIL_FIELD = "email"
+PAYMENT_PROVIDERS = {
+    "Paystack": {
+        "initialization_url": "https://api.paystack.co/transaction/initialize/",
+        "authorization": "Bearer sk_test_0701afa3bb10cf76ba7507bd5720fe30036661c4",
+        "callback_url": "https://pharmanthi.com/api/payments/cb/Paystack",  # TODO: make this default for each provider
+    }
+}
