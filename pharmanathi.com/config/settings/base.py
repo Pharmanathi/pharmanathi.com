@@ -409,11 +409,5 @@ VERIFI_URL = env("VERIFI_URL", default="http://verifi:8000")
 
 # PAYMENT PROVIDERS
 # ------------------------------------------------------------------------------
-PAYMENT_USER_EMAIL_FIELD = "email"
-PAYMENT_PROVIDERS = {
-    "Paystack": {
-        "initialization_url": "https://api.paystack.co/transaction/initialize/",
-        "authorization": "Bearer sk_test_0701afa3bb10cf76ba7507bd5720fe30036661c4",
-        "callback_url": "https://pharmanthi.com/api/payments/cb/Paystack",  # TODO: make this default for each provider
-    }
-}
+PAYMENT_USER_EMAIL_FIELD = env.str("PAYMENT_USER_EMAIL_FIELD")
+PAYMENT_PROVIDERS = {"Paystack": env.dict("PAYMENT_PAYSTACK_PROVIDER_CONFIG")}
