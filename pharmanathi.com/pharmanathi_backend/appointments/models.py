@@ -2,6 +2,8 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
+from rest_framework.exceptions import ValidationError
+
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
@@ -161,7 +163,7 @@ class Appointment(BaseCustomModel):
             )
 
             if selected_timeslot not in available_slots:
-                raise ValueError("Selected timeslot is unavailable")
+                raise ValidationError("Selected timeslot is unavailable")
 
             sz_appointment.save()
 
