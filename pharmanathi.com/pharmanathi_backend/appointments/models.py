@@ -1,8 +1,9 @@
 from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
-from django.db import models
-
+from django.db import models, transaction
+from pharmanathi_backend.payments.models import Payment
+from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
@@ -90,6 +91,7 @@ class Appointment(BaseCustomModel):
     appointment_type = models.ForeignKey(AppointmentType, on_delete=models.PROTECT)
     reason = models.CharField(max_length=500)
     payment_process = models.CharField(max_length=2, choices=PAYMENT_PROCESSES_CHOICES)
+    payment = models.OneToOneField(Payment, on_delete=models.PROTECT)
 
     # @TODO: verification that patient is not self. Meaning, patient should not be
     # able to book an appointment with themselves.
@@ -103,6 +105,67 @@ class Appointment(BaseCustomModel):
             UTC_time_to_SA_time(self.start_time).strftime("%H:%M"),
             UTC_time_to_SA_time(self.end_time).strftime("%H:%M"),
         )
+
+    @classmethod
+    def create_from_http_client(cls, view, request) -> tuple:
+        """This method does quite a few things:
+
+        1- Creates and start the process for payment
+        2- If successfull, creates an appointment and attaches
+        the payment to it.
+        3- Returns a tuple of the form (appointment, paymemt, action_data)
+
+        Args:
+            view (_type_): The view that called this method
+            request (_type_): the view's request object
+
+        Raises:
+            ValueError: if selected user data is invalid
+
+        Returns:
+            tuple: (appointment, paymemt, action_data)
+        """
+        with transaction.atomic():
+            # get appoinment type
+            appointment_type = AppointmentType.objects.get(doctor__id=request.data.get("doctor"))
+
+            # create payment
+            payment_provider = get_provider(request.data.get("payment_provider"))
+            payment, payment_extras = payment_provider.initialize_payment(
+                **{"amount": appointment_type.cost.to_eng_string(), "email": request.user.email}
+            )
+
+            # create appoinment
+            prepared_appointment_data = {
+                **request.data,
+                "appointment_type": appointment_type.id,
+                "patient": request.user.id,
+                "payment": payment.pk,
+            }
+            sz_appointment = view.get_serializer(data=prepared_appointment_data)
+            sz_appointment.is_valid(raise_exception=True)
+
+            # Ensure selected timeslot is among the list of available slots
+            # Make request to /api/doctor/:id/availability to verify that the selected
+            # timeslot is valid
+            selected_timeslot_datetime = sz_appointment.validated_data["start_time"]
+            selected_timeslot = (
+                selected_timeslot_datetime.strftime("%H:%M"),
+                (
+                    selected_timeslot_datetime
+                    + timedelta(minutes=sz_appointment.validated_data["appointment_type"].duration)
+                ).strftime("%H:%M"),
+            )
+            available_slots = appointment_type.doctor.get_available_slots_on(
+                selected_timeslot_datetime.date(), appointment_type.duration
+            )
+
+            if selected_timeslot not in available_slots:
+                raise ValueError("Selected timeslot is unavailable")
+
+            sz_appointment.save()
+
+        return (payment.appointment, payment, payment_extras)
 
 
 class Rating(BaseCustomModel):
