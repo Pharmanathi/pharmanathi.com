@@ -1,10 +1,11 @@
 from datetime import timedelta
 
-from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
+
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
+from pharmanathi_backend.utils import user_is_doctor
 
 from . import serializers
 
@@ -148,8 +149,8 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         appointment, payment, action_data = models.Appointment.create_from_http_client(self, request)
-        data = {
+        response_body = {
             "appointment": serializers.AppointmentPublicSerializer(appointment).data,
             "action_data": action_data,
         }
-        return Response(data, status=201)
+        return Response(response_body, status=201)

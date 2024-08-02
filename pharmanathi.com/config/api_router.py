@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import path
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from pharmanathi_backend.appointments.views import AppointmentTypeViewSet, AppointmentViewSet, TimeSlotViewSet
@@ -28,4 +28,7 @@ router.register("appointments", AppointmentViewSet, "appointments")
 
 
 app_name = "api"
-urlpatterns = router.urls + [path("google-login-by-id-token/", GoogleLoginView.as_view())]
+urlpatterns = router.urls + [
+    path("google-login-by-id-token/", GoogleLoginView.as_view()),
+    path("payments/", include("pharmanathi_backend.payments.urls")),
+]
