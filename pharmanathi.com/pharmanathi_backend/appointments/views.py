@@ -1,11 +1,10 @@
 from datetime import timedelta
 
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-
-from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.utils import user_is_doctor
 
 from . import serializers
 
@@ -148,35 +147,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(patient=self.request.user)
 
     def create(self, request):
-        # Get the MHP's unique ppointment type
-        # This value overrides anything selected on the user side since right now
-        # we only allow one appointment type per MHP
-        appointment_type = models.AppointmentType.objects.get(doctor__id=request.data.get("doctor"))
-        prepared_appointment_data = {
-            **request.data,
-            "appointment_type": appointment_type.id,
-            "patient": request.user.id,
+        appointment, payment, action_data = models.Appointment.create_from_http_client(self, request)
+        data = {
+            "appointment": serializers.AppointmentPublicSerializer(appointment).data,
+            "action_data": action_data,
         }
-        sz_appointment = self.get_serializer(data=prepared_appointment_data)
-        sz_appointment.is_valid(raise_exception=True)
-
-        # Ensure selected timeslot is among the list of available slots
-        # Make request to /api/doctor/:id/availability to verify that the selected
-        # timeslot is valid
-        selected_timeslot_datetime = sz_appointment.validated_data["start_time"]
-        selected_timeslot = (
-            selected_timeslot_datetime.strftime("%H:%M"),
-            (
-                selected_timeslot_datetime
-                + timedelta(minutes=sz_appointment.validated_data["appointment_type"].duration)
-            ).strftime("%H:%M"),
-        )
-        available_slots = appointment_type.doctor.get_available_slots_on(
-            selected_timeslot_datetime.date(), appointment_type.duration
-        )
-
-        if selected_timeslot not in available_slots:
-            return Response({"detail": "Selected timeslot is unavailable"}, status=400)
-
-        sz_appointment.save()
-        return Response(serializers.AppointmentPublicSerializer(sz_appointment.instance).data, status=201)
+        return Response(data, status=201)

@@ -8,10 +8,12 @@ from dj_rest_auth.registration.serializers import SocialLoginSerializer
 from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
-from django.db.models import Prefetch
+from django.db.models import Exists, OuterRef, Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+from pharmanathi_backend.appointments.models import AppointmentType
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -20,9 +22,14 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from pharmanathi_backend.utils import user_is_doctor
-
-from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
+from ..models import (
+    Address,
+    Doctor,
+    InvalidationReason,
+    PracticeLocation,
+    Speciality,
+    VerificationReport,
+)
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
@@ -170,7 +177,9 @@ class DoctorModelViewSet(ModelViewSet):
 
 
 class PublicDoctorModelViewSet(DoctorModelViewSet):
-    queryset = Doctor.objects.filter(_is_verified=True).prefetch_related("user", "practicelocations", "specialities")
+    queryset = Doctor.objects.filter(
+        Exists(AppointmentType.objects.filter(doctor=OuterRef("pk"))), _is_verified=True
+    ).prefetch_related("user", "practicelocations", "specialities", "appointmenttype_set")
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
