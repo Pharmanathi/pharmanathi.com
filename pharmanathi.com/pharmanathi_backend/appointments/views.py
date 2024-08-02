@@ -1,11 +1,10 @@
 from datetime import timedelta
 
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-
-from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.utils import user_is_doctor
 
 from . import serializers
 
