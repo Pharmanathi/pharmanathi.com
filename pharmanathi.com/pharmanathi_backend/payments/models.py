@@ -1,9 +1,19 @@
+from typing import Any
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .providers.provider import BaseProvider, ProviderNotFoundException, get_provider, provider_registry
+from .providers.provider import (
+    BaseProvider,
+    ProviderNotFoundException,
+    check_provider_exists,
+    get_provider,
+    provider_registry,
+)
 
+# We can probably do better down here when it comes to
+# getting making this model widely availbale.
 UserModel = get_user_model()
 
 
@@ -44,7 +54,7 @@ class Payment(models.Model):
 
     def set_provider(self, name):
         # check provider exists
-        if BaseProvider.check_provider_exists(name) is False:
+        if check_provider_exists(name) is False:
             raise ProviderNotFoundException(name)
 
         # check user has access to this provider

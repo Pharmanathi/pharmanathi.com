@@ -410,4 +410,5 @@ VERIFI_URL = env("VERIFI_URL", default="http://verifi:8000")
 # PAYMENT PROVIDERS
 # ------------------------------------------------------------------------------
 PAYMENT_USER_EMAIL_FIELD = env.str("PAYMENT_USER_EMAIL_FIELD")
+PAYMENT_TEST_USER_FACTORY_MODEL = "pharmanathi_backend.users.tests.factories.UserFactory"
 PAYMENT_PROVIDERS = {"Paystack": env.dict("PAYMENT_PAYSTACK_PROVIDER_CONFIG")}

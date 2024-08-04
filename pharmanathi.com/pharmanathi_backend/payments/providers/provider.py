@@ -30,26 +30,37 @@ class BaseProvider:
     the following:
 
     ```
-    "Meta.name": {
+    "name": {
         key1: value1
         key2: value2,
     }
     ```
 
     During the registration process of a provider, should there exist an entry
-    corresponding to a concrete provider's Meta.name attribute, the specified
+    corresponding to a concrete provider's ``name`` attribute, the specified
     keys will be added as attribute to the class, with the specified values. This
     is implemented by the ``register_provider`` helper function in this module.
+
+    @TODO:
+    - Add tests to a good coverage level
+    - Centraly handle app's configuration
     """
+
+    name: str  # Provided by sublacss
 
     class ProviderValidationError(Exception):
         pass
 
-    class Meta:
-        abstract = True
+    class UsageDeniedException(Exception):
+        def __init__(self, provider_name, user_email) -> None:
+            message = f"User '{user_email}' is not allowed to use the '{provider_name}' provider"
+            super().__init__(message)
+
+    def __init__(*args, **kwargs) -> None:
+        pass
 
     def __str__(self):
-        return f"<Provider: {self.Meta.name}>"
+        return f"<Provider: {self.name}>"
 
     def generate_reference(length=20):
         """Leaving this task to the providers for the time being
@@ -63,7 +74,6 @@ class BaseProvider:
         """
         pass
 
-    @classmethod
     def initialize_payment(self, *args, **kwargs):
         """Initializes and return a payment instance as well
         as any extra info that may be necessary in a dictionary
@@ -89,10 +99,6 @@ class BaseProvider:
         raise NotImplementedError()
 
     @classmethod
-    def check_provider_exists(cls, name) -> bool:
-        return name in provider_registry.keys()
-
-    @classmethod
     def validate_provider(cls, payment):
         """It is important to use this method whenever you
         are working with a payment instance to ensure it works
@@ -109,18 +115,23 @@ class BaseProvider:
             raise cls.ProviderValidationError
 
     @classmethod
-    def is_available_to_user(self, user):
-        """Checks whether this provider can be used by the user
-        making the payment
-        """
+    def _is_available_to_user(cls, user):
         raise NotImplementedError()
 
-    @property
-    def name(self):
-        return self.Meta.name if self.Meta else self.__class__.__name__
-
     @classmethod
-    def get_payment_by_reference(cls, reference: str):
+    def is_available_to_user(cls, user, raise_exception=True):
+        """Checks whether this provider can be used by the user
+        making the payment. You must not override this method,
+        rather overried ``_is_available_to_user`` with checks
+        matching your use case.
+        """
+        user_can_use = cls._is_available_to_user(user)
+        if user_can_use is False and raise_exception:
+            raise cls.UsageDeniedException(cls.name, user.email)
+
+        return user_can_use
+
+    def get_payment_by_reference(self, reference: str):
         from ..models import Payment
 
         return Payment.objects.get(reference=reference)
@@ -146,13 +157,17 @@ class MedicalAidProvider(BaseProvider):
 
 
 class CashProvider(BaseProvider):
+    authorization: str  # provided by subclass
+    callback_url: str  # provided by subclass
+    initialization_url: str  # provided by subclass
+
     @classmethod
-    def is_available_to_user(self, user):
+    def _is_available_to_user(self, user):
         return True  # available to all
 
     def get_intialization_data(self, request_body):
-        assert hasattr(self, "initialization_url"), "%s has no ``initialization_url`` set." % self.Meta.name
-        assert hasattr(self, "authorization"), "%s has no HTTP ``authorization`` key set." % self.Meta.name
+        assert hasattr(self, "initialization_url"), "%s has no ``initialization_url`` set." % self.name
+        assert hasattr(self, "authorization"), "%s has no HTTP ``authorization`` key set." % self.name
         response: requests.Response = requests.post(
             self.initialization_url,
             headers={"Authorization": self.authorization},
@@ -165,7 +180,9 @@ class CashProvider(BaseProvider):
         """Implement this to extract:
         - the payment's reference
         - the payment URL to use by the client
-        - any other data necessary to your provider
+        - any other data necessary to your provider. This thrid element
+        should be a object with all remamining values or those that are
+        worthy of keeping
 
         Your implementation should return a tuple with those 3 elements
         in the specified order otherwise you must also override
@@ -239,26 +256,38 @@ def register_provider(f):
     The registry is nothing else than the `provider_registry` object
     mapping provider name to their related class.
     """
-    assert f.Meta is not None and hasattr(
-        f.Meta, "name"
-    ), f"Invalid provider `{f.__name__}`. Did you forget to set its Meta.name?"
+    assert f.name is not None and hasattr(
+        f, "name"
+    ), f"Invalid provider `{f.__name__}`. Did you forget to set its ``name``?"
 
     def _register_provider(f):
-        provider_name = f.Meta.name
+        provider_name = f.name
         provider_registry[provider_name] = f
 
         if settings.PAYMENT_PROVIDERS and provider_name in settings.PAYMENT_PROVIDERS:
             for k, v in settings.PAYMENT_PROVIDERS.get(provider_name).items():
                 setattr(f, k, v)
 
+        return f
+
     return _register_provider(f)
 
 
+def check_provider_exists(name: str) -> bool:
+    return name in provider_registry.keys()
+
+
 def get_provider(name: str) -> BaseProvider:
+    """Returns an instance of the specified provider if exists,
+    otherwise returns a ``ProviderNotFoundException`` error."""
     provider_klass = provider_registry.get(name, None)
     if provider_klass is None:
         raise ProviderNotFoundException(name)
     return provider_klass()
+
+
+def get_all_providers() -> list:
+    return provider_registry.keys()
 
 
 class EFTProvider(CashProvider):

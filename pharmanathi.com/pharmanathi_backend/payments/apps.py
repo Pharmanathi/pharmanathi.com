@@ -6,5 +6,4 @@ class PaymentsConfig(AppConfig):
     name = "pharmanathi_backend.payments"
 
     def ready(self):
-        from pharmanathi_backend.payments.providers.nhi import provider
         from pharmanathi_backend.payments.providers.paystack import provider
