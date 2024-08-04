@@ -3,6 +3,8 @@ from factory import SubFactory
 from factory.django import DjangoModelFactory
 
 from pharmanathi_backend.appointments.models import Appointment, AppointmentType, TimeSlot
+
+# from pharmanathi_backend.payments.tests.factories import PaymentFactory
 from pharmanathi_backend.users.tests.factories import DoctorFactory
 
 
@@ -46,6 +48,7 @@ class AppointmentTypeFactory(DjangoModelFactory):
 class AppointmentFactory(DjangoModelFactory):
     doctor = SubFactory(DoctorFactory)
     appointment_type = SubFactory(AppointmentTypeFactory)
+    # payment = SubFactory(PaymentFactory)
 
     class Meta:
         model = Appointment
