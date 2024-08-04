@@ -11,6 +11,9 @@ from pharmanathi_backend.appointments.tests.factories import (
     TimeSlotFactory,
     get_random_time_str,
 )
+from pharmanathi_backend.payments.models import Payment
+from pharmanathi_backend.payments.providers.paystack.provider import PaystackProvider
+from pharmanathi_backend.payments.tests.factories import PaymentFactory
 from pharmanathi_backend.users.models import User
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
@@ -219,3 +222,13 @@ def resolved_invalidation_reason(unverified_mhp_client, staff_web_client):
     resolver = staff_web_client.user
     unverified_mhp = unverified_mhp_client.user.doctor_profile
     return InvalidationReasonFactory(mhp=unverified_mhp, is_resolved=True, resolved_by=resolver)
+
+
+@pytest.fixture
+def paystack_provider():
+    return PaystackProvider()
+
+
+@pytest.fixture
+def pending_payment():
+    return PaymentFactory(status=Payment.PaymentStatus.PENDING)
