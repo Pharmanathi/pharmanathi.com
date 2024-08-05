@@ -3,43 +3,16 @@
 import 'dart:math';
 
 import 'package:client_pharmanathi/helpers/api_helpers.dart';
-import 'package:client_pharmanathi/screens/components/appointments/appointment_data.dart';
-import 'package:client_pharmanathi/screens/components/appointments/appointment_details_tile.dart';
+import 'package:client_pharmanathi/model/appointment_data.dart';
+import 'package:client_pharmanathi/views/widgets/appointment_details_tile.dart';
 import 'package:flutter/material.dart';
 
-
-
 class ProfileCard extends StatelessWidget {
-  final time;
-  final name;
-  final date;
-  final appointmentTime;
-  final imageURL;
-  final status;
-  final title;
-  final consult_details;
-  final clinic_name;
-  final clinic_address;
-  final String appiontmenType;
+  final Appointment appointment;
 
-  final AppointmentData otherData;
+  const ProfileCard({super.key, required this.appointment});
 
-  ProfileCard(
-      {required this.otherData,
-      required this.appointmentTime,
-      required this.appiontmenType,
-      required this.imageURL,
-      required this.consult_details,
-      required this.clinic_name,
-      required this.clinic_address,
-      required this.name,
-      required this.date,
-      required this.status,
-      required this.title,
-      required this.time});
-
-
-       // Function to generate a random color
+  // Function to generate a random color
   Color getRandomColor() {
     Random random = Random();
     return Color.fromARGB(
@@ -52,7 +25,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String alteredname = ApiHelper.toTitleCase(name);
+    String alteredname = ApiHelper.toTitleCase(appointment.doctor.doctorName);
 
     return GestureDetector(
       onTap: () {
@@ -60,18 +33,8 @@ class ProfileCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OnlineConsultation(
-              // Pass the corresponding data to OnlineConsultation
-              title: title,
-              imageURL: imageURL,
-              consult_details: consult_details,
-              clinic_name: clinic_name,
-              clinic_address: clinic_address,
-              appointmentTime: appointmentTime,
-              name: name,
-              date: date,
-              status: status,
-              time: appointmentTime,
+            builder: (context) => AppiontmentDetails(
+              appointment: appointment,
               // Add more parameters as needed
             ),
           ),
@@ -100,20 +63,23 @@ class ProfileCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               CircleAvatar(
-                                 backgroundColor: imageURL.isNotEmpty
-                                  ? null // No background color if imageURL is available
-                                  : getRandomColor(), // Random background color if imageURL is not available
-                                child: imageURL.isNotEmpty
-                                    ? Image.network(imageURL)
+                                backgroundColor: appointment
+                                        .doctor.imageURL.isNotEmpty
+                                    ? null // No background color if imageURL is available
+                                    : getRandomColor(), // Random background color if imageURL is not available
+                                child: appointment.doctor.imageURL.isNotEmpty
+                                    ? Image.network(appointment.doctor.imageURL)
                                     : Text(
-                                        name.isNotEmpty ? name[0] : '',
+                                        appointment.patient.firstName.isNotEmpty
+                                            ? appointment.patient.firstName[0]
+                                            : '',
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
 
-                                     radius: 30,
+                                radius: 30,
                               ),
                               SizedBox(
                                 width: 7,
@@ -142,16 +108,18 @@ class ProfileCard extends StatelessWidget {
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 70),
-                                          child: Text(
-                                            title,
-                                            style: TextStyle(
+                                            padding: const EdgeInsets.only(
+                                                right: 70),
+                                            child: Text(
+                                              appointment.doctor
+                                                  .getFirstSpecialityName(),
+                                              style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.normal,
-                                                color: Colors.grey),
-                                          ),
-                                        ),
+                                                color: Colors.grey,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
                                       ],
                                     ),
                                   ),
@@ -163,7 +131,7 @@ class ProfileCard extends StatelessWidget {
                             width: double.infinity,
                             child: Expanded(
                               child: Divider(
-                                color:Color(0xFFF7F9FC),
+                                color: Color(0xFFF7F9FC),
                                 thickness: 2,
                               ),
                             ),
@@ -173,12 +141,14 @@ class ProfileCard extends StatelessWidget {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 0),
+                                          padding:
+                                              const EdgeInsets.only(left: 0),
                                           child: Text(
                                             'Date',
                                             style: TextStyle(
@@ -189,8 +159,9 @@ class ProfileCard extends StatelessWidget {
                                         // SizedBox(
                                         //   height: 10,
                                         // ),
-                                         Padding(
-                                          padding: const EdgeInsets.only(left: 0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 0),
                                           child: Text(
                                             'Time',
                                             style: TextStyle(
@@ -204,13 +175,13 @@ class ProfileCard extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            date,
+                                            appointment.appiontment_date,
                                             style: TextStyle(
                                               fontSize: 10,
                                             ),
                                           ),
                                           Text(
-                                            appointmentTime,
+                                            appointment.appointmentTime,
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w200,
@@ -227,7 +198,8 @@ class ProfileCard extends StatelessWidget {
                                             // height: 30,
                                             // width: 100,
                                             decoration: BoxDecoration(
-                                              color: status == 'Upcoming'
+                                              color: appointment.status ==
+                                                      'Upcoming'
                                                   ? Colors.grey
                                                   : Color.fromARGB(
                                                       255, 181, 241, 212),
@@ -237,11 +209,12 @@ class ProfileCard extends StatelessWidget {
                                             child: Padding(
                                               padding: const EdgeInsets.all(6),
                                               child: Text(
-                                                status,
+                                                appointment.status,
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.normal,
-                                                  color: status == 'Upcoming'
+                                                  color: appointment.status ==
+                                                          'Upcoming'
                                                       ? Colors.white
                                                       : Colors.grey,
                                                 ),

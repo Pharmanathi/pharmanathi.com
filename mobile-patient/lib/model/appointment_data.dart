@@ -1,0 +1,98 @@
+import 'package:client_pharmanathi/model/doctor_data.dart';
+import 'package:client_pharmanathi/model/patient_data.dart';
+import 'package:intl/intl.dart';
+
+class Appointment {
+  final int id;
+  final DateTime endTime;
+  final Doctor doctor;
+  final Patient patient;
+  final String appiontment_date;
+  final String appointmentTime;
+  final String status;
+  final String reason;
+  final String paymentProcess;
+  final int appointmentType;
+
+  Appointment({
+    required this.id,
+    required this.endTime,
+    required this.appiontment_date,
+    required this.appointmentTime,
+    required this.status,
+    required this.doctor,
+    required this.patient,
+    required this.reason,
+    required this.paymentProcess,
+    required this.appointmentType,
+  });
+
+  factory Appointment.fromJson(Map<String, dynamic> json) {
+// Parse the date string to a DateTime object in UTC
+    final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
+
+    // Convert the UTC DateTime object to local time
+    final DateTime dateTimeLocal = dateTimeUtc.toLocal();
+
+    // Format the date to "dd MMM yyyy" (e.g., "27 May 2023")
+    final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
+    final String formattedDate = dateFormatter.format(dateTimeLocal);
+
+    // Format the time to "HH:mm" (e.g., "13:30")
+    final DateFormat timeFormatter = DateFormat('HH:mm a', 'en_US');
+    final String formattedTime = timeFormatter.format(dateTimeLocal);
+
+    final DateFormat timeFormatterStatuscheck =
+        DateFormat('yyyy-MM-ddTHH:mm:ss+zzzz');
+
+    String status = '';
+    try {
+      //* Parsing with time zone format
+      final DateTime formattedTimeDateTime =
+          timeFormatterStatuscheck.parse(json['start_time']);
+
+      final localFormatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+      final String formattedTimeInLocal =
+          localFormatter.format(formattedTimeDateTime);
+      final DateTime currentDateTime = DateTime.now();
+
+      if (DateTime.parse(formattedTimeInLocal).isAfter(currentDateTime)) {
+        status = 'Upcoming';
+      } else {
+        status = 'Completed';
+      }
+    } catch (error) {
+      //! Handle parsing error
+      print('Error parsing start_time: $error');
+    }
+
+    String appointmentType = "";
+    try {
+      final int appointmentTypeValue = json['appiontment_type'] ?? 0;
+
+      if (appointmentTypeValue == 1) {
+        appointmentType = "In Person Visit";
+      } else {
+        appointmentType = "Online Consultation";
+      }
+      print('Appointment Type: $appointmentType');
+    } catch (error) {
+      print(
+        'Error parsing appointment type:',
+      );
+    }
+
+    return Appointment(
+      id: json['id'],
+      endTime: DateTime.parse(json['end_time']),
+      appointmentTime: formattedTime,
+      appiontment_date: formattedDate,
+      status: status,
+      doctor: Doctor.fromJson(json['doctor']),
+      patient: Patient.fromJson(json['patient']),
+      reason: json['reason'],
+      paymentProcess: json['payment_process'],
+      appointmentType: json['appointment_type'],
+    );
+  }
+}
