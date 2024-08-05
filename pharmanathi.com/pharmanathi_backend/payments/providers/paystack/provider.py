@@ -35,12 +35,10 @@ class PaystackProvider(CashProvider):
         return {"email": email, "amount": amount, "callback_url": self.callback_url}
 
     def process_payment(self, cb_request_data: dict):
-        print("Hellllooooooooooo ----------->>>>")
         payment = self.get_payment_by_reference(cb_request_data.get("data").get("reference"))
         status = cb_request_data.get("data").get("status")
         if status == "success":
             payment.set_status_paid()
-            print("saved the mother fuctker ----------->>>>")
         else:
             payment.set_status_failed()
 

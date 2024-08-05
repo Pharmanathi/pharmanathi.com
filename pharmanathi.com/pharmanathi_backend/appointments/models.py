@@ -2,12 +2,13 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
+from rest_framework.exceptions import ValidationError
+
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
-from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -127,7 +128,7 @@ class Appointment(BaseCustomModel):
             tuple: (appointment, paymemt, action_data)
         """
         with transaction.atomic():
-            # get appoinment type
+            # get appointment type
             appointment_type = AppointmentType.objects.get(doctor__id=request.data.get("doctor"))
 
             # create payment
@@ -146,9 +147,7 @@ class Appointment(BaseCustomModel):
             sz_appointment = view.get_serializer(data=prepared_appointment_data)
             sz_appointment.is_valid(raise_exception=True)
 
-            # Ensure selected timeslot is among the list of available slots
-            # Make request to /api/doctor/:id/availability to verify that the selected
-            # timeslot is valid
+            # Ensure selected timeslot is valid
             selected_timeslot_datetime = sz_appointment.validated_data["start_time"]
             selected_timeslot = (
                 selected_timeslot_datetime.strftime("%H:%M"),

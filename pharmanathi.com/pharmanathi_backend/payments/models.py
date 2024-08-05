@@ -12,8 +12,8 @@ from .providers.provider import (
     provider_registry,
 )
 
-# We can probably do better down here when it comes to
-# getting making this model widely availbale.
+# We can probably do better down here when it comes to getting
+# making this model availalbe thoughout the payments app.
 UserModel = get_user_model()
 
 
@@ -56,7 +56,6 @@ class Payment(models.Model):
         return UserModel.objects.get(**{email_field: email})
 
     def set_provider(self, name):
-        # check provider exists
         if check_provider_exists(name) is False:
             raise ProviderNotFoundException(name)
 
@@ -64,7 +63,6 @@ class Payment(models.Model):
         provider_klass: BaseProvider = provider_registry.get(name)
         provider_klass.is_available_to_user(self.user)
 
-        # finally, lazy set
         self._provider = name
 
     @property
