@@ -1,8 +1,9 @@
+import 'package:client_pharmanathi/Repository/appointment_repository.dart';
+import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
-import 'package:client_pharmanathi/screens/components/appointments/appointment_data.dart';
-import 'package:client_pharmanathi/screens/components/appointments/appointment_tile.dart';
-import 'package:client_pharmanathi/services/appointmment_api.dart';
+import 'package:client_pharmanathi/views/widgets/appointment_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Appointments extends StatefulWidget {
   const Appointments({super.key});
@@ -17,38 +18,26 @@ class _AppointmentsState extends State<Appointments> {
   int _selectedIndex = 2;
   int selectedDay = -1;
   bool isLoading = true;
-
-  List<AppointmentData> appointmentData = [];
+  late AppointmentRepository _appointmentRepository;
+  List<Appointment> appointmentData = [];
 
   @override
   void initState() {
     super.initState();
+    _appointmentRepository = context.read<AppointmentRepository>();
     _loadAppointmentData();
   }
 
   void _loadAppointmentData() async {
     try {
-      //* Call fetchAppointmentData to fetch appointment data
-      List<Map<String, dynamic>> fetchedAppointmentData =
-          await fetchAppointmentData(context);
-
-      //* Convert fetched data to Appointment objects
-      List<AppointmentData> appointmentList = fetchedAppointmentData
-          .map((map) => AppointmentData.fromJson(map))
-          .toList();
-
-      //* Sort the appointment data by date in descending order
-      appointmentList.sort((a, b) => b.date.compareTo(a.date));
-
+      List<Appointment> fetchedAppointments =
+          await _appointmentRepository.fetchAppointments(context);
       setState(() {
-        appointmentData = appointmentList;
+        appointmentData = fetchedAppointments;
         isLoading = false;
       });
     } catch (e) {
       print('Error loading appointment data: $e');
-      setState(() {
-        isLoading = false;
-      });
       // Handle error as needed
     }
   }
@@ -119,18 +108,7 @@ class _AppointmentsState extends State<Appointments> {
                               final data = appointmentData[index];
 
                               return ProfileCard(
-                                time: data.time,
-                                name: data.name,
-                                date: data.date,
-                                appointmentTime: data.appointmentTime,
-                                imageURL: data.imageURL,
-                                consult_details: data.consult_details,
-                                clinic_name: data.clinic_name,
-                                clinic_address: data.clinic_address,
-                                status: data.status,
-                                title: data.title,
-                                appiontmenType: data.appiontmenType,
-                                otherData: appointmentData[index],
+                                appointment: data,
                               );
                             },
                           ),

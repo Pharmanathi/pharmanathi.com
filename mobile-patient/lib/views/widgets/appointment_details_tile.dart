@@ -1,50 +1,15 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
-import 'dart:math';
-
+import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:flutter/material.dart';
 
-import '../../../helpers/api_helpers.dart';
+class AppiontmentDetails extends StatelessWidget {
+  final Appointment appointment;
 
-class OnlineConsultation extends StatelessWidget {
-  final time;
-  final name;
-  final date;
-  final appointmentTime;
-  final imageURL;
-  final status;
-  final title;
-  final consult_details;
-  final clinic_name;
-  final clinic_address;
-
-  const OnlineConsultation(
-      {Key? key,
-      required this.appointmentTime,
-      required this.imageURL,
-      required this.consult_details,
-      required this.clinic_name,
-      required this.clinic_address,
-      required this.name,
-      required this.date,
-      required this.status,
-      required this.title,
-      required this.time});
-
-  // Function to generate a random color
-  Color getRandomColor() {
-    Random random = Random();
-    return Color.fromARGB(
-      255,
-      random.nextInt(256),
-      random.nextInt(256),
-      random.nextInt(256),
-    );
-  }
+  const AppiontmentDetails({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
-    String alteredname = ApiHelper.toTitleCase(name);
     return Scaffold(
       backgroundColor: Color(0xFFF7F9FC),
       body: SafeArea(
@@ -58,7 +23,7 @@ class OnlineConsultation extends StatelessWidget {
                       BoxDecoration(borderRadius: BorderRadius.circular(25)),
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 25, right: 30, left: 10),
+                        const EdgeInsets.only(top: 25, right: 30, left: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -72,9 +37,9 @@ class OnlineConsultation extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 30, bottom: 10),
+                          padding: const EdgeInsets.only(left: 110, bottom: 2),
                           child: Text(
-                            'Appointment Details',
+                            'Booking',
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -86,9 +51,22 @@ class OnlineConsultation extends StatelessWidget {
                     ),
                   ),
                 ),
+                //heading(personal infor)
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Personal Info',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
                 //profile information
                 Container(
-                  width: 400,
+                  width: double.infinity,
                   color: Color(0xFFFFFFFF),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -98,18 +76,8 @@ class OnlineConsultation extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             CircleAvatar(
-                              backgroundColor: imageURL.isNotEmpty
-                                  ? null // No background color if imageURL is available
-                                  : getRandomColor(), // Random background color if imageURL is not available
-                              child: imageURL.isNotEmpty
-                                  ? Image.network(imageURL)
-                                  : Text(
-                                      name.isNotEmpty ? name[0] : '',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ), //* Display the first letter of the name if imageURL is not available
+                              backgroundImage:
+                                  NetworkImage('your_image_url_here'),
                               radius: 30,
                             ),
                             Positioned(
@@ -131,14 +99,14 @@ class OnlineConsultation extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Dr.$alteredname',
+                              appointment.doctor.doctorName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              title,
+                              appointment.doctor.getFirstSpecialityName(),
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -176,42 +144,11 @@ class OnlineConsultation extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Booking Info',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Row(
-                          children: [
-                            Container(
-                              // height: 30,
-                              // width: 100,
-                              decoration: BoxDecoration(
-                                color: status == 'Upcoming'
-                                    ? Colors.grey
-                                    : Color.fromARGB(255, 181, 241, 212),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6),
-                                child: Text(
-                                  status,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: status == 'Upcoming'
-                                        ? Colors.white
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
@@ -234,7 +171,8 @@ class OnlineConsultation extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(
-                                clinic_name,
+                                appointment.doctor
+                                    .doctorName, //TODO :this should be the practice location
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
@@ -248,7 +186,8 @@ class OnlineConsultation extends StatelessWidget {
                         child: Container(
                           width: 150,
                           child: Text(
-                            clinic_address,
+                            appointment.doctor
+                                .doctorName, //TODO :this should be the practice name
                             style: TextStyle(
                                 fontSize: 12,
                                 color:
@@ -289,7 +228,7 @@ class OnlineConsultation extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          date,
+                          appointment.appiontment_date,
                           style: TextStyle(
                               fontSize: 12,
                               color:
@@ -329,7 +268,7 @@ class OnlineConsultation extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          time,
+                          appointment.appointmentTime,
                           style: TextStyle(
                               fontSize: 12,
                               color:
@@ -371,7 +310,7 @@ class OnlineConsultation extends StatelessWidget {
                         child: Container(
                           width: 200,
                           child: Text(
-                            consult_details,
+                            appointment.reason,
                             style: TextStyle(
                                 fontSize: 12,
                                 color:
@@ -383,55 +322,21 @@ class OnlineConsultation extends StatelessWidget {
                   ),
                 ),
                 //buttons////////////////
-                SizedBox(height: 60),
-
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (status == 'Upcoming')
-                        ElevatedButton(
-                          onPressed: () {
-                            // Add your cancel button action
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF6F7ED7),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            minimumSize: Size(270, 40),
-                          ),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      if (status == 'Completed')
-                        ElevatedButton(
-                          onPressed: () {
-                            // Add your done button action
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF6F7ED7),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            minimumSize: Size(270, 40),
-                          ),
-                          child: Text(
-                            'Done',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 40),
+                // Center(
+                //   child: MyButtonWidgets(
+                //     buttonText1: 'RESCHEDULE',
+                //     onPressed1: () {
+                //       // Handle the custom button action
+                //       // print('Custom button pressed');
+                //     },
+                //     buttonText2: 'REJECT',
+                //     onPressed2: () {
+                //       // Handle the custom button action
+                //       // print('Custom button pressed');
+                //     },
+                //   ).buildButton(),
+                // ),
               ],
             ),
           ),

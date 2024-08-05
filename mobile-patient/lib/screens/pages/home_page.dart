@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:client_pharmanathi/Repository/appointment_repository.dart';
+import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../views/widgets/recent_appointments_tile.dart';
 
-import '../../services/appointmment_api.dart';
-import '../components/appointments/recent_appointments_tile.dart';
-import '../components/appointments/appointment_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,27 +20,22 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   int onlineAppointmentsCount = 0;
   int inPersonVisitAppointmentsCount = 0;
-  List<AppointmentData> appointmentData = [];
+  late AppointmentRepository _appointmentRepository;
+  List<Appointment> appointmentData = [];
 
   @override
   void initState() {
     super.initState();
+     _appointmentRepository = context.read<AppointmentRepository>();
     _loadAppointmentData();
   }
 
   void _loadAppointmentData() async {
     try {
-      //* Call fetchAppointmentData to fetch appointment data
-      List<Map<String, dynamic>> fetchedAppointmentData =
-          await fetchAppointmentData(context);
-
-      //* Convert fetched data to Appointment objects
-      List<AppointmentData> appointmentList = fetchedAppointmentData
-          .map((map) => AppointmentData.fromJson(map))
-          .toList();
-
+      List<Appointment> fetchedAppointments =
+          await _appointmentRepository.fetchAppointments(context);
       setState(() {
-        appointmentData = appointmentList;
+        appointmentData = fetchedAppointments;
         isLoading = false;
       });
     } catch (e) {
@@ -229,27 +224,26 @@ class _HomePageState extends State<HomePage> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: appointmentData
-                          .where((appointment) =>
-                              appointment.status == "Completed")
-                          .length,
-                      itemBuilder: (context, index) {
+                  : Builder(
+                      builder: (context) {
                         final completedAppointments = appointmentData
                             .where((appointment) =>
                                 appointment.status == "Completed")
                             .toList();
-                        final appointment = completedAppointments[index];
-                        return AppiontmentTile(
-                          title: appointment.name,
-                          date: appointment.date,
-                          visit_type: appointment.appiontmenType,
-                          time: appointment.appointmentTime,
+
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: completedAppointments.length,
+                          itemBuilder: (context, index) {
+                            final appointment = completedAppointments[index];
+                            return RecentAppointmentsTile(
+                              appointment: appointment,
+                            );
+                          },
                         );
                       },
                     ),
-            ),
+            )
           ],
         ),
       ),
