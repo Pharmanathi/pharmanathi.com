@@ -272,7 +272,13 @@ def test_patients_cant_list_unverified_mhp(authenticated_user_api_client):
 
 
 def test_patients_can_list_verified_mhp(authenticated_user_api_client):
+    # Introduced in 1e90e9d31742fa5658c973f0702ae7af6da26184, MP are only
+    # listed to the user if they have at least one appointment type! I am
+    # not a fan of that approach so we may need to revisit that. For now,
+    # due to that contraint, this test require setting an appointment type
+    # on the doctor to pass.
     verified_mhp = DoctorFactory(_is_verified=True)
+    AppointmentTypeFactory(doctor=verified_mhp)
     response = authenticated_user_api_client.get("/api/doctors/")
     assert response.status_code == 200
     assert verified_mhp.id in map(lambda d: d["id"], response.data)
@@ -302,10 +308,11 @@ def test_patients_can_see_verified_mhp_appoinments(authenticated_user_api_client
 
 
 def test_has_consulted_before_is_False_if_never_consulted(authenticated_user_api_client, verified_doctor):
+    # see comment in test_patients_can_list_verified_mhp on why we are setting an appointment type
+    AppointmentTypeFactory(doctor=verified_doctor)
     verified_doctor.appointment_set.all().delete()
     res = authenticated_user_api_client.get("/api/doctors/")
     doctor_payload = list(filter(lambda d: d.get("id") == verified_doctor.id, res.data))[0]
-    print(doctor_payload)
     assert doctor_payload.get("has_consulted_before") is False
 
 

@@ -9,7 +9,7 @@ from pharmanathi_backend.utils import UTC_time_to_SA_time
 pytestmark = pytest.mark.django_db
 
 
-def test_create_appointment(authenticated_user_api_client, appointment_date_and_doctor):
+def test_create_appointment(authenticated_user_api_client, appointment_date_and_doctor, paystack_provider):
     patient = authenticated_user_api_client.user
     appointment_date, appointment_doctor = appointment_date_and_doctor
     response = authenticated_user_api_client.get(
@@ -25,6 +25,7 @@ def test_create_appointment(authenticated_user_api_client, appointment_date_and_
         "start_time": appointment_date_str,
         "reason": "test create appointment",
         "payment_process": random.choices(Appointment.PAYMENT_PROCESSES_CHOICES)[0][0],
+        "payment_provider": paystack_provider.name,
     }
     response = authenticated_user_api_client.post(
         "/api/appointments/",
@@ -37,6 +38,9 @@ def test_create_appointment(authenticated_user_api_client, appointment_date_and_
         patient=payload["patient"], reason=payload["reason"], doctor=payload["doctor"]
     ).exists()
     assert (
-        UTC_time_to_SA_time(datetime.datetime.fromisoformat(response.data["start_time"])).strftime("%Y-%m-%dT%H:%M")
+        UTC_time_to_SA_time(datetime.datetime.fromisoformat(response.data["appointment"]["start_time"])).strftime(
+            "%Y-%m-%dT%H:%M"
+        )
         == payload["start_time"]
     )
+    assert "action_data" in response.data
