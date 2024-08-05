@@ -1,3 +1,4 @@
+import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/Repository/payment_repository.dart';
 import 'package:client_pharmanathi/blocs/payment_bloc.dart';
 import 'package:client_pharmanathi/services/api_provider.dart';
@@ -23,15 +24,16 @@ Future<void> main() async {
 
   ApiProvider apiProvider = ApiProvider();
   PaymentRepository paymentRepository = PaymentRepository(apiProvider);
+  AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(paymentRepository);
+      await _runApp(paymentRepository, appointmentRepository);
     });
   } else {
-    await _runApp(paymentRepository);
+    await _runApp(paymentRepository, appointmentRepository);
   }
 }
 
@@ -64,14 +66,16 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(PaymentRepository paymentRepository) async {
+Future<void> _runApp(PaymentRepository paymentRepository,
+    AppointmentRepository appointmentRepository) async {
   runApp(
     MultiProvider(
       providers: [
         BlocProvider<PaymentBloc>(
-          create: (context) => PaymentBloc(paymentRepository,context),
+          create: (context) => PaymentBloc(paymentRepository, context),
         ),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        Provider.value(value: appointmentRepository),
       ],
       child: const MyApp(),
     ),
