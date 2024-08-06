@@ -1,6 +1,9 @@
 """Code for base provider interface, a.k.a strategy
 """
 
+from decimal import Decimal
+from typing import Union
+
 import requests
 from django.conf import settings
 
@@ -217,8 +220,41 @@ class CashProvider(BaseProvider):
         raise NotImplementedError()
 
     def build_initialization_req_body(self, *args, **kwargs):
-        """As with all the other stuff, this too is your responsibility"""
+        """Build the data body to be used as part of the HTPP request
+        to initialize a payment. As with all the other stuff, this too
+        is your responsibility.
+        """
         raise NotImplementedError()
+
+    def make_payment_instance(self, amount, user, reference):
+        """Return a payment instance configured as per your provider. Override this method
+        if your provider requires making changes that may have impacted the actual data.
+        For instance, the Paystack provider requires sending amount in subunit, meaning:
+            amount = amount * 100
+        For such a provider, the payment amount has to be modified when sending it for
+        initialization, and then used as was when saving the payment. To provide a common
+        interface, each provider has the ability to override the ``build_initialization_req_body``
+        method and pass it whatever values they want, and overried this ``make_payment_instance``
+        to provide values that should go into the DB.
+
+        You may wonder whether the apporach descibed above won't make it possible for
+        provider to introduce discrepencies, well, that is alright, since the provider will
+        inform us of the correct details once the payment has been made, details that will
+        match what the user sees when making the payment.
+
+        Args:
+            amount (str|int|float|Decimal): Payment amount
+            user (User): User making the payment
+            reference (str): Payment reference
+
+        Returns:
+            Payment: newly created Payment instance
+
+
+        """
+        from pharmanathi_backend.payments.models import Payment
+
+        return Payment.objects.create(amount=amount, user=user, reference=reference, _provider=self.name)
 
     def initialize_payment(self, *args, **kwargs) -> tuple:
         """Intialize payment and return it along with the payment
@@ -235,7 +271,7 @@ class CashProvider(BaseProvider):
         reference, payment_url, _ = self.parse_intialization_response(
             self.get_intialization_data(intialization_req_body)
         )
-        payment = Payment.objects.create(amount=amount, user=user, reference=reference, _provider=self.name)
+        payment = self.make_payment_instance(amount=amount, user=user, reference=reference)
         return (payment, {"payment_url": payment_url})
 
 

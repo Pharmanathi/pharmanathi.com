@@ -1,5 +1,7 @@
 import copy
+from decimal import Decimal
 
+from ...models import Payment
 from ..provider import CashProvider, register_provider
 
 __all__ = ["PaystackProvider"]
@@ -14,7 +16,7 @@ class PaystackProvider(CashProvider):
         assert (
             "email" in kwargs and "amount" in kwargs
         ), "Paystack.parse_initalization_request_data expects a dict that includes the keys (email, amount)"
-        return kwargs.get("email"), kwargs.get("amount")
+        return kwargs.get("email"), Decimal(kwargs.get("amount"))
 
     def parse_intialization_response(self, response_data):
         if response_data.get("status") is False:
@@ -32,7 +34,16 @@ class PaystackProvider(CashProvider):
     def build_initialization_req_body(self, **kwargs):
         assert self.callback_url is not None
         email, amount = self.parse_initalization_request_data(**kwargs)
-        return {"email": email, "amount": amount, "callback_url": self.callback_url}
+        decimal_amount = Decimal(amount)
+        return {
+            "email": email,
+            "amount": str(decimal_amount * 100),  # https://paystack.com/docs/api/#supported-currency
+            "callback_url": self.callback_url,
+        }
+
+    def make_payment_instance(self, amount, user, reference) -> Payment:
+        # divided by 100 because https://paystack.com/docs/api/#supported-currency
+        return Payment.objects.create(amount=amount / 100, user=user, reference=reference, _provider=self.name)
 
     def process_payment(self, cb_request_data: dict):
         payment = self.get_payment_by_reference(cb_request_data.get("data").get("reference"))

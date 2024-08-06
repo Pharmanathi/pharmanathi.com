@@ -1,7 +1,11 @@
+import random
+from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
 
+from pharmanathi_backend.appointments.models import Appointment
+from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.tests.factories import PaymentFactory
 
 
@@ -10,10 +14,31 @@ def test_parse_initalization_request_data_raises_if_no_email_and_amount(paystack
         paystack_provider.parse_initalization_request_data(some_value="some_data")
 
 
-def test_parse_initalization_request_data_passes(paystack_provider):
-    test_data = {"email": "some-email", "amount": 980.00, "some-other-key": "its value"}
+@pytest.mark.parametrize(
+    "amount",
+    (
+        960,
+        960.80,
+        "900",
+        "45.50",
+        "55.00",
+        22.8,
+    ),
+)
+def test_parse_initalization_request_data_passes(amount, paystack_provider):
+    test_data = {"email": "some-email", "amount": amount, "some-other-key": "its value"}
 
-    assert paystack_provider.parse_initalization_request_data(**test_data) == ("some-email", 980.00)
+    assert paystack_provider.parse_initalization_request_data(**test_data) == ("some-email", Decimal(amount))
+
+
+@pytest.mark.parametrize("amount", (960, 960.80, "900", "45.50", "55.00"))
+def test_build_initialization_req_body(amount, paystack_provider):
+    test_data = {"email": "some-email", "amount": amount, "some-other-key": "its value"}
+    assert paystack_provider.build_initialization_req_body(**test_data) == {
+        "amount": str(Decimal(amount) * 100),
+        "email": test_data.get("email"),
+        "callback_url": paystack_provider.callback_url,
+    }
 
 
 def test_build_initialization_req_body_fails_if_callback_url_is_None(paystack_provider):
@@ -56,7 +81,6 @@ def test_parse_intialization_response_fails_if_missing_reference_or_authorizatio
 
 @pytest.mark.django_db
 def test_process_payment_mark_as_paid(paystack_provider):
-    from pharmanathi_backend.payments.tests.factories import PaymentFactory
     from pharmanathi_backend.payments.tests.paystack_sample import cb
 
     payment = PaymentFactory(reference=cb.get("data").get("reference"))
@@ -70,7 +94,6 @@ def test_process_payment_mark_as_paid(paystack_provider):
 
 @pytest.mark.django_db
 def test_process_payment_mark_as_unpaid(paystack_provider):
-    from pharmanathi_backend.payments.tests.factories import PaymentFactory
     from pharmanathi_backend.payments.tests.paystack_sample import cb
 
     cb["data"]["status"] = "failed"
@@ -105,3 +128,45 @@ def test_callback_view_sets_success_failed(status, status_bd, api_client, paysta
     pending_payment.refresh_from_db()
     if status == status:
         assert pending_payment.status == status_bd
+
+
+@pytest.mark.django_db
+def test_book_appointment_with_paysfast(authenticated_user_api_client, appointment_date_and_doctor, paystack_provider):
+    patient = authenticated_user_api_client.user
+    appointment_date, appointment_doctor = appointment_date_and_doctor
+    appointment_type = appointment_doctor.appointmenttype_set.first()
+    response = authenticated_user_api_client.get(
+        f"/api/doctors/{appointment_doctor.id}/availability/?d={appointment_date.strftime('%d/%m/%Y')}"
+    )
+    assert response.status_code == 200
+    assert len(response.data) > 0
+    timeslot = response.data.pop()
+    appointment_date_str = f"{appointment_date.strftime('%Y-%m-%d')}T{timeslot[0]}"
+    payload = {
+        "doctor": appointment_doctor.id,
+        "patient": patient.id,
+        "start_time": appointment_date_str,
+        "reason": "test create appointment",
+        "payment_process": random.choices(Appointment.PAYMENT_PROCESSES_CHOICES)[0][0],
+        "payment_provider": paystack_provider.name,
+    }
+
+    payment = PaymentFactory(
+        amount=appointment_type.cost,
+        _provider=paystack_provider.name,
+        user=patient,
+        status=Payment.PaymentStatus.PENDING,
+    )
+    with patch(
+        "pharmanathi_backend.payments.providers.provider.CashProvider.initialize_payment"
+    ) as pacthed_initialize_payment:
+        pacthed_initialize_payment.return_value = (payment, {"payment_url": "some-uri"})
+        response = authenticated_user_api_client.post(
+            "/api/appointments/",
+            payload,
+            format="json",
+        )
+    assert response.status_code == 201
+    assert "payment_url" in response.data.get("action_data")
+    assert response.data.get("appointment").get("payment").get("provider") == paystack_provider.name
+    assert response.data.get("appointment").get("payment").get("status") == Payment.PaymentStatus.PENDING
