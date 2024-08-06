@@ -9,7 +9,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_str(pending_payment):
-    assert f"{pending_payment}" == f"<Payment({pending_payment.provider.name}): {pending_payment.reference}>"
+    assert f"{pending_payment}" == f"<Payment({pending_payment.status}): {pending_payment.reference}>"
 
 
 def test_get_user_by_email(patient):

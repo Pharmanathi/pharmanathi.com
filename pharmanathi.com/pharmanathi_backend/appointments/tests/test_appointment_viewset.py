@@ -1,5 +1,6 @@
 import datetime
 import random
+from unittest.mock import patch
 
 import pytest
 
@@ -9,7 +10,8 @@ from pharmanathi_backend.utils import UTC_time_to_SA_time
 pytestmark = pytest.mark.django_db
 
 
-def test_create_appointment(authenticated_user_api_client, appointment_date_and_doctor, paystack_provider):
+def test_create_appointment(authenticated_user_api_client, appointment_date_and_doctor, dummy_provider):
+    # TODO: Parametrize to use multiple providers once we have any other.
     patient = authenticated_user_api_client.user
     appointment_date, appointment_doctor = appointment_date_and_doctor
     response = authenticated_user_api_client.get(
@@ -25,14 +27,13 @@ def test_create_appointment(authenticated_user_api_client, appointment_date_and_
         "start_time": appointment_date_str,
         "reason": "test create appointment",
         "payment_process": random.choices(Appointment.PAYMENT_PROCESSES_CHOICES)[0][0],
-        "payment_provider": paystack_provider.name,
+        "payment_provider": dummy_provider.name,
     }
     response = authenticated_user_api_client.post(
         "/api/appointments/",
         payload,
         format="json",
     )
-    print(response.data)
     assert response.status_code == 201
     assert Appointment.objects.filter(
         patient=payload["patient"], reason=payload["reason"], doctor=payload["doctor"]
