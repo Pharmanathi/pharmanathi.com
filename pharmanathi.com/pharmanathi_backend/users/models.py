@@ -108,10 +108,6 @@ class Doctor(BaseCustomModel):
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
     hpcsa_no = models.CharField("HPCSA No.", max_length=12)  # HPCSA registration number]
-    # The mp_no below can be the same as hpcsa_no or the one their professinal body(PB)
-    # Provided them. For instance, a Pharmacist would enter their
-    # P NUMBER here. Hence, it seems we could just keep one field
-    # representing the number from their PB. @TODO:
     mp_no = models.CharField("Mp No.", max_length=20)
     _is_verified = models.BooleanField(default=False)
 
@@ -131,6 +127,22 @@ class Doctor(BaseCustomModel):
         return self.specialities.filter(symbol="PHAR").exists()
 
     def get_upcoming_appointments(self, include_pending_payments=False) -> models.query.QuerySet:
+        """Say patient `A` et `B` are both booking on timeslot `T`. 
+        Assume A is slightly ahead of `B` in the booking process.
+        When `A` reaches the payment screen, they take a little long
+        to put in their details and at that instant `B` reaches the 
+        calendar screen. Should we show `T` as an available slot to 
+        `B` or keep it safe for `A`?
+
+        A payment's status can either be `PENDING`,`FAILED` or `PAID`.
+        It is:
+        - `PENDING` if created and payment attempt was has not been made
+        - `PAID` if payment attempt was succesfull
+        - `FAILED` if payment attempt failed.
+
+        This PR ensures we reserve the spot for a user whilst they are
+        still trying to pay.
+        """
         from pharmanathi_backend.payments.models import Payment
 
         now_today = datetime.datetime.now()
