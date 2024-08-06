@@ -119,9 +119,9 @@ class _BookingsState extends State<Bookings> {
       //* Extract hour and minute from timeOfTheAppointment
       final hourMinute = timeOfTheAppointment!.substring(0, 5).split(':');
       final appointmentStartTime = DateTime(
-        selectedDay!.year,
-        selectedDay!.month,
-        selectedDay!.day,
+        dayOfAppiontment!.year,
+        dayOfAppiontment!.month,
+        dayOfAppiontment!.day,
         int.parse(hourMinute[0]),
         int.parse(hourMinute[1]),
       );
