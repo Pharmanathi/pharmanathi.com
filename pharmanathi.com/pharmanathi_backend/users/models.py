@@ -126,14 +126,18 @@ class Doctor(BaseCustomModel):
         return self._is_verified
 
     @property
-    def upcoming_appointments(self) -> models.query.QuerySet:
-        now_today = datetime.datetime.now()
-        return self.appointment_set.filter(start_time__gte=now_today)
-
-    @property
     def is_pharmacist(self):
         # Using the hard-code value PHAR may not be the best thing to
         return self.specialities.filter(symbol="PHAR").exists()
+
+    def get_upcoming_appointments(self, include_pending_payments=False) -> models.query.QuerySet:
+        from pharmanathi_backend.payments.models import Payment
+
+        now_today = datetime.datetime.now()
+        payment_status_filters = [Payment.PaymentStatus.PAID]
+        if include_pending_payments:
+            payment_status_filters.append(Payment.PaymentStatus.PENDING)
+        return self.appointment_set.filter(start_time__gte=now_today, payment__status__in=payment_status_filters)
 
     def run_auto_mp_verification_task(self):
         from .tasks import auto_mp_verification_task
@@ -144,7 +148,12 @@ class Doctor(BaseCustomModel):
         return self.appointment_set.filter(patient__id=patient_id).exists()
 
     def get_busy_slots_on(self, dt: datetime.date) -> list[tuple]:
-        return [appointment.timeslot_repr for appointment in self.upcoming_appointments.filter(start_time__date=dt)]
+        return [
+            appointment.timeslot_repr
+            for appointment in self.get_upcoming_appointments(include_pending_payments=True).filter(
+                start_time__date=dt
+            )
+        ]
 
     def get_possible_appointment_slots_on(self, dt: datetime.date, duration: int) -> set[str]:
         """Returns a set of all possible slots on a given date

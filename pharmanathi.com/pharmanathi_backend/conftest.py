@@ -173,8 +173,17 @@ def doctor_with_appointment_random(verified_doctor, patient):
     appointment_type = AppointmentTypeFactory(doctor=verified_doctor)
     hour, minute = (int(v) for v in get_random_time_str(low_hour=9, high_hour=18).split(":"))
     appointment_start_dt = FutureDateByDOWFactory(timeslot_config.day, with_time=datetime.time(hour, minute))
+    payment = PaymentFactory(
+        amount=appointment_type.cost,
+        user=patient,
+        status=Payment.PaymentStatus.PAID,
+    )
     appointment = AppointmentFactory(
-        doctor=verified_doctor, start_time=appointment_start_dt, appointment_type=appointment_type, patient=patient
+        doctor=verified_doctor,
+        start_time=appointment_start_dt,
+        appointment_type=appointment_type,
+        patient=patient,
+        payment=payment,
     )
     return appointment.doctor
 
@@ -222,6 +231,20 @@ def resolved_invalidation_reason(unverified_mhp_client, staff_web_client):
     resolver = staff_web_client.user
     unverified_mhp = unverified_mhp_client.user.doctor_profile
     return InvalidationReasonFactory(mhp=unverified_mhp, is_resolved=True, resolved_by=resolver)
+
+
+@pytest.fixture
+def dummy_provider():
+    from pharmanathi_backend.payments.providers.provider import BaseProvider, register_provider
+
+    @register_provider
+    class DummyProvider(BaseProvider):
+        name = "dummy"
+
+        def initialize_payment(self, *args, **kwargs):
+            return (PaymentFactory(_provider=self.name), {"extras": None})
+
+    return DummyProvider()
 
 
 @pytest.fixture
