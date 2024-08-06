@@ -5,8 +5,8 @@ import pytest
 pytestmark = pytest.mark.django_db
 
 
-def test_get_busy_slots_on_paid_appointment(doctor_with_appointment_random):
-    # should include timeslot in busy slots
+def test_get_busy_slots_with_paid_appointment(doctor_with_appointment_random):
+    """should include timeslot in busy slots"""
     doctor = doctor_with_appointment_random
     appointment = doctor.get_upcoming_appointments(include_pending_payments=True).first()
     appintment_time_slot_repr = appointment.timeslot_repr  # Something like ("09:30", "10:00")
@@ -16,8 +16,8 @@ def test_get_busy_slots_on_paid_appointment(doctor_with_appointment_random):
     assert (appintment_time_slot_repr) in doctor.get_busy_slots_on(appointment_dt.date())
 
 
-def test_get_busy_slots_on_with_pending_payment(doctor_with_appointment_random):
-    # should include the appointment's timeslot in the busy slots
+def test_get_busy_slots_with_pending_payment(doctor_with_appointment_random):
+    """should include the appointment's timeslot in the busy slots"""
     doctor = doctor_with_appointment_random
     appointment = doctor.get_upcoming_appointments(include_pending_payments=True).first()
     payment = appointment.payment
@@ -27,8 +27,8 @@ def test_get_busy_slots_on_with_pending_payment(doctor_with_appointment_random):
     assert (appintment_time_slot_repr) in doctor.get_busy_slots_on(appointment_dt.date())
 
 
-def test_get_busy_slots_on_with_unpaid_appointment(doctor_with_appointment_random):
-    # should **NOT** include the appointment's timeslot in the busy slots
+def test_get_busy_slots_with_unpaid_appointment(doctor_with_appointment_random):
+    """should **NOT** include the appointment's timeslot in the busy slots"""
     doctor = doctor_with_appointment_random
     appointment = doctor.get_upcoming_appointments(include_pending_payments=True).first()
     payment = appointment.payment
