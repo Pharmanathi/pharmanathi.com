@@ -8,7 +8,7 @@ import 'package:client_pharmanathi/screens/components/calender/calender.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../services/api_provider.dart';
-import '../components/calender/events.dart';
+import '../../screens/components/calender/events.dart';
 
 class Bookings extends StatefulWidget {
   final String name;
