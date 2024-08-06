@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'bookings.dart';
+import '../../views/screens/bookings.dart';
 
 class DoctorDetails extends StatefulWidget {
   final String name;
