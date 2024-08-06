@@ -127,22 +127,6 @@ class Doctor(BaseCustomModel):
         return self.specialities.filter(symbol="PHAR").exists()
 
     def get_upcoming_appointments(self, include_pending_payments=False) -> models.query.QuerySet:
-        """Say patient `A` et `B` are both booking on timeslot `T`. 
-        Assume A is slightly ahead of `B` in the booking process.
-        When `A` reaches the payment screen, they take a little long
-        to put in their details and at that instant `B` reaches the 
-        calendar screen. Should we show `T` as an available slot to 
-        `B` or keep it safe for `A`?
-
-        A payment's status can either be `PENDING`,`FAILED` or `PAID`.
-        It is:
-        - `PENDING` if created and payment attempt was has not been made
-        - `PAID` if payment attempt was succesfull
-        - `FAILED` if payment attempt failed.
-
-        This PR ensures we reserve the spot for a user whilst they are
-        still trying to pay.
-        """
         from pharmanathi_backend.payments.models import Payment
 
         now_today = datetime.datetime.now()
@@ -160,6 +144,26 @@ class Doctor(BaseCustomModel):
         return self.appointment_set.filter(patient__id=patient_id).exists()
 
     def get_busy_slots_on(self, dt: datetime.date) -> list[tuple]:
+        """
+        ** Motivation for using ``include_pending_payments`` ** 
+            to include appointments with a pending payment
+        
+        Say patient `A` et `B` are both booking on timeslot `T`. 
+        Assume A is slightly ahead of `B` in the booking process.
+        When `A` reaches the payment screen, they take a little long
+        to put in their details and at that instant `B` reaches the 
+        calendar screen. Should we show `T` as an available slot to 
+        `B` or keep it safe for `A`?
+
+        A payment's status can either be `PENDING`,`FAILED` or `PAID`.
+        It is:
+        - `PENDING` if created and payment attempt was has not been made
+        - `PAID` if payment attempt was succesfull
+        - `FAILED` if payment attempt failed.
+
+        Using include_pending_payments ensures we reserve the spot for a user whilst they are
+        still trying to pay.
+        """
         return [
             appointment.timeslot_repr
             for appointment in self.get_upcoming_appointments(include_pending_payments=True).filter(
