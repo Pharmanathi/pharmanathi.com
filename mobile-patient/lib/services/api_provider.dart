@@ -10,18 +10,11 @@ class ApiProvider {
         context, apiEndpoint, 'GET', '');
   }
 
-  Future<http.Response> initializePayment(
-      BuildContext context, int amount) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/payments/initialize/';
+  Future<http.Response> bookAppointment(
+      BuildContext context, Map<String, dynamic> appointmentData) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/appointments/';
+    final requestBody = jsonEncode(appointmentData);
     return await http_helpers.ApiHelper.httpRequestWithAuthorization(
-        context, apiEndpoint, 'POST', jsonEncode({'amount': amount}));
-  }
-
-  Future<http.Response> verifyPayment(
-      BuildContext context, String reference) async {
-    final apiEndpoint =
-        '${http_helpers.apiBaseURL}/payments/verify/$reference/';
-    return await http_helpers.ApiHelper.httpRequestWithAuthorization(
-        context, apiEndpoint, 'GET', '');
+        context, apiEndpoint, 'POST', requestBody);
   }
 }
