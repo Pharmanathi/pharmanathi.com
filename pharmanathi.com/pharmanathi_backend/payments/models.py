@@ -32,7 +32,7 @@ class Payment(models.Model):
     json = models.JSONField(null=True, blank=True)
 
     def __str__(self):
-        return f"<Payment({self.provider.name}): {self.reference}>"
+        return f"<Payment({self.status}): {self.reference}>"
 
     @classmethod
     def get_user_by_email(cls, email):
@@ -78,5 +78,10 @@ class Payment(models.Model):
 
     def set_status_failed(self, save=False):
         self.status = Payment.PaymentStatus.FAILED
+        if save:
+            self._save_pending_changes()
+
+    def set_status_pending(self, save=False):
+        self.status = Payment.PaymentStatus.PENDING
         if save:
             self._save_pending_changes()
