@@ -97,6 +97,10 @@ class Appointment(BaseCustomModel):
 
     # @TODO: verification that patient is not self. Meaning, patient should not be
     # able to book an appointment with themselves.
+
+    def __str__(self):
+        return f"<Appointment({self.pk}): {self.patient.email}>"
+
     @property
     def end_time(self) -> datetime.time:
         return self.start_time + timedelta(minutes=self.appointment_type.duration)
