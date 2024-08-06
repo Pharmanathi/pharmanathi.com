@@ -1,12 +1,9 @@
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
-import 'package:client_pharmanathi/Repository/payment_repository.dart';
-import 'package:client_pharmanathi/blocs/payment_bloc.dart';
 import 'package:client_pharmanathi/services/api_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,17 +20,17 @@ Future<void> main() async {
   await _initializeFirebase();
 
   ApiProvider apiProvider = ApiProvider();
-  PaymentRepository paymentRepository = PaymentRepository(apiProvider);
-  AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
+  AppointmentRepository appointmentRepository =
+      AppointmentRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(paymentRepository, appointmentRepository);
+      await _runApp(appointmentRepository);
     });
   } else {
-    await _runApp(paymentRepository, appointmentRepository);
+    await _runApp(appointmentRepository);
   }
 }
 
@@ -66,14 +63,10 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(PaymentRepository paymentRepository,
-    AppointmentRepository appointmentRepository) async {
+Future<void> _runApp(AppointmentRepository appointmentRepository) async {
   runApp(
     MultiProvider(
       providers: [
-        BlocProvider<PaymentBloc>(
-          create: (context) => PaymentBloc(paymentRepository, context),
-        ),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
       ],
