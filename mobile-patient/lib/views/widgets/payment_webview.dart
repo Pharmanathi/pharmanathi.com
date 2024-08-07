@@ -28,11 +28,11 @@ class _PaymentWebViewState extends State<PaymentWebView> {
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (String url) {
               setState(() {
-                _isLoading = false; 
+                _isLoading = false;
               });
             },
             navigationDelegate: (NavigationRequest request) {
-              if (request.url.startsWith('yourapp://')) {
+              if (request.url.startsWith('Pharmanathi.com://payment')) {
                 final uri = Uri.parse(request.url);
                 final reference = uri.queryParameters['reference'];
                 if (reference != null) {
@@ -45,7 +45,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
           ),
           if (_isLoading)
             const Center(
-              child: CircularProgressIndicator(), 
+              child: CircularProgressIndicator(),
             ),
         ],
       ),
