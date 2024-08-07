@@ -78,6 +78,16 @@
 			<string>com.googleusercontent.apps.710242232170-jetc349ucliase4l5t8v2lgebd6sphbu</string>
 		</array>
 	</dict>
+	<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.710242232170-jetc349ucliase4l5t8v2lgebd6sphbu</string>
+				<!-- Your custom URL Scheme -->
+				<string>Pharmanathi.com/payment</string>
+			</array>
+		</dict>
 </array>
 <!-- End of the Google Sign-in Section -->
 <!-- Location Usage Descriptions -->
