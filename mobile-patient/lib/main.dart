@@ -1,16 +1,17 @@
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
+import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:client_pharmanathi/services/api_provider.dart';
+import 'package:client_pharmanathi/screens/components/UserProvider.dart';
+import 'package:client_pharmanathi/helpers/api_helpers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'screens/components/UserProvider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'firebase_options.dart';
-import 'helpers/api_helpers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,7 +83,51 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _handleIncomingLinks();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _handleIncomingLinks();
+    }
+  }
+
+  void _handleIncomingLinks() {
+    PlatformDispatcher.instance.onPlatformMessage = (String name,
+        ByteData? data, PlatformMessageResponseCallback? callback) {
+      if (name == 'flutter/navigation' && data != null) {
+        final String url =
+            String.fromCharCodes(data.buffer.asUint8List()).substring(8);
+        final Uri uri = Uri.parse(url);
+        _handleUri(uri);
+      }
+      if (callback != null) {
+        callback(ByteData(0));
+      }
+    };
+  }
+
+  void _handleUri(Uri uri) {
+    if (uri.scheme == 'Pharmanathi.com' && uri.host == 'payment') {
+      final reference = uri.queryParameters['reference'];
+      if (reference != null) {
+        Navigator.pushReplacementNamed(context, AppRoutes.appointments);
+      }
+    }
+  }
+
   Future<bool> _checkFirstTimeSignIn() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return await userProvider.isFirstTimeSignIn();
