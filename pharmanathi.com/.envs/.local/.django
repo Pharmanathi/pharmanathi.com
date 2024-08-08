@@ -47,5 +47,5 @@ DJANGO_EMAIL_BACKEND="anymail.backends.mailgun.EmailBackend"
 # PAYMENTS
 # ------------------------------------------------------------------------------
 PAYMENT_USER_EMAIL_FIELD="email"
-PAYMENT_PAYSTACK_PROVIDER_CONFIG="initialization_url=https://api.paystack.co/transaction/initialize/,authorization=Bearer sk_test_0701afa3bb10cf76ba7507bd5720fe30036661c4,callback_url=https://Pharmanathi.com/payment"
+PAYMENT_PAYSTACK_PROVIDER_CONFIG="initialization_url=https://api.paystack.co/transaction/initialize/,authorization=Bearer sk_test_0701afa3bb10cf76ba7507bd5720fe30036661c4,callback_url=https://test.pharmanathi.com/deeplink-redirect?screen=appointments"
 
