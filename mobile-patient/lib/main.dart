@@ -14,6 +14,9 @@ import 'screens/components/UserProvider.dart';
 import 'firebase_options.dart';
 import 'helpers/api_helpers.dart';
 
+// Global Navigator Key
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -102,24 +105,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
 
       //* Handle the case when the app is already running and receives a deep link
-      _sub = linkStream.listen((String? link) {
-        if (link != null) {
-          _handleDeepLink(link);
-        }
-      }, onError: (err) {
-        // Handle errors if needed
-      });
+      _sub = linkStream.listen(
+        (String? link) {
+          if (link != null) {
+            // Add a slight delay to ensure the context is valid
+            Future.delayed(Duration(milliseconds: 100), () {
+              if (mounted) {
+                _handleDeepLink(link);
+              } else {
+              }
+            });
+          }
+        },
+        onError: (err) {
+          print("Link stream error: $err");
+        },
+      );
     } on Exception catch (e) {
-      // Handle exception, if any
-      print(e.toString());
+      print("Deep linking initialization error: $e");
     }
   }
 
   void _handleDeepLink(String link) {
     final uri = Uri.parse(link);
     if (uri.scheme == 'unilinks' && uri.host == 'pharmanthi.com') {
-      print("Should redirect to ${uri.path}");
-      Navigator.pushNamed(context, uri.path);
+      print("Redirecting to ${uri.path}");
+      navigatorKey.currentState?.pushNamed(uri.path).catchError((e) {
+        print("Error during navigation: $e");
+      });
     }
   }
 
@@ -137,6 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey, 
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.generateRoute,
       home: FutureBuilder<bool>(
