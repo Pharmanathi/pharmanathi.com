@@ -2,7 +2,7 @@
 
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
-import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
+import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../views/widgets/recent_appointments_tile.dart';
