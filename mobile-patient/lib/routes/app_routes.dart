@@ -12,7 +12,7 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String signIn = '/signIn';
   static const String homePage = '/home_page';
-  static const String appointments = '/appointment';
+  static const String appointments = '/appointments';
   static const String doctors = '/doctors';
   static const String profileSettings = '/profile_settings';
 
