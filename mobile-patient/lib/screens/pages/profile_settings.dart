@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../helpers/api_helpers.dart';
 import '../components/UserProvider.dart';
-import '../components/navigtion_bar.dart';
+import '../components/navigation_bar.dart';
 
 class ProfileSetting extends StatefulWidget {
   const ProfileSetting({super.key});
