@@ -2,7 +2,7 @@
 
 import 'package:client_pharmanathi/screens/components/doctors/doctor_data.dart';
 import 'package:client_pharmanathi/screens/components/doctors/doctor_tile.dart';
-import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
+import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
 import 'package:client_pharmanathi/services/doctor_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -28,7 +28,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushNamed(context, '/doctors'); // Navigate to the Appointments screen
             break;
              case 2:
-            Navigator.pushNamed(context, '/appointment'); // Navigate to the Appointments screen
+            Navigator.pushNamed(context, '/appointments'); // Navigate to the Appointments screen
             break;
              case 3:
             Navigator.pushNamed(context, '/profile_settings'); // Navigate to the Appointments screen
@@ -51,7 +51,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_month),
-          label: 'Appointment',
+          label: 'Appointments',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
