@@ -1,3 +1,4 @@
+import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:client_pharmanathi/views/widgets/payment_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -61,7 +62,7 @@ class AppointmentBloc {
   }
 
   void _navigateToAppointmentScreen(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/appointmentScreen');
+    Navigator.pushNamed(context, AppRoutes.appointments);
   }
 
   void dispose() {
