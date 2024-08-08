@@ -128,10 +128,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _handleDeepLink(String link) {
     final uri = Uri.parse(link);
-    if (uri.scheme == 'unilinks' && uri.host == 'pharmanthi.com') {
-      print("Redirecting to ${uri.path}");
+    if (uri.scheme == 'unilinks' && uri.host.contains("pharmanathi.com")) {
       navigatorKey.currentState?.pushNamed(uri.path).catchError((e) {
-        print("Error during navigation: $e");
+        print("Error during navigation: $e"); // @TODO: Log to sentry
       });
     }
   }
