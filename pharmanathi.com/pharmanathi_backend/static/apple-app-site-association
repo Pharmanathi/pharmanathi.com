@@ -4,7 +4,7 @@
     "details": [
       {
         "appIDs": [
-          "S8QB4VV633.com.example.deeplinkCookbook"
+          "set.app.id.here"
         ],
         "paths": [
           "*"
@@ -19,7 +19,7 @@
   },
   "webcredentials": {
     "apps": [
-      "S8QB4VV633.com.example.deeplinkCookbook"
+      "set.app.id.here"
     ]
   }
 }
