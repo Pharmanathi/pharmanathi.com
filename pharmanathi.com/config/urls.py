@@ -7,6 +7,7 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from pharmanathi_backend.utils.mobile_client_handlers import handle_ios_app_association, deeplink_gateway
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -37,7 +38,8 @@ urlpatterns += [
     ),
     path("dj-rest-auth/", include("dj_rest_auth.urls")),
     path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
-    # path("dj-rest-auth/google/login/", GoogleLoginView.as_view(), name="google_login"),
+    path(".well-known/apple-app-site-association", handle_ios_app_association, name="ios-app-association"),
+    path("deeplink-gateway/", handle_deeplink_redirect, name="handle-deeplink-redirect"),
 ]
 
 if settings.DEBUG:
