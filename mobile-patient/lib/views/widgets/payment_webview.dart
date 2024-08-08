@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../main.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String authorizationUrl;
@@ -16,6 +17,7 @@ class PaymentWebView extends StatefulWidget {
 
 class _PaymentWebViewState extends State<PaymentWebView> {
   bool _isLoading = true; // Track loading state
+  final DeepLinkHandler _deepLinkHandler = DeepLinkHandler();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                 if (reference != null) {
                   widget.onPaymentCompleted();
                 }
+                return NavigationDecision.prevent;
+              } else if (request.url.startsWith("unilinks")) {
+                widget.onPaymentCompleted();
+                _deepLinkHandler.handleDeepLink(request.url);
                 return NavigationDecision.prevent;
               }
               return NavigationDecision.navigate;
