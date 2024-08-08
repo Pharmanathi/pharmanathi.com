@@ -117,8 +117,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _handleDeepLink(String link) {
     final uri = Uri.parse(link);
-    if (uri.scheme == 'Pharmanathi_patient' && uri.host == 'payment') {
-      Navigator.pushNamed(context, AppRoutes.appointments);
+    if (uri.scheme == 'unilinks' && uri.host == 'pharmanthi.com') {
+      print("Should redirect to ${uri.path}");
+      Navigator.pushNamed(context, uri.path);
     }
   }
 
