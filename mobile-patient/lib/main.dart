@@ -73,6 +73,7 @@ Future<void> _runApp(AppointmentRepository appointmentRepository) async {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
+        Provider(create: (_) => DeepLinkHandler()),
       ],
       child: const MyApp(),
     ),
@@ -88,6 +89,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   late StreamSubscription _sub;
+  final DeepLinkHandler _deepLinkHandler = DeepLinkHandler();
   
   @override
   void initState() {
@@ -101,7 +103,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       //* Handle the case when the app is started by a deep link
       final initialLink = await getInitialLink();
       if (initialLink != null) {
-        _handleDeepLink(initialLink);
+        _deepLinkHandler.handleDeepLink(initialLink);
       }
 
       //* Handle the case when the app is already running and receives a deep link
@@ -109,9 +111,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         (String? link) {
           if (link != null) {
             // Add a slight delay to ensure the context is valid
-            Future.delayed(Duration(milliseconds: 100), () {
+            Future.delayed(const Duration(milliseconds: 100), () {
               if (mounted) {
-                _handleDeepLink(link);
+                _deepLinkHandler.handleDeepLink(link);
               } else {
               }
             });
@@ -123,15 +125,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       );
     } on Exception catch (e) {
       print("Deep linking initialization error: $e");
-    }
-  }
-
-  void _handleDeepLink(String link) {
-    final uri = Uri.parse(link);
-    if (uri.scheme == 'unilinks' && uri.host.contains("pharmanathi.com")) {
-      navigatorKey.currentState?.pushNamed(uri.path).catchError((e) {
-        print("Error during navigation: $e"); // @TODO: Log to sentry
-      });
     }
   }
 
@@ -176,5 +169,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         },
       ),
     );
+  }
+}
+
+class DeepLinkHandler {
+  void handleDeepLink(String link) {
+    final uri = Uri.parse(link);
+    if (uri.scheme == 'unilinks' && uri.host.contains("pharmanathi.com")) {
+      navigatorKey.currentState?.pushNamed("${uri.queryParameters['screen']}").catchError((e) {
+        print("Error during navigation: $e"); // Log to Sentry if needed
+      });
+    }
   }
 }
