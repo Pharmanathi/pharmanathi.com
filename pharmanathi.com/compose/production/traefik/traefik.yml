@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`pharmanathi.com`) || Host(`www.pharmanathi.com`) || Host(`test.pharmanathi.com`) || Host(`api.pharmanathi.com`)'
+      rule: 'Host(`pharmanathi.com`) || Host(`www.pharmanathi.com`) || Host(`test.pharmanathi.com`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -49,12 +49,6 @@ http:
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
-    
-    well-known:
-      rule: "Path(`/apple-app-site-association`)" # Match the specific endpoint
-      service: well-known-service
-      entryPoints:
-        - web
 
   middlewares:
     csrf:
@@ -73,11 +67,6 @@ http:
       loadBalancer:
         servers:
           - url: http://flower:5555
-    
-    well-known-service:
-      loadBalancer:
-        servers:
-          - url: "http://django:5000"
 
 providers:
   # https://docs.traefik.io/master/providers/file/
