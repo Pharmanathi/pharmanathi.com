@@ -79,15 +79,23 @@
 		</array>
 	</dict>
 	<dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>unilinks</string>
+    </array>
+  </dict>
+	<!-- <dict>
+			TODO: remove use of custom URL scheme since unsafe
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.710242232170-jetc349ucliase4l5t8v2lgebd6sphbu</string>
-				<!-- Your custom URL Scheme -->
 				<string>Pharmanathi_patient</string>
 			</array>
-		</dict>
+		</dict> -->
 </array>
 <!-- End of the Google Sign-in Section -->
 <!-- Location Usage Descriptions -->
