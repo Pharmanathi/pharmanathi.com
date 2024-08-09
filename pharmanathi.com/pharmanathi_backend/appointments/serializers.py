@@ -72,5 +72,3 @@ class AppointmentPublicSerializer(AppointmentSerializer):
             "payment_process",
             "patient",
         ]
-        # fields = "__all__"
-        # exclude = ["doctor__practicelocations"]
