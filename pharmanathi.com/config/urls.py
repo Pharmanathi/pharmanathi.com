@@ -6,11 +6,9 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from pharmanathi_backend.utils.mobile_client_handlers import (
-    handle_deeplink_redirect,
-    handle_ios_app_association,
-)
 from rest_framework.authtoken.views import obtain_auth_token
+
+from pharmanathi_backend.utils.mobile_client_handlers import handle_deeplink_redirect, handle_ios_app_association
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),

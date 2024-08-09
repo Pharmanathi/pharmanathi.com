@@ -145,14 +145,14 @@ class Doctor(BaseCustomModel):
 
     def get_busy_slots_on(self, dt: datetime.date) -> list[tuple]:
         """
-        ** Motivation for using ``include_pending_payments`` ** 
+        ** Motivation for using ``include_pending_payments`` **
             to include appointments with a pending payment
-        
-        Say patient `A` et `B` are both booking on timeslot `T`. 
+
+        Say patient `A` et `B` are both booking on timeslot `T`.
         Assume A is slightly ahead of `B` in the booking process.
         When `A` reaches the payment screen, they take a little long
-        to put in their details and at that instant `B` reaches the 
-        calendar screen. Should we show `T` as an available slot to 
+        to put in their details and at that instant `B` reaches the
+        calendar screen. Should we show `T` as an available slot to
         `B` or keep it safe for `A`?
 
         A payment's status can either be `PENDING`,`FAILED` or `PAID`.
