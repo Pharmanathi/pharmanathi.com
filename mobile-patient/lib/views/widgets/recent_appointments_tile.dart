@@ -34,7 +34,7 @@ class RecentAppointmentsTile extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                appointment.appiontment_date,
+                appointment.appointmentTypeRepr,
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
               const SizedBox(height: 8),
