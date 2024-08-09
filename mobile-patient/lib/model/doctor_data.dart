@@ -6,20 +6,16 @@ class Doctor {
   final String imageURL;
   final String doctorName;
   final List<String> specialities;
-  // final List<int> practiceLocations;
   final int id;
   final bool hasConsultedBefore;
-  // final List<AppointmentType> appointmentTypes;
 
   Doctor({
     required this.isVerified,
     required this.imageURL,
     required this.doctorName,
     required this.specialities,
-    // required this.practiceLocations,
     required this.id,
     required this.hasConsultedBefore,
-    // required this.appointmentTypes,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
@@ -32,12 +28,8 @@ class Doctor {
       isVerified: json['is_verified'],
       imageURL: json['imageURL'] ?? '',
       specialities: json['specialities'].cast<String>(),
-      // practiceLocations: List<int>.from(json['practicelocations']),
       id: json['id'],
       hasConsultedBefore: json['has_consulted_before'],
-      // appointmentTypes: (json['appointment_types'] as List<dynamic>)
-      //     .map((e) => AppointmentType.fromJson(e))
-      //     .toList(),
     );
   }
 

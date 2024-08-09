@@ -2,7 +2,12 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .providers.provider import BaseProvider, ProviderNotFoundException, get_provider, provider_registry
+from .providers.provider import (
+    BaseProvider,
+    ProviderNotFoundException,
+    get_provider,
+    provider_registry,
+)
 
 UserModel = get_user_model()
 
@@ -13,10 +18,13 @@ class Payment(models.Model):
         PAID = ("PAID", "Paid")
         FAILED = ("FAILED", "Failed")
 
-    provider_choices = map(lambda p: (p, p), provider_registry.keys())
+    def get_provider_choices():
+        provider_choices = list(map(lambda p: (p, p), provider_registry.keys()))
+        return provider_choices
+
     amount = models.DecimalField(decimal_places=2, max_digits=6, null=False, blank=False)
     user = models.ForeignKey(UserModel, on_delete=models.PROTECT, blank=False)
-    _provider = models.CharField(max_length=25, choices=provider_choices, null=False, blank=True)
+    _provider = models.CharField(max_length=25, choices=get_provider_choices, null=False, blank=True)
     reference = models.CharField(max_length=32, null=False, blank=True)
     status = models.CharField(max_length=10, choices=PaymentStatus, default=PaymentStatus.PENDING)
     json = models.JSONField(null=True, blank=True)
