@@ -22,7 +22,7 @@ class AppointmentBloc {
       _appointmentsNotifier.value = appointments;
     } catch (e, stackTrace) {
       _appointmentsNotifier.value = null;
-      await Sentry.captureException(e, stackTrace: stackTrace);
+      Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 
@@ -48,7 +48,7 @@ class AppointmentBloc {
       }
     } catch (e, stackTrace) {
       // Handle error
-      await Sentry.captureException(e, stackTrace: stackTrace);
+      Sentry.captureException(e, stackTrace: stackTrace);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error booking appointment')),
       );
