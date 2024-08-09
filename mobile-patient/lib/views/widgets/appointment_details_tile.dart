@@ -106,11 +106,15 @@ class AppiontmentDetails extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              appointment.doctor.specialities[0],
+                              appointment.doctor.specialities[0].length > 40
+                                  ? '${appointment.doctor.specialities[0].substring(0, 40)}...'
+                                  : appointment.doctor.specialities[0],
                               style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
                                 color: Colors.grey,
-                                fontSize: 14,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -228,7 +232,7 @@ class AppiontmentDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          appointment.appointmentTypeRepr,
+                          appointment.appointmentDate,
                           style: TextStyle(
                               fontSize: 12,
                               color:

@@ -34,7 +34,7 @@ class RecentAppointmentsTile extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                appointment.appointmentTypeRepr,
+                appointment.appointmentDate,
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
               const SizedBox(height: 8),
@@ -43,8 +43,8 @@ class RecentAppointmentsTile extends StatelessWidget {
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
               const SizedBox(height: 8),
-              const Text(
-                "In Person Visit",//TODO :get the type oof apponitment they choose
+               Text(
+                appointment.appointmentTypeRepr,
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
