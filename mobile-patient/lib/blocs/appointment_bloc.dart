@@ -57,7 +57,12 @@ class AppointmentBloc {
 
   void _showSuccessMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Appointment booked successfully!')),
+      const SnackBar(
+        content: Text('your appointment has been booked successfully!'),
+        duration: Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.green,
+      ),
     );
   }
 
