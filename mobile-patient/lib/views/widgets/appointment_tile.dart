@@ -111,8 +111,7 @@ class ProfileCard extends StatelessWidget {
                                             padding: const EdgeInsets.only(
                                                 right: 70),
                                             child: Text(
-                                              appointment.doctor
-                                                  .getFirstSpecialityName(),
+                                              appointment.doctor.specialities[0],
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.normal,
@@ -175,7 +174,7 @@ class ProfileCard extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            appointment.appiontment_date,
+                                            appointment.appointmentTypeRepr,
                                             style: TextStyle(
                                               fontSize: 10,
                                             ),
