@@ -1,6 +1,6 @@
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
-import 'package:client_pharmanathi/screens/components/navigtion_bar.dart';
+import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
 import 'package:client_pharmanathi/views/widgets/appointment_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
