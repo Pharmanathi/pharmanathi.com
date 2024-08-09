@@ -1,5 +1,6 @@
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/model/patient_data.dart';
+import 'package:client_pharmanathi/model/payment_data.dart';
 import 'package:intl/intl.dart';
 
 class Appointment {
@@ -9,9 +10,11 @@ class Appointment {
   final Patient patient;
   final String appointmentTypeRepr;
   final String appointmentTime;
+  final String appointmentDate;
   final String status;
   final String reason;
   final String paymentProcess;
+    final Payment payment;
   final int appointmentType;
 
   Appointment({
@@ -19,8 +22,10 @@ class Appointment {
     required this.endTime,
     required this.appointmentTypeRepr,
     required this.appointmentTime,
+    required this.appointmentDate,
     required this.status,
     required this.doctor,
+     required this.payment,
     required this.patient,
     required this.reason,
     required this.paymentProcess,
@@ -78,9 +83,11 @@ class Appointment {
       id: json['id'],
       endTime: DateTime.parse(json['end_time']),
       appointmentTime: formattedTime,
+      appointmentDate:formattedDate,
       appointmentTypeRepr: appointmentType,
       status: status,
       doctor: Doctor.fromJson(json['doctor']),
+      payment: Payment.fromJson(json['payment']),
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],

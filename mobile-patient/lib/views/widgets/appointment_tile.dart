@@ -108,17 +108,23 @@ class ProfileCard extends StatelessWidget {
                                           ),
                                         ),
                                         Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 70),
-                                            child: Text(
-                                              appointment.doctor.specialities[0],
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.grey,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            )),
+                                          padding:
+                                              const EdgeInsets.only(right: 70),
+                                          child: Text(
+                                            appointment.doctor.specialities[0]
+                                                        .length >
+                                                    30
+                                                ? '${appointment.doctor.specialities[0].substring(0, 30)}...'
+                                                : appointment
+                                                    .doctor.specialities[0],
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -174,7 +180,7 @@ class ProfileCard extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            appointment.appointmentTypeRepr,
+                                            appointment.appointmentDate,
                                             style: TextStyle(
                                               fontSize: 10,
                                             ),
