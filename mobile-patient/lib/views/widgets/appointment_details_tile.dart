@@ -106,7 +106,7 @@ class AppiontmentDetails extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              appointment.doctor.getFirstSpecialityName(),
+                              appointment.doctor.specialities[0],
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -228,7 +228,7 @@ class AppiontmentDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 45, top: 0),
                         child: Text(
-                          appointment.appiontment_date,
+                          appointment.appointmentTypeRepr,
                           style: TextStyle(
                               fontSize: 12,
                               color:
