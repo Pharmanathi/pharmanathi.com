@@ -114,7 +114,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             Future.delayed(const Duration(milliseconds: 100), () {
               if (mounted) {
                 _deepLinkHandler.handleDeepLink(link);
-              } else {
               }
             });
           }
