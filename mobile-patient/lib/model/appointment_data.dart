@@ -7,7 +7,7 @@ class Appointment {
   final DateTime endTime;
   final Doctor doctor;
   final Patient patient;
-  final String appiontment_date;
+  final String appointmentTypeRepr;
   final String appointmentTime;
   final String status;
   final String reason;
@@ -17,7 +17,7 @@ class Appointment {
   Appointment({
     required this.id,
     required this.endTime,
-    required this.appiontment_date,
+    required this.appointmentTypeRepr,
     required this.appointmentTime,
     required this.status,
     required this.doctor,
@@ -62,37 +62,29 @@ class Appointment {
         status = 'Completed';
       }
     } catch (error) {
-      //! Handle parsing error
+      //! Handle parsing error TODO: Sentry
       print('Error parsing start_time: $error');
     }
 
     String appointmentType = "";
-    try {
-      final int appointmentTypeValue = json['appiontment_type'] ?? 0;
 
-      if (appointmentTypeValue == 1) {
-        appointmentType = "In Person Visit";
-      } else {
-        appointmentType = "Online Consultation";
-      }
-      print('Appointment Type: $appointmentType');
-    } catch (error) {
-      print(
-        'Error parsing appointment type:',
-      );
+    if (json['appointment_type']["is_online"]) {
+      appointmentType = "Online Consultation";
+    } else {
+      appointmentType = "In Person Visit";
     }
 
     return Appointment(
       id: json['id'],
       endTime: DateTime.parse(json['end_time']),
       appointmentTime: formattedTime,
-      appiontment_date: formattedDate,
+      appointmentTypeRepr: appointmentType,
       status: status,
       doctor: Doctor.fromJson(json['doctor']),
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],
-      appointmentType: json['appointment_type'],
+      appointmentType: json['appointment_type']['id'],
     );
   }
 }
