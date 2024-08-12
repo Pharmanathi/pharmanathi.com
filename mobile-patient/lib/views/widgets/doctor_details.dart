@@ -2,37 +2,18 @@
 
 import 'dart:math';
 
+import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../views/screens/bookings.dart';
+import '../screens/bookings.dart';
 
 class DoctorDetails extends StatefulWidget {
-  final String name;
-  final String title;
-  final String imageUrl;
-  final String status;
-  final String distance;
-  final String rating;
-  final String location;
-  final String experience;
-  final int doctorId;
-  final int appointmentType;
-  final bool has_consulted_before;
+   final Doctor doctor;
 
   const DoctorDetails({
     Key? key,
-    required this.name,
-    required this.title,
-    required this.appointmentType,
-    required this.doctorId,
-    required this.location,
-    required this.has_consulted_before,
-    required this.experience,
-    required this.imageUrl,
-    required this.status,
-    required this.distance,
-    required this.rating,
+    required this.doctor,
   }) : super(key: key);
 
   @override
@@ -54,7 +35,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    userProvider.setDoctorId(widget.doctorId);
+    userProvider.setDoctorId(widget.doctor.id);
 
     return Scaffold(
       body: Center(
@@ -149,20 +130,20 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     alignment: Alignment.center,
                     children: [
                       CircleAvatar(
-                        backgroundColor: widget.imageUrl.isNotEmpty
+                        backgroundColor: widget.doctor.imageURL.isNotEmpty
                             ? null // No background color if imageUrl is available
                             : getRandomColor(), // Random background color if imageUrl is not available
-                        child: widget.imageUrl.isNotEmpty
+                        child:  widget.doctor.imageURL.isNotEmpty
                             ? ClipOval(
                                 child: Image.network(
-                                  widget.imageUrl,
+                                 widget.doctor.imageURL,
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
                                 ),
                               )
                             : Text(
-                                widget.name.isNotEmpty ? widget.name[0] : '',
+                                widget.doctor.doctorName.isNotEmpty ? widget.doctor.doctorName[0] : '',
                                 style: TextStyle(
                                     fontSize: 50,
                                     color: Colors.white,
@@ -170,27 +151,27 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               ), //* Display the first letter of the name if imageUrl is not available
                         radius: 80,
                       ),
-                      Positioned(
-                        right: 20,
-                        bottom: 10,
-                        child: Container(
-                          width: 12,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: widget.status == 'online'
-                                ? Colors.green
-                                : Colors.grey,
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   right: 20,
+                      //   bottom: 10,
+                      //   child: Container(
+                      //     width: 12,
+                      //     height: 20,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       color: widget.status == 'online'
+                      //           ? Colors.green
+                      //           : Colors.grey,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   //doctor's name
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Text(
-                      widget.name,
+                      widget.doctor.doctorName,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,
@@ -199,17 +180,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     ),
                   ),
                   //profission
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(5.0),
+                  //   child: Text(
+                  //     widget.title,
+                  //     style: TextStyle(
+                  //       color: Colors.grey,
+                  //       fontSize: 15.0,
+                  //       fontWeight: FontWeight.normal,
+                  //     ),
+                  //   ),
+                  // ),
                   //ratings
                   Padding(
                     padding: const EdgeInsets.only(left: 190),
@@ -258,17 +239,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
-                            Container(
-                              width: 100,
-                              child: Text(
-                                widget.location,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   width: 100,
+                            //   child: Text(
+                            //     widget.doctor.,
+                            //     style: TextStyle(
+                            //       color: Colors.grey,
+                            //       fontSize: 15.0,
+                            //       fontWeight: FontWeight.normal,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
@@ -304,14 +285,14 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                   fontWeight: FontWeight.normal,
                                 ),
                               ),
-                              Text(
-                                widget.experience,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
+                              // Text(
+                              //   widget.experience,
+                              //   style: TextStyle(
+                              //     color: Colors.grey,
+                              //     fontSize: 15.0,
+                              //     fontWeight: FontWeight.normal,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ],
@@ -337,17 +318,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => Bookings(
-                            appointmentType: widget.appointmentType,
-                            name: widget.name,
-                            has_consulted_before: widget.has_consulted_before,
-                            doctorId: widget.doctorId,
-                            title: widget.title,
-                            imageUrl: widget.imageUrl,
-                            status: widget.status,
-                            distance: widget.distance,
-                            rating: widget.rating,
-                            location: widget.location,
-                            experience: widget.experience,
+                            doctor: widget.doctor,
                             selectedTimeSlots:
                                 _selectedTimeSlots ?? ValueNotifier([]),
                             selectedDay: selectedDay ?? DateTime.now(),

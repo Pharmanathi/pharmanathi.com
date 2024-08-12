@@ -1,4 +1,3 @@
-
 class AppointmentType {
   final int id;
   final DateTime dateCreated;
@@ -28,17 +27,19 @@ class AppointmentType {
 
   factory AppointmentType.fromJson(Map<String, dynamic> json) {
     return AppointmentType(
-      id: json['id'],
-      dateCreated: DateTime.parse(json['date_created']),
-      dateModified: DateTime.parse(json['date_modified']),
-      duration: json['duration'],
-      isOnline: json['is_online'],
-      cost: json['cost'],
-      noShowCost: json['no_show_cost'],
-      isRunForever: json['is_run_forever'],
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
-      doctor: json['doctor'],
+      id: json['id'] ?? 0,
+      dateCreated:
+          DateTime.tryParse(json['date_created'] ?? '') ?? DateTime.now(),
+      dateModified:
+          DateTime.tryParse(json['date_modified'] ?? '') ?? DateTime.now(),
+      duration: json['duration'] ?? 0,
+      isOnline: json['is_online'] ?? false,
+      cost: json['cost'] ?? '0.00',
+      noShowCost: json['no_show_cost'] ?? '0.00',
+      isRunForever: json['is_run_forever'] ?? false,
+      startDate: DateTime.tryParse(json['start_date'] ?? '') ?? DateTime.now(),
+      endDate: DateTime.tryParse(json['end_date'] ?? '') ?? DateTime.now(),
+      doctor: json['doctor'] ?? 0,
     );
   }
 }

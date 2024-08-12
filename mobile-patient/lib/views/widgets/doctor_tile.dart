@@ -2,25 +2,25 @@
 
 import 'dart:math';
 
+import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
-import 'package:client_pharmanathi/screens/components/doctors/doctor_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../helpers/api_helpers.dart';
-import '../../pages/doctor_details.dart';
+import '../../helpers/api_helpers.dart';
+import 'doctor_details.dart';
 
 class CustomDoctorCard extends StatelessWidget {
-  final DoctorDetail doctorDetails;
+  final Doctor doctor;
 
-  const CustomDoctorCard({Key? key, required this.doctorDetails});
+  const CustomDoctorCard({Key? key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     // Extract doctorId from doctorDetail
-    final doctorId = doctorDetails.doctorId;
+    final doctorId = doctor.id;
 
     // Update the provider with the doctorId
     userProvider.selectedDoctorId = doctorId;
@@ -31,7 +31,8 @@ class CustomDoctorCard extends StatelessWidget {
         return text;
       }
     }
-    String alteredname = ApiHelper.toTitleCase( doctorDetails.name);
+
+    String alteredname = ApiHelper.toTitleCase(doctor.doctorName);
 
     //* Function to generate a random color
     Color getRandomColor() {
@@ -63,17 +64,7 @@ class CustomDoctorCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DoctorDetails(
-                        has_consulted_before: doctorDetails.has_consulted_before,
-                        name: doctorDetails.name,
-                        appointmentType: doctorDetails.appointmentType,
-                        doctorId: doctorDetails.doctorId,
-                        distance: doctorDetails.distance,
-                        title: doctorDetails.title,
-                        imageUrl: doctorDetails.imageUrl,
-                        rating: doctorDetails.rating,
-                        status: doctorDetails.status,
-                        location: doctorDetails.location,
-                        experience: doctorDetails.experience,
+                        doctor: doctor,
                       ),
                     ),
                   );
@@ -87,23 +78,23 @@ class CustomDoctorCard extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             CircleAvatar(
-                              backgroundColor: doctorDetails.imageUrl.isNotEmpty
+                              backgroundColor: doctor.imageURL.isNotEmpty
                                   ? null // No background color if imageURL is available
                                   : getRandomColor(), //* Display the first letter of the name if imageURL is not available
                               radius:
                                   30, // Random background color if imageURL is not available
-                              child: doctorDetails.imageUrl.isNotEmpty
+                              child: doctor.imageURL.isNotEmpty
                                   ? ClipOval(
                                       child: Image.network(
-                                        doctorDetails.imageUrl,
+                                        doctor.imageURL,
                                         fit: BoxFit.cover,
                                         width: double.infinity,
                                         height: double.infinity,
                                       ),
                                     )
                                   : Text(
-                                      doctorDetails.name.isNotEmpty
-                                          ? doctorDetails.name[0]
+                                      doctor.doctorName.isNotEmpty
+                                          ? doctor.doctorName[0]
                                           : '',
                                       style: TextStyle(
                                           fontSize: 20,
@@ -111,20 +102,20 @@ class CustomDoctorCard extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     ),
                             ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                width: 12,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: doctorDetails.status == 'online'
-                                      ? Colors.green
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
+                            // Positioned(
+                            //   right: 0,
+                            //   bottom: 0,
+                            //   child: Container(
+                            //     width: 12,
+                            //     height: 20,
+                            //     decoration: BoxDecoration(
+                            //       shape: BoxShape.circle,
+                            //       color: doctor.status == 'online'
+                            //           ? Colors.green
+                            //           : Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         SizedBox(width: 10),
@@ -132,19 +123,19 @@ class CustomDoctorCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                             alteredname,
+                              alteredname,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
                             ),
-                            Text(
-                              doctorDetails.title,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
-                            ),
+                            // Text(
+                            //   doctorDetails.title,
+                            //   style: TextStyle(
+                            //     color: Colors.grey,
+                            //     fontSize: 14,
+                            //   ),
+                            // ),
                             // Text(
                             //   "${doctorDetails.distance} km away",
                             //   style: TextStyle(

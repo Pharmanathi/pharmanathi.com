@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../screens/pages/onboard_page.dart';
 import '../screens/pages/home_page.dart';
 import '../views/screens/appointment.dart';
-import '../screens/pages/doctors.dart';
+import '../views/screens/doctors.dart';
 import '../screens/pages/profile_settings.dart';
 import '../screens/pages/singnin_page.dart';
 
