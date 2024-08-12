@@ -24,7 +24,7 @@ class Doctor {
     final doctorLastName = json['user']['last_name'] ?? '';
     final doctorName = '$doctorFirstName $doctorLastName';
 
-    // Handle appointmenttype mapping (assuming it's a Map)
+    
     final appointmentType = AppointmentType.fromJson(json['appointment_type'] ?? {});
 
     return Doctor(
