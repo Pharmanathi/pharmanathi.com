@@ -1,3 +1,4 @@
+import 'package:client_pharmanathi/Repository/doctor_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,15 +27,16 @@ Future<void> main() async {
 
   ApiProvider apiProvider = ApiProvider();
   AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
+   DoctorRepository doctortRepository = DoctorRepository();
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository);
+      await _runApp(appointmentRepository,doctortRepository);
     });
   } else {
-    await _runApp(appointmentRepository);
+    await _runApp(appointmentRepository, doctortRepository);
   }
 }
 
@@ -67,12 +69,13 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(AppointmentRepository appointmentRepository) async {
+Future<void> _runApp(AppointmentRepository appointmentRepository, DoctorRepository doctortRepository) async {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
+         Provider.value(value: doctortRepository),
         Provider(create: (_) => DeepLinkHandler()),
       ],
       child: const MyApp(),

@@ -17,4 +17,9 @@ class ApiProvider {
     return await http_helpers.ApiHelper.httpRequestWithAuthorization(
         context, apiEndpoint, 'POST', requestBody);
   }
+  Future<http.Response> fetchDoctors(BuildContext context) async {
+    final apiUrl = '${http_helpers.ApiHelper.getApiBaseUrl()}/doctors/';
+    return await http_helpers.ApiHelper.httpRequestWithAuthorization(
+        context, apiUrl, 'GET', '');
+  }
 }
