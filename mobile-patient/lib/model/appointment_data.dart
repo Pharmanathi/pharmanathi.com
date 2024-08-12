@@ -1,3 +1,4 @@
+import 'package:client_pharmanathi/model/appointment_type.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/model/patient_data.dart';
 import 'package:client_pharmanathi/model/payment_data.dart';
@@ -14,8 +15,8 @@ class Appointment {
   final String status;
   final String reason;
   final String paymentProcess;
-    final Payment payment;
-  final int appointmentType;
+  final Payment payment;
+  final AppointmentType appointmentType;
 
   Appointment({
     required this.id,
@@ -25,7 +26,7 @@ class Appointment {
     required this.appointmentDate,
     required this.status,
     required this.doctor,
-     required this.payment,
+    required this.payment,
     required this.patient,
     required this.reason,
     required this.paymentProcess,
@@ -33,7 +34,7 @@ class Appointment {
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
-// Parse the date string to a DateTime object in UTC
+   // Parse the date string to a DateTime object in UTC
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
 
     // Convert the UTC DateTime object to local time
@@ -67,13 +68,13 @@ class Appointment {
         status = 'Completed';
       }
     } catch (error) {
-      //! Handle parsing error TODO: Sentry
+      //! Handle parsing error @TODO: Sentry
       print('Error parsing start_time: $error');
     }
 
     String appointmentType = "";
 
-    if (json['appointment_type']["is_online"]) {
+    if (json['appointment_type']["is_online"] == true) {
       appointmentType = "Online Consultation";
     } else {
       appointmentType = "In Person Visit";
@@ -83,7 +84,7 @@ class Appointment {
       id: json['id'],
       endTime: DateTime.parse(json['end_time']),
       appointmentTime: formattedTime,
-      appointmentDate:formattedDate,
+      appointmentDate: formattedDate,
       appointmentTypeRepr: appointmentType,
       status: status,
       doctor: Doctor.fromJson(json['doctor']),
@@ -91,7 +92,7 @@ class Appointment {
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],
-      appointmentType: json['appointment_type']['id'],
+      appointmentType:AppointmentType.fromJson(json['appointment_type']), 
     );
   }
 }

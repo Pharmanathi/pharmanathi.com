@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_import, sized_box_for_whitespace
 
-import 'package:client_pharmanathi/screens/components/doctors/doctor_data.dart';
-import 'package:client_pharmanathi/screens/components/doctors/doctor_tile.dart';
+import 'package:client_pharmanathi/Repository/doctor_repository.dart';
+import 'package:client_pharmanathi/model/doctor_data.dart';
+import 'package:client_pharmanathi/views/widgets/doctor_tile.dart';
 import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
-import 'package:client_pharmanathi/services/doctor_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Doctors extends StatefulWidget {
   const Doctors({super.key});
-
-  // Linking data to the doctors details file
 
   @override
   State<Doctors> createState() => _DoctorsState();
@@ -18,53 +17,55 @@ class Doctors extends StatefulWidget {
 
 class _DoctorsState extends State<Doctors> {
   TextEditingController searchController = TextEditingController();
-  List<DoctorDetail> filteredDoctorDetails = [];
-  List<DoctorDetail> doctorDetails = [];
+  List<Doctor> filteredDoctorDetails = [];
+  List<Doctor> doctorDetails = [];
   bool isSearchFieldVisible = false;
   int selectedButtonIndex = 0;
   int _selectedIndex = 1;
+  bool isLoading = true;
+  late DoctorRepository _doctorRepository;
 
   @override
   void initState() {
     super.initState();
-    _loadDoctors(context);
+    _doctorRepository = context.read<DoctorRepository>();
+    loadDoctors();
   }
 
-  Future<void> _loadDoctors(BuildContext context) async {
-  try {
-    final List<DoctorDetail> loadedDoctors = await fetchDoctors(context);
-    setState(() {
-      doctorDetails = loadedDoctors;
-      filteredDoctorDetails = loadedDoctors;
-    });
-  } catch (error) {
-    // Handle any errors that occur during the loading process
-    print('Error loading doctors: $error');
-    //* show an error message to the user
-    // setState(() {
-    //   errorMessage = 'Failed to load doctors. Please try again later.';
-    // });
+  Future<void> loadDoctors() async {
+    try {
+      List<Doctor> fetchDoctors = await _doctorRepository.fetchDoctors(context);
+      print("Fetched Doctors: ${fetchDoctors.length}"); // Debug statement
+      setState(() {
+        doctorDetails = fetchDoctors;
+        filteredDoctorDetails = fetchDoctors; // Initialize filtered list
+        isLoading = false;
+      });
+    } catch (error) {
+      print('Error loading doctors: $error');
+      // Handle error as needed
+    }
   }
-}
 
-
-
+  // Handles navigation bar item tap
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  //* Filters the doctors list based on the search text
   void filterDoctors(String searchText) {
     setState(() {
       if (searchText.isEmpty) {
-        // If the search text is empty, show all doctors
+        //* If the search text is empty, show all doctors
         filteredDoctorDetails = doctorDetails;
       } else {
         // Otherwise, filter based on the search text
         filteredDoctorDetails = doctorDetails
-            .where((doctor) =>
-                doctor.name.toLowerCase().contains(searchText.toLowerCase()))
+            .where((doctor) => doctor.doctorName
+                .toLowerCase()
+                .contains(searchText.toLowerCase()))
             .toList();
 
         print("Filtered Doctors: ${filteredDoctorDetails.length}");
@@ -279,36 +280,41 @@ class _DoctorsState extends State<Doctors> {
 
           selectedButtonIndex == 0
               ? Expanded(
-                  child: FutureBuilder<List<DoctorDetail>>(
-                    future:
-                        fetchDoctors(context), // Use fetchDoctors function to fetch the list of doctors
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        // Handle error
-                        return Center(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        // Handle no data case
-                        return Center(
-                          child: Text('No doctors found.'),
-                        );
-                      } else {
-                        // Display the list of doctors using ListView.builder
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomDoctorCard(
-                              doctorDetails: snapshot.data![index],
-                            );
-                          },
-                        );
-                      }
-                    },
+                  child: SingleChildScrollView(
+                    child: isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : filteredDoctorDetails.isEmpty
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/nodata.png',
+                                      width: 120,
+                                      height: 120,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    const Text(
+                                      'No doctors available',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: filteredDoctorDetails.length,
+                                itemBuilder: (context, index) {
+                                  final data = filteredDoctorDetails[index];
+
+                                  return CustomDoctorCard(
+                                    doctor: data,
+                                  );
+                                },
+                              ),
                   ),
                 )
               : Container(),

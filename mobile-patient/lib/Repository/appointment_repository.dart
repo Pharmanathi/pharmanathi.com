@@ -13,6 +13,8 @@ class AppointmentRepository {
   Future<List<Appointment>> fetchAppointments(BuildContext context) async {
     try {
       final response = await apiProvider.fetchAppointmentData(context);
+      print("API Response Status: ${response.statusCode}");
+      print("API Response Body: ${response.body}");
       if (response.statusCode == 200) {
         dynamic decodedData = json.decode(response.body);
         if (decodedData is List &&

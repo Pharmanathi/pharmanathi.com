@@ -1,10 +1,10 @@
 import 'package:client_pharmanathi/model/appointment_type.dart';
-import 'package:client_pharmanathi/model/speciality_data.dart';
 
 class Doctor {
   final bool isVerified;
   final String imageURL;
   final String doctorName;
+  final AppointmentType appointmentType;
   final List<String> specialities;
   final int id;
   final bool hasConsultedBefore;
@@ -13,6 +13,7 @@ class Doctor {
     required this.isVerified,
     required this.imageURL,
     required this.doctorName,
+    required this.appointmentType,
     required this.specialities,
     required this.id,
     required this.hasConsultedBefore,
@@ -23,13 +24,17 @@ class Doctor {
     final doctorLastName = json['user']['last_name'] ?? '';
     final doctorName = '$doctorFirstName $doctorLastName';
 
+    // Handle appointmenttype mapping (assuming it's a Map)
+    final appointmentType = AppointmentType.fromJson(json['appointment_type'] ?? {});
+
     return Doctor(
       doctorName: doctorName,
-      isVerified: json['is_verified'],
+      isVerified: json['is_verified'] ?? false,
+      appointmentType: appointmentType,
       imageURL: json['imageURL'] ?? '',
-      specialities: json['specialities'].cast<String>(),
-      id: json['id'],
-      hasConsultedBefore: json['has_consulted_before'],
+      specialities: List<String>.from(json['specialities'] ?? []),
+      id: json['id'] ?? 0,
+      hasConsultedBefore: json['has_consulted_before'] ?? false,
     );
   }
 

@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/blocs/appointment_bloc.dart';
+import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:flutter/services.dart';
 import 'package:client_pharmanathi/screens/components/calender/calender.dart';
 import 'package:flutter/material.dart';
@@ -11,34 +12,14 @@ import '../../services/api_provider.dart';
 import '../../screens/components/calender/events.dart';
 
 class Bookings extends StatefulWidget {
-  final String name;
-  final int doctorId;
-  final int appointmentType;
-  final String title;
-  final String imageUrl;
-  final String status;
-  final String distance;
-  final String rating;
-  final String location;
-  final bool has_consulted_before;
-  final String experience;
+     final Doctor doctor;
   final ValueNotifier<List<String>> selectedTimeSlots;
   final DateTime selectedDay;
 
   // Constructor with named parameters
   Bookings({
     Key? key,
-    required this.name,
-    required this.title,
-    required this.doctorId,
-    required this.appointmentType,
-    required this.has_consulted_before,
-    required this.imageUrl,
-    required this.status,
-    required this.distance,
-    required this.rating,
-    required this.location,
-    required this.experience,
+    required this.doctor,
     required this.selectedTimeSlots,
     DateTime? selectedDay,
   })  : selectedDay =
@@ -129,7 +110,7 @@ class _BookingsState extends State<Bookings> {
       //* Format the start_time to match backend requirements
       final formattedStartTime = appointmentStartTime.toIso8601String();
 
-      int appointmentType = widget.appointmentType;
+      int appointmentType = widget.doctor.appointmentType.id;
 
       //* Modify typeOfPayment based on the api requirements
       String modifyTypeOfPayment(String typeOfPayment) {
@@ -145,7 +126,7 @@ class _BookingsState extends State<Bookings> {
 
       String modifiedPaymentType = modifyTypeOfPayment(typeOfPayment);
       String reasonForVisit = reasonForVisitControler.text;
-      int doctorId = widget.doctorId;
+      int doctorId = widget.doctor.id;
 
       //* appointment data we sending to the backend 
       Map<String, dynamic> appointmentData = {
@@ -246,7 +227,7 @@ class _BookingsState extends State<Bookings> {
                       child: Visibility(
                         visible: selectedButtonIndex == 0,
                         child: TableEventsExample(
-                          doctorId: widget.doctorId,
+                          doctorId: widget.doctor.id,
                           onAppointmentTimeSelected: (selectedTimeSlot) {
                             setState(() {
                               // Assign selectedTimeSlot to timeOfTheAppointment
@@ -507,7 +488,7 @@ class _BookingsState extends State<Bookings> {
                                   ),
                                 ),
                                 Text(
-                                  widget.name,
+                                  widget.doctor.doctorName,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
