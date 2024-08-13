@@ -4,7 +4,7 @@ class Doctor {
   final bool isVerified;
   final String imageURL;
   final String doctorName;
-  final AppointmentType appointmentType;
+  final List<AppointmentType> appointmentTypes;
   final List<String> specialities;
   final int id;
   final bool hasConsultedBefore;
@@ -13,7 +13,7 @@ class Doctor {
     required this.isVerified,
     required this.imageURL,
     required this.doctorName,
-    required this.appointmentType,
+    required this.appointmentTypes,
     required this.specialities,
     required this.id,
     required this.hasConsultedBefore,
@@ -24,22 +24,37 @@ class Doctor {
     final doctorLastName = json['user']['last_name'] ?? '';
     final doctorName = '$doctorFirstName $doctorLastName';
 
-    
-    final appointmentType = AppointmentType.fromJson(json['appointment_type'] ?? {});
+    // Convert the list of appointment types to a list of AppointmentType objects
+    final appointmentTypes = (json['appointment_types'] as List<dynamic>?)
+            ?.map((item) => AppointmentType.fromJson(item))
+            .toList() ??
+        [];
+
+    // Extracting specialities as a list of strings
+    final specialities = (json['specialities'] as List<dynamic>?)
+            ?.map((item) => item.toString())
+            .toList() ??
+        [];
 
     return Doctor(
       doctorName: doctorName,
       isVerified: json['is_verified'] ?? false,
-      appointmentType: appointmentType,
+      appointmentTypes: appointmentTypes,
       imageURL: json['imageURL'] ?? '',
-      specialities: List<String>.from(json['specialities'] ?? []),
+      specialities: specialities,
       id: json['id'] ?? 0,
       hasConsultedBefore: json['has_consulted_before'] ?? false,
     );
   }
 
-  //* Returns all specialty names, each on a new line
+//* Returns all specialty names
+//*Dear maintainer If you ever need more than 30 characters, you’re probably trying to write a novel. Keep it short and sweet!
   String getAllSpecialityNames() {
-    return specialities.join('\n');
+    String joinedSpecialities = specialities.join('\n');
+    if (joinedSpecialities.length > 30) {
+      return '${joinedSpecialities.substring(0, 30)}...';
+    } else {
+      return joinedSpecialities;
+    }
   }
 }

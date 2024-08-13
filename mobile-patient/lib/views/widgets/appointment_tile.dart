@@ -111,12 +111,8 @@ class ProfileCard extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(right: 70),
                                           child: Text(
-                                            appointment.doctor.specialities[0]
-                                                        .length >
-                                                    30
-                                                ? '${appointment.doctor.specialities[0].substring(0, 30)}...'
-                                                : appointment
-                                                    .doctor.specialities[0],
+                                            appointment.doctor
+                                                .getAllSpecialityNames(),
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal,

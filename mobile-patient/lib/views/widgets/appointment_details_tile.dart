@@ -106,9 +106,7 @@ class AppiontmentDetails extends StatelessWidget {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              appointment.doctor.specialities[0].length > 40
-                                  ? '${appointment.doctor.specialities[0].substring(0, 40)}...'
-                                  : appointment.doctor.specialities[0],
+                              appointment.doctor.getAllSpecialityNames(),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
