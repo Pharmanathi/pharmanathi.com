@@ -2,7 +2,12 @@
 import pytest
 
 from pharmanathi_backend.payments.models import Payment
-from pharmanathi_backend.payments.providers.provider import CashProvider, ProviderNotFoundException, register_provider
+from pharmanathi_backend.payments.providers.provider import (
+    BaseProvider,
+    CashProvider,
+    ProviderNotFoundException,
+    register_provider,
+)
 from pharmanathi_backend.payments.tests.factories import PaymentFactory
 
 pytestmark = pytest.mark.django_db
@@ -10,6 +15,14 @@ pytestmark = pytest.mark.django_db
 
 def test_str(pending_payment):
     assert f"{pending_payment}" == f"<Payment({pending_payment.status}): {pending_payment.reference}>"
+
+
+def test_provider_choices():
+    @register_provider
+    class TestProvider(BaseProvider):
+        name = "Test Provider"
+
+    assert (TestProvider.name, TestProvider.name) in Payment.get_provider_choices()
 
 
 def test_get_user_by_email(patient):
