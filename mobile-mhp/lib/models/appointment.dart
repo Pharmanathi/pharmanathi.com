@@ -27,11 +27,7 @@ class Appointment {
     required this.appointmentDate,
   });
 
-  factory Appointment.fromJson(Map<String, dynamic> json) {
-
-     List<dynamic> appointmentTypes = json['doctor']['appointment_types'];
-    Map<String, dynamic> appointmentType = appointmentTypes[0];
-    
+  factory Appointment.fromJson(Map<String, dynamic> json) {    
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
@@ -61,7 +57,7 @@ class Appointment {
     }
 
     return Appointment(
-      isOnlineAppointment: appointmentType['is_online'],
+      isOnlineAppointment: json['appointment_type']['is_online'],
       patientName:
           '${json['patient']['first_name']} ${json['patient']['last_name']}',
       clinic_name: json['clinic_name'] ?? 'Default clinic_name',
