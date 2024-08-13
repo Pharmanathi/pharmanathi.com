@@ -37,7 +37,8 @@ pre-commit:
 	@docker compose run --rm django pre-commit run --show-diff-on-failure --color=always --all-files
 
 test:
-	@docker compose run --rm django pytest
+	@export COVERAGE=$$(docker compose -f local.yml run --rm -ti django bash -c "coverage run -m pytest && coverage report" | tee /dev/tty | grep TOTAL) && \
+	python update_coverage_badge.py $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
 
 django-shell:
 	@docker compose run --rm django python manage.py shell

@@ -1,4 +1,4 @@
-name: CI
+name: Backend CI
 
 # Enable Buildkit and let compose use it to speed up image building
 env:
@@ -52,10 +52,10 @@ jobs:
         run: docker compose -f local.yml build
 
       - name: Run DB Migrations
-        run: docker compose -f local.yml run --rm django python manage.py migrate
+        run: make migrate
 
       - name: Run Django Tests
-        run: docker compose -f local.yml run django pytest
+        run: make test
 
       - name: Tear down the Stack
         run: docker compose -f local.yml down

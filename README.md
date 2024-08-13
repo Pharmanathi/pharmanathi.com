@@ -1,5 +1,8 @@
 # Pharmanathi.com
 
+[![Backend CI](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
+![coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
+
 Welcome to Pharmanathi.com.
 
 This is the repo containing all development resources for the Pharmanthi.com project; backend and front-end clients. From a bird's eye view, the repo is organised as follows:
@@ -18,7 +21,7 @@ Each inner project may present it's own requried setup, so make sure to read the
 
 ## Contribution Guidelines
 
-We follow the Angular commit convetion of which some reading materials can be found on the following links:
+We follow the Angular commit convention of which some reading materials can be found on the following links:
 
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/)
 - [Commit Message Format](https://gist.github.com/brianclements/841ea7bffdb01346392c)
