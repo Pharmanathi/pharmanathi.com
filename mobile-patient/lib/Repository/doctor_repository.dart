@@ -36,27 +36,5 @@ class DoctorRepository {
       return [];
     }
   }
-
-  // Future<List<Doctor>> fetchDoctors(BuildContext context) async {
-  //   try {
-  //     final response = await _apiProvider.fetchDoctors(context);
-  //     print("API Response Status: ${response.statusCode}");
-  //     print("API Response Body: ${response.body}");
-
-  //     if (response.statusCode == 200) {
-  //       final List<dynamic> data = json.decode(response.body);
-  //       final List<Doctor> doctors =
-  //           data.map((json) => Doctor.fromJson(json)).toList();
-  //       print("Fetched Doctors: ${doctors.length}");
-  //       return doctors;
-  //     } else {
-  //       print('Unexpected status code: ${response.statusCode}');
-  //       return [];
-  //     }
-  //   } catch (error, stackTrace) {
-  //     print('Error fetching doctors: $error');
-  //     Sentry.captureException(error, stackTrace: stackTrace);
-  //     return [];
-  //   }
-  // }
+  
 }
