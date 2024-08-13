@@ -1,10 +1,12 @@
+import datetime
+
 import factory.fuzzy
-from factory import SubFactory
+from factory import SubFactory, lazy_attribute
 from factory.django import DjangoModelFactory
 
 from pharmanathi_backend.appointments.models import Appointment, AppointmentType, TimeSlot
 from pharmanathi_backend.payments.tests.factories import PaymentFactory
-from pharmanathi_backend.users.tests.factories import DoctorFactory
+from pharmanathi_backend.users.tests.factories import DoctorFactory, FutureDateByDOWFactory, UserFactory
 
 
 def get_random_time_str(low_hour=1, high_hour=17, minutes_choices=None):
@@ -14,6 +16,18 @@ def get_random_time_str(low_hour=1, high_hour=17, minutes_choices=None):
         f"{factory.fuzzy.FuzzyInteger(low_hour, high_hour).fuzz():>02}:"
         f"{factory.fuzzy.FuzzyChoice(minutes_choices).fuzz():>02}"
     )
+
+
+def get_random_appointment_start_datetime(verified_doctor):
+    timeslot_start_time = get_random_time_str(high_hour=15)
+    timeslot_end_time = get_random_time_str(low_hour=17)
+    timeslot_config = TimeSlotFactory(
+        start_time=timeslot_start_time, end_time=timeslot_end_time, doctor=verified_doctor
+    )
+    appointment_type = AppointmentTypeFactory(doctor=verified_doctor)
+    hour, minute = (int(v) for v in get_random_time_str(low_hour=9, high_hour=18).split(":"))
+    appointment_start_dt = FutureDateByDOWFactory(timeslot_config.day, with_time=datetime.time(hour, minute))
+    return appointment_start_dt
 
 
 class TimeSlotFactory(DjangoModelFactory):
@@ -45,9 +59,25 @@ class AppointmentTypeFactory(DjangoModelFactory):
 
 
 class AppointmentFactory(DjangoModelFactory):
-    doctor = SubFactory(DoctorFactory)
+    doctor = SubFactory(DoctorFactory, _is_verified=True)
     appointment_type = SubFactory(AppointmentTypeFactory)
     payment = SubFactory(PaymentFactory)
+    patient = SubFactory(UserFactory)
+
+    @lazy_attribute
+    def appointment_type(self):
+        return AppointmentTypeFactory(doctor=self.doctor)
+
+    @lazy_attribute
+    def start_time(self):
+        timeslot_start_time = get_random_time_str(high_hour=15)
+        timeslot_end_time = get_random_time_str(low_hour=17)
+        timeslot_config = TimeSlotFactory(
+            start_time=timeslot_start_time, end_time=timeslot_end_time, doctor=self.doctor
+        )
+        hour, minute = (int(v) for v in get_random_time_str(low_hour=9, high_hour=18).split(":"))
+        appointment_start_dt = FutureDateByDOWFactory(timeslot_config.day, with_time=datetime.time(hour, minute))
+        return appointment_start_dt
 
     class Meta:
         model = Appointment
