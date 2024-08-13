@@ -110,7 +110,7 @@ class _BookingsState extends State<Bookings> {
       //* Format the start_time to match backend requirements
       final formattedStartTime = appointmentStartTime.toIso8601String();
 
-      int appointmentType = widget.doctor.appointmentType.id;
+      int appointmentType = widget.doctor.appointmentTypes.first.id;
 
       //* Modify typeOfPayment based on the api requirements
       String modifyTypeOfPayment(String typeOfPayment) {
