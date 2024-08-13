@@ -165,14 +165,14 @@ def doctor_with_appointment_random(verified_doctor, patient):
     # otherwise getting available slots from this doctor won't be possible
     # if the duration requested is bigger than available duration in a TimeSlot.
     # For that reason, we live a 2 hours gap between start and end of TimeSlot
-    timeslot_start_time = get_random_time_str(high_hour=15)
-    timeslot_end_time = get_random_time_str(low_hour=17)
-    timeslot_config = TimeSlotFactory(
-        start_time=timeslot_start_time, end_time=timeslot_end_time, doctor=verified_doctor
-    )
+    # timeslot_start_time = get_random_time_str(high_hour=15)
+    # timeslot_end_time = get_random_time_str(low_hour=17)
+    # timeslot_config = TimeSlotFactory(
+    #     start_time=timeslot_start_time, end_time=timeslot_end_time, doctor=verified_doctor
+    # )
     appointment_type = AppointmentTypeFactory(doctor=verified_doctor)
-    hour, minute = (int(v) for v in get_random_time_str(low_hour=9, high_hour=18).split(":"))
-    appointment_start_dt = FutureDateByDOWFactory(timeslot_config.day, with_time=datetime.time(hour, minute))
+    # hour, minute = (int(v) for v in get_random_time_str(low_hour=9, high_hour=18).split(":"))
+    # appointment_start_dt = FutureDateByDOWFactory(timeslot_config.day, with_time=datetime.time(hour, minute))
     payment = PaymentFactory(
         amount=appointment_type.cost,
         user=patient,
@@ -180,7 +180,7 @@ def doctor_with_appointment_random(verified_doctor, patient):
     )
     appointment = AppointmentFactory(
         doctor=verified_doctor,
-        start_time=appointment_start_dt,
+        # start_time=appointment_start_dt,
         appointment_type=appointment_type,
         patient=patient,
         payment=payment,
@@ -205,6 +205,12 @@ def oauth_social_apps(db):
 def appointment_date_and_doctor(doctor_with_appointment_random) -> list:
     doctor = doctor_with_appointment_random
     return [FutureDateByDOWFactory(doctor.timeslot_set.first().day), doctor]
+
+
+@pytest.fixture
+def authenticated_user_api_client_with_pending_appointment(authenticated_user_api_client):
+    appoitment = AppointmentFactory(patient=authenticated_user_api_client.user)
+    return authenticated_user_api_client
 
 
 @pytest.fixture
@@ -255,3 +261,8 @@ def paystack_provider():
 @pytest.fixture
 def pending_payment():
     return PaymentFactory(status=Payment.PaymentStatus.PENDING)
+
+
+@pytest.fixture
+def paid_payment():
+    return PaymentFactory(status=Payment.PaymentStatus.PAID)
