@@ -1,10 +1,9 @@
 import 'package:intl/intl.dart';
 
 class Appointment {
-  final String name;
   final String patientdetails;
   final String appointmentTime;
-  final String imageURL;
+  final String? imageURL; // Nullable to handle possible null values
   final String status;
   final String clinic_name;
   final String consult_details;
@@ -14,7 +13,6 @@ class Appointment {
   final bool isOnlineAppointment;
 
   Appointment({
-    required this.name,
     required this.patientName,
     required this.isOnlineAppointment,
     required this.patientdetails,
@@ -27,7 +25,7 @@ class Appointment {
     required this.appointmentDate,
   });
 
-  factory Appointment.fromJson(Map<String, dynamic> json) {    
+  factory Appointment.fromJson(Map<String, dynamic> json) {
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
@@ -64,10 +62,9 @@ class Appointment {
       clinic_address: json['practicelocations'] ?? 'Default clinic_address',
       consult_details: json['reason'] ?? 'Default consult_details',
       patientdetails: json['details'] ?? 'patient details',
-      name: '${json['patient']['first_name']} ${json['patient']['last_name']}',
       appointmentTime: formattedTime,
       appointmentDate: formattedDate,
-      imageURL: json['patient']['image_url'],
+      imageURL: json['patient']['image_url'], 
       status: determineStatus(json),
     );
   }
