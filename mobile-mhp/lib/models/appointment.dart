@@ -67,7 +67,7 @@ class Appointment {
       name: '${json['patient']['first_name']} ${json['patient']['last_name']}',
       appointmentTime: formattedTime,
       appointmentDate: formattedDate,
-      imageURL: '',
+      imageURL: json['patient']['image_url'],
       status: determineStatus(json),
     );
   }
