@@ -64,7 +64,7 @@ class AppointmentTile extends StatelessWidget {
                            CircleAvatar(
                           radius: 32,
                           backgroundImage:
-                              AssetImage(appointment.imageURL),
+                              AssetImage(appointment.imageURL?? ''),
                         ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
@@ -82,7 +82,7 @@ class AppointmentTile extends StatelessWidget {
                                         child: Container(
                                           width: 200,
                                           child: Text(
-                                            appointment.name,
+                                            appointment.patientName,
                                             style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
