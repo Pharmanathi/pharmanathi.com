@@ -111,9 +111,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<bool> _checkFirstTimeSignIn() async {
+  Future<bool> _checkHasIncompleteDoctorProfile() async {
     final userProvider = UserProvider();
-    return await userProvider.isFirstTimeSignIn();
+    return await userProvider.hasIncompleteDoctorProfile();
   }
 
   @override
@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FutureBuilder<bool>(
-        future: _checkFirstTimeSignIn(),
+        future: _checkHasIncompleteDoctorProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox.shrink();

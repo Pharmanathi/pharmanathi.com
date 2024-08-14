@@ -175,7 +175,7 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
       await _fetchUserData(context);
 
       // Check if it's the first time sign-in
-      final isFirstTimeSignInResult = await userProvider.isFirstTimeSignIn();
+      final isFirstTimeSignInResult = await userProvider.hasIncompleteDoctorProfile();
 
       if (isFirstTimeSignInResult) {
         // If it's the first sign-in, navigate to the onboarding page
