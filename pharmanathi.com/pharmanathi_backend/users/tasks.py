@@ -1,10 +1,9 @@
 import logging
 
+from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
-
-from config import celery_app
 
 admin_logger = logging.getLogger(__name__)  # TODO: target a more specific logger here, admin and/or sentry
 
@@ -60,7 +59,6 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
-
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
@@ -74,3 +72,10 @@ def auto_mp_verification_task(mp_pk):
         admin_logger.error(f"Verification failed with error '{verifi_response_json.get('error')}' ")
     vr = VerificationReport.objects.create(mp=mp, type=verification_type, report=verifi_response_json)
     return f"Created {vr}"
+
+
+@celery_app.task
+def update_user_social_profile_picture_url_task(user_pk: int, url: str) -> None:
+    from pharmanathi_backend.users.models import User
+
+    User.objects.filter(pk=user_pk).update(_profile_pic=url.replace("s96-c", "s192-c"))
