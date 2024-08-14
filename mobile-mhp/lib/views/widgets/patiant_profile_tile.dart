@@ -38,13 +38,13 @@ class PatientProfileTile extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CircleAvatar(
-                              backgroundColor: appointment.imageURL.isNotEmpty
+                              backgroundColor: appointment.imageURL!.isNotEmpty
                                   ? null // No background color if imageURL is available
                                   : getRandomColor(), // Random background color if imageURL is not available
-                              child: appointment.imageURL.isNotEmpty
-                                  ? Image.network(appointment.imageURL)
+                              child: appointment.imageURL!.isNotEmpty
+                                  ? Image.network(appointment.imageURL?? '')
                                   : Text(
-                                      appointment.name.isNotEmpty ? appointment.name[0] : '',
+                                      appointment.patientName.isNotEmpty ? appointment.patientName : '',
                                       style: TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
