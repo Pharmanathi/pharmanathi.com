@@ -13,33 +13,32 @@ class AppointmentRepository {
   Future<List<Appointment>> fetchAppointments(BuildContext context) async {
     try {
       final response = await apiProvider.fetchAppointmentData(context);
-      print("API Response Status: ${response.statusCode}");
-      print("API Response Body: ${response.body}");
       if (response.statusCode == 200) {
-        dynamic decodedData = json.decode(response.body);
+        final decodedData = json.decode(response.body);
         if (decodedData is List &&
             decodedData.isNotEmpty &&
             decodedData.first is Map) {
           return decodedData
               .map<Appointment>((json) => Appointment.fromJson(json))
               .toList();
-        } else {
-          http_helpers.ApiHelper.handleError(context, response);
-          return [];
         }
-      } else {
-        http_helpers.ApiHelper.handleError(context, response);
-        return [];
       }
+      //* Handle invalid data or non-200 status code
+      http_helpers.ApiHelper.handleError(context, response);
+      return [];
     } catch (e, stackTrace) {
+      //* Handle network exceptions and other unexpected errors
       http_helpers.ApiHelper.handleException(context, e);
       await Sentry.captureException(e, stackTrace: stackTrace);
       return [];
     }
   }
-Future<Map<String, dynamic>> bookAppointment(BuildContext context, Map<String, dynamic> appointmentData) async {
+
+  Future<Map<String, dynamic>> bookAppointment(
+      BuildContext context, Map<String, dynamic> appointmentData) async {
     try {
-      final response = await apiProvider.bookAppointment(context, appointmentData);
+      final response =
+          await apiProvider.bookAppointment(context, appointmentData);
       if (response.statusCode == 201) {
         dynamic responseData = json.decode(response.body);
         // Return the response data if payment URL is present
