@@ -12,6 +12,11 @@ from django.db.models import Exists, OuterRef, Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+from pharmanathi_backend.appointments.models import AppointmentType
+from pharmanathi_backend.appointments.serializers import (
+    DoctorPublicListMinimalSerializer,
+)
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -20,15 +25,18 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from pharmanathi_backend.appointments.models import AppointmentType
-from pharmanathi_backend.utils import user_is_doctor
-
-from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
+from ..models import (
+    Address,
+    Doctor,
+    InvalidationReason,
+    PracticeLocation,
+    Speciality,
+    VerificationReport,
+)
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
     DoctorPublicListSerializer,
-    PracticeLocationModelSerializer,
     PracticeLocationModelSerializerWithExtAddress,
     SpecialityModelSerializer,
     UserSerializer,
@@ -176,6 +184,9 @@ class PublicDoctorModelViewSet(DoctorModelViewSet):
     ).prefetch_related("user", "practicelocations", "specialities", "appointmenttype_set")
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_class(self):
+        return DoctorPublicListMinimalSerializer
+
     def get_queryset(self):
         if user_is_doctor(self.request):
             # Because we would like to allow non-verified doctors to update their details
@@ -240,6 +251,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
         social_token = adapter.parse_token(tokens_to_parse)
         social_token.app = app
         idinfo = id_token.verify_oauth2_token(access_token, requests.Request(), app.client_id)
+
         login = google_provider.sociallogin_from_response(request, idinfo)
         # we force the assignment of the provider with the selected app so that
         # no arbitrary/app-empty provider will be selected later causing a MultipleObjectReturned later
