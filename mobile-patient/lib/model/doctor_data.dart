@@ -20,17 +20,17 @@ class Doctor {
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
-    final doctorFirstName = json['user']['first_name'] ?? '';
-    final doctorLastName = json['user']['last_name'] ?? '';
+    final doctorFirstName = json['user']['first_name'];
+    final doctorLastName = json['user']['last_name'];
     final doctorName = '$doctorFirstName $doctorLastName';
 
-    // Convert the list of appointment types to a list of AppointmentType objects
+    //* Convert the list of appointment types to a list of AppointmentType objects
     final appointmentTypes = (json['appointment_types'] as List<dynamic>?)
             ?.map((item) => AppointmentType.fromJson(item))
             .toList() ??
         [];
 
-    // Extracting specialities as a list of strings
+    //* Extracting specialities as a list of strings
     final specialities = (json['specialities'] as List<dynamic>?)
             ?.map((item) => item.toString())
             .toList() ??
@@ -38,12 +38,12 @@ class Doctor {
 
     return Doctor(
       doctorName: doctorName,
-      isVerified: json['is_verified'] ?? false,
+      isVerified: json['is_verified'],
       appointmentTypes: appointmentTypes,
       imageURL: json['imageURL'] ?? '',
       specialities: specialities,
-      id: json['id'] ?? 0,
-      hasConsultedBefore: json['has_consulted_before'] ?? false,
+      id: json['id'],
+      hasConsultedBefore: json['has_consulted_before'] ,
     );
   }
 
