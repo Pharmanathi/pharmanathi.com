@@ -6,9 +6,12 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
-from pharmanathi_backend.users.tasks import mail_user_task, set_rejection_reason_task
+from pharmanathi_backend.users.tasks import (
+    mail_user_task,
+    set_rejection_reason_task,
+    update_user_social_profile_picture_url_task,
+)
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 
@@ -62,6 +65,13 @@ class User(BaseCustomModel, AbstractUser):
     @property
     def is_doctor(self) -> bool:
         return hasattr(self, "doctor_profile")
+
+    def update_picture_url(self, url: str) -> None:
+        update_user_social_profile_picture_url_task.delay(self.pk, url)
+
+    @property
+    def image_url(self):
+        return self._profile_pic
 
 
 class Speciality(BaseCustomModel):

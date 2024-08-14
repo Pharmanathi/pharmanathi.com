@@ -40,7 +40,7 @@ class Doctor {
       doctorName: doctorName,
       isVerified: json['is_verified'] ?? false,
       appointmentTypes: appointmentTypes,
-      imageURL: json['imageURL'] ?? '',
+      imageURL: json["user"]['image_url'] ?? '',
       specialities: specialities,
       id: json['id'] ?? 0,
       hasConsultedBefore: json['has_consulted_before'] ?? false,

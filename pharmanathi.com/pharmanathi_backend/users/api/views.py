@@ -303,6 +303,10 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
                 )
                 new_mp.run_auto_mp_verification_task()
 
+        # Because Google profile picture's URL change.
+        # TODO(nehemie): add tests
+        user.update_picture_url(idinfo.get("picture"))
+
         return attrs
 
 
