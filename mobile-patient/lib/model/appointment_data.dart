@@ -34,7 +34,7 @@ class Appointment {
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
-   // Parse the date string to a DateTime object in UTC
+    // Parse the date string to a DateTime object in UTC
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
 
     // Convert the UTC DateTime object to local time
@@ -72,13 +72,10 @@ class Appointment {
       print('Error parsing start_time: $error');
     }
 
-    String appointmentType = "";
-
-    if (json['appointment_type']["is_online"] == true) {
-      appointmentType = "Online Consultation";
-    } else {
-      appointmentType = "In Person Visit";
-    }
+    //* Removed the unnecessary '== true' because we trust Dart to know what true means. ;)
+    String appointmentType = json['appointment_type']["is_online"]
+        ? "Online Consultation"
+        : "In Person Visit";
 
     return Appointment(
       id: json['id'],
@@ -92,7 +89,7 @@ class Appointment {
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],
-      appointmentType:AppointmentType.fromJson(json['appointment_type']), 
+      appointmentType: AppointmentType.fromJson(json['appointment_type']),
     );
   }
 }
