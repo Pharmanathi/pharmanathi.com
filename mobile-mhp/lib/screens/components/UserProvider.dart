@@ -10,7 +10,7 @@ class UserProvider with ChangeNotifier {
   String? email;
   String? name;
   String? picture;
-    int? contact;
+  int? contact;
   String? backendToken;
   String _selectedAppointmentType = 'In Person Visit';
 
@@ -66,12 +66,12 @@ class UserProvider with ChangeNotifier {
   }
 
   //* Method to check if it's the first time sign-in
-  Future<bool> isFirstTimeSignIn() async {
+  Future<bool> hasIncompleteDoctorProfile() async {
     //* Check if any of the required user information is empty
-    return user?.doctorProfile?.hashCode == null ||
-        user?.doctorProfile?.mpNo == null ||
-        user?.doctorProfile?.specialities == null ||
-        user?.doctorProfile?.practiceLocations == null;
+    return email == null ||
+        user?.doctorProfile?.specialities.isEmpty == true ||
+        user?.doctorProfile?.practiceLocations.isEmpty == true ||
+        user?.doctorProfile?.hpcsaNo.isEmpty == true;
   }
 
   //* Method to set schedule data
