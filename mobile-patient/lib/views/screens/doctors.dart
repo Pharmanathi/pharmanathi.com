@@ -163,7 +163,6 @@ class _DoctorsState extends State<Doctors> {
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         // border: Border(
@@ -304,6 +303,7 @@ class _DoctorsState extends State<Doctors> {
                                 ),
                               )
                             : ListView.builder(
+                                padding: const EdgeInsets.all(8),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: filteredDoctorDetails.length,
