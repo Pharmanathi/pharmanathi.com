@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import '../../models/appointment.dart';
 
 class PatientProfileTile extends StatelessWidget {
-   final Appointment appointment;
+  final Appointment appointment;
 
-     //* Function to generate a random color
+  //* Function to generate a random color
   Color getRandomColor() {
     Random random = Random();
     return Color.fromARGB(
@@ -38,20 +38,30 @@ class PatientProfileTile extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CircleAvatar(
-                              backgroundColor: (appointment.imageURL?.isNotEmpty ?? false) 
-                                  ? null // No background color if imageURL is available
-                                  : getRandomColor(), // Random background color if imageURL is not available
-                              child: (appointment.imageURL?.isNotEmpty ?? false) 
-                                  ? Image.network(appointment.imageURL?? '')
-                                  : Text(
-                                      appointment.patientName.isNotEmpty ? appointment.patientName : '',
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ), //* Display the first letter of the name if imageURL is not available
-                              radius: 30,
+                    backgroundColor: (appointment.imageURL?.isNotEmpty ?? false)
+                        ? null // No background color if imageURL is available
+                        : getRandomColor(), // Random background color if imageURL is not available
+                    child: (appointment.imageURL?.isNotEmpty ?? false)
+                        ? ClipOval(
+                            child: Image.network(
+                              appointment.imageURL!,
+                              fit: BoxFit
+                                  .cover, //* Ensure the image fits well within the circle
                             ),
+                          )
+                        : Text(
+                            appointment.patientName.isNotEmpty
+                                ? appointment.patientName[
+                                    0] //* Display the first letter of the name if imageURL is not available
+                                : '',
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    radius: 30,
+                  ),
                   Positioned(
                     right: 0,
                     bottom: 0,
