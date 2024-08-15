@@ -21,14 +21,18 @@ def mail_admins_task(subject, simple_message, html_message):
         subject,
         simple_message,
         fail_silently=False,
-        html_message=html_message,
+        html_message=html_message.replace("\n", "<br>"),
     )
 
 
 @celery_app.task
 def mail_user_task(user_email, subject, message, html_message=None):
     return send_mail(
-        f"[Pharmanthi] {subject}", message, recipient_list=[user_email], from_email=None, html_message=html_message
+        f"[Pharmanthi] {subject}",
+        message,
+        recipient_list=[user_email],
+        from_email=None,
+        html_message=html_message.replace("\n", "<br>"),
     )
 
 

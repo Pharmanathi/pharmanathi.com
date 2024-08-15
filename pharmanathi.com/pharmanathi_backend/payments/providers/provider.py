@@ -1,9 +1,6 @@
 """Code for base provider interface, a.k.a strategy
 """
 
-from decimal import Decimal
-from typing import Union
-
 import requests
 from django.conf import settings
 
@@ -89,7 +86,9 @@ class BaseProvider:
         """
         raise NotImplementedError()
 
-    def process_payment(cb_request_data: dict):
+    def process_payment(
+        cb_request_data: dict,
+    ):
         """Handle callback request from providers
 
         Args:
@@ -138,6 +137,25 @@ class BaseProvider:
         from ..models import Payment
 
         return Payment.objects.get(reference=reference)
+
+    def execute_callback(self, payment, old_status):
+        payment.callback(old_status)
+
+    def get_payment_feedback(self, payment) -> str:
+        """Return the feedback from Payment provider
+        after processing the payment.
+
+        Args:
+            payment (Payment): the payment object to work
+            with.
+
+        Raises:
+            NotImplementedError
+
+        Returns:
+            str: message from the provider
+        """
+        raise NotImplementedError()
 
 
 class MedicalAidProvider(BaseProvider):
@@ -226,7 +244,7 @@ class CashProvider(BaseProvider):
         """
         raise NotImplementedError()
 
-    def make_payment_instance(self, amount, user, reference):
+    def make_payment_instance(self, reverse_lookup_field, amount, user, reference):
         """Return a payment instance configured as per your provider. Override this method
         if your provider requires making changes that may have impacted the actual data.
         For instance, the Paystack provider requires sending amount in subunit, meaning:
@@ -254,25 +272,45 @@ class CashProvider(BaseProvider):
         """
         from pharmanathi_backend.payments.models import Payment
 
-        return Payment.objects.create(amount=amount, user=user, reference=reference, _provider=self.name)
+        return Payment.objects.create(
+            reverse_lookup_field=reverse_lookup_field,
+            amount=amount,
+            user=user,
+            reference=reference,
+            _provider=self.name,
+        )
 
-    def initialize_payment(self, *args, **kwargs) -> tuple:
+    def initialize_payment(self, reverse_lookup_field, amount, email) -> tuple:
         """Intialize payment and return it along with the payment
         URL the client should redirect to to complete the payment process.
 
         Returns:
             tuple: (payment: Payment, payment_url: str)
+            reverse_lookup_field (str): field use for reverse lookup
+            on payment object.
         """
         from ..models import Payment
 
-        email, amount = self.parse_initalization_request_data(*args, **kwargs)
+        email, amount = self.parse_initalization_request_data(**{"amount": amount, "email": email})
         user = Payment.get_user_by_email(email)
-        intialization_req_body = self.build_initialization_req_body(*args, **kwargs)
+        intialization_req_body = self.build_initialization_req_body(**{"amount": amount, "email": email})
         reference, payment_url, _ = self.parse_intialization_response(
             self.get_intialization_data(intialization_req_body)
         )
-        payment = self.make_payment_instance(amount=amount, user=user, reference=reference)
+        payment = self.make_payment_instance(reverse_lookup_field, amount, user, reference)
         return (payment, {"payment_url": payment_url})
+
+    def parse_callback_data(data: dict) -> dict:
+        """Can be utilized to parse data from callback requests
+        from providers.
+
+        Args:
+            data (dict): i.e a POST request's body
+
+        Returns:
+            dict: _description_
+        """
+        raise NotImplementedError()
 
 
 provider_registry = {}
