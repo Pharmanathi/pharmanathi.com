@@ -17,9 +17,9 @@ from .providers.provider import (
 UserModel = get_user_model()
 
 
-class RelatedObjectNotFoundException(Exception):
-    """To be raised if the supposed related object
-    was not found.
+class RelatedObjectNotLinked(Exception):
+    """To be raised if Payment instance was never
+    linked to a related object.
     """
 
     message = "Reverse lookup failed to find the related object through reverse_lookup_field"
@@ -62,7 +62,7 @@ class Payment(models.Model):
     )
 
     def __str__(self):
-        return f"<Payment({self.status}): {self.reference}>"
+        return f"<Payment({self.status}) {self.id}: {self.reference}>"
 
     @classmethod
     def get_user_by_email(cls, email):
@@ -76,7 +76,7 @@ class Payment(models.Model):
         Returns:
             _type_: _description_
         """
-        if hasattr(settings, "PAYMENT_USER_EMAIL_FIELD"):
+        if hasattr(settings, "PAYMENT_USER_EMAIL_FIELD") and settings.PAYMENT_USER_EMAIL_FIELD not in ["", " "]:
             email_field = settings.PAYMENT_USER_EMAIL_FIELD
         else:
             email_field = "email"
@@ -94,9 +94,9 @@ class Payment(models.Model):
 
     @property
     def provider(self):
-        if hasattr(self, "provider_instance") is False:
-            self.provider_instance = get_provider(self._provider)
-        return self.provider_instance
+        if hasattr(self, "_provider_instance") is False:
+            self._provider_instance = get_provider(self._provider)
+        return self._provider_instance
 
     def _save_pending_changes(self):
         self.save()
@@ -116,19 +116,19 @@ class Payment(models.Model):
         if save:
             self._save_pending_changes()
 
-    def get_related_object(self, raise_not_found=False):
+    def get_related_object(self, raise_not_linked=False):
         """Return the instance from self.reverse_lookup_field
 
         Args:
-            raise_not_found (bool, optional): Whether we should raise an exception
+            raise_not_linked (bool, optional): Whether we should raise an exception
             if unable to find the object. Defaults to False.
         """
         if self.reverse_lookup_field is None:
             raise ValueError("self.reverse_lookup_field is unset")
 
         if hasattr(self, self.reverse_lookup_field) is False:
-            if raise_not_found:
-                raise RelatedObjectNotFoundException()
+            if raise_not_linked:
+                raise RelatedObjectNotLinked()
             return None
         return getattr(self, self.reverse_lookup_field)
 

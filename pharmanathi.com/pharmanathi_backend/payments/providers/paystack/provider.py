@@ -42,7 +42,6 @@ class PaystackProvider(CashProvider):
         }
 
     def make_payment_instance(self, reverse_lookup_field, amount, user, reference) -> Payment:
-        # divided by 100 because https://paystack.com/docs/api/#supported-currency
         return Payment.objects.create(
             reverse_lookup_field=reverse_lookup_field,
             amount=amount,
