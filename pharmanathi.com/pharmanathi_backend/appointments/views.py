@@ -1,9 +1,9 @@
+from pharmanathi_backend.payments.models import Payment
+from pharmanathi_backend.users.permissions import IsVerifiedDoctor
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-
-from pharmanathi_backend.users.permissions import IsVerifiedDoctor
-from pharmanathi_backend.utils import user_is_doctor
 
 from . import serializers
 
@@ -141,7 +141,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if user_is_doctor(self.request):
-            return self.queryset.filter(doctor__user=self.request.user)
+            return self.queryset.filter(doctor__user=self.request.user, payment__status=Payment.PaymentStatus.PAID)
 
         return self.queryset.filter(patient=self.request.user)
 
