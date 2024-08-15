@@ -71,7 +71,7 @@ def test_patient_list_appointments(authenticated_user_api_client):
 
     appointment_doctor_json = res.data[1].get("doctor")
     assert sorted(appointment_doctor_json.get("user").keys()) == sorted(
-        ["first_name", "last_name", "contact_no", "initials", "title", "id"]
+        ["first_name", "last_name", "contact_no", "initials", "title", "id", "image_url"]
     )
     appointment_payment_json = res.data[1].get("payment")
     assert sorted(appointment_payment_json.keys()) == sorted(["provider", "user", "status"])

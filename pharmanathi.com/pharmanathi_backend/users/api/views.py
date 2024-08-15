@@ -12,11 +12,6 @@ from django.db.models import Exists, OuterRef, Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from pharmanathi_backend.appointments.models import AppointmentType
-from pharmanathi_backend.appointments.serializers import (
-    DoctorPublicListMinimalSerializer,
-)
-from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -25,14 +20,11 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from ..models import (
-    Address,
-    Doctor,
-    InvalidationReason,
-    PracticeLocation,
-    Speciality,
-    VerificationReport,
-)
+from pharmanathi_backend.appointments.models import AppointmentType
+from pharmanathi_backend.appointments.serializers import DoctorPublicListMinimalSerializer
+from pharmanathi_backend.utils import user_is_doctor
+
+from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
@@ -94,8 +86,9 @@ class DoctorModelViewSet(ModelViewSet):
     def get_serializer_class(self):
         if user_is_doctor(self.request):
             return super().get_serializer_class()
-
-        return DoctorPublicListSerializer
+        elif self.request.user.is_staff:
+            return DoctorPublicListSerializer
+        return DoctorPublicListMinimalSerializer
 
     @action(detail=True, methods=["GET"])
     @permission_classes_decorator([permissions.IsAuthenticated])
@@ -115,11 +108,11 @@ class DoctorModelViewSet(ModelViewSet):
         return Response(doctor.get_available_slots_on(appointment_date, duration))
 
     def partial_update(self, request, *args, **kwargs):
+        # TODO: move some of this logic close to model, e.g: update from_http_request()
         doctor = self.get_object()
         data = request.data.copy()
         should_update_specialities = False
         should_update_practice_locations = False
-
         # Dealing with nested relationships requires custom handling.
         # Hence, if any of `specialities` or `practice_locations` is
         # present in the payload, we will extract them to be processed
@@ -184,8 +177,8 @@ class PublicDoctorModelViewSet(DoctorModelViewSet):
     ).prefetch_related("user", "practicelocations", "specialities", "appointmenttype_set")
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_serializer_class(self):
-        return DoctorPublicListMinimalSerializer
+    # def get_serializer_class(self):
+    #     return DoctorPublicListMinimalSerializer
 
     def get_queryset(self):
         if user_is_doctor(self.request):

@@ -14,6 +14,7 @@ class PaymentFactory(DjangoModelFactory):
     user = SubFactory(UserFactory)
     reference = factory.fuzzy.FuzzyText()
     json = {}
+    reverse_lookup_field = factory.fuzzy.FuzzyText(length=100)
 
     class Meta:
         model = Payment

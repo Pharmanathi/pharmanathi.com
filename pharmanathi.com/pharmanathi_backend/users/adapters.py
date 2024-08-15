@@ -31,7 +31,6 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
         """
         from allauth.socialaccount.models import SocialApp
 
-        print(f"Social app name to use is {app_name}")
         self._default_app = SocialApp.objects.get(name=app_name)
 
     def is_open_for_signup(self, request: HttpRequest, sociallogin: SocialLogin) -> bool:
