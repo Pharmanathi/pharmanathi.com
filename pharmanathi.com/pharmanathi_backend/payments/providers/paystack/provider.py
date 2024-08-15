@@ -41,12 +41,20 @@ class PaystackProvider(CashProvider):
             "callback_url": self.callback_url,
         }
 
-    def make_payment_instance(self, amount, user, reference) -> Payment:
+    def make_payment_instance(self, reverse_lookup_field, amount, user, reference) -> Payment:
         # divided by 100 because https://paystack.com/docs/api/#supported-currency
-        return Payment.objects.create(amount=amount / 100, user=user, reference=reference, _provider=self.name)
+        return Payment.objects.create(
+            reverse_lookup_field=reverse_lookup_field,
+            amount=amount,
+            user=user,
+            reference=reference,
+            _provider=self.name,
+        )
 
     def process_payment(self, cb_request_data: dict):
         payment = self.get_payment_by_reference(cb_request_data.get("data").get("reference"))
+        old_status = payment.status
+
         status = cb_request_data.get("data").get("status")
         if status == "success":
             payment.set_status_paid()
@@ -55,3 +63,20 @@ class PaystackProvider(CashProvider):
 
         payment.json = cb_request_data
         payment.save()
+        self.execute_callback(payment, old_status)
+
+    def get_payment_feedback(self, payment) -> str:
+        if type(payment.json.get("data").get("log")) is dict and "history" in payment.json.get("data").get("log"):
+            logs = payment.json.get("data").get("log").get("history")
+            logs.sort(key=lambda l: l.get("time"))
+            return logs[-1].get("message")
+        else:
+            return payment.json.get("data").get("status")
+
+    def parse_callback_data(data: dict) -> dict:
+        return {
+            "reference": data.get("data").get("reference"),
+            "status": data.get("data").get("status"),
+            "amount": int(data.get("data").get("amount")) / 100,
+            "user": data.get("data").get("customer"),
+        }
