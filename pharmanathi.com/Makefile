@@ -45,3 +45,6 @@ django-shell:
 
 bash:
 	@docker compose run --rm django bash
+
+coverage-html-report: test
+	@docker compose run --rm django coverage html -d coverage_html
