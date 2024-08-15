@@ -15,24 +15,16 @@ class AppointmentRepository {
       final response = await apiProvider.fetchAppointmentData(context);
       if (response.statusCode == 200) {
         dynamic decodedData = json.decode(response.body);
-        if (decodedData is List &&
-            decodedData.isNotEmpty &&
-            decodedData.first is Map) {
+        if (decodedData is List && decodedData.isNotEmpty) {
           return decodedData
               .map<Appointment>((json) => Appointment.fromJson(json))
               .toList();
-        } else {
-          http_helpers.Apihelper.handleError(context, response);
-          return [];
         }
-      } else {
-        http_helpers.Apihelper.handleError(context, response);
-        return [];
-      }
+      } 
     } catch (e, stackTrace) {
       http_helpers.Apihelper.handleException(context, e);
-      await Sentry.captureException(e, stackTrace: stackTrace);
-      return [];
+      Sentry.captureException(e, stackTrace: stackTrace);
     }
+    return [];
   }
 }
