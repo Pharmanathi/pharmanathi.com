@@ -17,7 +17,26 @@ from .providers.provider import (
 UserModel = get_user_model()
 
 
+class RelatedObjectNotFoundException(Exception):
+    """To be raised if the supposed related object
+    was not found.
+    """
+
+    message = "Reverse lookup failed to find the related object through reverse_lookup_field"
+
+    def __init__(self, *args: object) -> None:
+        super().__init__(self.message)
+
+
+class MissingOnPaymentCallabackException(Exception):
+    message = f"Payment related object missing on_payment_callback attribute."
+
+    def __init__(self, *args: object) -> None:
+        super().__init__(self.message)
+
+
 class Payment(models.Model):
+
     class PaymentStatus(models.TextChoices):
         PENDING = ("PENDING", "Pending")
         PAID = ("PAID", "Paid")
@@ -27,12 +46,21 @@ class Payment(models.Model):
         provider_choices = list(map(lambda p: (p, p), provider_registry.keys()))
         return provider_choices
 
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     amount = models.DecimalField(decimal_places=2, max_digits=6, null=False, blank=False)
     user = models.ForeignKey(UserModel, on_delete=models.PROTECT, blank=False)
     _provider = models.CharField(max_length=25, choices=get_provider_choices, null=False, blank=True)
     reference = models.CharField(max_length=32, null=False, blank=True)
     status = models.CharField(max_length=10, choices=PaymentStatus, default=PaymentStatus.PENDING)
     json = models.JSONField(null=True, blank=True)
+
+    # we need a way to inform the related model of some events e.g: payment has changed
+    # statuses. Hence, since we can use a reverse-lookup using realtionships, the field
+    # below serves the pupose of specifying the attribute to use for the reverse lookup
+    reverse_lookup_field = models.CharField(
+        max_length=100, null=True, blank=True  # TODO(nehemie): make non-nullable next release
+    )
 
     def __str__(self):
         return f"<Payment({self.status}): {self.reference}>"
@@ -88,3 +116,46 @@ class Payment(models.Model):
         self.status = Payment.PaymentStatus.PENDING
         if save:
             self._save_pending_changes()
+
+    def get_related_object(self, raise_not_found=False):
+        """Return the instance from self.reverse_lookup_field
+
+        Args:
+            raise_not_found (bool, optional): Whether we should raise an exception
+            if unable to find the object. Defaults to False.
+        """
+        if self.reverse_lookup_field is None:
+            raise ValueError("self.reverse_lookup_field is unset")
+
+        if hasattr(self, self.reverse_lookup_field) is False:
+            if raise_not_found:
+                raise RelatedObjectNotFoundException()
+            return None
+        return getattr(self, self.reverse_lookup_field)
+
+    def callback(self, old_status):
+        """Notify the related object of status change.
+        The on_payment_callback() method or function on the related
+        object  should accept 2 parameters which represent the payment's
+        status before change, and the payment after change.
+
+        Sample Implementation of on_payment_callback:
+        ```
+        def on_payment_callback(self, old_status):
+            if old_status == "PENDING" and self.payment.status == "PAID":
+                print("Payment successful")
+            else:
+                print(f"payment {payment_updated.status}")
+        ```
+        """
+        print(f"{old_status} ---> {self.status}")
+        self.refresh_from_db()
+        print(f"{old_status} ---> {self.status}")
+        rel_obj = self.get_related_object(True)
+        if hasattr(rel_obj, "on_payment_callback") is None:
+            raise MissingOnPaymentCallabackException()
+
+        rel_obj.on_payment_callback(self, old_status)
+
+    def get_message(self):
+        return self.provider.get_payment_feedback(self)

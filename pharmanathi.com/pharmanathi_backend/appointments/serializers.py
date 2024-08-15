@@ -49,8 +49,9 @@ class DoctorPublicListMinimalSerializer(DoctorPublicListSerializer):
         depth = 1
         fields = ["user", "specialities", "is_verified", "has_consulted_before", "id"]
 
-    def to_representation(self, instance):
-        return super(DoctorPublicListSerializer, self).to_representation(instance)
+    # Use default since it passed down the needed appointment_types
+    # def to_representation(self, instance):
+    #     return super(DoctorPublicListSerializer, self).to_representation(instance)
 
 
 class AppointmentPublicSerializer(AppointmentSerializer):

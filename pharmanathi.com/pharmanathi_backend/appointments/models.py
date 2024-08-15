@@ -2,13 +2,13 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from rest_framework.exceptions import ValidationError
-
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
+from pharmanathi_backend.users.tasks import mail_admins_task, mail_user_task
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -93,7 +93,7 @@ class Appointment(BaseCustomModel):
     appointment_type = models.ForeignKey(AppointmentType, on_delete=models.PROTECT)
     reason = models.CharField(max_length=500)
     payment_process = models.CharField(max_length=2, choices=PAYMENT_PROCESSES_CHOICES)
-    payment = models.OneToOneField(Payment, on_delete=models.PROTECT)
+    payment = models.OneToOneField(Payment, on_delete=models.PROTECT)  # TODO(nehemie): check this
 
     # @TODO: verification that patient is not self. Meaning, patient should not be
     # able to book an appointment with themselves.
@@ -138,7 +138,9 @@ class Appointment(BaseCustomModel):
             # create payment
             payment_provider = get_provider(request.data.get("payment_provider"))
             payment, payment_extras = payment_provider.initialize_payment(
-                **{"amount": appointment_type.cost.to_eng_string(), "email": request.user.email}
+                "appointment",
+                appointment_type.cost.to_eng_string(),
+                request.user.email,
             )
 
             # create appoinment
@@ -170,6 +172,32 @@ class Appointment(BaseCustomModel):
             sz_appointment.save()
 
         return (payment.appointment, payment, payment_extras)
+
+    def on_payment_callback(self, payment, old_status):
+        from pharmanathi_backend.payments.models import Payment
+
+        if old_status in (Payment.PaymentStatus.PENDING, Payment.PaymentStatus.FAILED) and payment.status == "PAID":
+            admin_message = f"New payment with reference {self.payment.reference.upper()} by user {self.payment.user}"
+            mail_admins_task.delay("New Successful Payment", admin_message, admin_message)
+
+            message = f"""
+                Here are the details of your Appointment
+                Date & Time: {self.start_time.strftime("%B %d, %Y")}
+                
+                Payment Details
+                Reference: {self.payment.reference.upper()}
+                Amount: {self.payment.amount}
+                Date & Time: {self.payment.date_modified.strftime("%B %d, %Y")}
+                
+                Pharmanathi.com
+                support@pharmanthi.com
+            """
+            mail_user_task.delay(self.doctor.user.email, "New Appointment Confirmed", message, message)
+            mail_user_task.delay(self.patient.email, "Appointment Confirmed", message, message)
+        else:
+            subject = f"Payment {payment.status}"
+            message = f"Payment with reference {payment.status} with reason: {payment.get_message()}"
+            mail_user_task.delay(self.patient.email, subject, message, message)
 
 
 class Rating(BaseCustomModel):
