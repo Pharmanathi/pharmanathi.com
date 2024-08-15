@@ -12,7 +12,7 @@ class PaymentFactory(DjangoModelFactory):
     status = factory.fuzzy.FuzzyChoice(Payment.PaymentStatus)
     _provider = factory.fuzzy.FuzzyChoice(get_all_providers())
     user = SubFactory(UserFactory)
-    reference = factory.fuzzy.FuzzyText()
+    reference = factory.fuzzy.FuzzyText(length=32)
     json = {}
     reverse_lookup_field = factory.fuzzy.FuzzyText(length=100)
 
