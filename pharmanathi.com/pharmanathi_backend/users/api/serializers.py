@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from rest_framework import serializers
+
 from pharmanathi_backend.users.models import (
     Address,
     BaseCustomModel,
@@ -10,7 +12,6 @@ from pharmanathi_backend.users.models import (
 )
 from pharmanathi_backend.users.models import User as UserType
 from pharmanathi_backend.users.models import VerificationReport
-from rest_framework import serializers
 
 User = get_user_model()
 
@@ -105,9 +106,7 @@ class DoctorPublicListSerializer(DoctorModelSerializer):
 
     def to_representation(self, instance):
         from pharmanathi_backend.appointments.models import AppointmentType
-        from pharmanathi_backend.appointments.serializers import (
-            AppointmentTypeSerializer,
-        )
+        from pharmanathi_backend.appointments.serializers import AppointmentTypeSerializer
 
         repr = super().to_representation(instance)
         return {

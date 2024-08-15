@@ -321,7 +321,6 @@ def test_has_consulted_before_is_True_if_consulted_before(api_client, doctor_wit
     api_client.force_authenticate(user=patient)
     res = api_client.get("/api/doctors/")
     doctor_payload = list(filter(lambda d: d.get("id") == doctor_with_appointment_random.id, res.data))[0]
-    print(doctor_payload)
     assert doctor_payload.get("has_consulted_before") is True
 
 
@@ -349,7 +348,7 @@ def test_users_me_always_returns_empty_verification_reports(unverified_mhp_clien
     assert response.data.get("doctor_profile").get("verification_reports") == []
 
 
-def test_mp_can_builk_update_doctor_profile(mhp_client, speciality):
+def test_mp_can_bulk_update_doctor_profile(mhp_client, speciality):
     # The bulk update includes updating the following models at once:
     # - Doctor
     # - PracticeLocation

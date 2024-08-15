@@ -36,7 +36,6 @@ class MissingOnPaymentCallabackException(Exception):
 
 
 class Payment(models.Model):
-
     class PaymentStatus(models.TextChoices):
         PENDING = ("PENDING", "Pending")
         PAID = ("PAID", "Paid")
@@ -148,9 +147,7 @@ class Payment(models.Model):
                 print(f"payment {payment_updated.status}")
         ```
         """
-        print(f"{old_status} ---> {self.status}")
         self.refresh_from_db()
-        print(f"{old_status} ---> {self.status}")
         rel_obj = self.get_related_object(True)
         if hasattr(rel_obj, "on_payment_callback") is None:
             raise MissingOnPaymentCallabackException()
