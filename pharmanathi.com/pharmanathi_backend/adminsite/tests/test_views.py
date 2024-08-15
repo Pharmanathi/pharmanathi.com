@@ -15,7 +15,6 @@ def test_admisite_redirect_to_login_if_not_authed(web_client):
 def test_home_stats(staff_web_client, unverified_mhp_client):
     # unverified_mhp_client is used to generate an exisiting MP
     res = staff_web_client.get("/custom-admin/")
-    print(dir(res), res.context.get("stats"))
     # atests staff has access to site
     assert res.status_code == 200
 

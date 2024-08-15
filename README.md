@@ -1,7 +1,7 @@
 # Pharmanathi.com
 
 [![Backend CI](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
-![coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
+![coverage](https://img.shields.io/badge/coverage-84%25-brightgreen)
 
 Welcome to Pharmanathi.com.
 

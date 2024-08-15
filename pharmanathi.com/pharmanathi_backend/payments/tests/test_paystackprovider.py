@@ -87,8 +87,13 @@ def test_process_payment_mark_as_paid(paystack_provider):
     payment.set_provider = paystack_provider.name
     payment._save_pending_changes()
 
-    paystack_provider.process_payment(cb)
+    with patch(
+        "pharmanathi_backend.payments.providers.provider.BaseProvider.execute_callback"
+    ) as patched_execute_callback:
+        paystack_provider.process_payment(cb)
+
     payment.refresh_from_db()
+    patched_execute_callback.assert_called
     assert payment.status == "PAID"
 
 
@@ -101,8 +106,13 @@ def test_process_payment_mark_as_unpaid(paystack_provider):
     payment.set_provider = paystack_provider.name
     payment._save_pending_changes()
 
-    paystack_provider.process_payment(cb)
+    with patch(
+        "pharmanathi_backend.payments.providers.provider.BaseProvider.execute_callback"
+    ) as patched_execute_callback:
+        paystack_provider.process_payment(cb)
+
     payment.refresh_from_db()
+    patched_execute_callback.assert_called
     assert payment.status == "FAILED"
 
 
@@ -121,9 +131,14 @@ def test_callback_view_sets_success_failed(status, status_bd, api_client, paysta
 
     pending_payment = PaymentFactory(reference=cb["data"]["reference"])
     pending_payment.set_provider(paystack_provider.name)
+    with patch(
+        "pharmanathi_backend.payments.providers.provider.BaseProvider.execute_callback"
+    ) as patched_execute_callback:
+        response = api_client.post(f"/api/payments/cb/{pending_payment.provider.name}", cb, format="json")
 
-    response = api_client.post(f"/api/payments/cb/{pending_payment.provider.name}", cb, format="json")
     assert response.status_code == 200
+    patched_execute_callback.assert_called
+    patched_execute_callback.assert_called_with(pending_payment, pending_payment.status)
 
     pending_payment.refresh_from_db()
     if status == status:

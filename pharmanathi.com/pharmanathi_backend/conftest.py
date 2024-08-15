@@ -9,7 +9,6 @@ from pharmanathi_backend.appointments.tests.factories import (
     AppointmentFactory,
     AppointmentTypeFactory,
     TimeSlotFactory,
-    get_random_time_str,
 )
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.paystack.provider import PaystackProvider

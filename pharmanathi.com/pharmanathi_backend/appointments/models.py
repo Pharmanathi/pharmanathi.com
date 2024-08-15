@@ -2,13 +2,14 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
+from rest_framework.exceptions import ValidationError
+
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
 from pharmanathi_backend.users.tasks import mail_admins_task, mail_user_task
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
-from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -183,12 +184,12 @@ class Appointment(BaseCustomModel):
             message = f"""
                 Here are the details of your Appointment
                 Date & Time: {self.start_time.strftime("%B %d, %Y")}
-                
+
                 Payment Details
                 Reference: {self.payment.reference.upper()}
                 Amount: {self.payment.amount}
                 Date & Time: {self.payment.date_modified.strftime("%B %d, %Y")}
-                
+
                 Pharmanathi.com
                 support@pharmanthi.com
             """
