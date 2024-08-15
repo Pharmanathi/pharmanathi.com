@@ -6,7 +6,7 @@ import pytest
 
 from pharmanathi_backend.appointments.models import Appointment
 from pharmanathi_backend.payments.models import Payment
-from pharmanathi_backend.payments.tests.factories import PaymentFactory
+from pharmanathi_backend.payments.tests.factories import PaymentFactory, UserFactory
 
 
 def test_parse_initalization_request_data_raises_if_no_email_and_amount(paystack_provider):
@@ -185,3 +185,13 @@ def test_book_appointment_with_paysfast(authenticated_user_api_client, appointme
     assert "payment_url" in response.data.get("action_data")
     assert response.data.get("appointment").get("payment").get("provider") == paystack_provider.name
     assert response.data.get("appointment").get("payment").get("status") == Payment.PaymentStatus.PENDING
+
+
+@pytest.mark.django_db
+def test_make_payment(paystack_provider):
+    user = UserFactory()
+    paystack_provider.make_payment_instance("some_field", 100, user, "sample_reference")
+
+    assert Payment.objects.filter(
+        reverse_lookup_field="some_field", amount=100, user=user, reference="sample_reference"
+    )
