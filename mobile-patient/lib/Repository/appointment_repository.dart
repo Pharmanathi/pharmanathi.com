@@ -15,23 +15,18 @@ class AppointmentRepository {
       final response = await apiProvider.fetchAppointmentData(context);
       if (response.statusCode == 200) {
         final decodedData = json.decode(response.body);
-        if (decodedData is List &&
-            decodedData.isNotEmpty &&
-            decodedData.first is Map) {
+        if (decodedData is List && decodedData.first is Map) {
           return decodedData
               .map<Appointment>((json) => Appointment.fromJson(json))
               .toList();
         }
       }
-      //* Handle invalid data or non-200 status code
-      http_helpers.ApiHelper.handleError(context, response);
-      return [];
     } catch (e, stackTrace) {
       //* Handle network exceptions and other unexpected errors
       http_helpers.ApiHelper.handleException(context, e);
-      await Sentry.captureException(e, stackTrace: stackTrace);
-      return [];
+      Sentry.captureException(e, stackTrace: stackTrace);
     }
+    return [];
   }
 
   Future<Map<String, dynamic>> bookAppointment(

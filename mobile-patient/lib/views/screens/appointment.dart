@@ -1,3 +1,4 @@
+// TODO(nehemie): rename this module to "appointments"(plural)
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
