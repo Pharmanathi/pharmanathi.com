@@ -16,6 +16,7 @@ services:
       - mailpit
     volumes:
       - ..:/src:z
+      - ./coverage_html:/coverage_html
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
