@@ -3,7 +3,6 @@ import random
 from unittest.mock import patch
 
 import pytest
-
 from pharmanathi_backend.appointments.tests.factories import (
     Appointment,
     AppointmentFactory,
@@ -89,7 +88,7 @@ def test_patient_cannot_list_unrelated_appointments(authenticated_user_api_clien
     assert res.data == []
 
 
-def test_get_patient_unpaid_appointment(authenticated_user_api_client, pending_payment):
+def test_patient_get_unpaid_appointment(authenticated_user_api_client, pending_payment):
     patient = authenticated_user_api_client.user
     payment = PaymentFactory(user=patient, status=Payment.PaymentStatus.PENDING)
     appointment = AppointmentFactory(patient=patient, payment=payment)
@@ -97,7 +96,7 @@ def test_get_patient_unpaid_appointment(authenticated_user_api_client, pending_p
     assert res.status_code == 200
 
 
-def test_get_patient_paid_appointment(authenticated_user_api_client):
+def test_patient_get_paid_appointment(authenticated_user_api_client):
     patient = authenticated_user_api_client.user
     payment = PaymentFactory(user=patient, status=Payment.PaymentStatus.PAID)
     appointment = AppointmentFactory(patient=patient, payment=payment)
@@ -110,3 +109,12 @@ def test_patient_cannot_get_unrelated_appointment(authenticated_user_api_client)
     unrelated_appointment = AppointmentFactory(patient=UserFactory())
     res = authenticated_user_api_client.get(f"/api/appointments/{unrelated_appointment.id}/")
     assert res.status_code == 404
+
+
+def test_mp_cannot_list_unpaidfor_appointments(verified_mhp_client, pending_payment):
+    unpaid_appointment = AppointmentFactory(
+        patient=pending_payment.user, payment=pending_payment, doctor=verified_mhp_client.user.doctor_profile
+    )
+    res = verified_mhp_client.get("/api/appointments/")
+    res.status_code == 200
+    assert unpaid_appointment.id not in map(lambda a: a.id, res.data)
