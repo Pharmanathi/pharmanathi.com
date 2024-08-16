@@ -70,7 +70,7 @@ def auto_mp_verification_task(mp_pk):
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
     verification_type = VerificationReport.det_verification_type(mp)
     identifier = mp.mp_no if mp.is_pharmacist else mp.hpcsa_no
-    verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}"
+    verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}&first_name={mp.user.first_name}&last_name={mp.user.last_name}"
     admin_logger.info(f"Starting {verification_type} verification on MP {mp} with URL {verification_url}")
     verifi_response = requests.get(verification_url)
     verifi_response_json = verifi_response.json()
