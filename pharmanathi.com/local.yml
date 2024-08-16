@@ -108,8 +108,19 @@ services:
     depends_on:
       - web-driver
     build: ./verifi-standalone
+    env_file: ./.envs/.verifi
     volumes:
       - ./verifi-standalone/src:/app:z
     restart: unless-stopped
     ports:
       - 7901:8000
+
+  verifi-sudo:
+    image: python:3.11.9-slim-bullseye
+    depends_on:
+      - verifi
+    ports:
+      - 7902:8000
+    volumes:
+      - ./verifi-standalone/sudos:/www
+    command: ['python', '-m', 'http.server', '8000', '-d', '/www']

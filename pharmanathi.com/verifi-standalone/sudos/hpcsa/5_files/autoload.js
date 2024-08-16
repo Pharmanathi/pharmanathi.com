@@ -1,0 +1,1 @@
+YUI().use('panel',function(Y){window.WaitPanel=new Y.Panel({contentBox:Y.Node.create('<div id="waitpanel" />'),headerContent:'Loading...',bodyContent:'<img src="images/loading.gif" />',fixedcenter:true,close:false,draggable:false,centered:true,modal:true,visible:false,zIndex:100000000,buttons:[]});window.WaitPanel.render(document.body);})
