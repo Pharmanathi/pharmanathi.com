@@ -1,4 +1,6 @@
 import datetime
+from os import environ
+from typing import Union
 
 from flask import Flask, jsonify, request
 from selenium import webdriver
@@ -8,12 +10,22 @@ from selenium.webdriver.common.by import By
 app = Flask(__name__)
 SELENIUM_GRID_HOST = "web-driver"
 
+logs = []
+
+
+def log(text):
+    """Allows for tracing this verification by aggregating logs into the report[]"_logs"] object"""
+    logs.append(f"{datetime.datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {text}")
+
 
 @app.route("/", methods=["GET"])
 def verify():
     """This utility heavily relies on the request arguments it receives.
     The arguments `id` and `type` are compulsory and must be correct.
     """
+    identifier = request.args.get("id", None)
+    first_name = request.args.get("first_name", None)
+    last_name = request.args.get("last_name", None)
     identifier = request.args.get("id", None)
     mp_type = request.args.get("type", None)
 
@@ -43,19 +55,24 @@ def verify():
         else:
             raise ValueError(f"Invalid value for request({mp_type})")
 
-        data = verification_func(driver, identifier)
+        log(f"Starting collection with ${identifier, first_name, last_name, identifier} using {mp_type}")
+        data = verification_func(driver, identifier, first_name, last_name, identifier)
     except Exception as e:
+        error_message = jsonify({"error": f"Implementation Error: {str(e)}"})
+        log(error_message)
         return (
-            jsonify({"error": f"Implementation Error: {str(e)}"}),
+            error_message,
             500,
         )
     finally:
         driver.quit()
 
+    log(f"Done!")
+    data["_logs"] = logs
     return jsonify(data)
 
 
-def process_sapc(driver, identifier):
+def process_sapc(driver: webdriver.remote.webdriver.WebDriver, identifier):
     """Get a MP credentials from The South African Pharmacy Council
 
     Args:
@@ -75,15 +92,10 @@ def process_sapc(driver, identifier):
         "identifier": identifier,
         "type": "SAPC",
         "registration": {},
-        "_logs": [],
     }
 
-    def log(text):
-        """Allows for tracing this verification by aggregating logs into the report[]"_logs"] object"""
-        report.get("_logs").append(text)
-
     # Search matching stuff.
-    driver.get("https://interns.pharma.mm3.co.za/SearchRegister")
+    driver.get(environ.get("SAPC_ENTRY_URL", None))
     driver.find_element(By.CSS_SELECTOR, "#OnlineSearchTypeId[value='1']").click()
     driver.find_element(By.NAME, "SearchText").clear()
     driver.find_element(By.NAME, "SearchText").send_keys(identifier)
@@ -114,65 +126,142 @@ def process_sapc(driver, identifier):
         return report
 
 
-def process_hpcsa(driver, identifier):
-    """Get a MP credentials from HPCSA
+def process_hpcsa(
+    driver: webdriver.remote.webdriver.WebDriver, registration_no: str, first_name: str, last_name: str, reg_no: str
+) -> dict:
+    """Get a MP credentials from HPCSA"""
+    ENTRY_URL = "https://hpcsaonline.custhelp.com/app/i_reg_form"  # environ.get("HPCSA_ENTRY_URL", None)
+    log(f"Using link {ENTRY_URL}")
+    driver.get(ENTRY_URL)
 
-    Args:
-        driver: the remote web driver to use
-        identifier (_type_): Expects an indetifier of the form `MT___N` where
-            - ___ is 3 space characters, and
-            - N is a string-formatted number, may start with 0.
+    def search_with_reg_no(reg_no):
+        regno_input_field_id = "rn_iRegisterForm_27_registrationCodeNumber"
+        driver.find_element(By.ID, regno_input_field_id).clear()
+        driver.find_element(By.ID, regno_input_field_id).send_keys(reg_no.replace(" ", ""))
 
-        The identifier is of a particular form and
-        any error causes an empty report back. This simply means we can count on an
-        empty report to mean one of:
-        - The MP provided an invalid registration number
-        - The regustration number has no record.
-        Because of the particular format foir the registration number expected by the
-        Pharmacouncil endpoit used for verification, it may become at some point ne-
-        cessary to ensure there's 3 empty space characters between MT and the rest of
-        the registration number. This means that for an MP who has 2 registration numbers
-        linked to their HPCSA profile such as "MT X" and "MT S X" where X is a numerical
-        string, a query with "MT S X" would work well, but "MT X" will only work if
-        there is 3 empty space characters between MT and X.
-    """
-    REQ_URL = f"https://hpcsaonline.custhelp.com/app/iregister_details/reg_number/{identifier}"
-    driver.get(REQ_URL)
-    registrations = []
-    current_registration = []
-    table_index = 1
+        driver.execute_script(
+            "Array.from(document.querySelectorAll('button')).find(b=>b.innerText.indexOf('SEARCH') > -1).classList.add('target-btn')"
+        )
+        search_button = driver.find_element(By.CSS_SELECTOR, ".target-btn")
+        webdriver.ActionChains(driver).click(search_button).pause(5).perform()
+        script = """
+        let tt_text = document.querySelector("#total_records_found").innerText;
+        let total_records_found = parseInt(tt_text.substr(tt_text.indexOf(":") + 1));
+        return total_records_found;
+        """
+        return driver.execute_script(script)
 
-    for table in driver.find_elements(By.TAG_NAME, "table"):
-        titles = []
+    def search_with_names(first_name: str, last_name: str):
+        """Search on the main page using name and surname
 
-        for tr_index, tr in enumerate(table.find_elements(By.TAG_NAME, "tr")):
-            cells = list(map(lambda cell: cell.text, tr.find_elements(By.TAG_NAME, "td")))
-            if tr_index == 0:
-                titles = cells
-                continue
-            else:
-                registration_entry = {}
-                for i in range(len(titles)):
-                    registration_entry[titles[i]] = cells[i]
-                current_registration.append(registration_entry)
+        Args:
+            surname (str)
+            name (str)
+        """
 
-        if table_index == 3:
-            table_index = 1
-            registrations.append(current_registration)
-            current_registration = []
+        first_name_input_field_id = "rn_iRegisterForm_27_fullName"
+        driver.find_element(By.ID, first_name_input_field_id).clear()
+        driver.find_element(By.ID, first_name_input_field_id).send_keys(first_name)
 
-        table_index += 1
+        last_name_input_field_id = "rn_iRegisterForm_27_surName"
+        driver.find_element(By.ID, last_name_input_field_id).clear()
+        driver.find_element(By.ID, last_name_input_field_id).send_keys(last_name)
 
-    return {
-        "datetime": datetime.datetime.now().isoformat(),
-        "identifier": identifier,
-        "type": "HPCSA",
-        "url": REQ_URL,
-        "profile": {
-            "names": driver.find_element(By.ID, "NAME").text,
-            "city": driver.find_element(By.ID, "CITY").text,
-            "province": driver.find_element(By.ID, "PROVINCE").text,
-            "postal_code": driver.find_element(By.ID, "POSTCODE").text,
-        },
-        "registrations": registrations,
-    }
+        driver.execute_script(
+            "Array.from(document.querySelectorAll('button')).find(b=>b.innerText.indexOf('SEARCH') > -1).classList.add('target-btn')"
+        )
+        search_button = driver.find_element(By.CSS_SELECTOR, ".target-btn")
+        webdriver.ActionChains(driver).pause(3).click(search_button).pause(3).perform()
+        script = """
+        let tt_text = document.querySelector("#total_records_found").innerText;
+        let total_records_found = parseInt(tt_text.substr(tt_text.indexOf(":") + 1));
+        return total_records_found;
+        """
+        return driver.execute_script(script)
+
+    def walk_results(registration_no: str):
+        """for each record found, check if registration number correspond
+        until we find a match. This function will either follow the found results
+        or raise an exception if no match found.
+        """
+
+        script = """
+        let btnNext = Array.from(document.querySelectorAll("button")).find(btn => btn.innerText == "Next")
+        function creepWalk(regNo){
+            let link = ""
+            match = Array.from(document.querySelectorAll("tr")).find(tr => tr.querySelectorAll("td")[3]?.innerText.replaceAll(" ", "") == regNo)
+            if(match) {
+                link = Array.from(match.querySelectorAll("td"))[7].querySelector("a").href
+            }
+            else{
+                btnNext.click();
+                creepWalk();
+            }
+            return link
+        }
+        return `${creepWalk(arguments[0])}`
+        """
+        return driver.execute_script(script, registration_no.replace(" ", ""))
+
+    def collect_info(reg_no: str, record_url: str):
+        """scrapes the record page"""
+        registrations = []
+        current_registration = []
+        table_index = 1
+
+        for table in driver.find_elements(By.TAG_NAME, "table"):
+            titles = []
+
+            for tr_index, tr in enumerate(table.find_elements(By.TAG_NAME, "tr")):
+                cells = list(map(lambda cell: cell.text, tr.find_elements(By.TAG_NAME, "td")))
+                if tr_index == 0:
+                    titles = cells
+                    continue
+                else:
+                    registration_entry = {}
+                    for i in range(len(titles)):
+                        registration_entry[titles[i]] = cells[i]
+                    current_registration.append(registration_entry)
+
+                if table_index == 3:
+                    table_index = 1
+                    registrations.append(current_registration)
+                    current_registration = []
+
+                table_index += 1
+
+        return {
+            "datetime": datetime.datetime.now().isoformat(),
+            "identifier": reg_no,
+            "type": "HPCSA",
+            "url": record_url,
+            "profile": {
+                "names": driver.find_element(By.ID, "NAME").text,
+                "city": driver.find_element(By.ID, "CITY").text,
+                "province": driver.find_element(By.ID, "PROVINCE").text,
+                "postal_code": driver.find_element(By.ID, "POSTCODE").text,
+            },
+            "registrations": registrations,
+        }
+
+    # total_found = search_with_names(first_name, last_name)
+    total_found = search_with_reg_no(reg_no)
+
+    log(f"Found {total_found} records")
+    if total_found == 0:
+        err_message = f"Found no records for {first_name} {last_name} {reg_no}"
+        log(err_message)
+        return {}
+
+    record_page_url = walk_results(registration_no)
+    log(f"Found match with link {record_page_url}")
+
+    if len(record_page_url) < 1:
+        err_message = f"Found records but none matched the given registration number({reg_no})"
+        log(err_message)
+        return {}
+
+    # go to link
+    driver.get(record_page_url)
+    data = collect_info(reg_no, record_page_url)
+    return data
