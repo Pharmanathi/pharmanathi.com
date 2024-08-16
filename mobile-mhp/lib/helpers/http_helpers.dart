@@ -93,14 +93,35 @@ class Apihelper {
   static void handleError(BuildContext context, http.Response response) {
     String errorMessage;
     final statusCode = response.statusCode;
+    log.w('Client error occurred: $statusCode');
+    // Extract error message from response body if available
+    final Map responseBody = json.decode(response.body);
+    final detail = responseBody['detail'] ??
+        'Unknown Error'; // Default to 'Unknown Error' if detail is not present
+    errorMessage = '$detail';
 
     if (statusCode >= 400 && statusCode < 500) {
-      log.w('Client error occurred: $statusCode');
-      // Extract error message from response body if available
-      final responseBody = json.decode(response.body);
-      final detail = responseBody['detail'] ??
-          'Unknown Error'; // Default to 'Unknown Error' if detail is not present
-      errorMessage = '$detail';
+      /* We mostly use ModelViewSets on the backend which provide wrappers
+      around handling validations errors. We can use that knowledge to provide a custom
+      parser for error messages. The common ones are 400s. These are usually returned
+      in a map of the form: {"problematic_field": [reasons]}.
+       this implemenation is subject to change. All in all, the backend must
+        ensure to respect the way of returning 400 errors. So, if in any way, 
+        the blow parsing starts to fail, the first place to start should be the 
+        backend, and not this parser.
+        */
+      errorMessage = "";
+      responseBody.forEach((k, v) {
+        if (v is List) {
+          errorMessage += v
+              .map((validation_err) =>
+                  // TODO(nehemie): Capitalize field name(k)
+                  "${k.replaceAll("_", " ").replaceAll("-", " ")}: $validation_err")
+              .join("\n");
+        } else {
+          errorMessage += v;
+        }
+      });
     } else if (statusCode >= 500 && statusCode < 600) {
       log.e('Server error occurred: $statusCode');
       switch (statusCode) {
