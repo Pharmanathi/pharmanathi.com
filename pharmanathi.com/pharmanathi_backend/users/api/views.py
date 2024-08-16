@@ -12,6 +12,11 @@ from django.db.models import Exists, OuterRef, Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+from pharmanathi_backend.appointments.models import AppointmentType
+from pharmanathi_backend.appointments.serializers import (
+    DoctorPublicListMinimalSerializer,
+)
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -20,11 +25,14 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from pharmanathi_backend.appointments.models import AppointmentType
-from pharmanathi_backend.appointments.serializers import DoctorPublicListMinimalSerializer
-from pharmanathi_backend.utils import user_is_doctor
-
-from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
+from ..models import (
+    Address,
+    Doctor,
+    InvalidationReason,
+    PracticeLocation,
+    Speciality,
+    VerificationReport,
+)
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
@@ -166,6 +174,8 @@ class DoctorModelViewSet(ModelViewSet):
                 doctor_serializer = self.get_serializer_class()(doctor, data=data, partial=True)
                 doctor_serializer.is_valid(raise_exception=True)
                 doctor_serializer.save()
+
+            # assert False
 
         doctor = Doctor.objects.prefetch_related("practicelocations", "specialities", "user").get(pk=doctor.pk)
         return Response(self.get_serializer_class()(doctor).data)
