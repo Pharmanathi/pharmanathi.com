@@ -174,6 +174,8 @@ class DoctorModelViewSet(ModelViewSet):
                 doctor_serializer.is_valid(raise_exception=True)
                 doctor_serializer.save()
 
+            # assert False
+
         doctor = Doctor.objects.prefetch_related("practicelocations", "specialities", "user").get(pk=doctor.pk)
         return Response(self.get_serializer_class()(doctor).data)
 
@@ -183,9 +185,6 @@ class PublicDoctorModelViewSet(DoctorModelViewSet):
         Exists(AppointmentType.objects.filter(doctor=OuterRef("pk"))), _is_verified=True
     ).prefetch_related("user", "practicelocations", "specialities", "appointmenttype_set")
     permission_classes = [permissions.IsAuthenticated]
-
-    def get_serializer_class(self):
-        return DoctorPublicListMinimalSerializer
 
     def get_queryset(self):
         if user_is_doctor(self.request):
