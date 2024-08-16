@@ -118,7 +118,7 @@ class Doctor(BaseCustomModel):
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
     hpcsa_no = models.CharField("HPCSA No.", max_length=12)  # HPCSA registration number]
-    mp_no = models.CharField("Mp No.", max_length=20)
+    mp_no = models.CharField("Mp No.", max_length=20, null=True, blank=True)
     _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
