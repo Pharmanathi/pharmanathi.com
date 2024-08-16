@@ -1,1 +1,4 @@
 VERIFI_URL=http://verifi:8000
+# HPCSA_ENTRY_URL=https://hpcsaonline.custhelp.com/app/i_reg_form
+HPCSA_ENTRY_URL=http://verifi-sudo:8000/hpcsa
+SAPC_ENTRY_URL=https://interns.pharma.mm3.co.za/SearchRegister
