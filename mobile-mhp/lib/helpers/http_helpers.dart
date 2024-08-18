@@ -50,7 +50,7 @@ class Apihelper {
       final tokenValue = tokenMap['key'];
       authorizationToken = 'Token $tokenValue';
     } else {
-      print('Error: Authorization token is null');
+      log.e('Error: Authorization token is null');
     }
 
     Map<String, String> headers = {
@@ -71,8 +71,8 @@ class Apihelper {
             : await http.patch(Uri.parse(url),
                 headers: headers, body: requestBody);
 
-    print('API code: ${response.statusCode}');
-    print('API body: ${response.body}');
+    log.i('API code: ${response.statusCode}');
+    log.i('API body: ${response.body}');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
@@ -94,53 +94,39 @@ class Apihelper {
     String errorMessage;
     final statusCode = response.statusCode;
     log.w('Client error occurred: $statusCode');
-    // Extract error message from response body if available
-    final Map responseBody = json.decode(response.body);
-    final detail = responseBody['detail'] ??
-        'Unknown Error'; // Default to 'Unknown Error' if detail is not present
+
+    Map responseBody;
+    try {
+      responseBody = json.decode(response.body);
+    } catch (e) {
+      log.e('Failed to decode response body: $e');
+      responseBody = {};
+    }
+
+    final detail = responseBody['detail'] ?? 'Unknown Error';
     errorMessage = '$detail';
 
+    /*
+     We primarily use ModelViewSets on the backend, which provide consistent wrappers
+     for handling validation errors. These errors are typically returned in a map with
+     the format: {"problematic_field": [reasons]}.
+
+     Given this consistency, we've implemented a custom parser that converts these
+     errors into user-friendly messages. This implementation assumes the backend adheres 
+     to this format. However, if the backend changes how it returns 400 errors, this 
+     parser may need to be updated accordingly.
+
+     If the parsing logic here starts failing, the first place to investigate should be 
+     the backend's response format, as it may have changed. This parser relies on the 
+     backend respecting the agreed-upon structure.
+
+     Note: This comment reflects the backend as of [date:29/08/2-24 ,version:0.1].
+    */
+
     if (statusCode >= 400 && statusCode < 500) {
-      /* We mostly use ModelViewSets on the backend which provide wrappers
-      around handling validations errors. We can use that knowledge to provide a custom
-      parser for error messages. The common ones are 400s. These are usually returned
-      in a map of the form: {"problematic_field": [reasons]}.
-       this implemenation is subject to change. All in all, the backend must
-        ensure to respect the way of returning 400 errors. So, if in any way, 
-        the blow parsing starts to fail, the first place to start should be the 
-        backend, and not this parser.
-        */
-      errorMessage = "";
-      responseBody.forEach((k, v) {
-        if (v is List) {
-          errorMessage += v
-              .map((validation_err) =>
-                  // TODO(nehemie): Capitalize field name(k)
-                  "${k.replaceAll("_", " ").replaceAll("-", " ")}: $validation_err")
-              .join("\n");
-        } else {
-          errorMessage += v;
-        }
-      });
+      errorMessage = parseClientError(responseBody);
     } else if (statusCode >= 500 && statusCode < 600) {
-      log.e('Server error occurred: $statusCode');
-      switch (statusCode) {
-        case 500:
-          errorMessage = 'Internal server error. Please try again later.';
-          break;
-        case 502:
-          errorMessage = 'Bad gateway. Please try again later.';
-          break;
-        case 503:
-          errorMessage = 'Service unavailable. Please try again later.';
-          break;
-        case 504:
-          errorMessage = 'Gateway timeout. Please try again later.';
-          break;
-        default:
-          errorMessage = 'Server error occurred. Please try again.';
-          break;
-      }
+      errorMessage = parseServerError(statusCode);
     } else {
       errorMessage = 'An error occurred. Please try again.';
     }
@@ -155,6 +141,44 @@ class Apihelper {
         ),
       );
     }
+  }
+
+  static String parseClientError(Map responseBody) {
+    String errorMessage = '';
+    responseBody.forEach((k, v) {
+      if (v is List) {
+        errorMessage += v
+            .map((validationErr) => "${capitalizeFieldName(k)}: $validationErr")
+            .join("\n");
+      } else {
+        errorMessage += v;
+      }
+    });
+    return errorMessage;
+  }
+
+  static String parseServerError(int statusCode) {
+    switch (statusCode) {
+      case 500:
+        return 'Internal server error. Please try again later.';
+      case 502:
+        return 'Bad gateway. Please try again later.';
+      case 503:
+        return 'Service unavailable. Please try again later.';
+      case 504:
+        return 'Gateway timeout. Please try again later.';
+      default:
+        return 'Server error occurred. Please try again.';
+    }
+  }
+
+  static String capitalizeFieldName(String fieldName) {
+    return fieldName
+        .replaceAll("_", " ")
+        .replaceAll("-", " ")
+        .split(" ")
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(" ");
   }
 
   static String getAuthApp() {
@@ -182,7 +206,7 @@ class Apihelper {
       }
     } catch (e) {
       // @TODO: Use logger
-      print('Failed to get device IP: $e');
+      log.i('Failed to get device IP: $e');
     }
     return 'Unknown';
   }
