@@ -6,7 +6,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     mail_user_task,
@@ -314,13 +313,13 @@ class VerificationReport(BaseCustomModel):
 
     def _summary_hpcsa(self) -> str:
         """Returns a string summary of a HPCSA report"""
-        # Case: Only have logs cause something went wrong
+        # Case: Only have "logs" key because something went wrong
         if len(self.report.keys()) == 1:  # suppose [0] is either _logs or error
             return "Something went wrong. We failed to complete the verification. Please review the logs"
 
         # Case: No registration found
         if self.report.get("profile").get("names") == "":
-            return "did not find any registration profile. MP does not seem to exist"
+            return "Did not find any registration profile. MP does not seem to exist"
 
         # Case: final, parse registrations and name match report
         message = "\n"
@@ -333,7 +332,7 @@ class VerificationReport(BaseCustomModel):
         if match_percentage < 100:
             message += (
                 f"Got a partial match of {match_percentage}%. A match of more than 100% is recommended"
-                "when comparing the names found on the HPCSA profile page."
+                " when comparing the names found on the HPCSA profile page."
             )
         message += "\nRegistrations:\n"
         for reg in self.report.get("registrations"):

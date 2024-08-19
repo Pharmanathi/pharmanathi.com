@@ -7,35 +7,75 @@ repos:
     hooks:
       - id: trailing-whitespace
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: end-of-file-fixer
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       # - id: check-json
       - id: check-toml
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: check-xml
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: check-yaml
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: debug-statements
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: check-builtin-literals
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: check-case-conflict
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: check-docstring-first
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: detect-private-key
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
 
   - repo: https://github.com/adamchainz/django-upgrade
     rev: '1.15.0'
@@ -43,7 +83,11 @@ repos:
       - id: django-upgrade
         args: ['--target-version', '4.2']
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
@@ -51,21 +95,33 @@ repos:
       - id: pyupgrade
         args: [--py311-plus]
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
 
   - repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
       - id: black
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
       - id: isort
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.1.0
@@ -78,10 +134,18 @@ repos:
     hooks:
       - id: djlint-reformat-django
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
       - id: djlint-django
         files: ^pharmanathi.com/.*$
-        exclude: ^pharmanathi.com/adminsite-template/.*$
+        exclude:  |
+            (?x)^(
+                pharmanathi.com/adminsite-template/.*|
+                pharmanathi.com/verifi-standalone/sudos/.*
+            )$
         # TODO: revisit the ignored rules below at some point
         args: ["--ignore=H006,H013,H019,H031,T002,T003"]
 

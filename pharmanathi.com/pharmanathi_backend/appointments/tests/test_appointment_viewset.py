@@ -3,6 +3,7 @@ import random
 from unittest.mock import patch
 
 import pytest
+
 from pharmanathi_backend.appointments.tests.factories import (
     Appointment,
     AppointmentFactory,
