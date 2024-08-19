@@ -130,7 +130,7 @@ def process_hpcsa(
     driver: webdriver.remote.webdriver.WebDriver, registration_no: str, first_name: str, last_name: str, reg_no: str
 ) -> dict:
     """Get a MP credentials from HPCSA"""
-    ENTRY_URL = "http://verifi-sudo:8000/hpcsa/11.htm"  # "https://hpcsaonline.custhelp.com/app/i_reg_form"  # environ.get("HPCSA_ENTRY_URL", None)
+    ENTRY_URL = environ.get("HPCSA_ENTRY_URL", None)
     log(f"Using link {ENTRY_URL}")
     driver.get(ENTRY_URL)
 
@@ -153,7 +153,7 @@ def process_hpcsa(
 
     def search_with_names(first_name: str, last_name: str):
         """Search on the main page using name and surname
-
+            TODO(nehemie): deprecate(remove)
         Args:
             surname (str)
             name (str)
@@ -179,10 +179,16 @@ def process_hpcsa(
         """
         return driver.execute_script(script)
 
-    def walk_results(registration_no: str):
-        """for each record found, check if registration number correspond
-        until we find a match. This function will either follow the found results
-        or raise an exception if no match found.
+    def walk_results(registration_no: str) -> str:
+        """For each record found, check if registration number correspond
+        until we find a match. This function will either return a link
+        to the match's page or an empty string if none found!
+
+        Args:
+            registration_no (str): MP regristration number
+
+        Returns:
+            [str]: empy if no match.
         """
 
         script = """
@@ -198,19 +204,20 @@ def process_hpcsa(
         """
         return driver.execute_script(script, registration_no.replace(" ", ""))
 
-    def collect_info(reg_no: str, record_url: str):
-        """scrapes the record page"""
+    def collect_info(reg_no: str, record_url: str) -> dict:
+        """We only need to check if there exist any registration that
+        is still active. Hence, only concerned with info under divs with
+        class name "category". From this, we can extract each registration
+        category that is active or inactive Also, the site is badly designed,
+        they have titles in <tbody> so we always ignore the first table row.
 
+        Args:
+            reg_no (str): MP regristration number
+
+        Returns:
+            dict: scrapping result
+        """
         script = """
-        /*
-            We only need to check if there exist any registration that
-            is still active. Hence, only concerned with info under divs
-            with class name "category". From this, we can extract each
-            registration category that is active or inactive
-            Also, the site is badly designed, they have titles in <tbody>
-            so we always ignore the first table row.
-        */
-
         titles = ["PRACTICE TYPE",	"PRACTICE FIELD","SPECIALITY","SUB SPECIALITY","FROM DATE","END DATE","STATUS"]
         registration_rows = Array.from(document.querySelectorAll(".category tbody tr")).filter(tr => !Array.from(tr.querySelectorAll("td")).some(td => td.innerText == "STATUS"))
         return registration_rows.map(row =>{
@@ -241,7 +248,6 @@ def process_hpcsa(
             "registrations": driver.execute_script(script),
         }
 
-    # total_found = search_with_names(first_name, last_name)
     total_found = search_with_reg_no(reg_no)
 
     log(f"Found {total_found} records")
