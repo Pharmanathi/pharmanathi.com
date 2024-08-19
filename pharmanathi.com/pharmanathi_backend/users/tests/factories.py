@@ -88,7 +88,7 @@ class DoctorFactory(DjangoModelFactory):
         model = Doctor
 
 
-def FutureDateByDOWFactory(day_of_the_week, with_time: datetime.time = False) -> datetime.date | datetime.datetime:
+def FutureDateByDOWFactory(day_of_the_week, with_time: datetime.time = None) -> datetime.date | datetime.datetime:
     """Returns a future date by day of the week
     day_of_the_week: int between 1 and 7
     """

@@ -164,7 +164,7 @@ class Appointment(BaseCustomModel):
                 ).strftime("%H:%M"),
             )
             available_slots = appointment_type.doctor.get_available_slots_on(
-                selected_timeslot_datetime.date(), appointment_type.duration
+                selected_timeslot_datetime, appointment_type.duration
             )
 
             if selected_timeslot not in available_slots:
