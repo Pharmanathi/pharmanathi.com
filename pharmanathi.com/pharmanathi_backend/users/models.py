@@ -6,7 +6,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     mail_user_task,
@@ -118,8 +117,8 @@ class Doctor(BaseCustomModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     specialities = models.ManyToManyField(Speciality)
     practicelocations = models.ManyToManyField(PracticeLocation)
-    hpcsa_no = models.CharField("HPCSA No.", max_length=12)  # HPCSA registration number]
-    mp_no = models.CharField("Mp No.", max_length=20)
+    hpcsa_no = models.CharField("HPCSA No.", max_length=32)
+    mp_no = models.CharField("Mp No.", max_length=20, null=True, blank=True)
     _is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
