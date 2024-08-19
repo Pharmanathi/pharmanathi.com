@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 from django.test.utils import isolate_apps
+
 from pharmanathi_backend.payments.models import Payment, RelatedObjectNotLinked
 from pharmanathi_backend.payments.providers.provider import (
     BaseProvider,
@@ -133,6 +134,7 @@ def test_callback():
     from django.core.management.color import no_style
     from django.db import connection, models
     from factory.django import DjangoModelFactory
+
     from pharmanathi_backend.payments.models import Payment as RealPaymentModel
 
     with isolate_apps("pharmanathi_backend.users", "pharmanathi_backend.payments"):

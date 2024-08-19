@@ -1,10 +1,8 @@
 from unittest.mock import patch
 
 import pytest
-from pharmanathi_backend.appointments.tests.factories import (
-    AppointmentFactory,
-    PaymentFactory,
-)
+
+from pharmanathi_backend.appointments.tests.factories import AppointmentFactory, PaymentFactory
 
 pytestmark = pytest.mark.django_db
 
