@@ -55,7 +55,7 @@ def verify():
         else:
             raise ValueError(f"Invalid value for request({mp_type})")
 
-        log(f"Starting collection with ${identifier, first_name, last_name, identifier} using {mp_type}")
+        log(f"Starting collection with {identifier, first_name, last_name, identifier} using {mp_type}")
         data = verification_func(driver, identifier, first_name, last_name, identifier)
     except Exception as e:
         error_message = jsonify({"error": f"Implementation Error: {str(e)}"})
@@ -130,7 +130,7 @@ def process_hpcsa(
     driver: webdriver.remote.webdriver.WebDriver, registration_no: str, first_name: str, last_name: str, reg_no: str
 ) -> dict:
     """Get a MP credentials from HPCSA"""
-    ENTRY_URL = "https://hpcsaonline.custhelp.com/app/i_reg_form"  # environ.get("HPCSA_ENTRY_URL", None)
+    ENTRY_URL = "http://verifi-sudo:8000/hpcsa/11.htm"  # "https://hpcsaonline.custhelp.com/app/i_reg_form"  # environ.get("HPCSA_ENTRY_URL", None)
     log(f"Using link {ENTRY_URL}")
     driver.get(ENTRY_URL)
 
@@ -186,49 +186,46 @@ def process_hpcsa(
         """
 
         script = """
-        let btnNext = Array.from(document.querySelectorAll("button")).find(btn => btn.innerText == "Next")
-        function creepWalk(regNo){
-            let link = ""
-            match = Array.from(document.querySelectorAll("tr")).find(tr => tr.querySelectorAll("td")[3]?.innerText.replaceAll(" ", "") == regNo)
-            if(match) {
-                link = Array.from(match.querySelectorAll("td"))[7].querySelector("a").href
-            }
-            else{
-                btnNext.click();
-                creepWalk();
-            }
-            return link
+        let regNo = arguments[0];
+        let btnNext = Array.from(document.querySelectorAll("button")).find(btn => btn.innerText == "Next");
+
+        let link = "";
+        match = Array.from(document.querySelectorAll("tr")).find(tr => tr.querySelectorAll("td")[3]?.innerText.replaceAll(" ", "") == regNo);
+        if(match) {
+            link = Array.from(match.querySelectorAll("td"))[7].querySelector("a").href;
         }
-        return `${creepWalk(arguments[0])}`
+        return link;
         """
         return driver.execute_script(script, registration_no.replace(" ", ""))
 
     def collect_info(reg_no: str, record_url: str):
         """scrapes the record page"""
-        registrations = []
-        current_registration = []
-        table_index = 1
 
-        for table in driver.find_elements(By.TAG_NAME, "table"):
-            titles = []
+        script = """
+        /* 
+            We only need to check if there exist any registration that
+            is still active. Hence, only concerned with info under divs
+            with class name "category". From this, we can extract each
+            registration category that is active or inactive
+            Also, the site is badly designed, they have titles in <tbody>
+            so we always ignore the first table row.
+        */
 
-            for tr_index, tr in enumerate(table.find_elements(By.TAG_NAME, "tr")):
-                cells = list(map(lambda cell: cell.text, tr.find_elements(By.TAG_NAME, "td")))
-                if tr_index == 0:
-                    titles = cells
-                    continue
-                else:
-                    registration_entry = {}
-                    for i in range(len(titles)):
-                        registration_entry[titles[i]] = cells[i]
-                    current_registration.append(registration_entry)
-
-                if table_index == 3:
-                    table_index = 1
-                    registrations.append(current_registration)
-                    current_registration = []
-
-                table_index += 1
+        titles = ["PRACTICE TYPE",	"PRACTICE FIELD","SPECIALITY","SUB SPECIALITY","FROM DATE","END DATE","STATUS"]
+        registration_rows = Array.from(document.querySelectorAll(".category tbody tr")).filter(tr => !Array.from(tr.querySelectorAll("td")).some(td => td.innerText == "STATUS"))
+        return registration_rows.map(row =>{ 
+            cells = row.querySelectorAll("td")
+            
+            return {
+            "PRACTICE TYPE": cells[0].innerText,
+            "PRACTICE FIELD": cells[1].innerText,
+            "SPECIALITY": cells[2].innerText,
+            "SUB SPECIALITY": cells[3].innerText,
+            "FROM DATE": cells[4].innerText,
+            "END DATE": cells[5].innerText,
+            "STATUS": cells[6].innerText
+        }})
+        """
 
         return {
             "datetime": datetime.datetime.now().isoformat(),
@@ -241,7 +238,7 @@ def process_hpcsa(
                 "province": driver.find_element(By.ID, "PROVINCE").text,
                 "postal_code": driver.find_element(By.ID, "POSTCODE").text,
             },
-            "registrations": registrations,
+            "registrations": driver.execute_script(script),
         }
 
     # total_found = search_with_names(first_name, last_name)
@@ -257,7 +254,7 @@ def process_hpcsa(
     log(f"Found match with link {record_page_url}")
 
     if len(record_page_url) < 1:
-        err_message = f"Found records but none matched the given registration number({reg_no})"
+        err_message = f"None of the {total_found} records matches the given registration number({reg_no})"
         log(err_message)
         return {}
 
