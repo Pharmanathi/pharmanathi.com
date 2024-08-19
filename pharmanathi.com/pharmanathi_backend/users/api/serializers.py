@@ -164,3 +164,16 @@ class PracticeLocationModelSerializerWithExtAddress(serializers.ModelSerializer)
             address = Address.objects.create(**address_data)
             practice_location = PracticeLocation.objects.create(**validated_data, address=address)
             return practice_location
+
+
+class VerificationReportUserStateSerializer(serializers.ModelSerializer):
+    class SimpleDRProfileSerializer(DoctorModelSerializer):
+        class Meta:
+            model = Doctor
+            fields = ["hpcsa_no", "mp_no"]
+
+    doctor_profile = SimpleDRProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "doctor_profile"]
