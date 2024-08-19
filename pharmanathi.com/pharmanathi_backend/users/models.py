@@ -13,6 +13,7 @@ from pharmanathi_backend.users.tasks import (
     set_rejection_reason_task,
     update_user_social_profile_picture_url_task,
 )
+from pharmanathi_backend.utils import get_default_timezone, to_aware_dt
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 
@@ -198,7 +199,7 @@ class Doctor(BaseCustomModel):
             possible_slots = possible_slots.union(set(ts.break_into_slots_of(duration)))
         return possible_slots
 
-    def get_available_slots_on(self, dt: datetime.date, duration: int) -> set[str]:
+    def get_available_slots_on(self, dt: datetime.datetime, duration: int) -> set[str]:
         """Returns (slots for a day) - (busy or taken slots)
 
         Args:
@@ -208,7 +209,13 @@ class Doctor(BaseCustomModel):
         Returns:
             set[str]: A set of slots that are presumed not clashing with any other appointments
         """
-        return self.get_possible_appointment_slots_on(dt, duration) - set(self.get_busy_slots_on(dt))
+        if not dt.tzinfo:
+            dt = to_aware_dt(dt)
+
+        if dt < datetime.datetime.now(tz=get_default_timezone()):
+            return set()
+
+        return self.get_possible_appointment_slots_on(dt.date(), duration) - set(self.get_busy_slots_on(dt.date()))
 
     # TODO; Provide text and HTML versions for the messages below
     def mark_as_vefified(self):

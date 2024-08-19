@@ -20,5 +20,13 @@ def user_is_doctor(req: request) -> bool:
     return req.user.is_doctor
 
 
+def get_default_timezone():
+    return pytz.timezone(settings.TIME_ZONE)
+
+
 def UTC_time_to_SA_time(utc_time: datetime.datetime):
-    return utc_time.astimezone(pytz.timezone(settings.TIME_ZONE))
+    return utc_time.astimezone(get_default_timezone())
+
+
+def to_aware_dt(naive_dt: datetime.datetime):
+    return get_default_timezone().localize(naive_dt)
