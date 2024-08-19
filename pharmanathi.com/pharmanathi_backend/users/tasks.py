@@ -1,10 +1,9 @@
 import logging
 
+from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
-
-from config import celery_app
 
 admin_logger = logging.getLogger(__name__)  # TODO: target a more specific logger here, admin and/or sentry
 
@@ -64,10 +63,13 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
-
+    from pharmanathi_backend.users.api.serializers import (
+        VerificationReportUserStateSerializer,
+    )
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
+    state_now = VerificationReportUserStateSerializer(mp.user).data
     verification_type = VerificationReport.det_verification_type(mp)
     identifier = mp.mp_no if mp.is_pharmacist else mp.hpcsa_no
     verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}&first_name={mp.user.first_name}&last_name={mp.user.last_name}"
@@ -76,7 +78,9 @@ def auto_mp_verification_task(mp_pk):
     verifi_response_json = verifi_response.json()
     if verifi_response.status_code != 200:
         admin_logger.error(f"Verification failed with error '{verifi_response_json.get('error')}' ")
-    vr = VerificationReport.objects.create(mp=mp, type=verification_type, report=verifi_response_json)
+    vr = VerificationReport.objects.create(
+        mp=mp, type=verification_type, report={**verifi_response_json, "state_before": state_now}
+    )
     return f"Created {vr}"
 
 

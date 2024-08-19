@@ -202,7 +202,7 @@ def process_hpcsa(
         """scrapes the record page"""
 
         script = """
-        /* 
+        /*
             We only need to check if there exist any registration that
             is still active. Hence, only concerned with info under divs
             with class name "category". From this, we can extract each
@@ -213,9 +213,9 @@ def process_hpcsa(
 
         titles = ["PRACTICE TYPE",	"PRACTICE FIELD","SPECIALITY","SUB SPECIALITY","FROM DATE","END DATE","STATUS"]
         registration_rows = Array.from(document.querySelectorAll(".category tbody tr")).filter(tr => !Array.from(tr.querySelectorAll("td")).some(td => td.innerText == "STATUS"))
-        return registration_rows.map(row =>{ 
+        return registration_rows.map(row =>{
             cells = row.querySelectorAll("td")
-            
+
             return {
             "PRACTICE TYPE": cells[0].innerText,
             "PRACTICE FIELD": cells[1].innerText,

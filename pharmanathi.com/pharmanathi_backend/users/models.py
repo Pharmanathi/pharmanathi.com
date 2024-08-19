@@ -321,20 +321,22 @@ class VerificationReport(BaseCustomModel):
         if self.report.get("profile").get("names") == "":
             return "did not find any registration profile. MP does not seem to exist"
 
-        # Case: possible mismatch
-        db_names_set = set(self.mp.user.get_full_name().lower().split(" "))
+        # Case: final, parse registrations and name match report
+        message = "\n"
+        full_name = (
+            f"{self.report.get('state_before').get('first_name')} {self.report.get('state_before').get('last_name')}"
+        )
+        db_names_set = set(full_name.lower().split(" "))
         report_names = set(self.report.get("profile").get("names").lower().split(" "))
         match_percentage = (len(db_names_set.intersection(report_names)) * 100) // len(db_names_set)
-        if match_percentage < 50:
-            return (
-                f"returns a partial match of {match_percentage}%. A match of more than 50% is recommended"
+        if match_percentage < 100:
+            message += (
+                f"Got a partial match of {match_percentage}%. A match of more than 100% is recommended"
                 "when comparing the names found on the HPCSA profile page."
             )
-
-        # Case: final, parse registrations
-        message = "\n"
+        message += "\nRegistrations:\n"
         for reg in self.report.get("registrations"):
-            message += f"{reg.get('PRACTICE TYPE')} in {reg.get('PRACTICE FIELD')}, {reg.get('STATUS')}\n"
+            message += f"- {reg.get('PRACTICE TYPE')} in {reg.get('PRACTICE FIELD')}, {reg.get('STATUS')}\n"
 
         return message
 
@@ -352,10 +354,12 @@ class VerificationReport(BaseCustomModel):
 
         # Case: profile belongs to a different MP
         has_non_matching_surname = (
-            self.report.get("registration").get("Surname").lower() not in self.mp.user.last_name.lower()
+            self.report.get("registration").get("Surname").lower()
+            not in self.report.get("state_before").get("last_name").lower()
         )
         has_non_matching_firstname = (
-            self.report.get("registration").get("First Name").lower() not in self.mp.user.first_name.lower()
+            self.report.get("registration").get("First Name").lower()
+            not in self.report.get("state_before").get("first_name").lower()
         )
         if has_non_matching_firstname or has_non_matching_surname:
             return "returned a what seems to be a different profile!"
@@ -379,4 +383,4 @@ class VerificationReport(BaseCustomModel):
             summary_end = self._summary_sapc()
         else:
             summary_end = self._summary_hpcsa()
-        return f"{summary_start}\n{self._get_log_list()}Verdict: {summary_end}"
+        return f"{summary_start}\n{self._get_log_list()}{summary_end}"
