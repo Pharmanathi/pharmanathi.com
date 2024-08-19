@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:provider/provider.dart';
 import '../../helpers/http_helpers.dart' as http_helpers;
@@ -175,13 +176,13 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
       await _fetchUserData(context);
 
       // Check if it's the first time sign-in
-      final isFirstTimeSignInResult = await userProvider.hasIncompleteDoctorProfile();
+      final isDrProfileIncompleteResult = await userProvider.hasIncompleteDoctorProfile();
 
-      if (isFirstTimeSignInResult) {
+      if (isDrProfileIncompleteResult) {
         // If it's the first sign-in, navigate to the onboarding page
         Navigator.pushReplacementNamed(
           context,
-          '/onboarding',
+          AppRoutes.onboarding,
           arguments: {
             'email': _currentUser?.email,
           },
@@ -190,7 +191,7 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
         // If it's not the first sign-in, navigate to the home page
         Navigator.pushReplacementNamed(
           context,
-          '/home_page',
+          AppRoutes.homePage,
           arguments: {
             'email': _currentUser?.email,
           },

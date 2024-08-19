@@ -175,7 +175,7 @@ class DoctorModelViewSet(ModelViewSet):
                 doctor_serializer.is_valid(raise_exception=True)
                 doctor_serializer.save()
 
-            # assert False
+        
 
         doctor = Doctor.objects.prefetch_related("practicelocations", "specialities", "user").get(pk=doctor.pk)
         return Response(self.get_serializer_class()(doctor).data)
