@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 import pytest
 
@@ -44,5 +44,5 @@ def test_get_available_slots_on(timeslot_9_to_10_am, build_future_date):
     doctor = timeslot.doctor
     doctor.appointment_set.all().delete()
     assert {("09:00", "09:30"), ("09:30", "10:00")} == doctor.get_available_slots_on(
-        build_future_date(timeslot.day), 30
+        build_future_date(timeslot.day, time(0, 0)), 30
     )

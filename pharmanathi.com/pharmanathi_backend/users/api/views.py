@@ -99,13 +99,13 @@ class DoctorModelViewSet(ModelViewSet):
             return Response({"detail": "Missing 'd' parameter from request of the form d=DD/MM/YYYY"}, status=400)
 
         try:
-            appointment_date = datetime.strptime(date_str, "%d/%m/%Y")
+            appointment_datetime = datetime.strptime(date_str, "%d/%m/%Y")
         except ValueError:
             return Response({"detail": "Invalid date format. Use DD/MM/YYYY"}, status=400)
 
         doctor: Doctor = super().get_object()
         duration = doctor.appointmenttype_set.first().duration  # Since we're restricting them to one App. Type
-        return Response(doctor.get_available_slots_on(appointment_date, duration))
+        return Response(doctor.get_available_slots_on(appointment_datetime, duration))
 
     def partial_update(self, request, *args, **kwargs):
         # TODO: move some of this logic close to model, e.g: update from_http_request()
