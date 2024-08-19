@@ -114,13 +114,13 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
       });
 
       await doctorBloc.updateDoctorDetails(
-          context, userInfo?.doctorProfile?.id ?? 0, partialUpdates);
-
-      await completer.future;
+          context, userInfo?.id ?? 0, partialUpdates);
 
       setState(() {
         _isLoading = false;
       });
+
+      await completer.future;
     }
   }
 
