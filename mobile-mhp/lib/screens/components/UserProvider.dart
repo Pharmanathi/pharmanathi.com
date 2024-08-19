@@ -65,14 +65,14 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  //* Method to check if it's the first time sign-in
-  Future<bool> hasIncompleteDoctorProfile() async {
-    //* Check if any of the required user information is empty
-    return email == null ||
-        user?.doctorProfile?.specialities.isEmpty == true ||
-        user?.doctorProfile?.practiceLocations.isEmpty == true ||
-        user?.doctorProfile?.hpcsaNo.isEmpty == true;
-  }
+  //* Method to check if doctor has Incomplete Profile
+ Future<bool> hasIncompleteDoctorProfile() async {
+  //* Check if all the required user information is null or empty
+  return user?.doctorProfile?.specialities == null ||
+      user?.doctorProfile?.practiceLocations == null ||
+      user?.doctorProfile?.hpcsaNo == null;
+}
+
 
   //* Method to set schedule data
   void setScheduleData(Map<String, List> scheduleData) {
