@@ -313,13 +313,17 @@ class VerificationReport(BaseCustomModel):
 
     def _summary_hpcsa(self) -> str:
         """Returns a string summary of a HPCSA report"""
-        # Case: Not registration found
+        # Case: Only have logs cause something went wrong
+        if len(self.report.keys()) == 1:  # suppose [0] is either _logs or error
+            return "Something went wrong. We failed to complete the verification. Please review the logs"
+
+        # Case: No registration found
         if self.report.get("profile").get("names") == "":
             return "did not find any registration profile. MP does not seem to exist"
 
         # Case: possible mismatch
-        db_names_set = set(self.mp.user.get_full_name().split(" "))
-        report_names = set(self.report.get("profile").get("names").split(" "))
+        db_names_set = set(self.mp.user.get_full_name().lower().split(" "))
+        report_names = set(self.report.get("profile").get("names").lower().split(" "))
         match_percentage = (len(db_names_set.intersection(report_names)) * 100) // len(db_names_set)
         if match_percentage < 50:
             return (
@@ -327,16 +331,12 @@ class VerificationReport(BaseCustomModel):
                 "when comparing the names found on the HPCSA profile page."
             )
 
-        # Case: exists but no active registration
-        has_active_registraion = False
+        # Case: final, parse registrations
+        message = "\n"
         for reg in self.report.get("registrations"):
-            if "REGISTRATION STATUS" in reg:
-                if reg.get("REGISTRATION STATUS") == "ACTIVE":
-                    has_active_registraion = True
-        if has_active_registraion is False:
-            return "found one or more registrations but none is active."
+            message += f"{reg.get('PRACTICE TYPE')} in {reg.get('PRACTICE FIELD')}, {reg.get('STATUS')}\n"
 
-        return self.STR_SUM_END_SUCCESS_REPORT_TXT
+        return message
 
     def _summary_sapc(self) -> str:
         """Returns a string summary of a SAPC report"""
@@ -362,10 +362,16 @@ class VerificationReport(BaseCustomModel):
 
         return self.STR_SUM_END_SUCCESS_REPORT_TXT
 
+    def _get_log_list(self) -> str:
+        html = ""
+        for log in self.report.get("_logs", []):
+            html += f"{log}\n"
+
+        return html
+
     def summary(self) -> str:
         """Returns a string summary of a report"""
         summary_start = f"{self.type.upper()} verification on MP {self.mp} with URL {self.report.get('url')} "
-
         # Case: Error occured, regardless of type
         if "error" in self.report:
             return self.report.get("error")
@@ -373,4 +379,4 @@ class VerificationReport(BaseCustomModel):
             summary_end = self._summary_sapc()
         else:
             summary_end = self._summary_hpcsa()
-        return f"{summary_start} {summary_end}"
+        return f"{summary_start}\n{self._get_log_list()}Verdict: {summary_end}"
