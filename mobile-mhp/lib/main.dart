@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FutureBuilder<bool>(
-        future: _checkHasIncompleteDoctorProfile(),
+        future: _checkHasIncompleteDoctorProfile(),//@TODO (Thabang): why do we take this approach
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox.shrink();
