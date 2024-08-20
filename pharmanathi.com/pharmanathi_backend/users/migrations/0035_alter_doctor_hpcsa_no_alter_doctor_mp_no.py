@@ -19,5 +19,5 @@ class Migration(migrations.Migration):
             model_name="doctor",
             name="mp_no",
             field=models.CharField(blank=True, max_length=20, null=True, verbose_name="Mp No."),
-        ),
+        )
     ]
