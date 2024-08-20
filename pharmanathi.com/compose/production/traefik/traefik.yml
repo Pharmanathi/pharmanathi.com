@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`pharmanathi.com`) || Host(`www.pharmanathi.com`) || Host(`test.pharmanathi.com`)'
+      rule: 'Host(`test.pharmanathi.com`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`pharmanathi.com`)'
+      rule: 'Host(`test.pharmanathi.com`)' # TODO(nehemie): in prod, pharmanthi.com
       entryPoints:
         - flower
       service: flower
