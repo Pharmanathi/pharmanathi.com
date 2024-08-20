@@ -7,7 +7,7 @@ set -o nounset
 IP=$(curl -s ifconfig.me)
 
 # Prepare environment
-source ./prepare-environment
+source "${BASH_SOURCE%/*}/prepare-environment"
 
 if [[ $* == *--update* ]]; then
     printf "\n\n-------------- Getting System's latest version --------------\n"
@@ -67,5 +67,11 @@ curl -X POST -H "Content-Type: application/json" \
         }' $DISCORD_WEBHOOK_URL
 printf Done
 
+DETACHED_MODE=""
+if [[ $* == *-d* ]]; then
+    DETACHED_MODE="--detach"
+    printf "Will run in detached mode"
+fi
+
 printf "\n\n------------------------ Starting Docker services -------------------\n"
-exec docker compose -f production.yml up
+exec docker compose -f production.yml up $DETACHED_MODE
