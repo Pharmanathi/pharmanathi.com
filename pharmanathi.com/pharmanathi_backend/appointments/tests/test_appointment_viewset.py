@@ -40,6 +40,7 @@ def test_create_appointment(authenticated_user_api_client, appointment_date_and_
         payload,
         format="json",
     )
+    print(payload, response.json())
     assert response.status_code == 201
     assert Appointment.objects.filter(
         patient=payload["patient"], reason=payload["reason"], doctor=payload["doctor"]

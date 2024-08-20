@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
 from pharmanathi_backend.users.models import User
 from pharmanathi_backend.users.tests.factories import PracticeLocationFactory, SpecialityFactory
+from pharmanathi_backend.utils import to_aware_dt
 
 pytestmark = pytest.mark.django_db
 
@@ -72,3 +73,8 @@ def test_get_available_slots_on_with_past_date(build_future_date):
     one_second_later = tobe_past_date.replace(hour=10, minute=0, second=0) + timedelta(minutes=1)
     with freeze_time(one_second_later + timedelta(minutes=1)):
         assert mp.get_available_slots_on(one_second_later, appointment_type.duration) == set()
+
+    # However, should include any non-passed timeslot even on future dates
+    forty_minuts_before_end_of_slot = to_aware_dt(build_future_date(day_of_the_week, time(9, 20)))
+    with freeze_time(forty_minuts_before_end_of_slot):
+        assert mp.get_available_slots_on(datetime.now(), appointment_type.duration) == {("09:30", "10:00")}

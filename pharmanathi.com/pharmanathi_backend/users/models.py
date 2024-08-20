@@ -6,7 +6,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     mail_user_task,
@@ -183,7 +182,7 @@ class Doctor(BaseCustomModel):
             )
         ]
 
-    def get_possible_appointment_slots_on(self, dt: datetime.date, duration: int) -> set[str]:
+    def get_possible_appointment_slots_on(self, dt: datetime.datetime, duration: int) -> set[str]:
         """Returns a set of all possible slots on a given date
 
         Args:
@@ -196,7 +195,14 @@ class Doctor(BaseCustomModel):
         timeslots = self.timeslot_set.filter(day=dt.isoweekday())
         possible_slots = set()
         for ts in timeslots:
-            possible_slots = possible_slots.union(set(ts.break_into_slots_of(duration)))
+            ts_slots = ts.break_into_slots_of(duration)
+            for slot in ts_slots:
+                parsed_slot_datetime = to_aware_dt(
+                    datetime.datetime.combine(dt.date(), datetime.time.fromisoformat(slot[0]))
+                )
+                if parsed_slot_datetime >= dt:
+                    possible_slots.add(slot)
+
         return possible_slots
 
     def get_available_slots_on(self, dt: datetime.datetime, duration: int) -> set[str]:
@@ -212,12 +218,16 @@ class Doctor(BaseCustomModel):
         if not dt.tzinfo:
             dt = to_aware_dt(dt)
 
-        if dt < datetime.datetime.now(tz=get_default_timezone()):
+        if dt.date() < datetime.date.today():
             return set()
 
-        return self.get_possible_appointment_slots_on(dt.date(), duration) - set(self.get_busy_slots_on(dt.date()))
+        # If selected date is today, change time to now instead of the default 00:00.
+        if dt.date() == datetime.date.today():
+            time_now = datetime.datetime.now(tz=get_default_timezone()).time()
+            dt = dt.replace(hour=time_now.hour, minute=time_now.minute, second=time_now.second)
 
-    # TODO; Provide text and HTML versions for the messages below
+        return self.get_possible_appointment_slots_on(dt, duration) - set(self.get_busy_slots_on(dt))
+
     def mark_as_vefified(self):
         assert self.pk
         if self.is_verified is True:
@@ -225,6 +235,7 @@ class Doctor(BaseCustomModel):
 
         self._is_verified = True
         self.save()
+        # TODO; Provide text and HTML versions for the messages below
         message = """
             Your MHP Profile has been validated.
             <br><br>
