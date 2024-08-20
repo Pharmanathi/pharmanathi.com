@@ -8,7 +8,7 @@ from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
 from pharmanathi_backend.users.tasks import mail_admins_task, mail_user_task
-from pharmanathi_backend.utils import UTC_time_to_SA_time
+from pharmanathi_backend.utils import UTC_time_to_SA_time, get_default_timezone
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 User = get_user_model()
@@ -50,8 +50,8 @@ class TimeSlot(BaseCustomModel):
             list: chunks of intervals
         """
         some_date = date.today()  # this is just needed to build a valid datetime object.
-        start_time = datetime.combine(some_date, self.start_time)
-        end_time = datetime.combine(some_date, self.end_time)
+        start_time = datetime.combine(some_date, self.start_time, tzinfo=get_default_timezone())
+        end_time = datetime.combine(some_date, self.end_time, tzinfo=get_default_timezone())
         current_time = start_time
         slots = []
 
