@@ -111,35 +111,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<bool> _checkHasIncompleteDoctorProfile() async {
-    final userProvider = UserProvider();
-    return await userProvider.hasIncompleteDoctorProfile();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder<bool>(
-        future: _checkHasIncompleteDoctorProfile(),//@TODO (Thabang): why do we take this approach
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox.shrink();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            String initialRoute =
-                snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
-            if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
-              if (Apihelper.retrieveLocaAPIToken(context) != null) {
-                initialRoute = AppRoutes.homePage;
-              }
+      home: Builder(
+        builder: (context) {
+          String initialRoute = AppRoutes.signIn;
+          if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+            if (Apihelper.retrieveLocaAPIToken(context) != null) {
+              initialRoute = AppRoutes.homePage;
+            } else {
+              initialRoute = AppRoutes.signIn;
             }
-            return Navigator(
-              initialRoute: initialRoute,
-              onGenerateRoute: AppRoutes.generateRoute,
-            );
           }
+          return Navigator(
+            initialRoute: initialRoute,
+            onGenerateRoute: AppRoutes.generateRoute,
+          );
         },
       ),
     );
