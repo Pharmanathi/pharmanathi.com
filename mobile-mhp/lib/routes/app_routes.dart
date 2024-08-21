@@ -1,17 +1,15 @@
-// lib/src/routes/app_routes.dart
-
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/views/screens/boardingOnAppointmentScreen.dart';
-import 'package:pharma_nathi/screens/pages/signIn.dart';
 import 'package:pharma_nathi/views/screens/earnings.dart';
 import 'package:pharma_nathi/views/screens/appointments.dart';
 import 'package:pharma_nathi/views/screens/home_page.dart';
 import 'package:pharma_nathi/views/screens/patient_list.dart';
 import 'package:pharma_nathi/views/screens/profile.dart';
+import 'package:pharma_nathi/views/screens/sign_in.dart';
 
 class AppRoutes {
   static const String onboarding = '/onboarding';
-  static const String signIn = '/signIn';
+  static const String signIn = '/sign_in';
   static const String homePage = '/home_page';
   static const String appointments = '/appointments';
   static const String earnings = '/earnings';
@@ -28,11 +26,11 @@ class AppRoutes {
         );
       case signIn:
         return MaterialPageRoute(
-          builder: (context) => const GoogleSignInWidget(),
+          builder: (context) =>  GoogleSignInWidget(),
         );
       case homePage:
         return MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
         );
       case appointments:
         return MaterialPageRoute(

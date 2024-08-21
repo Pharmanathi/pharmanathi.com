@@ -6,7 +6,7 @@ import '../screens/pages/onboard_page.dart';
 import '../screens/pages/home_page.dart';
 import '../views/screens/appointment.dart';
 import '../views/screens/doctors.dart';
-import '../screens/pages/profile_settings.dart';
+import '../views/screens/profile_settings.dart';
 
 
 class AppRoutes {
