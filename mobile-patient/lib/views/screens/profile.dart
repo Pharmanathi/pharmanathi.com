@@ -3,7 +3,7 @@ import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/UserProvider.dart';
+import '../../screens/components/UserProvider.dart';
 import 'profile_settings.dart';
 
 class MyProfile extends StatefulWidget {

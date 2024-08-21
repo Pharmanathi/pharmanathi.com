@@ -1,5 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters, use_build_context_synchronously
 
+import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
+import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/views/screens/manage_appointment.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
@@ -21,11 +23,10 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   int _selectedIndex = 3;
 
   // method with modal for logging out
-  void _showModal(BuildContext context) {
+  void _showModal(BuildContext context, GoogleSignInBloc googleSignInBloc) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -53,19 +54,18 @@ class _MyProfileState extends State<MyProfile> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text('Are you sure you want to log-out?'),
+                Text('Are you sure you want to log out?'),
               ],
             ),
           ),
           actions: <Widget>[
             MyButtonWidgets(
-              buttonTextPrimary: 'LOG OUT',
-              onPressedPrimary: () {
-                // Close the dialog
+              buttonTextPrimary: 'Log out',
+              onPressedPrimary: () async {
+                await googleSignInBloc.signOut();
                 Navigator.of(context).pop();
-
-                // Call the log-out function
-                _handleLogOut(context);
+                Navigator.pushNamedAndRemoveUntil(
+                    context,AppRoutes.signIn, (route) => false);
               },
               buttonTextSecondary: 'Cancel',
               onPressedSecondary: () {
@@ -78,14 +78,6 @@ class _MyProfileState extends State<MyProfile> {
     );
   }
 
-  void _handleLogOut(BuildContext context) {
-    // Perform the log-out logic
-    _googleSignIn.signOut();
-
-    // Navigate to the sign-in page after logging out
-    Navigator.pushNamedAndRemoveUntil(context, '/signIn', (route) => false);
-  }
-
   //method to handle navigation
   void _onItemTapped(int index) {
     setState(() {
@@ -95,17 +87,18 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final googleSignInBloc =
+        Provider.of<GoogleSignInBloc>(context, listen: false);
     final imageProvider = Provider.of<ImageDataProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
     final specialities = userProvider.user?.doctorProfile?.specialities;
 
     String profession = 'Not Specified';
     if (specialities != null && specialities.isNotEmpty) {
-      profession = specialities[0]
-          .name; 
+      profession = specialities[0].name;
     }
     //* Truncate the profession string if it's too long
-    const maxCharacters = 25; 
+    const maxCharacters = 25;
     if (profession.length > maxCharacters) {
       profession = '${profession.substring(0, maxCharacters)}...';
     }
@@ -544,7 +537,7 @@ class _MyProfileState extends State<MyProfile> {
                     //log out........................
                     GestureDetector(
                       onTap: () {
-                        _showModal(context);
+                        _showModal(context, googleSignInBloc);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15, bottom: 10),
