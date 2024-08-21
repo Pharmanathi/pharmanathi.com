@@ -5,8 +5,8 @@ import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../helpers/api_helpers.dart';
-import '../components/UserProvider.dart';
-import '../components/navigation_bar.dart';
+import '../../screens/components/UserProvider.dart';
+import '../../screens/components/navigation_bar.dart';
 
 class ProfileSetting extends StatefulWidget {
   const ProfileSetting({super.key});
@@ -53,7 +53,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text('Are you sure you want to log-out?'),
+                Text('Are you sure you want to log out?'),
               ],
             ),
           ),

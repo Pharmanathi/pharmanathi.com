@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
 import 'package:pharma_nathi/firebase_options.dart';
+import 'package:pharma_nathi/repositories/sign_in_repository.dart';
 import 'package:pharma_nathi/repositories/speciality_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -21,6 +23,9 @@ import 'screens/components/image_data.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+// Global Navigator Key
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -34,17 +39,19 @@ Future<void> main() async {
   UserRepository userRepository = UserRepository(apiProvider);
   SpecialityRepository specialityRepository = SpecialityRepository(apiProvider);
   DoctorRepository doctorRepository = DoctorRepository(apiProvider);
+  GoogleSignInRepository sign_in_repository =
+      GoogleSignInRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
       await _runApp(appointmentRepository, userRepository, specialityRepository,
-          doctorRepository);
+          doctorRepository, sign_in_repository);
     });
   } else {
     await _runApp(appointmentRepository, userRepository, specialityRepository,
-        doctorRepository);
+        doctorRepository, sign_in_repository);
   }
 }
 
@@ -83,7 +90,8 @@ Future<void> _runApp(
     AppointmentRepository appointmentRepository,
     UserRepository userRepository,
     SpecialityRepository specialityRepository,
-    DoctorRepository doctorRepository) async {
+    DoctorRepository doctorRepository,
+    GoogleSignInRepository sign_in_repository) async {
   runApp(
     MultiProvider(
       providers: [
@@ -91,12 +99,13 @@ Future<void> _runApp(
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider<SpecialityBloc>(
             create: (_) => SpecialityBloc(specialityRepository)),
-             ChangeNotifierProvider<DoctorBloc>(
+        ChangeNotifierProvider<DoctorBloc>(
             create: (_) => DoctorBloc(doctorRepository)),
         Provider.value(value: appointmentRepository),
         Provider.value(value: userRepository),
         Provider.value(value: specialityRepository),
         Provider.value(value: doctorRepository),
+        Provider(create: (_) => GoogleSignInBloc(sign_in_repository)),
       ],
       child: const MyApp(),
     ),
@@ -114,7 +123,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRoutes.generateRoute,
       home: Builder(
         builder: (context) {
           String initialRoute = AppRoutes.signIn;
