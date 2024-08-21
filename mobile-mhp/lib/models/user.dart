@@ -70,7 +70,7 @@ class DoctorProfile {
   int id;
   List<Speciality> specialities;
   String hpcsaNo;
-  String mpNo;
+  String? mpNo;
   List<int> practiceLocations;
 
   DoctorProfile({
@@ -91,8 +91,8 @@ class DoctorProfile {
           : [],
       hpcsaNo: json['hpcsa_no'],
       mpNo: json['mp_no'],
-      practiceLocations: json['practice_locations'] != null
-          ? List<int>.from(json['practice_locations'])
+      practiceLocations: json['practicelocations'] != null
+          ? List<int>.from(json['practicelocations'])
           : [],
     );
   }

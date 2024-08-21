@@ -65,14 +65,24 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  //* Method to check if doctor has Incomplete Profile
- Future<bool> hasIncompleteDoctorProfile() async {
-  //* Check if all the required user information is null or empty
-  return user?.doctorProfile?.specialities == null ||
-      user?.doctorProfile?.practiceLocations == null ||
-      user?.doctorProfile?.hpcsaNo == null;
-}
+  Future<bool> hasIncompleteDoctorProfile() async {
+    //* Check if the doctor's profile exists
+    final doctorProfile = user?.doctorProfile;
+    if (doctorProfile == null) {
+      return true; 
+    }
 
+    //* Check if specialities, practiceLocations, or hpcsaNo are empty
+    final hasIncompleteSpecialities = doctorProfile.specialities.isEmpty;
+    final hasIncompletePracticeLocations =
+        doctorProfile.practiceLocations.isEmpty;
+    final hasIncompleteHpcsaNo = doctorProfile.hpcsaNo.isEmpty;
+
+    //* Return true if any of these fields are incomplete
+    return hasIncompleteSpecialities ||
+        hasIncompletePracticeLocations ||
+        hasIncompleteHpcsaNo;
+  }
 
   //* Method to set schedule data
   void setScheduleData(Map<String, List> scheduleData) {
