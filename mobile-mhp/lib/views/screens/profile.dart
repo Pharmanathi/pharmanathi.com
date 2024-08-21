@@ -562,7 +562,7 @@ class _MyProfileState extends State<MyProfile> {
                                   width: 15,
                                 ),
                                 Text(
-                                  'Log Out',
+                                  'Log out',
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
