@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:client_pharmanathi/blocs/sign_in_bloc.dart';
+import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../helpers/api_helpers.dart';
 import '../components/UserProvider.dart';
 import '../components/navigation_bar.dart';
@@ -15,17 +16,16 @@ class ProfileSetting extends StatefulWidget {
 }
 
 class _ProfileSettingState extends State<ProfileSetting> {
-
   int _selectedIndex = 3;
 
-  //method to handle navigation
+  // Method to handle navigation
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  void _showModal(BuildContext context) {
+  void _showModal(BuildContext context, GoogleSignInBloc googleSignInBloc) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -65,10 +65,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                // Handle log-out here
-                // _signOut();
-                Navigator.of(context).pop(); // Close the dialog
+              onPressed: () async {
+                await googleSignInBloc.signOut();
+                Navigator.of(context).pop(); 
+                Navigator.pushNamedAndRemoveUntil(context,  AppRoutes.signIn, (route) => false);
               },
               child: Text(
                 'Log Out',
@@ -86,6 +86,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+    final googleSignInBloc = Provider.of<GoogleSignInBloc>(context, listen: false);
     String alteredname = ApiHelper.toTitleCase('${userProvider.name}');
 
     return Scaffold(
@@ -102,21 +103,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     children: [
                       Row(
                         children: [
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.only(right: 10, left: 10),
-                          //   child: GestureDetector(
-                          //     onTap: () {
-                          //       Navigator.pop(context);
-                          //     },
-                          //     child: const Icon(
-                          //       Icons.arrow_back,
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 60,left: 90, right:60,bottom: 60 ),
+                            padding: const EdgeInsets.only(top: 60, left: 90, right: 60, bottom: 60),
                             child: Text(
                               'Profile Settings',
                               style: TextStyle(
@@ -150,16 +138,15 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     padding: const EdgeInsets.all(35.0),
                     child: Column(
                       children: [
-                        //profile picture and details
+                        // Profile picture and details
                         Container(
                           child: Column(
                             children: [
                               CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(userProvider.picture ?? ''),
+                                backgroundImage: NetworkImage(userProvider.picture ?? ''),
                                 radius: 80,
                               ),
-                              //doctor's name
+                              // Doctor's name
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
@@ -171,7 +158,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   ),
                                 ),
                               ),
-                              //profission
+                              // Profession
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
@@ -188,55 +175,47 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         ),
                         buildDivider(),
 
-                        //account setting...........
+                        // Account settings
                         GestureDetector(
                           onTap: () async {},
                           child: Container(
-                              child: buildSectionTile(
-                                  'Account settings', Icons.border_color)),
+                            child: buildSectionTile('Account settings', Icons.border_color),
+                          ),
                         ),
                         buildDivider(),
 
-                        //notifications.............................
+                        // Notifications
                         GestureDetector(
                           onTap: () {
-                            //handle
+                            // Handle notifications
                           },
                           child: Container(
-                              child: buildSectionTile(
-                                  'Notification', Icons.notifications)),
+                            child: buildSectionTile('Notification', Icons.notifications),
+                          ),
                         ),
                         buildDivider(),
 
-                        //support....................
+                        // Support
                         GestureDetector(
                           onTap: () {
-                            //handle
+                            // Handle support
                           },
                           child: Container(
-                              child:
-                                  buildSectionTile('Support ', Icons.help)),
+                            child: buildSectionTile('Support', Icons.help),
+                          ),
                         ),
                         buildDivider(),
 
-                        //private policy .............................
-                        // Container(
-                        //   child: Container(
-                        //       child: buildSectionTile(
-                        //           'Private Policy', Icons.gpp_maybe)),
-                        // ),
-                        // buildDivider(),
-
-                        // log out........................
+                        // Log out
                         GestureDetector(
                           onTap: () {
-                            _showModal(context);
+                            _showModal(context, googleSignInBloc);
                           },
                           child: Container(
-                              child:
-                                  buildSectionTile('LogOut', Icons.logout)),
+                            child: buildSectionTile('LogOut', Icons.logout),
+                          ),
                         ),
-                        buildDivider()
+                        buildDivider(),
                       ],
                     ),
                   ),
@@ -246,7 +225,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
           ],
         ),
       ),
-        bottomNavigationBar: CustomBottomNavigationBar(
+      bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
@@ -289,7 +268,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
             children: [
               Icon(
                 Icons.arrow_forward_ios,
-                 size: 12.0,
+                size: 12.0,
                 color: Color(0xFF6F7ED7),
               ),
             ],
