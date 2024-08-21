@@ -66,17 +66,20 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> hasIncompleteDoctorProfile() async {
-    //* Check if the doctor's profile exists
-    final doctorProfile = user?.doctorProfile;
-    if (doctorProfile == null) {
-      return true; 
+    //* Check if the user exists
+    final userProfile = user?.doctorProfile;
+
+    //* If userProfile is null, return true (incomplete)
+    if (userProfile == null) {
+      return true;
     }
 
     //* Check if specialities, practiceLocations, or hpcsaNo are empty
-    final hasIncompleteSpecialities = doctorProfile.specialities.isEmpty;
+    final hasIncompleteSpecialities = userProfile.specialities.isEmpty;
     final hasIncompletePracticeLocations =
-        doctorProfile.practiceLocations.isEmpty;
-    final hasIncompleteHpcsaNo = doctorProfile.hpcsaNo.isEmpty;
+        userProfile.practiceLocations.isEmpty;
+    final hasIncompleteHpcsaNo = userProfile.hpcsaNo.isEmpty;
+    
 
     //* Return true if any of these fields are incomplete
     return hasIncompleteSpecialities ||
