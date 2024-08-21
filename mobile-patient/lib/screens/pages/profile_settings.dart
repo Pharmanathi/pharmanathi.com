@@ -212,7 +212,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                             _showModal(context, googleSignInBloc);
                           },
                           child: Container(
-                            child: buildSectionTile('LogOut', Icons.logout),
+                            child: buildSectionTile('Logout', Icons.logout),
                           ),
                         ),
                         buildDivider(),
