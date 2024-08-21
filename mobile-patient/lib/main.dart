@@ -1,4 +1,6 @@
 import 'package:client_pharmanathi/Repository/doctor_repository.dart';
+import 'package:client_pharmanathi/Repository/sign_in_repository.dart';
+import 'package:client_pharmanathi/blocs/sign_in_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,17 +28,21 @@ Future<void> main() async {
   await _initializeFirebase();
 
   ApiProvider apiProvider = ApiProvider();
-  AppointmentRepository appointmentRepository = AppointmentRepository(apiProvider);
-   DoctorRepository doctortRepository = DoctorRepository();
+  AppointmentRepository appointmentRepository =
+      AppointmentRepository(apiProvider);
+  DoctorRepository doctortRepository = DoctorRepository();
+  GoogleSignInRepository sign_in_repository =
+      GoogleSignInRepository(apiProvider);
 
   bool enableSentry = _shouldEnableSentry();
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository,doctortRepository);
+      await _runApp(
+          appointmentRepository, doctortRepository, sign_in_repository);
     });
   } else {
-    await _runApp(appointmentRepository, doctortRepository);
+    await _runApp(appointmentRepository, doctortRepository, sign_in_repository);
   }
 }
 
@@ -69,13 +75,17 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   );
 }
 
-Future<void> _runApp(AppointmentRepository appointmentRepository, DoctorRepository doctortRepository) async {
+Future<void> _runApp(
+    AppointmentRepository appointmentRepository,
+    DoctorRepository doctortRepository,
+    GoogleSignInRepository sign_in_repository) async {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
-         Provider.value(value: doctortRepository),
+        Provider.value(value: doctortRepository),
+        Provider(create: (_) => GoogleSignInBloc(sign_in_repository)),
         Provider(create: (_) => DeepLinkHandler()),
       ],
       child: const MyApp(),
@@ -93,12 +103,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   late StreamSubscription _sub;
   final DeepLinkHandler _deepLinkHandler = DeepLinkHandler();
-  
+
   @override
   void initState() {
     super.initState();
     _initializeDeepLinking();
-    
   }
 
   Future<void> _initializeDeepLinking() async {
@@ -144,7 +153,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey, 
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.generateRoute,
       home: FutureBuilder<bool>(
@@ -178,7 +187,9 @@ class DeepLinkHandler {
   void handleDeepLink(String link) {
     final uri = Uri.parse(link);
     if (uri.scheme == 'unilinks' && uri.host.contains("pharmanathi.com")) {
-      navigatorKey.currentState?.pushNamed("${uri.queryParameters['screen']}").catchError((e) {
+      navigatorKey.currentState
+          ?.pushNamed("${uri.queryParameters['screen']}")
+          .catchError((e) {
         print("Error during navigation: $e"); // Log to Sentry if needed
       });
     }
