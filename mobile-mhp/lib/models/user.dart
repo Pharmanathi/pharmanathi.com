@@ -1,7 +1,7 @@
 class User {
   int id;
   bool isDoctor;
-  DoctorProfile? doctorProfile;
+  DoctorProfile doctorProfile; // Changed from nullable to non-nullable
   String firstName;
   String lastName;
   String email;
@@ -15,7 +15,7 @@ class User {
   User({
     required this.id,
     required this.isDoctor,
-    this.doctorProfile,
+    required this.doctorProfile, // Updated to be required
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -33,11 +33,17 @@ class User {
       isDoctor: json['is_doctor'],
       doctorProfile: json['doctor_profile'] != null
           ? DoctorProfile.fromJson(json['doctor_profile'])
-          : null,
+          : DoctorProfile(
+              id: 0,
+              specialities: [],
+              hpcsaNo: '',
+              mpNo: '',
+              practiceLocations: [],
+            ), // Provide default values to ensure non-null
       firstName: json['first_name'],
       lastName: json['last_name'],
       email: json['email'],
-      saIdNo: json['sa_id_no'], // Allow saIdNo to be nullable
+      saIdNo: json['sa_id_no'],
       initials: json['initials'],
       title: json['title'],
       contactNo: json['contact_no'],
@@ -52,7 +58,7 @@ class User {
     return {
       'id': id,
       'is_doctor': isDoctor,
-      'doctor_profile': doctorProfile?.toJson(),
+      'doctor_profile': doctorProfile.toJson(),
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
