@@ -22,4 +22,10 @@ class ApiProvider {
     return await http_helpers.ApiHelper.httpRequestWithAuthorization(
         context, apiUrl, 'GET', '');
   }
+
+   Future<http.Response> signInWithGoogle(BuildContext context, String idToken) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/google-login-by-id-token?id_token=$idToken';
+    return await http_helpers.ApiHelper.httpRequestWithAuthorization(
+        context, apiEndpoint, 'GET', '');
+  }
 }

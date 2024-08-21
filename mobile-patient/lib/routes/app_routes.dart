@@ -1,16 +1,17 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
+import 'package:client_pharmanathi/views/screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import '../screens/pages/onboard_page.dart';
 import '../screens/pages/home_page.dart';
 import '../views/screens/appointment.dart';
 import '../views/screens/doctors.dart';
 import '../screens/pages/profile_settings.dart';
-import '../screens/pages/singnin_page.dart';
+
 
 class AppRoutes {
   static const String onboarding = '/onboarding';
-  static const String signIn = '/signIn';
+  static const String signIn = '/sign_in';
   static const String homePage = '/home_page';
   static const String appointments = '/appointments';
   static const String doctors = '/doctors';
