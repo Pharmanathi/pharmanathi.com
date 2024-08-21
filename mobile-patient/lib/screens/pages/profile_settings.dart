@@ -71,7 +71,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 Navigator.pushNamedAndRemoveUntil(context,  AppRoutes.signIn, (route) => false);
               },
               child: Text(
-                'Log Out',
+                'Logout',
                 style: TextStyle(
                   color: Colors.red,
                 ),
