@@ -63,7 +63,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/nodata.png',
+                      'assets/images/onboard_pic1.png',
                       height: 200,
                     ),
                   ],

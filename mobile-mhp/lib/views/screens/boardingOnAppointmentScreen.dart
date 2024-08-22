@@ -68,7 +68,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/nodata.png',
+                      'assets/images/onboard_appointments.png',
                       height: 200,
                     ),
                   ],
