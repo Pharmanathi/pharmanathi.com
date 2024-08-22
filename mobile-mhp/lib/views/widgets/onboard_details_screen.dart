@@ -328,7 +328,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       ),
                     ),
                     const Text(
-                      'MP Number',
+                      'SAPC Number',
                       style: TextStyle(
                         color: Pallet.NEUTRAL_300,
                         fontWeight: FontWeight.bold,
@@ -340,7 +340,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       child: TextFormField(
                         controller: _mpNoController,
                         decoration: InputDecoration(
-                          hintText: 'MP Number',
+                          hintText: 'SAPC Number',
                           hintStyle: const TextStyle(
                             color: Pallet.NEUTRAL_100,
                             fontWeight: FontWeight.normal,
@@ -357,7 +357,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                           if (_selectedSpecialities.any((speciality) =>
                               speciality.name == 'Pharmacist')) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your MP Number';
+                              return 'Please enter your SAPC Number';
                             }
                           }
                           return null;
