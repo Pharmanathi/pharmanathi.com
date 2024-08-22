@@ -296,26 +296,29 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     const Text(
                       'HPCSA Number',
                       style: TextStyle(
-                          color: Pallet.NEUTRAL_300,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12),
+                        color: Pallet.NEUTRAL_300,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _hpcsaNoController,
                         decoration: InputDecoration(
-                            hintText: 'HPCSA Number',
-                            hintStyle: const TextStyle(
-                                color: Pallet.NEUTRAL_100,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 10),
-                            filled: true,
-                            fillColor: Pallet.BACKGROUND_50,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none,
-                            )),
+                          hintText: 'HPCSA Number',
+                          hintStyle: const TextStyle(
+                            color: Pallet.NEUTRAL_100,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                          ),
+                          filled: true,
+                          fillColor: Pallet.BACKGROUND_50,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your HPCSA Number';
@@ -327,35 +330,48 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                     const Text(
                       'MP Number',
                       style: TextStyle(
-                          color: Pallet.NEUTRAL_300,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12),
+                        color: Pallet.NEUTRAL_300,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _mpNoController,
                         decoration: InputDecoration(
-                            hintText: 'MP Number',
-                            hintStyle: const TextStyle(
-                                color: Pallet.NEUTRAL_100,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 10),
-                            filled: true,
-                            fillColor: Pallet.BACKGROUND_50,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none,
-                            )),
+                          hintText: 'MP Number',
+                          hintStyle: const TextStyle(
+                            color: Pallet.NEUTRAL_100,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                          ),
+                          filled: true,
+                          fillColor: Pallet.BACKGROUND_50,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (_selectedSpecialities.any((speciality) =>
+                              speciality.name == 'Pharmacist')) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your MP Number';
+                            }
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     const SizedBox(height: 16.0),
                     const Text(
                       'Specialities',
                       style: TextStyle(
-                          color: Pallet.NEUTRAL_300,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12),
+                        color: Pallet.NEUTRAL_300,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -396,6 +412,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                 setState(() {
                                   _selectedSpecialities = selected;
                                 });
+                                _formKey.currentState?.validate();
                               },
                             );
                           }
