@@ -1,4 +1,5 @@
 import datetime
+from logging import Logger
 from urllib.parse import unquote_plus
 
 from django.contrib.auth.models import AbstractUser
@@ -6,14 +7,18 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
+    auto_mp_verification_task,
     mail_user_task,
     set_rejection_reason_task,
     update_user_social_profile_picture_url_task,
 )
 from pharmanathi_backend.utils import get_default_timezone, to_aware_dt
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
+
+logger = Logger(__file__)
 
 
 class User(BaseCustomModel, AbstractUser):
@@ -146,10 +151,28 @@ class Doctor(BaseCustomModel):
             payment_status_filters.append(Payment.PaymentStatus.PENDING)
         return self.appointment_set.filter(start_time__gte=now_today, payment__status__in=payment_status_filters)
 
-    def run_auto_mp_verification_task(self):
-        from .tasks import auto_mp_verification_task
+    def has_changed_since_last_verification(self) -> bool:
+        """Use to check whether a doctor profile has changed. A Doctor profile is deemed
+        updated(changed) if previous state from previous verification report differs from
+        the current state.
+        """
+        from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer as VRS
 
-        auto_mp_verification_task.delay(self.pk)
+        vrs = self.verification_reports
+        p_state_before = VRS(self.user).data  # the proposed state before verification
+        if vrs.count() > 0:
+            return vrs.last().report.get("state_before") != p_state_before
+        return False
+
+    def run_auto_mp_verification_task(self):
+        def has_all_required_data():
+            if self.is_pharmacist and self.mp_no in [None, ""] or self.hpcsa_no in [None, ""]:
+                return False
+
+            return True
+
+        if self.has_changed_since_last_verification() and has_all_required_data():
+            auto_mp_verification_task.delay(self.pk)
 
     def has_consulted_before(self, patient_id):
         return self.appointment_set.filter(patient__id=patient_id).exists()
@@ -285,6 +308,14 @@ class Doctor(BaseCustomModel):
         self.practicelocations.clear()
         self.practicelocations.add(*location_list)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.run_auto_mp_verification_task()
+
+    def update(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.run_auto_mp_verification_task()
+
 
 class InvalidationReason(BaseCustomModel):
     mhp = models.ForeignKey(Doctor, on_delete=models.PROTECT, null=False)
@@ -307,11 +338,14 @@ class InvalidationReason(BaseCustomModel):
     def mark_resolved(self, resolver: User):
         if resolver.is_staff is False:
             raise Exception("Cannot set a non-staff user as resolver of an invalidation reason.")
-        return InvalidationReason.objects.filter(pk=self.pk).update(is_resolved=True, resolved_by=resolver)
+        self.is_resolved = True
+        self.resolved_by = resolver
+        return self.save(update_fields=["is_resolved", "resolved_by", "date_modified"])
 
 
 class VerificationReport(BaseCustomModel):
     STR_SUM_END_SUCCESS_REPORT_TXT = "was SUCCESSFULL!"
+    # TODO(nehemie): use doctor as property all over these models for consistency
     mp = models.ForeignKey(Doctor, related_name="verification_reports", on_delete=models.PROTECT)
     report: models.JSONField = models.JSONField()
 
