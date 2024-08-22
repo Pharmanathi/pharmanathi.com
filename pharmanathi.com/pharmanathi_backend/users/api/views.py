@@ -294,7 +294,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
                     message,
                     message,
                 )
-                new_mp.run_auto_mp_verification_task()
+                # new_mp.run_auto_mp_verification_task()
 
         # Because Google profile picture's URL change.
         # TODO(nehemie): add tests

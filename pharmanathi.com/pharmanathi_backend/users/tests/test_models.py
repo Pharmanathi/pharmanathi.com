@@ -1,11 +1,18 @@
 from datetime import datetime, time, timedelta
+from unittest.mock import patch
 
 import pytest
 from freezegun import freeze_time
 
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
-from pharmanathi_backend.users.models import User
-from pharmanathi_backend.users.tests.factories import PracticeLocationFactory, SpecialityFactory
+from pharmanathi_backend.users.models import Doctor, User, VerificationReport
+from pharmanathi_backend.users.tests.factories import (
+    DoctorFactory,
+    InvalidationReasonFactory,
+    PracticeLocationFactory,
+    SpecialityFactory,
+    VerificationReportFactory,
+)
 from pharmanathi_backend.utils import to_aware_dt
 
 pytestmark = pytest.mark.django_db
@@ -78,3 +85,60 @@ def test_get_available_slots_on_with_past_date(build_future_date):
     forty_minuts_before_end_of_slot = to_aware_dt(build_future_date(day_of_the_week, time(9, 20)))
     with freeze_time(forty_minuts_before_end_of_slot):
         assert mp.get_available_slots_on(datetime.now(), appointment_type.duration) == {("09:30", "10:00")}
+
+
+# profile has changed on new profile account should return false
+def test_new_dr_profile_has_changed_since_last_vr_return_false():
+    doctor = DoctorFactory()
+    assert doctor.has_changed_since_last_verification() is False
+
+
+def test_has_changed_since_last_vr_is_true_if_hpcsa_no_changed():
+    from pharmanathi_backend.users.models import VerificationReport as VR
+
+    vr = VerificationReportFactory()
+    vr.mp.hpcsa_no = "something-else"
+    with patch("pharmanathi_backend.users.models.auto_mp_verification_task.delay") as patched_vrf_task:
+        vr.mp.save()
+    patched_vrf_task.assert_called
+    patched_vrf_task.assert_called_with(vr.mp.pk)
+
+    # mp_no
+    vr.mp.mp_no = "something-else"
+    with patch("pharmanathi_backend.users.models.auto_mp_verification_task.delay") as patched_vrf_task:
+        vr.mp.save()
+    patched_vrf_task.assert_called
+    patched_vrf_task.assert_called_with(vr.mp.pk)
+
+
+def test_run_auto_mp_verification_task_on_update():
+    doctor = DoctorFactory(_is_verified=False)
+    with patch("pharmanathi_backend.users.models.Doctor.run_auto_mp_verification_task") as p:
+        Doctor.objects.filter(pk=doctor.pk).first().mark_as_vefified()
+        assert p.assert_called
+
+    with patch("pharmanathi_backend.users.models.Doctor.run_auto_mp_verification_task") as p:
+        doctor._is_verified = False
+        doctor.update()
+    assert p.assert_called
+
+
+def test_mark_resolved_raises_exception_if_non_staff(authenticated_user_api_client):
+    # ensure they are no staff
+    user = authenticated_user_api_client.user
+    if user.is_staff:
+        user.is_staff = False
+        user.save()
+        user.refresh_from_db()
+
+    iv = InvalidationReasonFactory()
+
+    with pytest.raises(Exception):
+        iv.mark_resolved(user)
+
+
+@pytest.mark.parametrize("speciality_symbol, type", [("SOMESYMBOL", "HPCSA"), ("PHAR", "SAPC")])
+def test_det_verification_type(speciality_symbol, type):
+    doctor = DoctorFactory()
+    doctor.specialities.add(SpecialityFactory(symbol=speciality_symbol))
+    assert VerificationReport.det_verification_type(doctor) == type
