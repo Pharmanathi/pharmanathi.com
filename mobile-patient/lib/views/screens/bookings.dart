@@ -44,6 +44,7 @@ class _BookingsState extends State<Bookings> {
   TextEditingController addressController = TextEditingController();
   TextEditingController reasonForVisitControler = TextEditingController();
   late AppointmentBloc _appointmentBloc;
+  bool _isLoading = false;
 
   void handleButtonTap(int index) {
     setState(() {
@@ -86,6 +87,10 @@ class _BookingsState extends State<Bookings> {
   }
 
   Future<void> _bookAppointment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       //* Ensure timeOfTheAppointment and selectedDay are not null
       if (timeOfTheAppointment == null || selectedDay == null) {
@@ -146,6 +151,10 @@ class _BookingsState extends State<Bookings> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error booking appointment: $e')),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -634,9 +643,7 @@ class _BookingsState extends State<Bookings> {
                     ),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          _bookAppointment();
-                        },
+                        onPressed: _isLoading ? null : _bookAppointment,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF6F7ED7),
                           padding: EdgeInsets.symmetric(
@@ -650,13 +657,18 @@ class _BookingsState extends State<Bookings> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: Text(
-                          "Book Appointment",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: _isLoading
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Text(
+                                "Book Appointment",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ),
                   ],
