@@ -1,0 +1,3 @@
+VERIFI_URL=http://verifi:8000
+HPCSA_ENTRY_URL=http://verifi-sudo:8000/hpcsa
+SAPC_ENTRY_URL=http://verifi-sudo:8000/sapc

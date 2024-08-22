@@ -20,7 +20,7 @@ services:
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
-      - ./.envs/.verifi
+      - ./.envs/.local/.verifi
     ports:
       - '8000:8000'
     command: /start
@@ -108,7 +108,7 @@ services:
     depends_on:
       - web-driver
     build: ./verifi-standalone
-    env_file: ./.envs/.verifi
+    env_file: ./.envs/.local/.verifi
     volumes:
       - ./verifi-standalone/src:/app:z
     restart: unless-stopped
