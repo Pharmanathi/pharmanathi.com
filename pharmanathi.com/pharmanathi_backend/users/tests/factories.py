@@ -3,6 +3,7 @@ from collections.abc import Sequence
 from os import environ
 from typing import Any
 
+import factory
 import factory.fuzzy
 from django.contrib.auth import get_user_model
 from factory import Faker, SubFactory, post_generation
@@ -130,7 +131,12 @@ class InvalidationReasonFactory(DjangoModelFactory):
 
 class VerificationReportFactory(DjangoModelFactory):
     mp = SubFactory(DoctorFactory)
-    report = {}
 
     class Meta:
         model = VerificationReport
+
+    @factory.lazy_attribute
+    def report(self):
+        from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer
+
+        return {"state_before": VerificationReportUserStateSerializer(self.mp.user).data}
