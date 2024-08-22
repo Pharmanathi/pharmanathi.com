@@ -62,7 +62,10 @@ class Appointment {
           localFormatter.format(formattedTimeDateTime);
       final DateTime currentDateTime = DateTime.now();
 
-      if (DateTime.parse(formattedTimeInLocal).isAfter(currentDateTime)) {
+      if(json["payment"]["status"] != "PAID"){
+        status = "Unpaid";
+      }
+      else if (DateTime.parse(formattedTimeInLocal).isAfter(currentDateTime)) {
         status = 'Upcoming';
       } else {
         status = 'Completed';

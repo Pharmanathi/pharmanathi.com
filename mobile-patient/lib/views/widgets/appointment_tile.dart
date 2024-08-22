@@ -68,7 +68,15 @@ class ProfileCard extends StatelessWidget {
                                     ? null // No background color if imageURL is available
                                     : getRandomColor(), // Random background color if imageURL is not available
                                 child: appointment.doctor.imageURL.isNotEmpty
-                                    ? Image.network(appointment.doctor.imageURL)
+                                    // ? Image.network(appointment.doctor.imageURL)
+                                    ? ClipOval(
+                                child: Image.network(
+                                 appointment.doctor.imageURL,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                              )
                                     : Text(
                                         appointment.patient.firstName.isNotEmpty
                                             ? appointment.patient.firstName[0]
@@ -199,11 +207,11 @@ class ProfileCard extends StatelessWidget {
                                             // height: 30,
                                             // width: 100,
                                             decoration: BoxDecoration(
-                                              color: appointment.status ==
-                                                      'Upcoming'
-                                                  ? Colors.grey
-                                                  : Color.fromARGB(
-                                                      255, 181, 241, 212),
+                                              color: {
+                                                'Upcoming': Colors.grey,
+                                                'Unpaid': Color(0xFFFE16E47),
+                                                'Completed': Color.fromARGB(255, 181, 241, 212)
+                                              }[appointment.status],
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                             ),
@@ -214,10 +222,11 @@ class ProfileCard extends StatelessWidget {
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.normal,
-                                                  color: appointment.status ==
-                                                          'Upcoming'
-                                                      ? Colors.white
-                                                      : Colors.grey,
+                                                  color: {
+                                                    'Upcoming': Colors.white,
+                                                    'Unpaid': Colors.white,
+                                                    'Completed': Colors.grey 
+                                                  }[appointment.status],
                                                 ),
                                               ),
                                             ),
