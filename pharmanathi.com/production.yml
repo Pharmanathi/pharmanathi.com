@@ -17,7 +17,7 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
       - ./.envs/.production/.version
-      - ./.envs/.verifi
+      - ./.envs/.production/.verifi
     command: /start
 
   postgres:
@@ -71,6 +71,7 @@ services:
     depends_on:
       - web-driver
     build: ./verifi-standalone
+    env_file: ./.envs/.production/.verifi
 
   awscli:
     build:
