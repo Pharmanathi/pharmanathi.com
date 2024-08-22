@@ -123,10 +123,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
                           ),
                         );
                       },
-                      buttonTextPrimary: 'SKIP',
-                      onPressedPrimary: () {
-                         skipOnboarding(context);
-                      },
                     ).buildButtons(primaryFirst: true),
                   ],
                 ),
