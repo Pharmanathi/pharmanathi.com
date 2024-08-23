@@ -371,7 +371,7 @@ class VerificationReport(BaseCustomModel):
             return "Something went wrong. We failed to complete the verification. Please review the logs"
 
         # Case: No registration found
-        if self.report.get("profile").get("names") == "":
+        if self.report.get("profile") is None or self.report.get("profile").get("names") == "":
             return "Did not find any registration profile. MP does not seem to exist"
 
         # Case: final, parse registrations and name match report
