@@ -5,4 +5,4 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-gunicorn -w 4 --access-logfile=- --error-logfile=- --bind 0.0.0.0:8000 api:app --reload --timeout 300
+gunicorn -w 4 --access-logfile=- --error-logfile=- --bind 0.0.0.0:8000 api:app --reload --timeout $VERIFI_GLOBAL_SOFT_LIMIT
