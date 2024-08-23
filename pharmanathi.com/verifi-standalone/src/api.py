@@ -55,8 +55,8 @@ def verify():
         else:
             raise ValueError(f"Invalid value for request({mp_type})")
 
-        log(f"Starting collection with {identifier, first_name, last_name, identifier} using {mp_type}")
-        data = verification_func(driver, identifier, first_name, last_name, identifier)
+        log(f"Starting collection using {identifier, first_name, last_name} with method {mp_type}")
+        data = verification_func(driver, identifier, first_name, last_name)
     except Exception as e:
         error_message = jsonify({"error": f"Implementation Error: {str(e)}"})
         log(error_message)
@@ -72,7 +72,7 @@ def verify():
     return jsonify(data)
 
 
-def process_sapc(driver: webdriver.remote.webdriver.WebDriver, identifier):
+def process_sapc(driver: webdriver.remote.webdriver.WebDriver, identifier, first_name: str, last_name: str):
     """Get a MP credentials from The South African Pharmacy Council
 
     Args:
@@ -127,7 +127,7 @@ def process_sapc(driver: webdriver.remote.webdriver.WebDriver, identifier):
 
 
 def process_hpcsa(
-    driver: webdriver.remote.webdriver.WebDriver, registration_no: str, first_name: str, last_name: str, reg_no: str
+    driver: webdriver.remote.webdriver.WebDriver, registration_no: str, first_name: str, last_name: str
 ) -> dict:
     """Get a MP credentials from HPCSA"""
     ENTRY_URL = environ.get("HPCSA_ENTRY_URL", None)
@@ -179,13 +179,13 @@ def process_hpcsa(
         """
         return driver.execute_script(script)
 
-    def walk_results(registration_no: str) -> str:
+    def walk_results(reg_no: str) -> str:
         """For each record found, check if registration number correspond
         until we find a match. This function will either return a link
         to the match's page or an empty string if none found!
 
         Args:
-            registration_no (str): MP regristration number
+            reg_no (str): MP regristration number
 
         Returns:
             [str]: empy if no match.
@@ -202,7 +202,7 @@ def process_hpcsa(
         }
         return link;
         """
-        return driver.execute_script(script, registration_no.replace(" ", ""))
+        return driver.execute_script(script, reg_no.replace(" ", ""))
 
     def collect_info(reg_no: str, record_url: str) -> dict:
         """We only need to check if there exist any registration that
@@ -248,23 +248,24 @@ def process_hpcsa(
             "registrations": driver.execute_script(script),
         }
 
-    total_found = search_with_reg_no(reg_no)
+    total_found = search_with_reg_no(registration_no)
+    if not total_found:
+        log("Found nothing using registration number, trying with names")
+        total_found = search_with_names(first_name, last_name)
 
     log(f"Found {total_found} records")
     if total_found == 0:
-        err_message = f"Found no records for {first_name} {last_name} {reg_no}"
-        log(err_message)
+        log(f"Found no records for {first_name} {last_name} {registration_no}")
         return {}
 
     record_page_url = walk_results(registration_no)
     log(f"Found match with link {record_page_url}")
 
     if len(record_page_url) < 1:
-        err_message = f"None of the {total_found} records matches the given registration number({reg_no})"
-        log(err_message)
+        log(f"None of the {total_found} records matches the given registration number({registration_no})")
         return {}
 
-    # go to link
+    # if we got this far, go to link
     driver.get(record_page_url)
-    data = collect_info(reg_no, record_page_url)
+    data = collect_info(registration_no, record_page_url)
     return data

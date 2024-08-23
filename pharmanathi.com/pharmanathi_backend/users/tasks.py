@@ -47,7 +47,7 @@ def set_rejection_reason_task(mhp_id, text, creator_user_id):
     return str(InvalidationReason.objects.create(mhp=mhp, created_by=creator, text=text))
 
 
-@celery_app.task(soft_time_limit=300)
+@celery_app.task(soft_time_limit=settings.VERIFI_GLOBAL_SOFT_LIMIT)
 def auto_mp_verification_task(mp_pk):
     """Triggers scrapping task to collect and update MP profile
 
@@ -75,14 +75,16 @@ def auto_mp_verification_task(mp_pk):
     identifier = mp.mp_no if mp.is_pharmacist else mp.hpcsa_no
     verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}&first_name={mp.user.first_name}&last_name={mp.user.last_name}"
     admin_logger.info(f"Starting {verification_type} verification on MP {mp} with URL {verification_url}")
-    
+
     try:
         verifi_response = requests.get(verification_url)
         verifi_response_json = verifi_response.json()
         if verifi_response.status_code != 200:
             err_message = f"Verification failed with error '{verifi_response_json.get('error')}' "
             admin_logger.error(err_message)
-            verifi_response_json = {"_logs": [f"{datetime.datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {err_message}"]}
+            verifi_response_json = {
+                "_logs": [f"{datetime.datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {err_message}"]
+            }
     except Exception as e:
         if "_logs" not in verifi_response_json:
             verifi_response_json["_logs"] = []
