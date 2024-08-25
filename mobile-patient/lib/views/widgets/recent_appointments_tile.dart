@@ -10,7 +10,7 @@ class RecentAppointmentsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-     String name = ApiHelper.toTitleCase(appointment.doctor.doctorName);
+     String name = ApiHelper.toTitleCase(appointment.doctor.doctorLastName);
 
     return Container(
       height: 100,

@@ -143,7 +143,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 ),
                               )
                             : Text(
-                                widget.doctor.doctorName.isNotEmpty ? widget.doctor.doctorName[0] : '',
+                                widget.doctor.doctorFullName.isNotEmpty ? widget.doctor.doctorFullName[0] : '',
                                 style: TextStyle(
                                     fontSize: 50,
                                     color: Colors.white,
@@ -171,7 +171,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Text(
-                      widget.doctor.doctorName,
+                      widget.doctor.doctorFullName,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,

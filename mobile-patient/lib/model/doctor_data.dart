@@ -3,7 +3,9 @@ import 'package:client_pharmanathi/model/appointment_type.dart';
 class Doctor {
   final bool isVerified;
   final String imageURL;
-  final String doctorName;
+  final String doctorFullName;
+  final String doctorFirstName;
+    final String doctorLastName ;
   final List<AppointmentType> appointmentTypes;
   final List<String> specialities;
   final int id;
@@ -12,7 +14,9 @@ class Doctor {
   Doctor({
     required this.isVerified,
     required this.imageURL,
-    required this.doctorName,
+     required this.doctorFirstName,
+       required this.doctorLastName,
+    required this.doctorFullName,
     required this.appointmentTypes,
     required this.specialities,
     required this.id,
@@ -22,7 +26,7 @@ class Doctor {
   factory Doctor.fromJson(Map<String, dynamic> json) {
     final doctorFirstName = json['user']['first_name'];
     final doctorLastName = json['user']['last_name'];
-    final doctorName = '$doctorFirstName $doctorLastName';
+    final doctorFullName = '$doctorFirstName $doctorLastName';
 
     //* Convert the list of appointment types to a list of AppointmentType objects
     final appointmentTypes = (json['appointment_types'] as List<dynamic>?)
@@ -37,7 +41,9 @@ class Doctor {
         [];
 
     return Doctor(
-      doctorName: doctorName,
+      doctorFullName: doctorFullName,
+      doctorFirstName: doctorFirstName,
+      doctorLastName:doctorLastName,
       isVerified: json['is_verified'],
       appointmentTypes: appointmentTypes,
       imageURL: json["user"]['image_url'] ?? '',

@@ -63,7 +63,7 @@ class _DoctorsState extends State<Doctors> {
       } else {
         // Otherwise, filter based on the search text
         filteredDoctorDetails = doctorDetails
-            .where((doctor) => doctor.doctorName
+            .where((doctor) => doctor.doctorFullName
                 .toLowerCase()
                 .contains(searchText.toLowerCase()))
             .toList();
