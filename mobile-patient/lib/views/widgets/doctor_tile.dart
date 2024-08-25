@@ -32,7 +32,7 @@ class CustomDoctorCard extends StatelessWidget {
       }
     }
 
-    String alteredname = ApiHelper.toTitleCase(doctor.doctorName);
+    String alteredname = ApiHelper.toTitleCase(doctor.doctorFullName);
 
     //* Function to generate a random color
     Color getRandomColor() {
@@ -93,8 +93,8 @@ class CustomDoctorCard extends StatelessWidget {
                                       ),
                                     )
                                   : Text(
-                                      doctor.doctorName.isNotEmpty
-                                          ? doctor.doctorName[0]
+                                      doctor.doctorLastName.isNotEmpty
+                                          ? doctor.doctorLastName[0]
                                           : '',
                                       style: TextStyle(
                                           fontSize: 20,

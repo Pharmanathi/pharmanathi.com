@@ -25,7 +25,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String alteredname = ApiHelper.toTitleCase(appointment.doctor.doctorName);
+    String alteredname = ApiHelper.toTitleCase(appointment.doctor.doctorLastName);
 
     return GestureDetector(
       onTap: () {

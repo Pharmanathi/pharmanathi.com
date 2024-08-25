@@ -497,7 +497,7 @@ class _BookingsState extends State<Bookings> {
                                   ),
                                 ),
                                 Text(
-                                  widget.doctor.doctorName,
+                                  widget.doctor.doctorLastName,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,

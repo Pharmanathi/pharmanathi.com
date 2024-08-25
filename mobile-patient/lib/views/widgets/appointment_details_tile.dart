@@ -99,7 +99,7 @@ class AppiontmentDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              appointment.doctor.doctorName,
+                              appointment.doctor.doctorFullName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -173,8 +173,7 @@ class AppiontmentDetails extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(
-                                appointment.doctor
-                                    .doctorName, //TODO :this should be the practice location
+                                "LOCATION", //TODO :this should be the practice location
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
@@ -188,8 +187,7 @@ class AppiontmentDetails extends StatelessWidget {
                         child: Container(
                           width: 150,
                           child: Text(
-                            appointment.doctor
-                                .doctorName, //TODO :this should be the practice name
+                            "Practice Name", //TODO :this should be the practice name
                             style: TextStyle(
                                 fontSize: 12,
                                 color:
