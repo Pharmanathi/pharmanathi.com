@@ -134,17 +134,26 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(width: 10),
                     Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Welcome Back!',
                           style: TextStyle(fontSize: 14),
                         ),
-                        Text(
-                          'Dr.${userInfo?.firstName ?? '..'} ${userInfo?.lastName ?? 'loading..'}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                        Container(
+                          width: 270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
+                          child: Text(
+                            'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..;;;;;;;'}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            softWrap:
+                                true, 
+                            maxLines: 2, 
+                            overflow: TextOverflow
+                                .ellipsis, 
                           ),
                         ),
                       ],
