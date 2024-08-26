@@ -27,7 +27,9 @@ WORKDIR ${APP_HOME}
 RUN groupadd --system verifi \
     && adduser --system --ingroup verifi verifi
 
-RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  curl \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
@@ -35,9 +37,13 @@ COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
   && rm -rf /wheels/
 
+COPY --chown=verifi:verifi ./compose/${BUILD_ENVIRONMENT}/verifi/entrypoint /entrypoint
+RUN chmod +x /entrypoint
+
 COPY --chown=verifi:verifi ./compose/${BUILD_ENVIRONMENT}/verifi/start /start
 RUN chmod +x /start
 
-COPY --chown=verifi:verifi ./verifi-standalone/verifi ${APP_HOME}
+COPY --chown=verifi:verifi ./verifi-standalone/__init__.py ${APP_HOME}/__init__.py
+COPY --chown=verifi:verifi ./verifi-standalone/verifi ${APP_HOME}/verifi
 
-CMD ["/start"]
+ENTRYPOINT [ "/entrypoint"]

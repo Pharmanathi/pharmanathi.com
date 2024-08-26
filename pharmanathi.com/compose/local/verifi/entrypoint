@@ -1,0 +1,13 @@
+#!/bin/bash
+
+url="http://web-driver:4444/status"
+
+echo "Waiting for the Selenium Remote Web Driver service at $url to be available..."
+while ! curl -s --head --request GET $url | grep "200 OK" > /dev/null; do
+    echo "Service is not up yet. Retrying in 5 seconds..."
+    sleep 5
+done
+
+echo "Selenium Remote Web Driver is up"
+
+exec "$@"

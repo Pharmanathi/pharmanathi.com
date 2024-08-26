@@ -4,5 +4,4 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-cd verifi
-gunicorn -w 4 --access-logfile=- --error-logfile=- --bind 0.0.0.0:8000 api:app --reload --timeout $VERIFI_GLOBAL_SOFT_LIMIT
+gunicorn -w 4 --access-logfile=- --error-logfile=- --bind 0.0.0.0:8000 verifi.api:app --reload --timeout $VERIFI_GLOBAL_SOFT_LIMIT
