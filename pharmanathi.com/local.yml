@@ -105,12 +105,15 @@ services:
       - 7900:7900
 
   verifi:
+    image: pharmanathi_backend_local_verifi 
     depends_on:
       - web-driver
-    build: ./verifi-standalone
+    build: 
+      dockerfile: ./pharmanathi.com/compose/local/verifi/Dockerfile
+      context: ../
     env_file: ./.envs/.local/.verifi
     volumes:
-      - ./verifi-standalone/src:/app:z
+      - ./verifi-standalone:/app:z
     restart: unless-stopped
     ports:
       - 7901:8000

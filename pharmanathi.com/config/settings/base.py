@@ -405,7 +405,7 @@ ANYMAIL = {
 # VERIFI
 # ------------------------------------------------------------------------------
 VERIFI_URL = env("VERIFI_URL", default="http://verifi:8000")
-VERIFI_GLOBAL_SOFT_LIMIT = env("VERIFI_GLOBAL_SOFT_LIMIT", 300)  # in seconds
+VERIFI_GLOBAL_SOFT_LIMIT = env.int("VERIFI_GLOBAL_SOFT_LIMIT", 300)  # in seconds
 
 
 # PAYMENT PROVIDERS
