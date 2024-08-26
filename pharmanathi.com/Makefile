@@ -36,9 +36,13 @@ migrate:
 pre-commit:
 	@docker compose run --rm django pre-commit run --show-diff-on-failure --color=always --all-files
 
-test:
+test-verifi:
+	@export COVERAGE=$$(docker compose -f local.yml run --rm verifi bash -c "coverage run -m pytest && coverage report -m" | tee /dev/tty | grep TOTAL) && \
+	python update_coverage_badge.py --starting-with "![verifi test coverage]" -p $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
+
+test: test-verifi
 	@export COVERAGE=$$(docker compose -f local.yml run --rm -ti django bash -c "coverage run -m pytest && coverage report" | tee /dev/tty | grep TOTAL) && \
-	python update_coverage_badge.py $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
+	python update_coverage_badge.py --starting-with "![django test coverage]" -p $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
 
 django-shell:
 	@docker compose run --rm django python manage.py shell
