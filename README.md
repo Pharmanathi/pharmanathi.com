@@ -1,7 +1,8 @@
 # Pharmanathi.com
 
 [![Backend CI](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
-![coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
+![django test coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
+![verifi test coverage](https://img.shields.io/badge/coverage-14%25-red)
 
 Welcome to Pharmanathi.com.
 
@@ -31,3 +32,4 @@ We use the same convention to label tickets on GitHub.
 ## Project Management
 
 The project's various boards are avaiblable [here](https://github.com/orgs/Pharmanathi/projects) as GitHub projects(v2). The initial project is [mvp-v-2.0](https://github.com/orgs/Pharmanathi/projects/5).
+anathi/projects/5).
