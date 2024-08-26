@@ -68,9 +68,12 @@ services:
     shm_size: 2gb
 
   verifi:
+    image: pharmanathi_backend_production_verifi 
     depends_on:
       - web-driver
-    build: ./verifi-standalone
+    build:
+      context: ./
+      dockerfile: ./compose/production/verifi/Dockerfile
     env_file: ./.envs/.production/.verifi
 
   awscli:
