@@ -2,5 +2,4 @@
 pythonpath = ["/app"]
 
 [tool.coverage.run]
-# include = ["*/verifi/*"]
 omit = ["tests/**"]
