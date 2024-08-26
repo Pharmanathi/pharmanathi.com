@@ -32,7 +32,9 @@ RUN groupadd --gid 1000 dev-user \
   && echo dev-user ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/dev-user \
   && chmod 0440 /etc/sudoers.d/dev-user
 
-RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  curl \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
@@ -46,6 +48,9 @@ RUN addgroup --system verifi \
 COPY --chown=verifi:verifi ./pharmanathi.com/compose/local/verifi/start /start
 RUN chmod +x /start
 
-COPY --chown=verifi:verifi ./pharmanathi.com/verifi-standalone/ ${APP_HOME}
+COPY --chown=verifi:verifi ./pharmanathi.com/compose/local/verifi/entrypoint /entrypoint
+RUN chmod +x /entrypoint
 
-CMD ["/start"]
+COPY --chown=verifi:verifi ./pharmanathi.com/verifi-standalone ${APP_HOME}
+
+ENTRYPOINT [ "/entrypoint"]

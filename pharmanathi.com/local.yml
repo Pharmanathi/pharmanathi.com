@@ -105,10 +105,10 @@ services:
       - 7900:7900
 
   verifi:
-    image: pharmanathi_backend_local_verifi 
+    image: pharmanathi_backend_local_verifi
     depends_on:
       - web-driver
-    build: 
+    build:
       dockerfile: ./pharmanathi.com/compose/local/verifi/Dockerfile
       context: ../
     env_file: ./.envs/.local/.verifi
@@ -117,6 +117,7 @@ services:
     restart: unless-stopped
     ports:
       - 7901:8000
+    command: /start
 
   verifi-sudo:
     image: python:3.11.9-slim-bullseye

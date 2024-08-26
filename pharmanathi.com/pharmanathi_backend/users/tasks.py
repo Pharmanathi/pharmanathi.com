@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime
 
+from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
-
-from config import celery_app
 
 admin_logger = logging.getLogger(__name__)  # TODO: target a more specific logger here, admin and/or sentry
 
@@ -65,15 +64,16 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
-
-    from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer
+    from pharmanathi_backend.users.api.serializers import (
+        VerificationReportUserStateSerializer,
+    )
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
     state_now = VerificationReportUserStateSerializer(mp.user).data
     verification_type = VerificationReport.det_verification_type(mp)
     identifier = mp.mp_no if mp.is_pharmacist else mp.hpcsa_no
-    verification_url = f"{settings.VERIFI_URL}/?type={verification_type}&id={identifier}&first_name={mp.user.first_name}&last_name={mp.user.last_name}"
+    verification_url = f"{settings.VERIFI_URL}/?mp_type={verification_type}&id={identifier}&first_name={mp.user.first_name}&last_name={mp.user.last_name}"
     admin_logger.info(f"Starting {verification_type} verification on MP {mp} with URL {verification_url}")
 
     try:
@@ -82,13 +82,11 @@ def auto_mp_verification_task(mp_pk):
         if verifi_response.status_code != 200:
             err_message = f"Verification failed with error '{verifi_response_json.get('error')}' "
             admin_logger.error(err_message)
-            verifi_response_json = {
-                "_logs": [f"{datetime.datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {err_message}"]
-            }
+            verifi_response_json = {"_logs": [f"{datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {err_message}"]}
     except Exception as e:
         if "_logs" not in verifi_response_json:
             verifi_response_json["_logs"] = []
-        verifi_response_json.append(f"{datetime.datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {e}")
+        verifi_response_json.append(f"{datetime.now().strftime('[%D/%b/%Y %H:%M:%S]')} {e}")
 
     vr = VerificationReport.objects.create(
         mp=mp, type=verification_type, report={**verifi_response_json, "state_before": state_now}
