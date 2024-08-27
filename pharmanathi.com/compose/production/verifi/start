@@ -5,5 +5,5 @@ set -o pipefail
 set -o nounset
 
 cd /app
-ls -al 
+ls -al
 gunicorn -w 4 --access-logfile=- --error-logfile=- --bind 0.0.0.0:8000 verifi.api:app --timeout $VERIFI_GLOBAL_SOFT_LIMIT
