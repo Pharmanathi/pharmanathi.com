@@ -3,8 +3,10 @@ from unittest.mock import patch
 
 import pytest
 from freezegun import freeze_time
-
-from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
+from pharmanathi_backend.appointments.tests.factories import (
+    AppointmentTypeFactory,
+    TimeSlotFactory,
+)
 from pharmanathi_backend.users.models import Doctor, User, VerificationReport
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
@@ -87,10 +89,10 @@ def test_get_available_slots_on_with_past_date(build_future_date):
         assert mp.get_available_slots_on(datetime.now(), appointment_type.duration) == {("09:30", "10:00")}
 
 
-# profile has changed on new profile account should return false
-def test_new_dr_profile_has_changed_since_last_vr_return_false():
+def test_new_dr_profile_has_changed_since_last_vr_return_True():
+    # profile has changed on new profile account should return True
     doctor = DoctorFactory()
-    assert doctor.has_changed_since_last_verification() is False
+    assert doctor.has_changed_since_last_verification() is True
 
 
 def test_has_changed_since_last_vr_is_true_if_hpcsa_no_changed():
