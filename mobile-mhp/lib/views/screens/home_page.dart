@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           width: 270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
                           child: Text(
-                            'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..;;;;;;;'}',
+                            'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
