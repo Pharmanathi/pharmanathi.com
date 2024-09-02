@@ -15,6 +15,9 @@ buildrunlocal:
 buildrunlocalx:
 	@docker compose up --build
 
+buildrunshanks:
+	@docker compose -f shanks.yml up --build
+
 stoplocal:
 	@docker compose down
 
