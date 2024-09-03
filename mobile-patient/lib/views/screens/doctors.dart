@@ -155,40 +155,39 @@ class _DoctorsState extends State<Doctors> {
           Row(
             children: [
               //personal info button
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectedButtonIndex = 0;
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        // border: Border(
-                        //     bottom: BorderSide(
-                        //       color: selectedButtonIndex == 0
-                        //           ? Color(0xFF6F7ED7)
-                        //           : Colors.transparent,
-                        //       width: 3.5,
-                        //     ),
-                        //     ),
-                        ),
-                    // child: Padding(
-                    //   padding: const EdgeInsets.only(right: 50),
-                    //   child: Text(
-                    //     'All Doctors',
-                    //     style: TextStyle(
-                    //       fontWeight: FontWeight.bold,
-                    //       color: selectedButtonIndex == 0
-                    //           ? Color(0xFF6F7ED7)
-                    //           : Colors.grey,
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    selectedButtonIndex = 0;
+                  });
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      // border: Border(
+                      //     bottom: BorderSide(
+                      //       color: selectedButtonIndex == 0
+                      //           ? Color(0xFF6F7ED7)
+                      //           : Colors.transparent,
+                      //       width: 3.5,
+                      //     ),
+                      //     ),
+                      ),
+                  // child: Padding(
+                  //   padding: const EdgeInsets.only(right: 50),
+                  //   child: Text(
+                  //     'All Doctors',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       color: selectedButtonIndex == 0
+                  //           ? Color(0xFF6F7ED7)
+                  //           : Colors.grey,
+                  //     ),
+                  //   ),
+                  // ),
                 ),
               ),
+
               //health info button
               // Expanded(
               //   child: InkWell(
@@ -278,44 +277,42 @@ class _DoctorsState extends State<Doctors> {
           // ),
 
           selectedButtonIndex == 0
-              ? Expanded(
-                  child: SingleChildScrollView(
-                    child: isLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : filteredDoctorDetails.isEmpty
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/nodata.png',
-                                      width: 120,
-                                      height: 120,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      'No doctors available',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : ListView.builder(
-                                padding: const EdgeInsets.all(8),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: filteredDoctorDetails.length,
-                                itemBuilder: (context, index) {
-                                  final data = filteredDoctorDetails[index];
-
-                                  return CustomDoctorCard(
-                                    doctor: data,
-                                  );
-                                },
+              ? SingleChildScrollView(
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : filteredDoctorDetails.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/nodata.png',
+                                    width: 120,
+                                    height: 120,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Text(
+                                    'No doctors available',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
                               ),
-                  ),
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: filteredDoctorDetails.length,
+                              itemBuilder: (context, index) {
+                                final data = filteredDoctorDetails[index];
+
+                                return CustomDoctorCard(
+                                  doctor: data,
+                                );
+                              },
+                            ),
                 )
               : Container(),
         ],

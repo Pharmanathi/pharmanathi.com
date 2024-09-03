@@ -7,6 +7,17 @@ import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/views/widgets/appointment_details_tile.dart';
 import 'package:flutter/material.dart';
 
+class AppointmentListItem extends StatelessWidget {
+  final Appointment appointment;
+
+  const AppointmentListItem({super.key, required this.appointment});
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileCard(appointment: appointment);
+  }
+}
+
 class ProfileCard extends StatelessWidget {
   final Appointment appointment;
 
@@ -25,7 +36,8 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String alteredname = ApiHelper.toTitleCase(appointment.doctor.doctorLastName);
+    String alteredname =
+        ApiHelper.toTitleCase(appointment.doctor.doctorLastName);
 
     return GestureDetector(
       onTap: () {
@@ -47,11 +59,10 @@ class ProfileCard extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white70,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white70,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 15, bottom: 10, left: 24, right: 6),
@@ -70,13 +81,13 @@ class ProfileCard extends StatelessWidget {
                                 child: appointment.doctor.imageURL.isNotEmpty
                                     // ? Image.network(appointment.doctor.imageURL)
                                     ? ClipOval(
-                                child: Image.network(
-                                 appointment.doctor.imageURL,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                ),
-                              )
+                                        child: Image.network(
+                                          appointment.doctor.imageURL,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      )
                                     : Text(
                                         appointment.patient.firstName.isNotEmpty
                                             ? appointment.patient.firstName[0]
@@ -138,11 +149,9 @@ class ProfileCard extends StatelessWidget {
                           ),
                           Container(
                             width: double.infinity,
-                            child: Expanded(
-                              child: Divider(
-                                color: Color(0xFFF7F9FC),
-                                thickness: 2,
-                              ),
+                            child: Divider(
+                              color: Color(0xFFF7F9FC),
+                              thickness: 2,
                             ),
                           ),
                           Padding(
@@ -210,7 +219,8 @@ class ProfileCard extends StatelessWidget {
                                               color: {
                                                 'Upcoming': Colors.grey,
                                                 'Unpaid': Color(0xFFFE16E47),
-                                                'Completed': Color.fromARGB(255, 181, 241, 212)
+                                                'Completed': Color.fromARGB(
+                                                    255, 181, 241, 212)
                                               }[appointment.status],
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -225,7 +235,7 @@ class ProfileCard extends StatelessWidget {
                                                   color: {
                                                     'Upcoming': Colors.white,
                                                     'Unpaid': Colors.white,
-                                                    'Completed': Colors.grey 
+                                                    'Completed': Colors.grey
                                                   }[appointment.status],
                                                 ),
                                               ),
@@ -242,9 +252,7 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  )),
             ],
           ),
         ),

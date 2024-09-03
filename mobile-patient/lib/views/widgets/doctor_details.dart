@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../screens/bookings.dart';
 
 class DoctorDetails extends StatefulWidget {
-   final Doctor doctor;
+  final Doctor doctor;
 
   const DoctorDetails({
     Key? key,
@@ -133,17 +133,19 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         backgroundColor: widget.doctor.imageURL.isNotEmpty
                             ? null // No background color if imageUrl is available
                             : getRandomColor(), // Random background color if imageUrl is not available
-                        child:  widget.doctor.imageURL.isNotEmpty
+                        child: widget.doctor.imageURL.isNotEmpty
                             ? ClipOval(
                                 child: Image.network(
-                                 widget.doctor.imageURL,
+                                  widget.doctor.imageURL,
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
                                 ),
                               )
                             : Text(
-                                widget.doctor.doctorFullName.isNotEmpty ? widget.doctor.doctorFullName[0] : '',
+                                widget.doctor.doctorFullName.isNotEmpty
+                                    ? widget.doctor.doctorFullName[0]
+                                    : '',
                                 style: TextStyle(
                                     fontSize: 50,
                                     color: Colors.white,
@@ -278,7 +280,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           Column(
                             children: [
                               Text(
-                                'Expperience',
+                                'Experience',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15.0,
@@ -348,48 +350,43 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: 270,
-                color: Colors.grey[200],
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          //valid insurances
-                          // Container(
-                          //     child: buildSectionTile(
-                          //         'Valid Insurances', Icons.business_center)),
-                          SizedBox(height: 10),
-                          //experiance an qualifications
-                          Container(
-                              child: buildSectionTile(
-                                  'Experiance an Qualification',
-                                  Icons.military_tech_outlined)),
-                          // SizedBox(height: 10),
-                          //personal information
-                          // Container(
-                          //     child: buildSectionTile(
-                          //         'Personal Information', Icons.person_2)),
-                          // SizedBox(height: 10),
-                          //reviews
-                          // Container(
-                          //     child: buildSectionTile('Reviews', Icons.star)),
-                          SizedBox(height: 10),
-                          //working address
-                          Container(
-                              child: buildSectionTile(
-                                  'Working Address', Icons.location_pin)),
-                        ],
-                      ),
-                    ),
+            Container(
+              width: double.infinity,
+              height: 270,
+              color: Colors.grey[200],
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      //valid insurances
+                      // Container(
+                      //     child: buildSectionTile(
+                      //         'Valid Insurances', Icons.business_center)),
+                      SizedBox(height: 10),
+                      //experiance an qualifications
+                      Container(
+                          child: buildSectionTile('Experiance an Qualification',
+                              Icons.military_tech_outlined)),
+                      // SizedBox(height: 10),
+                      //personal information
+                      // Container(
+                      //     child: buildSectionTile(
+                      //         'Personal Information', Icons.person_2)),
+                      // SizedBox(height: 10),
+                      //reviews
+                      // Container(
+                      //     child: buildSectionTile('Reviews', Icons.star)),
+                      SizedBox(height: 10),
+                      //working address
+                      Container(
+                          child: buildSectionTile(
+                              'Working Address', Icons.location_pin)),
+                    ],
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

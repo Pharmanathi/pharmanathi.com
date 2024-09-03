@@ -199,12 +199,6 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // Text(
-                  //   'See All',
-                  //   style: TextStyle(
-                  //     color: Color(0xFF6F7ED7),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -288,13 +282,6 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 5,
                 ),
-                // Text(
-                //   'Short Description',
-                //   style: TextStyle(
-                //     color: Colors.grey,
-                //     fontWeight: FontWeight.normal,
-                //   ),
-                // ),
               ],
             ),
             Icon(

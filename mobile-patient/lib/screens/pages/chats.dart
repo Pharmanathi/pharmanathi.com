@@ -10,24 +10,23 @@ class Mychats extends StatefulWidget {
   const Mychats({super.key});
 
   Future<List<ChatsDetails>> loadChats() async {
-  // Load the JSON file
-  String jsonString = await rootBundle.loadString('assets/sample.json');
-  // Parse the JSON data
-  List<dynamic> jsonList = convert.jsonDecode(jsonString)['chats_details'];
-  // Create a list of ChatsDetails objects
-  List<ChatsDetails> chatsDetails = jsonList
-      .map((json) => ChatsDetails(
-            name: json['name'] ?? '',
-            time: json['time'] ?? '',
-            details: json['details'] ?? '',
-            imageUrl: json['imageUrl'] ?? '',
-            status: json['status'] ?? '',
-          ))
-      .toList();
+    // Load the JSON file
+    String jsonString = await rootBundle.loadString('assets/sample.json');
+    // Parse the JSON data
+    List<dynamic> jsonList = convert.jsonDecode(jsonString)['chats_details'];
+    // Create a list of ChatsDetails objects
+    List<ChatsDetails> chatsDetails = jsonList
+        .map((json) => ChatsDetails(
+              name: json['name'] ?? '',
+              time: json['time'] ?? '',
+              details: json['details'] ?? '',
+              imageUrl: json['imageUrl'] ?? '',
+              status: json['status'] ?? '',
+            ))
+        .toList();
 
-  return chatsDetails;
-}
-
+    return chatsDetails;
+  }
 
   @override
   State<Mychats> createState() => _MychatsState();
@@ -55,7 +54,8 @@ class _MychatsState extends State<Mychats> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 70, left: 20, right: 20,bottom: 0),
+                  padding: const EdgeInsets.only(
+                      top: 70, left: 20, right: 20, bottom: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -102,29 +102,27 @@ class _MychatsState extends State<Mychats> {
               ],
             ),
           ),
-          Expanded(
-            child: FutureBuilder<List<ChatsDetails>>(
-              future: widget.loadChats(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Show a loading indicator while data is loading
-                } else if (snapshot.hasError) {
-                  // print('Error loading data: ${snapshot.error}');
-                  // print('Stack trace: ${snapshot.stackTrace}');
-                  return Center(
-                    child: Text('Error loading data. Please try again later.'),
-                  );
-                } else {
-                  List<ChatsDetails> chatsDetails = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: chatsDetails.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CustomCard(chatsDetails: chatsDetails[index]);
-                    },
-                  );
-                }
-              },
-            ),
+          FutureBuilder<List<ChatsDetails>>(
+            future: widget.loadChats(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Show a loading indicator while data is loading
+              } else if (snapshot.hasError) {
+                // print('Error loading data: ${snapshot.error}');
+                // print('Stack trace: ${snapshot.stackTrace}');
+                return Center(
+                  child: Text('Error loading data. Please try again later.'),
+                );
+              } else {
+                List<ChatsDetails> chatsDetails = snapshot.data!;
+                return ListView.builder(
+                  itemCount: chatsDetails.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CustomCard(chatsDetails: chatsDetails[index]);
+                  },
+                );
+              }
+            },
           ),
         ],
       ),
