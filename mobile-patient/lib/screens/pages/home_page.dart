@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../views/widgets/recent_appointments_tile.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-     _appointmentRepository = context.read<AppointmentRepository>();
+    _appointmentRepository = context.read<AppointmentRepository>();
     _loadAppointmentData();
   }
 
@@ -169,81 +168,73 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // first row of tiles on the home page
-            // SingleChildScrollView(
-            //   child: Expanded(
-            //     child: Container(
-            //       child: Padding(
-            //         padding: const EdgeInsets.only(right: 10, left: 10, top: 5),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //           children: [
-            //             //tile for Doctors
-            //             Container(
-            //                 child: buildSectionTile('Doctors', Icons.person_4)),
-            //             SizedBox(
-            //               width: 10,
-            //             ),
-            //             //tile for clinics
-            //             Container(
-            //                 child:
-            //                     buildSectionTile('Clinics', Icons.apartment)),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10, left: 10, top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //tile for Doctors
+                    Container(
+                        child: buildSectionTile('Doctors', Icons.person_4)),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    //tile for clinics
+                    Container(
+                        child: buildSectionTile('Clinics', Icons.apartment)),
+                  ],
+                ),
+              ),
+            ),
             //recently visited
-            // Container(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(25.0),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           'Recently Visited',
-            //           style: TextStyle(
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //         // Text(
-            //         //   'See All',
-            //         //   style: TextStyle(
-            //         //     color: Color(0xFF6F7ED7),
-            //         //   ),
-            //         // ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // Container(
-            //   padding: EdgeInsets.only(left: 20),
-            //   height: 180,
-            //   child: isLoading
-            //       ? Center(
-            //           child: CircularProgressIndicator(),
-            //         )
-            //       : Builder(
-            //           builder: (context) {
-            //             final completedAppointments = appointmentData
-            //                 .where((appointment) =>
-            //                     appointment.status == "Completed")
-            //                 .toList();
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Recently Visited',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // Text(
+                  //   'See All',
+                  //   style: TextStyle(
+                  //     color: Color(0xFF6F7ED7),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              height: 180,
+              child: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Builder(
+                      builder: (context) {
+                        final completedAppointments = appointmentData
+                            .where((appointment) =>
+                                appointment.status == "Completed")
+                            .toList();
 
-            //             return ListView.builder(
-            //               scrollDirection: Axis.horizontal,
-            //               itemCount: completedAppointments.length,
-            //               itemBuilder: (context, index) {
-            //                 final appointment = completedAppointments[index];
-            //                 return RecentAppointmentsTile(
-            //                   appointment: appointment,
-            //                 );
-            //               },
-            //             );
-            //           },
-            //         ),
-            // )
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: completedAppointments.length,
+                          itemBuilder: (context, index) {
+                            final appointment = completedAppointments[index];
+                            return RecentAppointmentsTile(
+                              appointment: appointment,
+                            );
+                          },
+                        );
+                      },
+                    ),
+            )
           ],
         ),
       ),
