@@ -30,8 +30,7 @@ class _MyProfileState extends State<MyProfile> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      body: Expanded(
-        child: Stack(
+      body: Stack(
           children: [
             Column(
               children: [
@@ -284,7 +283,6 @@ class _MyProfileState extends State<MyProfile> {
             ),
           ],
         ),
-      ),
       // bottomNavigationBar: CustomBottomNavigationBar(
       //   currentIndex: _selectedIndex,
       //   onTap: _onItemTapped,

@@ -67,8 +67,9 @@ class _ProfileSettingState extends State<ProfileSetting> {
             TextButton(
               onPressed: () async {
                 await googleSignInBloc.signOut();
-                Navigator.of(context).pop(); 
-                Navigator.pushNamedAndRemoveUntil(context,  AppRoutes.signIn, (route) => false);
+                Navigator.of(context).pop();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.signIn, (route) => false);
               },
               child: Text(
                 'Logout',
@@ -86,144 +87,145 @@ class _ProfileSettingState extends State<ProfileSetting> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final googleSignInBloc = Provider.of<GoogleSignInBloc>(context, listen: false);
+    final googleSignInBloc =
+        Provider.of<GoogleSignInBloc>(context, listen: false);
     String alteredname = ApiHelper.toTitleCase('${userProvider.name}');
 
     return Scaffold(
-      body: Expanded(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 290,
-                  color: Color(0xFF6F7ED7),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 60, left: 90, right: 60, bottom: 60),
-                            child: Text(
-                              'Profile Settings',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 290,
+                color: Color(0xFF6F7ED7),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 60, left: 90, right: 60, bottom: 60),
+                          child: Text(
+                            'Profile Settings',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  height: 300,
-                ),
-              ],
-            ),
-            Expanded(
-              child: Positioned(
-                top: 110,
-                left: 30,
-                right: 30,
-                bottom: 3,
-                child: Container(
-                  color: Color(0xFFF7F9FC),
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(35.0),
-                    child: Column(
-                      children: [
-                        // Profile picture and details
-                        Container(
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(userProvider.picture ?? ''),
-                                radius: 80,
-                              ),
-                              // Doctor's name
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  alteredname,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              // Profession
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  alteredname,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-                        buildDivider(),
-
-                        // Account settings
-                        GestureDetector(
-                          onTap: () async {},
-                          child: Container(
-                            child: buildSectionTile('Account settings', Icons.border_color),
-                          ),
-                        ),
-                        buildDivider(),
-
-                        // Notifications
-                        GestureDetector(
-                          onTap: () {
-                            // Handle notifications
-                          },
-                          child: Container(
-                            child: buildSectionTile('Notification', Icons.notifications),
-                          ),
-                        ),
-                        buildDivider(),
-
-                        // Support
-                        GestureDetector(
-                          onTap: () {
-                            // Handle support
-                          },
-                          child: Container(
-                            child: buildSectionTile('Support', Icons.help),
-                          ),
-                        ),
-                        buildDivider(),
-
-                        // Log out
-                        GestureDetector(
-                          onTap: () {
-                            _showModal(context, googleSignInBloc);
-                          },
-                          child: Container(
-                            child: buildSectionTile('Logout', Icons.logout),
-                          ),
-                        ),
-                        buildDivider(),
                       ],
                     ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                height: 300,
+              ),
+            ],
+          ),
+          Positioned(
+              top: 110,
+              left: 30,
+              right: 30,
+              bottom: 3,
+              child: Container(
+                color: Color(0xFFF7F9FC),
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(35.0),
+                  child: Column(
+                    children: [
+                      // Profile picture and details
+                      Container(
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(userProvider.picture ?? ''),
+                              radius: 80,
+                            ),
+                            // Doctor's name
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                alteredname,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            // Profession
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(
+                                alteredname,
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      buildDivider(),
+
+                      // Account settings
+                      GestureDetector(
+                        onTap: () async {},
+                        child: Container(
+                          child: buildSectionTile(
+                              'Account settings', Icons.border_color),
+                        ),
+                      ),
+                      buildDivider(),
+
+                      // Notifications
+                      GestureDetector(
+                        onTap: () {
+                          // Handle notifications
+                        },
+                        child: Container(
+                          child: buildSectionTile(
+                              'Notification', Icons.notifications),
+                        ),
+                      ),
+                      buildDivider(),
+
+                      // Support
+                      GestureDetector(
+                        onTap: () {
+                          // Handle support
+                        },
+                        child: Container(
+                          child: buildSectionTile('Support', Icons.help),
+                        ),
+                      ),
+                      buildDivider(),
+
+                      // Log out
+                      GestureDetector(
+                        onTap: () {
+                          _showModal(context, googleSignInBloc);
+                        },
+                        child: Container(
+                          child: buildSectionTile('Logout', Icons.logout),
+                        ),
+                      ),
+                      buildDivider(),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,

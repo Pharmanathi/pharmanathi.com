@@ -3,11 +3,6 @@ volumes:
   pharmanathi_backend_local_postgres_data: {}
   pharmanathi_backend_local_postgres_data_backups: {}
 
-# networks:
-#   default:
-#     name: traefiked
-#     external: true
-
 services:
   django: &django
     build:
@@ -29,9 +24,6 @@ services:
     ports:
       - '8000:8000'
     command: /start
-    labels:
-      traefik.http.routers.django.rule: Host(`django.docker.localhost`)
-      traefik.http.services.django.loadbalancer.server.port: 8000
 
   postgres:
     build:
@@ -46,8 +38,6 @@ services:
       - ./.envs/.local/.postgres
     ports:
       - 5433:5432
-    labels:
-      traefik.enable: false
 
   docs:
     image: pharmanathi_backend_local_docs
@@ -64,22 +54,16 @@ services:
     ports:
       - '9000:9000'
     command: /start-docs
-    labels:
-      traefik.enable: false
 
   mailpit:
     image: axllent/mailpit:v1.8
     container_name: pharmanathi_backend_local_mailpit
     ports:
       - "8025:8025"
-    labels:
-      traefik.enable: false
 
   redis:
     image: redis:6
     container_name: pharmanathi_backend_local_redis
-    labels:
-      traefik.enable: false
 
   celeryworker:
     <<: *django
@@ -92,8 +76,6 @@ services:
       - verifi
     ports: []
     command: /start-celeryworker
-    labels:
-      traefik.enable: false
 
   celerybeat:
     <<: *django
@@ -106,8 +88,6 @@ services:
       - verifi
     ports: []
     command: /start-celerybeat
-    labels:
-      traefik.enable: false
 
   flower:
     <<: *django
@@ -116,8 +96,6 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
-    labels:
-      traefik.enable: false
 
   web-driver:
     image: selenium/standalone-chrome:4.20.0-20240425
@@ -125,8 +103,6 @@ services:
     shm_size: 2gb
     ports:
       - 7900:7900
-    labels:
-      traefik.enable: false
 
   verifi:
     image: pharmanathi_backend_local_verifi
@@ -142,8 +118,6 @@ services:
     ports:
       - 7901:8000
     command: /start
-    labels:
-      traefik.enable: false
 
   verifi-sudo:
     image: python:3.11.9-slim-bullseye
@@ -154,5 +128,3 @@ services:
     volumes:
       - ./verifi-standalone/sudos:/www
     command: ['python', '-m', 'http.server', '8000', '-d', '/www']
-    labels:
-      traefik.enable: false

@@ -124,67 +124,63 @@ class _Create_AccountState extends State<Create_Account> {
             child: Row(
               children: [
                 //personal info button
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedButtonIndex = 0;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: selectedButtonIndex == 0
-                                ? Color(0xFF6F7ED7)
-                                : Colors.transparent,
-                            width: 3.5,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        '1.PERSONAL INFO',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      selectedButtonIndex = 0;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
                           color: selectedButtonIndex == 0
                               ? Color(0xFF6F7ED7)
-                              : Colors.black,
+                              : Colors.transparent,
+                          width: 3.5,
                         ),
+                      ),
+                    ),
+                    child: Text(
+                      '1.PERSONAL INFO',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: selectedButtonIndex == 0
+                            ? Color(0xFF6F7ED7)
+                            : Colors.black,
                       ),
                     ),
                   ),
                 ),
                 //health info button
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        selectedButtonIndex = 1;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: selectedButtonIndex == 1
-                                ? Color(0xFF6F7ED7)
-                                : Colors.transparent,
-                            width: 3.5,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        '2.HEALTH INFO',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      selectedButtonIndex = 1;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
                           color: selectedButtonIndex == 1
                               ? Color(0xFF6F7ED7)
-                              : Colors.black,
+                              : Colors.transparent,
+                          width: 3.5,
                         ),
+                      ),
+                    ),
+                    child: Text(
+                      '2.HEALTH INFO',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: selectedButtonIndex == 1
+                            ? Color(0xFF6F7ED7)
+                            : Colors.black,
                       ),
                     ),
                   ),
@@ -193,355 +189,528 @@ class _Create_AccountState extends State<Create_Account> {
             ),
           ),
           // Display content based on selected button
-          Expanded(
-            child: SingleChildScrollView(
-              child: selectedButtonIndex == 0
-                  ? Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //input for email
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("Email"),
-                          ),
-                          TextField(
-                              controller: emailController,
-                              decoration: InputDecoration(
-                                  hintText: 'Email',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
-                          //input for password
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("Password"),
-                          ),
-                          TextField(
-                              controller: passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: 'Password',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
-                          //input for re-entering password
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("RE-Password"),
-                          ),
-                          TextField(
-                              controller: repasswordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  hintText: 'Confirm Password',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
 
-                          //input for fullname
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("FullName"),
-                          ),
-                          TextField(
-                              controller: fullNameController,
-                              decoration: InputDecoration(
-                                  hintText: 'fullname',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
-                          //input for gender
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      genderStatus = "FEMALE";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: genderStatus == "FEMALE"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 27.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "FEMALE",
-                                    style: TextStyle(
-                                      color: genderStatus == "FEMALE"
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      genderStatus = "MALE";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: genderStatus == "MALE"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 27.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "MALE",
-                                    style: TextStyle(
-                                      color: genderStatus == "MALE"
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      genderStatus = "OTHER";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: genderStatus == "OTHER"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 27.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "OTHER",
-                                    style: TextStyle(
-                                      color: genderStatus == "OTHER"
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //selector for year and date
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          SingleChildScrollView(
+            child: selectedButtonIndex == 0
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //input for email
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("Email"),
+                        ),
+                        TextField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                hintText: 'Email',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+                        //input for password
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("Password"),
+                        ),
+                        TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+                        //input for re-entering password
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("RE-Password"),
+                        ),
+                        TextField(
+                            controller: repasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                hintText: 'Confirm Password',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+
+                        //input for fullname
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("FullName"),
+                        ),
+                        TextField(
+                            controller: fullNameController,
+                            decoration: InputDecoration(
+                                hintText: 'fullname',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+                        //input for gender
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Year dropdown
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: PopupMenuButton<int>(
-                                    itemBuilder: (context) {
-                                      return List.generate(10, (index) {
-                                        return PopupMenuItem(
-                                          value: DateTime.now().year - index,
-                                          child: Text(
-                                            (DateTime.now().year - index)
-                                                .toString(),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    genderStatus = "FEMALE";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: genderStatus == "FEMALE"
+                                      ? const Color.fromARGB(255, 206, 232, 253)
+                                      : Colors.grey[200],
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 27.0, vertical: 12.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  elevation: 0,
+                                  textStyle: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                child: Text(
+                                  "FEMALE",
+                                  style: TextStyle(
+                                    color: genderStatus == "FEMALE"
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    genderStatus = "MALE";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: genderStatus == "MALE"
+                                      ? const Color.fromARGB(255, 206, 232, 253)
+                                      : Colors.grey[200],
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 27.0, vertical: 12.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  elevation: 0,
+                                  textStyle: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                child: Text(
+                                  "MALE",
+                                  style: TextStyle(
+                                    color: genderStatus == "MALE"
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    genderStatus = "OTHER";
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: genderStatus == "OTHER"
+                                      ? const Color.fromARGB(255, 206, 232, 253)
+                                      : Colors.grey[200],
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 27.0, vertical: 12.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  elevation: 0,
+                                  textStyle: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                child: Text(
+                                  "OTHER",
+                                  style: TextStyle(
+                                    color: genderStatus == "OTHER"
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //selector for year and date
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // Year dropdown
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: PopupMenuButton<int>(
+                                  itemBuilder: (context) {
+                                    return List.generate(10, (index) {
+                                      return PopupMenuItem(
+                                        value: DateTime.now().year - index,
+                                        child: Text(
+                                          (DateTime.now().year - index)
+                                              .toString(),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  onSelected: (int selectedYear) {
+                                    setState(() {
+                                      selectedDate = DateTime(
+                                        selectedYear,
+                                        selectedDate.month,
+                                        selectedDate.day,
+                                      );
+                                    });
+                                  },
+                                  child: ElevatedButton(
+                                    onPressed: null,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          selectedDate.year ==
+                                                  DateTime.now().year
+                                              ? "Year"
+                                              : selectedDate.year.toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        );
-                                      });
+                                        ),
+                                        Icon(Icons.arrow_drop_down),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(width: 6.0),
+
+                            // Date selector
+
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 175,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[200],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 60),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await _selectDate();
                                     },
-                                    onSelected: (int selectedYear) {
-                                      setState(() {
-                                        selectedDate = DateTime(
-                                          selectedYear,
-                                          selectedDate.month,
-                                          selectedDate.day,
-                                        );
-                                      });
-                                    },
-                                    child: ElevatedButton(
-                                      onPressed: null,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text(
-                                            selectedDate.year ==
-                                                    DateTime.now().year
-                                                ? "Year"
-                                                : selectedDate.year.toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Text(
+                                              selectedDate.year ==
+                                                      DateTime.now().year
+                                                  ? "Date"
+                                                  : "${selectedDate.month}/${selectedDate.day}",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                          Icon(Icons.arrow_drop_down),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Icon(
+                                              Icons.event,
+                                              color: Colors.grey,
+                                              size: 24.0,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
+                            ),
+                          ],
+                        ),
+                        //input for city
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("City"),
+                        ),
+                        TextField(
+                            controller: cityController,
+                            decoration: InputDecoration(
+                                hintText: 'city',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+                        //input for address
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("Address"),
+                        ),
+                        TextField(
+                            controller: addressController,
+                            decoration: InputDecoration(
+                                hintText: 'address',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
+                        //input for Emergency Number
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text("Emergency Number"),
+                        ),
+                        TextField(
+                            controller: emergencyController,
+                            decoration: InputDecoration(
+                                hintText: 'Emergency Number',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
+                                ))),
 
-                              SizedBox(width: 6.0),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        //the "next " button
 
-                              // Date selector
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: 175,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey[200],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 60),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        await _selectDate();
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20),
-                                              child: Text(
-                                                selectedDate.year ==
-                                                        DateTime.now().year
-                                                    ? "Date"
-                                                    : "${selectedDate.month}/${selectedDate.day}",
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20),
-                                              child: Icon(
-                                                Icons.event,
-                                                color: Colors.grey,
-                                                size: 24.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                illnessStatus = "No";
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6F7ED7),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 150.0, vertical: 20.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                            ],
+                              elevation: 0,
+                              textStyle: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: Text(
+                              "NEXT",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                          //input for city
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("City"),
+                        ),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //input for weight
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            " Weight",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          TextField(
-                              controller: cityController,
-                              decoration: InputDecoration(
-                                  hintText: 'city',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
-                          //input for address
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("Address"),
+                        ),
+                        DropdownButtonFormField<String>(
+                          value: selectedWeight,
+                          items: [
+                            "Underweight",
+                            "Normal",
+                            "Overweight",
+                            "Not Sure",
+                            // Add more options as needed
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            // Handle the change in the selected weight
+                            setState(() {
+                              selectedWeight = newValue;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Select Weight',
                           ),
-                          TextField(
-                              controller: addressController,
-                              decoration: InputDecoration(
-                                  hintText: 'address',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
-                          //input for Emergency Number
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text("Emergency Number"),
-                          ),
-                          TextField(
-                              controller: emergencyController,
-                              decoration: InputDecoration(
-                                  hintText: 'Emergency Number',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none,
-                                  ))),
+                        ),
 
-                          SizedBox(
-                            height: 30,
+                        //input for height
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            " Height",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          //the "next " button
-
-                          Center(
-                            child: ElevatedButton(
+                        ),
+                        DropdownButtonFormField<String>(
+                          value: selectedHeight,
+                          items: [
+                            "Short",
+                            "Average",
+                            "Tall",
+                            // Add more options as needed
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            // Handle the change in the selected weight
+                            setState(() {
+                              selectedHeight = newValue;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Select Height',
+                          ),
+                        ),
+                        //input for blood types
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            " Blood Type",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        DropdownButtonFormField<String>(
+                          value: selectedBloodType,
+                          items: [
+                            "A+",
+                            "A-",
+                            "B+",
+                            "B-",
+                            "AB+",
+                            "AB-",
+                            "O+",
+                            "O-",
+                            "Not Sure",
+                            // Add more options as needed
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            // Handle the change in the selected weight
+                            setState(() {
+                              selectedBloodType = newValue;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Select Blood Type',
+                          ),
+                        ),
+                        //alergy reaction input
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            " ALLERGIC REACTION",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  illnessStatus = "No";
+                                  smokingStatus = "Yes";
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF6F7ED7),
+                                backgroundColor: smokingStatus == "Yes"
+                                    ? const Color.fromARGB(255, 206, 232, 253)
+                                    : Colors.grey[200],
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 150.0, vertical: 20.0),
+                                    horizontal: 80.0, vertical: 12.0),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
@@ -552,345 +721,162 @@ class _Create_AccountState extends State<Create_Account> {
                                 ),
                               ),
                               child: Text(
-                                "NEXT",
+                                "Yes",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: smokingStatus == "Yes"
+                                      ? Colors.blue
+                                      : Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //input for weight
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                " Weight",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: selectedWeight,
-                              items: [
-                                "Underweight",
-                                "Normal",
-                                "Overweight",
-                                "Not Sure",
-                                // Add more options as needed
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                // Handle the change in the selected weight
+                            SizedBox(width: 16.0),
+                            ElevatedButton(
+                              onPressed: () {
                                 setState(() {
-                                  selectedWeight = newValue;
+                                  smokingStatus = "No";
                                 });
                               },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: smokingStatus == "No"
+                                    ? const Color.fromARGB(255, 206, 232, 253)
+                                    : Colors.grey[200],
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 80.0, vertical: 12.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                hintText: 'Select Weight',
-                              ),
-                            ),
-
-                            //input for height
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                " Height",
-                                style: TextStyle(
+                                elevation: 0,
+                                textStyle: TextStyle(
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: selectedHeight,
-                              items: [
-                                "Short",
-                                "Average",
-                                "Tall",
-                                // Add more options as needed
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                // Handle the change in the selected weight
-                                setState(() {
-                                  selectedHeight = newValue;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                                hintText: 'Select Height',
-                              ),
-                            ),
-                            //input for blood types
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                " Blood Type",
+                                "No",
                                 style: TextStyle(
+                                  color: smokingStatus == "No"
+                                      ? Colors.blue
+                                      : Colors.black,
                                   fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            DropdownButtonFormField<String>(
-                              value: selectedBloodType,
-                              items: [
-                                "A+",
-                                "A-",
-                                "B+",
-                                "B-",
-                                "AB+",
-                                "AB-",
-                                "O+",
-                                "O-",
-                                "Not Sure",
-                                // Add more options as needed
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                // Handle the change in the selected weight
-                                setState(() {
-                                  selectedBloodType = newValue;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                                hintText: 'Select Blood Type',
-                              ),
-                            ),
-                            //alergy reaction input
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                " ALLERGIC REACTION",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      smokingStatus = "Yes";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: smokingStatus == "Yes"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 80.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Yes",
-                                    style: TextStyle(
-                                      color: smokingStatus == "Yes"
-                                          ? Colors.blue
-                                          : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      smokingStatus = "No";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: smokingStatus == "No"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 80.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "No",
-                                    style: TextStyle(
-                                      color: smokingStatus == "No"
-                                          ? Colors.blue
-                                          : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            //current illness input
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                " ANY CURRENT ILLNESS",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      illnessStatus = "Yes";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: illnessStatus == "Yes"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 80.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Yes",
-                                    style: TextStyle(
-                                      color: illnessStatus == "Yes"
-                                          ? Colors.blue
-                                          : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      illnessStatus = "No";
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: illnessStatus == "No"
-                                        ? const Color.fromARGB(
-                                            255, 206, 232, 253)
-                                        : Colors.grey[200],
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 80.0, vertical: 12.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    textStyle: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "No",
-                                    style: TextStyle(
-                                      color: illnessStatus == "No"
-                                          ? Colors.blue
-                                          : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 55,
-                            ),
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    illnessStatus = "No";
-                                  });
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF6F7ED7),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 150.0, vertical: 20.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  elevation: 0,
-                                  textStyle: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                child: Text(
-                                  "NEXT",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        //current illness input
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            " ANY CURRENT ILLNESS",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  illnessStatus = "Yes";
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: illnessStatus == "Yes"
+                                    ? const Color.fromARGB(255, 206, 232, 253)
+                                    : Colors.grey[200],
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 80.0, vertical: 12.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                elevation: 0,
+                                textStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              child: Text(
+                                "Yes",
+                                style: TextStyle(
+                                  color: illnessStatus == "Yes"
+                                      ? Colors.blue
+                                      : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16.0),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  illnessStatus = "No";
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: illnessStatus == "No"
+                                    ? const Color.fromARGB(255, 206, 232, 253)
+                                    : Colors.grey[200],
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 80.0, vertical: 12.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                elevation: 0,
+                                textStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              child: Text(
+                                "No",
+                                style: TextStyle(
+                                  color: illnessStatus == "No"
+                                      ? Colors.blue
+                                      : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 55,
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                illnessStatus = "No";
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6F7ED7),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 150.0, vertical: 20.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              elevation: 0,
+                              textStyle: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: Text(
+                              "NEXT",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-            ),
+                  ),
           ),
         ],
       ),
