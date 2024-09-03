@@ -8,13 +8,17 @@ import 'package:client_pharmanathi/services/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
 
   @override
   Widget build(BuildContext context) {
-    final googleSignInBloc = GoogleSignInBloc(GoogleSignInRepository(ApiProvider()));
+    final googleSignInBloc =
+        GoogleSignInBloc(GoogleSignInRepository(ApiProvider()));
+
 
     return Scaffold(
       body: SafeArea(
@@ -63,38 +67,51 @@ class GoogleSignInWidget extends StatelessWidget {
                           onPressed: isLoading
                               ? null
                               : () async {
-                                  final googleUser = await _googleSignIn.signIn();
+                                  final googleUser =
+                                      await _googleSignIn.signIn();
                                   if (googleUser != null) {
-                                    final googleAuth = await googleUser.authentication;
+                                    final googleAuth =
+                                        await googleUser.authentication;
                                     await googleSignInBloc.signInWithGoogle(
                                       context,
                                       googleAuth.idToken ?? '',
                                     );
 
                                     if (googleSignInBloc.error.value == null) {
-                                      final userProvider = Provider.of<UserProvider>(context, listen: false);
+                                      final userProvider =
+                                          Provider.of<UserProvider>(context,
+                                              listen: false);
                                       await userProvider.setUserInformation(
                                         googleUser.email,
                                         googleUser.displayName ?? '',
                                         googleUser.photoUrl ?? '',
-                                        googleSignInBloc.backendToken.value ?? '',
+                                        googleSignInBloc.backendToken.value ??
+                                            '',
                                       );
 
-                                      final isFirstTimeSignInResult = await userProvider.isFirstTimeSignIn();
+                                      final isFirstTimeSignInResult =
+                                          await userProvider
+                                              .isFirstTimeSignIn();
 
                                       if (isFirstTimeSignInResult) {
-                                        Navigator.pushNamed(context, AppRoutes.onboarding, arguments: {
-                                          'email': googleUser.email,
-                                        });
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.onboarding,
+                                            arguments: {
+                                              'email': googleUser.email,
+                                            });
                                       } else {
-                                        Navigator.pushNamed(context, AppRoutes.homePage, arguments: {
-                                          'email': googleUser.email,
-                                        });
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.homePage,
+                                            arguments: {
+                                              'email': googleUser.email,
+                                            });
                                       }
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
-                                          content: Text('Sign-in failed. Please try again.'),
+                                          content: Text(
+                                              'Sign-in failed. Please try again.'),
                                         ),
                                       );
                                     }
