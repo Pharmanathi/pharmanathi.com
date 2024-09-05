@@ -64,7 +64,7 @@ class AppointmentTile extends StatelessWidget {
                            CircleAvatar(
                           radius: 32,
                           backgroundImage:
-                              AssetImage(appointment.imageURL?? ''),
+                              NetworkImage(appointment.imageURL),
                         ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),

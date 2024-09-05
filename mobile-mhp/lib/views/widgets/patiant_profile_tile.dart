@@ -41,23 +41,11 @@ class PatientProfileTile extends StatelessWidget {
                     backgroundColor: (appointment.imageURL?.isNotEmpty ?? false)
                         ? null // No background color if imageURL is available
                         : getRandomColor(), // Random background color if imageURL is not available
-                    child: (appointment.imageURL?.isNotEmpty ?? false)
-                        ? ClipOval(
+                    child: ClipOval(
                             child: Image.network(
-                              appointment.imageURL!,
+                              appointment.imageURL,
                               fit: BoxFit
                                   .cover, //* Ensure the image fits well within the circle
-                            ),
-                          )
-                        : Text(
-                            appointment.patientName.isNotEmpty
-                                ? appointment.patientName[
-                                    0] //* Display the first letter of the name if imageURL is not available
-                                : '',
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                     radius: 30,
