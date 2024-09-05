@@ -72,7 +72,7 @@ class Apihelper {
                 headers: headers, body: requestBody);
 
     log.i('API code: ${response.statusCode}');
-    log.i('API body: ${response.body}');
+    log.i('API body: ${response.body} $url');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
