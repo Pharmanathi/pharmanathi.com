@@ -58,11 +58,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "710242232170-rbhb0q23dhtvho3c6433vver2v66o9io.apps.googleusercontent.com",
+          "client_id": "710242232170-7biaekna6nndpdksmpg6ljag4ono81ar.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pharmanathi.patient",
-            "certificate_hash": "54251fd2de3e4f0d1bf50c295286c6bab85944db"
+            "certificate_hash": "055dad3752fcb31424ecea198f88bb1f556a1468"
+          }
+        },
+        {
+          "client_id": "710242232170-j30o9sknbk8lo2eb7i5dem9o1itnr42d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pharmanathi.patient",
+            "certificate_hash": "ccc556483eaf51b3d6b502bb3669098c4009755b"
           }
         },
         {
