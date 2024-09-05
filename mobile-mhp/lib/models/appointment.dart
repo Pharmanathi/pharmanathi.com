@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class Appointment {
   final String patientdetails;
   final String appointmentTime;
-  final String? imageURL; // Nullable to handle possible null values
+  final String imageURL;
   final String status;
   final String clinic_name;
   final String consult_details;

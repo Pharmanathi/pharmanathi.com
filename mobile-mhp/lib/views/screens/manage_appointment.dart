@@ -202,8 +202,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
       backgroundColor: Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Expanded(
-            child: Column(
+          child: Column(
               children: [
                 //* Top heading with back button section
                 Container(
@@ -689,7 +688,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                 ).buildButtons(primaryFirst: true),
               ],
             ),
-          ),
+
         ),
         //buttons....................
       ),

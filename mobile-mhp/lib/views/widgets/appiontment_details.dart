@@ -15,8 +15,7 @@ class AppiontmentDetails extends StatelessWidget {
       backgroundColor: Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Expanded(
-            child: Column(
+          child: Column(
               children: [
                 //back button and the heading
                 Container(
@@ -78,7 +77,7 @@ class AppiontmentDetails extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundImage:
-                                  NetworkImage('your_image_url_here'),
+                                  NetworkImage(appointment.imageURL),
                               radius: 30,
                             ),
                             Positioned(
@@ -339,7 +338,6 @@ class AppiontmentDetails extends StatelessWidget {
                 // ),
               ],
             ),
-          ),
         ),
       ),
     );
