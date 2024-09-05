@@ -7,26 +7,26 @@ import '../helpers/http_helpers.dart' as http_helpers;
 final String timeSlotAPIEndPoint = "${http_helpers.apiBaseURL}/timeslots/";
 
 class WorkingHourApiService {
-  static Future<void> sendSchedule(Map<String, List> schedule, context,
+  static Future<void> sendSchedule(List<Map> schedule, context,
       {VoidCallback? onSuccess}) async {
     final log = logger(WorkingHourApiService);
 
     try {
-      List<Map<String, String>> transformedSchedule = [];
+      // List<Map<String, String>> transformedSchedule = [];
 
-      schedule.forEach((key, value) {
-        int day = int.parse(key);
-        value.forEach((timeSlot) {
-          Map<String, String> timeSlotData = {
-            'day': day.toString(),
-            'start_time': timeSlot[0],
-            'end_time': timeSlot[1],
-          };
-          transformedSchedule.add(timeSlotData);
-        });
-      });
+      // schedule.forEach((key, value) {
+      //   int day = int.parse(key);
+      //   value.forEach((timeSlot) {
+      //     Map<String, String> timeSlotData = {
+      //       'day': day.toString(),
+      //       'start_time': timeSlot[0],
+      //       'end_time': timeSlot[1],
+      //     };
+      //     transformedSchedule.add(timeSlotData);
+      //   });
+      // });
 
-      String scheduleJson = jsonEncode(transformedSchedule);
+      String scheduleJson = jsonEncode(schedule);
 
       log.d('Schedule being sent to API: $scheduleJson');
 
@@ -35,7 +35,7 @@ class WorkingHourApiService {
         return await http_helpers.Apihelper.httpRequestWithAuthorization(
           context,
           timeSlotAPIEndPoint,
-          'POST',
+          'POST', // a POST inside a fetch operation(fetchData)??
           scheduleJson,
         );
       });
@@ -68,20 +68,12 @@ class WorkingHourApiService {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         Map<String, List<String>> schedule = {};
-
-        responseData.forEach((key, value) {
-          if (value is List) {
-            schedule[key] = value.map<String>((timeSlot) {
-              if (timeSlot is Map<String, dynamic> &&
-                  timeSlot.containsKey('start_time') &&
-                  timeSlot.containsKey('end_time')) {
-                return '${timeSlot['start_time']},${timeSlot['end_time']}';
-              }
-              return '';
-            }).toList();
-          }
+        responseData.forEach((dailySlot) {
+          final String day = dailySlot['day'].toString();
+          if (!schedule.containsKey(day)) schedule[day] = [];
+          schedule[day]!
+              .add('${dailySlot['start_time'].substring(0, 5)},${dailySlot['end_time'].substring(0, 5)}');
         });
-
         log.i('Schedule fetched successfully: $schedule');
         return schedule;
       } else {
