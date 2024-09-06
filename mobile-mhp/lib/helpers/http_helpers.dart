@@ -71,8 +71,7 @@ class Apihelper {
             : await http.patch(Uri.parse(url),
                 headers: headers, body: requestBody);
 
-    log.i('API code: ${response.statusCode}');
-    log.i('API body: ${response.body} $url');
+    log.i('${response.statusCode} $url ${response.reasonPhrase}');
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;

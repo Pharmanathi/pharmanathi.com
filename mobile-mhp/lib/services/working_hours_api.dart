@@ -12,20 +12,6 @@ class WorkingHourApiService {
     final log = logger(WorkingHourApiService);
 
     try {
-      // List<Map<String, String>> transformedSchedule = [];
-
-      // schedule.forEach((key, value) {
-      //   int day = int.parse(key);
-      //   value.forEach((timeSlot) {
-      //     Map<String, String> timeSlotData = {
-      //       'day': day.toString(),
-      //       'start_time': timeSlot[0],
-      //       'end_time': timeSlot[1],
-      //     };
-      //     transformedSchedule.add(timeSlotData);
-      //   });
-      // });
-
       String scheduleJson = jsonEncode(schedule);
 
       log.d('Schedule being sent to API: $scheduleJson');
@@ -35,7 +21,7 @@ class WorkingHourApiService {
         return await http_helpers.Apihelper.httpRequestWithAuthorization(
           context,
           timeSlotAPIEndPoint,
-          'POST', // a POST inside a fetch operation(fetchData)??
+          'POST', // fetch Data(named fetchData) but does POST? perhaps a rename?
           scheduleJson,
         );
       });

@@ -80,7 +80,6 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   await SentryFlutter.init(
     (options) {
       options.dsn = dotenv.env['SENTRY_DSN']!;
-      print("Sentry shit!!!! $options ${options.dsn}");
       options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
     },
     appRunner: appRunner,
