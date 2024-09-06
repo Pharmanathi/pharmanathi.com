@@ -39,6 +39,7 @@ class TimeSlot(BaseCustomModel):
             models.UniqueConstraint(fields=["doctor", "day", "start_time"], name="same_start_time_timeslot"),
             models.UniqueConstraint(fields=["doctor", "day", "end_time"], name="same_ebd_time_timeslot"),
         ]
+        ordering = ["day", "start_time"]
 
     def break_into_slots_of(self, minutes: int) -> list[tuple]:
         """Breaks timeslot into a lists of string-based time interval sets
