@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class Appointment {
   final int id;
-  final DateTime endTime;
+  final String endTime;
   final Doctor doctor;
   final Patient patient;
   final String appointmentTypeRepr;
@@ -15,6 +15,7 @@ class Appointment {
   final String status;
   final String reason;
   final String paymentProcess;
+  final int consultationFee;
   final Payment payment;
   final AppointmentType appointmentType;
 
@@ -30,15 +31,18 @@ class Appointment {
     required this.patient,
     required this.reason,
     required this.paymentProcess,
+    required this.consultationFee,
     required this.appointmentType,
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     // Parse the date string to a DateTime object in UTC
     final DateTime dateTimeUtc = DateTime.parse(json['start_time']);
+    final DateTime endTimeUtce = DateTime.parse(json['end_time']);
 
     // Convert the UTC DateTime object to local time
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
+    final DateTime endTimeLocal = endTimeUtce.toLocal();
 
     // Format the date to "dd MMM yyyy" (e.g., "27 May 2023")
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
@@ -47,6 +51,9 @@ class Appointment {
     // Format the time to "HH:mm" (e.g., "13:30")
     final DateFormat timeFormatter = DateFormat('HH:mm a', 'en_US');
     final String formattedTime = timeFormatter.format(dateTimeLocal);
+
+    final DateFormat endtimeFormatter = DateFormat('HH:mm a', 'en_US');
+    final String formattedEndtime = endtimeFormatter.format(endTimeLocal);
 
     final DateFormat timeFormatterStatuscheck =
         DateFormat('yyyy-MM-ddTHH:mm:ss+zzzz');
@@ -62,10 +69,10 @@ class Appointment {
           localFormatter.format(formattedTimeDateTime);
       final DateTime currentDateTime = DateTime.now();
 
-      if(json["payment"]["status"] != "PAID"){
+      if (json["payment"]["status"] != "PAID") {
         status = "Unpaid";
-      }
-      else if (DateTime.parse(formattedTimeInLocal).isAfter(currentDateTime)) {
+      } else if (DateTime.parse(formattedTimeInLocal)
+          .isAfter(currentDateTime)) {
         status = 'Upcoming';
       } else {
         status = 'Completed';
@@ -80,9 +87,16 @@ class Appointment {
         ? "Online Consultation"
         : "In Person Visit";
 
+    // Extract the appointment type
+    final appointmentTypes =
+        json['doctor']['appointment_types'] as List<dynamic>;
+    final consultationFee = appointmentTypes.isNotEmpty
+        ? int.tryParse(appointmentTypes[0]['cost']) ?? 0
+        : 0;
+
     return Appointment(
       id: json['id'],
-      endTime: DateTime.parse(json['end_time']),
+      endTime: formattedEndtime,
       appointmentTime: formattedTime,
       appointmentDate: formattedDate,
       appointmentTypeRepr: appointmentType,
@@ -92,6 +106,7 @@ class Appointment {
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],
+      consultationFee: json['appointment_type']["cost"] ?? 0,
       appointmentType: AppointmentType.fromJson(json['appointment_type']),
     );
   }

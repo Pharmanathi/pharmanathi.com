@@ -2,6 +2,7 @@
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
+import 'package:client_pharmanathi/views/widgets/HeaderWidget.dart';
 import 'package:client_pharmanathi/views/widgets/appointment_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,68 +49,54 @@ class _AppointmentsState extends State<Appointments> {
       _selectedIndex = index;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(22.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Appointments',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            isLoading
-                ? const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : appointmentData.isEmpty
-                    ? SliverFillRemaining(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/nodata.png',
-                                width: 120,
-                                height: 120,
-                              ),
-                              const SizedBox(height: 20),
-                              const Text(
-                                'No appointments available',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final data = appointmentData[index];
-                            return AppointmentListItem(appointment: data);
-                          },
-                          childCount: appointmentData.length,
+      body: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+              child: HeaderWidget(
+            text: 'Appointments',
+            showBackButton: false, // Hide the back button if not needed
+          )),
+          isLoading
+              ? const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : appointmentData.isEmpty
+                  ? SliverFillRemaining(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/nodata.png',
+                              width: 120,
+                              height: 120,
+                            ),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'No appointments available',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
                         ),
                       ),
-          ],
-        ),
+                    )
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final data = appointmentData[index];
+                          return AppointmentListItem(appointment: data);
+                        },
+                        childCount: appointmentData.length,
+                      ),
+                    ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,
