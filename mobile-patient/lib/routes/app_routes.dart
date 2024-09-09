@@ -3,7 +3,7 @@
 import 'package:client_pharmanathi/views/screens/sign_in.dart';
 import 'package:flutter/material.dart';
 import '../screens/pages/onboard_page.dart';
-import '../screens/pages/home_page.dart';
+import '../views/screens/home_page.dart';
 import '../views/screens/appointment.dart';
 import '../views/screens/doctors.dart';
 import '../views/screens/profile_settings.dart';

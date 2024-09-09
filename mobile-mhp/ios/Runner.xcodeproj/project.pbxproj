@@ -211,7 +211,10 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				604E65746FC06AC834B630B2 /* [CP] Embed Pods Frameworks */,
+<<<<<<< HEAD
 				9D6285CE9C217608A313EC30 /* [CP] Copy Pods Resources */,
+=======
+>>>>>>> a15a4e1 (update: refactor the appointment flow look)
 			);
 			buildRules = (
 			);
