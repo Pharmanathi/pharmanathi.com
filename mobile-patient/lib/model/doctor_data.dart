@@ -5,8 +5,8 @@ class Doctor {
   final String imageURL;
   final String doctorFullName;
   final String doctorFirstName;
-    final String doctorLastName ;
-  final List<AppointmentType> appointmentTypes;
+  final String doctorLastName;
+  final List<AppointmentType> appointmentTypes; // List of appointment types
   final List<String> specialities;
   final int id;
   final bool hasConsultedBefore;
@@ -14,8 +14,8 @@ class Doctor {
   Doctor({
     required this.isVerified,
     required this.imageURL,
-     required this.doctorFirstName,
-       required this.doctorLastName,
+    required this.doctorFirstName,
+    required this.doctorLastName,
     required this.doctorFullName,
     required this.appointmentTypes,
     required this.specialities,
@@ -43,18 +43,22 @@ class Doctor {
     return Doctor(
       doctorFullName: doctorFullName,
       doctorFirstName: doctorFirstName,
-      doctorLastName:doctorLastName,
+      doctorLastName: doctorLastName,
       isVerified: json['is_verified'],
       appointmentTypes: appointmentTypes,
       imageURL: json["user"]['image_url'] ?? '',
       specialities: specialities,
       id: json['id'],
-      hasConsultedBefore: json['has_consulted_before'] ,
+      hasConsultedBefore: json['has_consulted_before'],
     );
   }
 
-//* Returns all specialty names
-//*Dear maintainer If you ever need more than 30 characters, you’re probably trying to write a novel. Keep it short and sweet!
+  //* Return the first appointment type if available
+  AppointmentType? get appointmentType {
+    return appointmentTypes.isNotEmpty ? appointmentTypes[0] : null;
+  }
+
+  //* Returns all specialty names
   String getAllSpecialityNames() {
     String joinedSpecialities = specialities.join('\n');
     if (joinedSpecialities.length > 30) {

@@ -13,8 +13,8 @@ class RecentAppointmentsTile extends StatelessWidget {
      String name = ApiHelper.toTitleCase(appointment.doctor.doctorLastName);
 
     return Container(
-      height: 100,
-      width: 180,
+      height: 50,
+      width: 170,
       margin: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -28,7 +28,7 @@ class RecentAppointmentsTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Dr. $name',
+                name,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -41,11 +41,6 @@ class RecentAppointmentsTile extends StatelessWidget {
               Text(
                 appointment.appointmentTime,
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              const SizedBox(height: 8),
-               Text(
-                appointment.appointmentTypeRepr,
-                style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),

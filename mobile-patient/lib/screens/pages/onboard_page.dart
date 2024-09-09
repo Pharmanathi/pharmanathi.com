@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, prefer_const_constructors_in_immutables, must_be_immutable, use_super_parameters
 
-import 'package:client_pharmanathi/screens/components/buttons.dart';
+import 'package:client_pharmanathi/views/widgets/buttons.dart';
 import 'package:client_pharmanathi/screens/components/text_and_heading.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -151,15 +151,15 @@ class _OnboardScreenState extends State<OnboardScreen> {
                     ),
                     Center(
                       child: MyButtonWidgets(
-                        buttonText1: 'NEXT',
-                        onPressed1: () {
+                      buttonTextSecondary: 'Next',
+                      onPressedSecondary: () {
                           updateContent(context);
                         },
-                        buttonText2: 'SKIP',
-                        onPressed2: () {
+                      buttonTextPrimary: 'Skip',
+                      onPressedPrimary: () {
                           widget.handleOnboardingCompletion(context);
                         },
-                      ).buildButton(),
+                    ).buildButtons(primaryFirst: true),
                     ),
                   ],
                 ),

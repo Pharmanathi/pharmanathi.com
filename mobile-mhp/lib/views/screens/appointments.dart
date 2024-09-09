@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_nathi/views/widgets/Header.dart';
 import 'package:provider/provider.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
@@ -23,8 +24,18 @@ class _AppointmentsState extends State<Appointments> {
   bool isLoading = true;
   String currentMonthYear = '';
   List<String> months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ];
 
   String selectedMonth = DateFormat('MMMM').format(DateTime.now());
@@ -78,7 +89,8 @@ class _AppointmentsState extends State<Appointments> {
 
   void _loadAppointmentData() async {
     try {
-      List<Appointment> fetchedAppointments = await _appointmentRepository.fetchAppointments(context);
+      List<Appointment> fetchedAppointments =
+          await _appointmentRepository.fetchAppointments(context);
       setState(() {
         appointmentData = fetchedAppointments;
         isLoading = false;
@@ -119,21 +131,11 @@ class _AppointmentsState extends State<Appointments> {
       body: SafeArea(
         child: Column(
           children: [
-            // Heading container
-            Padding(
-              padding: const EdgeInsets.all(22.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Appointments',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+            HeaderWidget(
+              text: 'Appointments', // Dynamic text
+              onBackTap: () {
+                // Custom back button logic (optional)
+              },
             ),
             // Buttons container
             Container(
@@ -266,7 +268,8 @@ class _AppointmentsState extends State<Appointments> {
                             itemBuilder: (context, index) {
                               final data = filteredAppointments[index];
                               return AppointmentTile(
-                                appointment: data, // Pass appointment object here
+                                appointment:
+                                    data, // Pass appointment object here
                               );
                             },
                           ),

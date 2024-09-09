@@ -6,6 +6,7 @@ import 'package:client_pharmanathi/helpers/api_helpers.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/views/widgets/appointment_details_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentListItem extends StatelessWidget {
   final Appointment appointment;
@@ -23,7 +24,7 @@ class ProfileCard extends StatelessWidget {
 
   const ProfileCard({super.key, required this.appointment});
 
-  // Function to generate a random color
+  //* Function to generate a random color
   Color getRandomColor() {
     Random random = Random();
     return Color.fromARGB(
@@ -32,6 +33,41 @@ class ProfileCard extends StatelessWidget {
       random.nextInt(256),
       random.nextInt(256),
     );
+  }
+
+  String formatAppointmentDate(String dateString) {
+    final DateFormat inputFormat = DateFormat('dd MMM y');
+    final DateTime parsedDate = inputFormat.parse(dateString);
+    return DateFormat('EEEE d MMM y').format(parsedDate);
+  }
+
+  //* i really didnt want to remove the AM/PM right from the model since we still utilise those in other part of the code
+  String formatAppointmentTime(String startTime, String endTime) {
+    final DateFormat inputFormat12 = DateFormat.jm(); 
+    final DateFormat inputFormat24 = DateFormat('HH:mm');
+
+    DateTime start;
+    DateTime end;
+
+    //* parsing the start time in both 12-hour and 24-hour formats
+    try {
+      start = inputFormat12.parse(startTime);
+    } catch (e) {
+      start = inputFormat24.parse(startTime);
+    }
+
+    //* parsing the end time in both 12-hour and 24-hour formats
+    try {
+      end = inputFormat12.parse(endTime);
+    } catch (e) {
+      end = inputFormat24.parse(endTime);
+    }
+
+    //* the output format to exclude AM/PM (24-hour format).
+    final DateFormat outputFormat = DateFormat('HH:mm');
+
+    //* return the times without AM/PM.
+    return '${outputFormat.format(start)} - ${outputFormat.format(end)}';
   }
 
   @override
@@ -53,7 +89,7 @@ class ProfileCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 0, right: 10, left: 10, bottom: 0),
+        padding: const EdgeInsets.only(top: 0, right: 12, left: 12, bottom: 5),
         child: Container(
           height: 160,
           child: Column(
@@ -101,7 +137,7 @@ class ProfileCard extends StatelessWidget {
                                 radius: 30,
                               ),
                               SizedBox(
-                                width: 7,
+                                width: 28,
                               ),
                               Column(
                                 children: [
@@ -117,7 +153,7 @@ class ProfileCard extends StatelessWidget {
                                           child: SizedBox(
                                             width: 200,
                                             child: Text(
-                                              'Dr.$alteredname',
+                                              'Dr. $alteredname',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -193,14 +229,18 @@ class ProfileCard extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            appointment.appointmentDate,
-                                            style: TextStyle(
+                                            formatAppointmentDate(
+                                                appointment.appointmentDate),
+                                            style: const TextStyle(
                                               fontSize: 10,
+                                              fontWeight: FontWeight.w200,
                                             ),
                                           ),
                                           Text(
-                                            appointment.appointmentTime,
-                                            style: TextStyle(
+                                            formatAppointmentTime(
+                                                appointment.appointmentTime,
+                                                appointment.endTime),
+                                            style: const TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w200,
                                             ),
@@ -219,8 +259,7 @@ class ProfileCard extends StatelessWidget {
                                               color: {
                                                 'Upcoming': Colors.grey,
                                                 'Unpaid': Color(0xFFFE16E47),
-                                                'Completed': Color.fromARGB(
-                                                    255, 181, 241, 212)
+                                                'Completed': Color(0xFfECF7EF)
                                               }[appointment.status],
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -230,7 +269,7 @@ class ProfileCard extends StatelessWidget {
                                               child: Text(
                                                 appointment.status,
                                                 style: TextStyle(
-                                                  fontSize: 12,
+                                                  fontSize: 10,
                                                   fontWeight: FontWeight.normal,
                                                   color: {
                                                     'Upcoming': Colors.white,
