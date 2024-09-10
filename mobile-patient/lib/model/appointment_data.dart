@@ -15,7 +15,6 @@ class Appointment {
   final String status;
   final String reason;
   final String paymentProcess;
-  final int consultationFee;
   final Payment payment;
   final AppointmentType appointmentType;
 
@@ -31,7 +30,6 @@ class Appointment {
     required this.patient,
     required this.reason,
     required this.paymentProcess,
-    required this.consultationFee,
     required this.appointmentType,
   });
 
@@ -87,13 +85,6 @@ class Appointment {
         ? "Online Consultation"
         : "In Person Visit";
 
-    // Extract the appointment type
-    final appointmentTypes =
-        json['doctor']['appointment_types'] as List<dynamic>;
-    final consultationFee = appointmentTypes.isNotEmpty
-        ? int.tryParse(appointmentTypes[0]['cost']) ?? 0
-        : 0;
-
     return Appointment(
       id: json['id'],
       endTime: formattedEndtime,
@@ -106,7 +97,6 @@ class Appointment {
       patient: Patient.fromJson(json['patient']),
       reason: json['reason'],
       paymentProcess: json['payment_process'],
-      consultationFee: json['appointment_type']["cost"] ?? 0,
       appointmentType: AppointmentType.fromJson(json['appointment_type']),
     );
   }

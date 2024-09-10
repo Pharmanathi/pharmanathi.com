@@ -16,13 +16,13 @@ class HeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 130,
+      height: 120,
       color: const Color(0xFF6F7ED7),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 70),
+            padding: const EdgeInsets.only(top: 75),
             child: Row(
               children: [
                 if (showBackButton)
