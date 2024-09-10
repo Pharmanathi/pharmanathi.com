@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/helpers/api_helpers.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/views/widgets/appointment_details_tile.dart';
@@ -43,7 +44,7 @@ class ProfileCard extends StatelessWidget {
 
   //* i really didnt want to remove the AM/PM right from the model since we still utilise those in other part of the code
   String formatAppointmentTime(String startTime, String endTime) {
-    final DateFormat inputFormat12 = DateFormat.jm(); 
+    final DateFormat inputFormat12 = DateFormat.jm();
     final DateFormat inputFormat24 = DateFormat('HH:mm');
 
     DateTime start;
@@ -96,7 +97,7 @@ class ProfileCard extends StatelessWidget {
             children: [
               Container(
                   decoration: BoxDecoration(
-                    color: Colors.white70,
+                    color: Pallet.PURE_WHITE,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
@@ -257,9 +258,9 @@ class ProfileCard extends StatelessWidget {
                                             // width: 100,
                                             decoration: BoxDecoration(
                                               color: {
-                                                'Upcoming': Colors.grey,
+                                                'Upcoming': Pallet.NEUTRAL_200,
                                                 'Unpaid': Color(0xFFFE16E47),
-                                                'Completed': Color(0xFfECF7EF)
+                                                'Completed': Pallet.WARNING_70,
                                               }[appointment.status],
                                               borderRadius:
                                                   BorderRadius.circular(12),

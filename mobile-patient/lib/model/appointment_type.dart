@@ -22,7 +22,7 @@ class AppointmentType {
     required this.isRunForever,
     required this.startDate,
     required this.endDate,
-    required this.doctor,
+    required this.doctor, 
   });
 
   factory AppointmentType.fromJson(Map<String, dynamic> json) {

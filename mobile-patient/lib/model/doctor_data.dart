@@ -6,7 +6,7 @@ class Doctor {
   final String doctorFullName;
   final String doctorFirstName;
   final String doctorLastName;
-  final List<AppointmentType> appointmentTypes; // List of appointment types
+  final List<AppointmentType> appointmentTypes;
   final List<String> specialities;
   final int id;
   final bool hasConsultedBefore;

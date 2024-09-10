@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
-import 'package:client_pharmanathi/screens/components/navigation_bar.dart';
+import 'package:client_pharmanathi/views/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/recent_appointments_tile.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,8 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   bool isLoading = true;
-  int onlineAppointmentsCount = 0;
-  int inPersonVisitAppointmentsCount = 0;
   late AppointmentRepository _appointmentRepository;
   List<Appointment> appointmentData = [];
 
@@ -52,36 +50,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF7F9FC),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 70,
-              color: Color(0xFF6F7ED7),
-            ),
-           
-            //recently visited
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recently Visited',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12
-                    ),
-                  ),
-                ],
+      appBar: AppBar(
+        backgroundColor: Pallet.PRIMARY_COLOR,
+        automaticallyImplyLeading: false,
+        elevation: 0, 
+      ),
+      backgroundColor: Pallet.BACKGROUND_COLOR,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 50,left: 25,right: 20,bottom: 10),
+            child: Text(
+              'Recently Visited',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(left: 20),
-              height: 180,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: isLoading
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Builder(
@@ -91,8 +83,13 @@ class _HomePageState extends State<HomePage> {
                                 appointment.status == "Completed")
                             .toList();
 
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
+                        return GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, 
+                            mainAxisSpacing: 0.1,
+                            crossAxisSpacing: 10.0,
+                            // childAspectRatio: 0.2 / 0.5, //* Aspect ratio of the tiles
+                          ),
                           itemCount: completedAppointments.length,
                           itemBuilder: (context, index) {
                             final appointment = completedAppointments[index];
@@ -103,9 +100,9 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                     ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
 
       // CustomBottomNavigationBar
@@ -115,5 +112,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }

@@ -34,6 +34,7 @@ class Pallet {
   static const Color SECONDARY_800 = Color(0xFFF4E535B);
   static const Color SECONDARY_900 = Color(0xFFF3B3F46);
   static const Color WARNING_50 = Color(0xFFFFAF9E9);
+  static const Color WARNING_70 = Color(0xFfECF7EF);
   static const Color WARNING_100 = Color(0xFFFF0EDBA);
   static const Color WARNING_200 = Color(0xFFFE8E598);
   static const Color WARNING_300 = Color(0xFFFDED96A);
