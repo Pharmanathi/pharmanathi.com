@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/helpers/api_helpers.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/views/widgets/HeaderWidget.dart';
@@ -32,8 +33,8 @@ class AppiontmentDetails extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFFFFF), 
-                  borderRadius: BorderRadius.circular(15), 
+                  color: Pallet.PURE_WHITE,
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -47,18 +48,18 @@ class AppiontmentDetails extends StatelessWidget {
                                 NetworkImage(appointment.doctor.imageURL),
                             radius: 25,
                           ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              width: 12,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.green,
-                              ),
-                            ),
-                          ),
+                          // Positioned(
+                          //   right: 0,
+                          //   bottom: 0,
+                          //   child: Container(
+                          //     width: 12,
+                          //     height: 20,
+                          //     decoration: BoxDecoration(
+                          //       shape: BoxShape.circle,
+                          //       color: Colors.green,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       SizedBox(width: 10),
@@ -130,9 +131,9 @@ class AppiontmentDetails extends StatelessWidget {
                           // width: 100,
                           decoration: BoxDecoration(
                             color: {
-                              'Upcoming': Colors.grey,
+                              'Upcoming': Pallet.NEUTRAL_200,
                               'Unpaid': Color(0xFFFE16E47),
-                              'Completed': Color(0xFfECF7EF)
+                              'Completed': Pallet.WARNING_70,
                             }[appointment.status],
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -183,17 +184,16 @@ class AppiontmentDetails extends StatelessWidget {
                     value: appointment.reason,
                   ),
                   _buildDetailRow(
-                    icon: Icons.payment_outlined,
-                    title: 'Consultation Fee',
-                    value: 'R ${appointment.doctor.appointmentType?.cost ?? 0}'
-                  ),
+                      icon: Icons.payment_outlined,
+                      title: 'Consultation Fee',
+                      value:
+                          'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
                 ],
               ),
             ),
             //buttons
             SizedBox(height: 20),
-            MyButtonWidgets(
-                    buttonTextPrimary: 'Done', onPressedPrimary: () {})
+            MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
                 .buildButtons(primaryFirst: false),
           ],
         ),
