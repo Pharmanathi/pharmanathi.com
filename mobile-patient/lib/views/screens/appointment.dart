@@ -54,13 +54,14 @@ class _AppointmentsState extends State<Appointments> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
+      appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(120),
+          child: HeaderWidget(
+            text: 'Appointments',
+            showBackButton: false, //* Hide the back button if not needed
+          )),
       body: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
-              child: HeaderWidget(
-            text: 'Appointments',
-            showBackButton: false, // Hide the back button if not needed
-          )),
           isLoading
               ? const SliverFillRemaining(
                   child: Center(

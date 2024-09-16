@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/blocs/appointment_bloc.dart';
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:flutter/services.dart';
 import 'package:client_pharmanathi/screens/components/calender/calender.dart';
@@ -161,6 +162,7 @@ class _BookingsState extends State<Bookings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Pallet.PURE_WHITE,
       body: Column(
         children: [
           //  header container
@@ -290,40 +292,7 @@ class _BookingsState extends State<Bookings> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildSectionTitle('Insurance'),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: DropdownButtonFormField<String>(
-                        value: selectedInsuranceOption,
-                        items: [
-                          "Yes",
-                          "No",
-                          // Add more options as needed
-                        ].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          // Handle the change in the selected weight
-                          setState(() {
-                            selectedInsuranceOption = newValue;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: 'select',
-                        ),
-                      ),
-                    ),
-                    buildDivider(),
+                  children: [ 
                     buildSectionTitle('Please state the reason for your visit'),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -408,9 +377,9 @@ class _BookingsState extends State<Bookings> {
                     ),
 
                     buildDivider(),
-                    buildSectionTitle('Paymment type'),
+                    buildSectionTitle('Have you visited the doctor before?'),
                     RadioListTile(
-                      title: Text('Before Visit'),
+                      title: Text('Yes'),
                       value: 'Before Visit',
                       groupValue: typeOfPayment,
                       onChanged: (value) {
@@ -420,8 +389,8 @@ class _BookingsState extends State<Bookings> {
                       },
                     ),
                     RadioListTile(
-                      title: Text('After Visit'),
-                      value: 'After Visit',
+                      title: Text('No'),
+                      value: 'After Visit', // @TODO[Thabang] : 
                       groupValue: typeOfPayment,
                       onChanged: (value) {
                         setState(() {
