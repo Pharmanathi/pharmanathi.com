@@ -2,13 +2,14 @@
 
 import 'dart:math';
 
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/api_helpers.dart';
-import 'doctor_details.dart';
+import '../screens/doctor_details.dart';
 
 class CustomDoctorCard extends StatelessWidget {
   final Doctor doctor;
@@ -50,11 +51,10 @@ class CustomDoctorCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: Color(0xFFF7F9FC),
+          color: Pallet.BACKGROUND_COLOR,
         ),
-        width: 400,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               GestureDetector(
@@ -78,30 +78,36 @@ class CustomDoctorCard extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             CircleAvatar(
-                              backgroundColor: doctor.imageURL.isNotEmpty
-                                  ? null // No background color if imageURL is available
-                                  : getRandomColor(), //* Display the first letter of the name if imageURL is not available
                               radius:
-                                  30, // Random background color if imageURL is not available
-                              child: doctor.imageURL.isNotEmpty
-                                  ? ClipOval(
-                                      child: Image.network(
-                                        doctor.imageURL,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                      ),
-                                    )
-                                  : Text(
-                                      doctor.doctorLastName.isNotEmpty
-                                          ? doctor.doctorLastName[0]
-                                          : '',
-                                      style: TextStyle(
-                                          fontSize: 20,
+                                  35, 
+                              backgroundColor:Pallet.PURE_WHITE,
+                              child: CircleAvatar(
+                                backgroundColor: doctor.imageURL.isNotEmpty
+                                    ? null // No background color if imageURL is available
+                                    : getRandomColor(), // Random background color if imageURL is not available
+                                radius: 25, // Inner circle radius
+                                child: doctor.imageURL.isNotEmpty
+                                    ? ClipOval(
+                                        child: Image.network(
+                                          doctor.imageURL,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      )
+                                    : Text(
+                                        doctor.doctorLastName.isNotEmpty
+                                            ? doctor.doctorLastName[0]
+                                            : '',
+                                        style: TextStyle(
+                                          fontSize: 15,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                              ),
                             ),
+
                             // Positioned(
                             //   right: 0,
                             //   bottom: 0,
@@ -118,16 +124,23 @@ class CustomDoctorCard extends StatelessWidget {
                             // ),
                           ],
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 30),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               alteredname,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal),
+                            ),
+                            Text(
+                              doctor.getAllSpecialityNames(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.normal),
                             ),
                             // Text(
                             //   doctorDetails.title,
