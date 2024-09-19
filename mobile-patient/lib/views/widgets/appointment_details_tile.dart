@@ -62,7 +62,7 @@ class AppiontmentDetails extends StatelessWidget {
                           // ),
                         ],
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 20),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
