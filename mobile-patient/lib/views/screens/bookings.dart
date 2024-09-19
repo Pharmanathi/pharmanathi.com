@@ -5,15 +5,16 @@ import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/blocs/appointment_bloc.dart';
 import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
+import 'package:client_pharmanathi/views/widgets/buttons.dart';
 import 'package:flutter/services.dart';
-import 'package:client_pharmanathi/screens/components/calender/calender.dart';
+import 'package:client_pharmanathi/views/widgets/calender.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../services/api_provider.dart';
-import '../../screens/components/calender/events.dart';
+import '../../model/calender_events.dart';
 
 class Bookings extends StatefulWidget {
-     final Doctor doctor;
+  final Doctor doctor;
   final ValueNotifier<List<String>> selectedTimeSlots;
   final DateTime selectedDay;
 
@@ -134,20 +135,19 @@ class _BookingsState extends State<Bookings> {
       String reasonForVisit = reasonForVisitControler.text;
       int doctorId = widget.doctor.id;
 
-      //* appointment data we sending to the backend 
+      //* appointment data we sending to the backend
       Map<String, dynamic> appointmentData = {
         'doctor': doctorId,
         'start_time': formattedStartTime,
         'reason': reasonForVisit,
         'appointment_type': appointmentType,
         'payment_process': modifiedPaymentType,
-        'payment_provider': 'Paystack', //TODO: Replace with actual selected payment provider when its possible to do so
+        'payment_provider':
+            'Paystack', //TODO: Replace with actual selected payment provider when its possible to do so
       };
 
       //* Book appointment and handle response within AppointmentBloc
       await _appointmentBloc.bookAppointment(context, appointmentData);
-
-      
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error booking appointment: $e')),
@@ -193,10 +193,10 @@ class _BookingsState extends State<Bookings> {
                       const Text(
                         'Booking',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.white,
+                            fontSize: 21.0,
+                            fontWeight: FontWeight.normal,
+                            fontStyle: FontStyle.normal),
                       ),
                     ],
                   ),
@@ -221,7 +221,7 @@ class _BookingsState extends State<Bookings> {
                 children: [
                   buildNavButton(0, '1.TIME'),
                   buildNavButton(1, '2.DETAILS'),
-                  buildNavButton(2, '3.FINISH'),
+                  buildNavButton(2, '3.SURMARY'),
                 ],
               ),
             ),
@@ -259,31 +259,11 @@ class _BookingsState extends State<Bookings> {
                       ),
                     ),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _navigateToNextStep();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6F7ED7),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 100.0, vertical: 15.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: Text(
-                          "NEXT",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      child: MyButtonWidgets(
+                          buttonTextPrimary: 'NEXT',
+                          onPressedPrimary: () {
+                            _navigateToNextStep();
+                          }).buildButtons(primaryFirst: false),
                     ),
                   ],
                 ))
@@ -292,22 +272,34 @@ class _BookingsState extends State<Bookings> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [ 
-                    buildSectionTitle('Please state the reason for your visit'),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: buildSectionTitle('Please state the reason for your visit'),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: TextField(
-                          controller: reasonForVisitControler,
-                          decoration: InputDecoration(
-                              hintText: 'Reason for your visit',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide.none,
-                              ))),
+                        controller: reasonForVisitControler,
+                        decoration: InputDecoration(
+                          hintText: 'Reason for your visit',
+                          hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal),
+                          filled: true,
+                          fillColor: Pallet.PRAMARY_75,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 25.0, horizontal: 5),
+                        ),
+                        maxLines: null,
+                      ),
                     ),
+
                     //fill uplaod input
                     buildDivider(),
                     buildSectionTitle(
@@ -321,40 +313,38 @@ class _BookingsState extends State<Bookings> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.lock,
-                                    color: Colors.grey[700],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Container(
-                                      width: 300,
-                                      child: Text(
-                                        'These files will only be available for your Doctor',
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  width: 300,
+                                  child: Text(
+                                    'These files will only be available for your Doctor',
+                                    style: TextStyle(
+                                      color: Pallet.PRIMARY_250,
+                                      fontSize: 12
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                               SizedBox(height: 20),
                               ElevatedButton(
                                 onPressed: _pickFile,
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: Pallet.PRAMARY_75,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        0.0), // Adjust the value as needed
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                      color: Pallet.PRIMARY_COLOR, 
+                                      width: 1.0, 
+                                    ),
                                   ),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.publish_sharp),
-                                    SizedBox(width: 10),
+                                    SizedBox(width: 7),
                                     Text('UPLOAD'),
                                   ],
                                 ),
@@ -390,7 +380,7 @@ class _BookingsState extends State<Bookings> {
                     ),
                     RadioListTile(
                       title: Text('No'),
-                      value: 'After Visit', // @TODO[Thabang] : 
+                      value: 'After Visit', // TODO[Thabang] :
                       groupValue: typeOfPayment,
                       onChanged: (value) {
                         setState(() {
@@ -399,31 +389,11 @@ class _BookingsState extends State<Bookings> {
                       },
                     ),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _navigateToNextStep();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6F7ED7),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 100.0, vertical: 15.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: Text(
-                          "NEXT",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      child: MyButtonWidgets(
+                          buttonTextPrimary: 'NEXT',
+                          onPressedPrimary: () {
+                            _navigateToNextStep();
+                          }).buildButtons(primaryFirst: false),
                     ),
                   ],
                 ),
@@ -435,16 +405,6 @@ class _BookingsState extends State<Bookings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: Text(
-                        "DETAILS",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                     //doctor name
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -460,9 +420,9 @@ class _BookingsState extends State<Bookings> {
                                 Text(
                                   "Doctor",
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                   ),
                                 ),
                                 Text(
@@ -470,7 +430,7 @@ class _BookingsState extends State<Bookings> {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 17,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
@@ -486,7 +446,7 @@ class _BookingsState extends State<Bookings> {
                         ],
                       ),
                     ),
-
+                    buildDivider(),
                     //date..................
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -502,15 +462,16 @@ class _BookingsState extends State<Bookings> {
                                 Text(
                                   "Date",
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                   ),
                                 ),
                                 Text(
                                   "${dayOfAppiontment != null ? "${dayOfAppiontment!.day} ${_getMonthName(dayOfAppiontment!.month)} ${dayOfAppiontment!.year}" : "Select a day"}",
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -544,15 +505,16 @@ class _BookingsState extends State<Bookings> {
                                 Text(
                                   "Time",
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                   ),
                                 ),
                                 Text(
                                   timeOfTheAppointment ?? "Select a time",
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -583,17 +545,18 @@ class _BookingsState extends State<Bookings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Paymment",
+                                  "Consultation fes",
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                   ),
                                 ),
                                 Text(
-                                  "$typeOfPayment",
+                                   widget.doctor.appointmentType?.cost.toString() ?? '',
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -610,34 +573,25 @@ class _BookingsState extends State<Bookings> {
                         ],
                       ),
                     ),
+                    buildDivider(),
+                    SizedBox(height: 20,),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _bookAppointment,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6F7ED7),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 100.0, vertical: 15.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          elevation: 0,
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: _isLoading
+                      child: MyButtonWidgets(
+                        buttonTextPrimary: _isLoading
+                            ? ''
+                            : 'Book Appointment', // Button text when not loading
+                        onPressedPrimary: _isLoading
+                            ? null
+                            : _bookAppointment, // Disable button when loading
+                      ).buildButtons(
+                        primaryFirst: false,
+                        primaryWidget: _isLoading
                             ? CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white), // Loading indicator color
+                                strokeWidth: 2.0, // Spinner thickness
                               )
-                            : Text(
-                                "Book Appointment",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            : null, // Only show the spinner when loading
                       ),
                     ),
                   ],
@@ -663,7 +617,7 @@ class _BookingsState extends State<Bookings> {
                 color: selectedButtonIndex == index
                     ? const Color(0xFF6F7ED7)
                     : Colors.transparent,
-                width: 3.5,
+                width: 3,
               ),
             ),
           ),
@@ -673,6 +627,8 @@ class _BookingsState extends State<Bookings> {
               text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
+                fontStyle: FontStyle.normal,
                 color: selectedButtonIndex == index
                     ? const Color(0xFF6F7ED7)
                     : Colors.grey,
@@ -693,6 +649,7 @@ class _BookingsState extends State<Bookings> {
         style: const TextStyle(
           color: Colors.black,
           fontSize: 15.0,
+          fontStyle: FontStyle.normal,
           fontWeight: FontWeight.normal,
         ),
       ),
@@ -703,7 +660,16 @@ class _BookingsState extends State<Bookings> {
   Widget buildDivider() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Divider(height: 0, color: Colors.grey[200]),
+      child: Align(
+        alignment: Alignment.center,
+        child: FractionallySizedBox(
+          widthFactor: 0.95, //* Set the width to 95% of the available space
+          child: Divider(
+            height: 0,
+            color: Colors.grey[200],
+          ),
+        ),
+      ),
     );
   }
 
