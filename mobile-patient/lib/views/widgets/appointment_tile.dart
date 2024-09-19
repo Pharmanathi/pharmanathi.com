@@ -135,10 +135,10 @@ class ProfileCard extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
 
-                                radius: 30,
+                                radius: 28,
                               ),
                               SizedBox(
-                                width: 28,
+                                width: 26,
                               ),
                               Column(
                                 children: [
@@ -157,6 +157,7 @@ class ProfileCard extends StatelessWidget {
                                               'Dr. $alteredname',
                                               style: TextStyle(
                                                 fontSize: 14,
+                                                fontFamily: 'OpenSans',
                                                 fontWeight: FontWeight.bold,
                                               ),
                                               overflow: TextOverflow.ellipsis,

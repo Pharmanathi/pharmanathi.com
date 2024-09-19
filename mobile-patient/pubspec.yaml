@@ -41,11 +41,16 @@ dev_dependencies:
   bloc_test: ^9.1.7
 
 flutter:
+  uses-material-design: true
   assets:
     - assets/sample.json
     - assets/images/
     - .env
-  uses-material-design: true
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-VariableFont_wdth,wght.ttf
+
 
 icons_launcher:
   image_path: "assets/images/pharmanathi-patient-icon.png"

@@ -39,13 +39,14 @@ class MyButtonWidgets {
     bool primaryFirst = false,
     bool showPrimary = true,
     bool showSecondary = true,
+    CircularProgressIndicator? primaryWidget,
   }) {
     final primaryButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: Color(0xFF6F7ED7), // Background color for primary button
       minimumSize: Size(320, 45),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5), 
+        borderRadius: BorderRadius.circular(5),
       ),
     );
 
@@ -58,7 +59,7 @@ class MyButtonWidgets {
         width: 1,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5), 
+        borderRadius: BorderRadius.circular(5),
       ),
     );
 
@@ -71,14 +72,15 @@ class MyButtonWidgets {
           )
         : null;
 
-    final secondaryButton = buttonTextSecondary != null && onPressedSecondary != null
-        ? buildButton(
-            text: buttonTextSecondary!,
-            onPressed: onPressedSecondary!,
-            style: secondaryButtonStyle,
-            textColor: Color(0xFF6F7ED7), // Text color for secondary button
-          )
-        : null;
+    final secondaryButton =
+        buttonTextSecondary != null && onPressedSecondary != null
+            ? buildButton(
+                text: buttonTextSecondary!,
+                onPressed: onPressedSecondary!,
+                style: secondaryButtonStyle,
+                textColor: Color(0xFF6F7ED7), // Text color for secondary button
+              )
+            : null;
 
     List<Widget> buttons = [];
     if (showPrimary && primaryButton != null) {

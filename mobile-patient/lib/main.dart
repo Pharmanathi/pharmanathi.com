@@ -153,6 +153,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'OpenSans',
+      ),
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.generateRoute,

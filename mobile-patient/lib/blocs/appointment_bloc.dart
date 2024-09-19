@@ -5,6 +5,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/model/appointment_data.dart';
 
+import '../views/widgets/SuccessMessageWidget.dart';
+
 class AppointmentBloc {
   final AppointmentRepository _appointmentRepository;
   final ValueNotifier<List<Appointment>?> _appointmentsNotifier =
@@ -26,11 +28,14 @@ class AppointmentBloc {
     }
   }
 
-  Future<void> bookAppointment(BuildContext context, Map<String, dynamic> appointmentData) async {
+  Future<void> bookAppointment(
+      BuildContext context, Map<String, dynamic> appointmentData) async {
     try {
-      final responseData = await _appointmentRepository.bookAppointment(context, appointmentData);
+      final responseData = await _appointmentRepository.bookAppointment(
+          context, appointmentData);
 
-      if (responseData.containsKey('action_data') && responseData['action_data'] != null) {
+      if (responseData.containsKey('action_data') &&
+          responseData['action_data'] != null) {
         final paymentUrl = responseData['action_data']['payment_url'];
         // Navigate to PaymentWebView
         Navigator.of(context).push(MaterialPageRoute(
@@ -56,14 +61,12 @@ class AppointmentBloc {
   }
 
   void _showSuccessMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Your appointment has been booked successfully!'),
-        duration: Duration(seconds: 5),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.green,
-      ),
-    );
+    if (context.mounted) {
+      SuccessMessageWidget.show(
+        context,
+        message: 'Your appointment has been booked successfully!',
+      );
+    }
   }
 
   void _navigateToAppointmentScreen(BuildContext context) {

@@ -15,8 +15,10 @@ class Pallet {
   static const Color WARNING = Color(0xFFFCDC620);
   static const Color NATURAL_FAINT = Color(0xFFFF4F7FA);
   static const Color PRAMARY_50 = Color(0xFFFF1F2FB);
+  static const Color PRAMARY_75 = Color(0xFFF7F9FC);
   static const Color PRAMARY_100 = Color(0xFFFD2D7F3);
   static const Color PRIMARY_200 = Color(0xFFFBDC4ED);
+  static const Color PRIMARY_250 = Color(0xFF8F9BB3);
   static const Color PRIMARY_300 = Color(0xFFF9FA9E4);
   static const Color PRIMMARY_400 = Color(0xFFF8C98DF);
   static const Color PRIMARY_500 = Color(0xFFF6F7ED7);
