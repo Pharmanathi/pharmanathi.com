@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_print, unnecessary_string_interpolations
+// ignore_for_file: avoid_print, unnecessary_string_interpolations, prefer_final_fields
 
+import 'package:client_pharmanathi/config/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:client_pharmanathi/services/timeslot_api.dart';
@@ -28,6 +29,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   late DateTime kFirstDay;
   late DateTime kLastDay;
   int _selectedButtonIndex = -1;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -53,6 +55,11 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   }
 
   Future<void> _fetchAvailability(DateTime day) async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
     try {
       final availability = await TimeSlotsApiService.fetchAvailabilitySlots(
         widget.doctorId,
@@ -60,18 +67,19 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         context,
       );
 
-      print('Availability:');
-      for (var slot in availability) {
-        print('${slot[0]} - ${slot[1]}');
+      final formattedAvailability =
+          availability.map((slot) => '${slot[0]} - ${slot[1]}').toList();
+
+      if (mounted) {
+        _selectedTimeSlots.value = formattedAvailability;
       }
-
-      final formattedAvailability = availability
-          .map((slot) => '${slot[0]} - ${slot[1]}')
-          .toList();
-
-      _selectedTimeSlots.value = formattedAvailability;
     } catch (e) {
       print('Error fetching availability: $e');
+    }
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -98,47 +106,85 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Pallet.PURE_WHITE,
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            calendarFormat: _calendarFormat,
-            startingDayOfWeek: StartingDayOfWeek.sunday,
-            calendarStyle: const CalendarStyle(
-              outsideDaysVisible: true,
-              markerSize: 0,
-            ),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-            onDaySelected: _onDaySelected,
-            onPageChanged: (focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
-                _selectedDay = focusedDay;
-              });
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 25, bottom: 5),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Pallet.PRAMARY_100,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: TableCalendar(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                calendarFormat: _calendarFormat,
+                startingDayOfWeek: StartingDayOfWeek.sunday,
+                calendarStyle: CalendarStyle(
+                  outsideDaysVisible: true,
+                  markerSize: 0,
+                  todayDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Pallet.PRAMARY_75,
+                    border: Border.all(
+                      color: Pallet.PRIMARY_COLOR,
+                      width: 1.0,
+                    ),
+                  ),
+                  todayTextStyle: const TextStyle(
+                    color: Color.fromARGB(255, 26, 25, 25),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  selectedTextStyle: const TextStyle(
+                    color: Color.fromARGB(255, 26, 25, 25),
+                    fontWeight: FontWeight.normal,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Pallet.PRAMARY_75,
+                    border: Border.all(
+                      color: Pallet.PRIMARY_COLOR,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                onDaySelected: _onDaySelected,
+                onPageChanged: (focusedDay) {
+                  setState(() {
+                    _focusedDay = focusedDay;
+                    _selectedDay = focusedDay;
+                  });
 
-              // Call the parent callback with the updated focusedDay
-              widget.onAppointmentDaySelected(focusedDay);
-              _fetchAvailability(focusedDay);
-            },
+                  //* Call the parent callback with the updated focusedDay
+                  widget.onAppointmentDaySelected(focusedDay);
+                  _fetchAvailability(focusedDay);
+                },
+              ),
+            ),
           ),
           const SizedBox(height: 1.0),
           const Padding(
-            padding: EdgeInsets.only(left: 50, top: 20, bottom: 10),
+            padding: EdgeInsets.only(left: 30, top: 20, bottom: 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Available Time',
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.normal,
-                ),
+                    color: Colors.black,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.normal,
+                    fontStyle: FontStyle.normal),
               ),
             ),
           ),
@@ -146,7 +192,13 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             child: ValueListenableBuilder<List<String>>(
               valueListenable: _selectedTimeSlots,
               builder: (context, value, _) {
-                if (value.isEmpty) {
+                if (_isLoading) {
+                  // Show loading indicator while data is loading
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (value.isEmpty) {
+                  // Show 'No time available' if there are no time slots
                   return const Center(
                     child: Text(
                       'No time available',
@@ -154,6 +206,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                     ),
                   );
                 } else {
+                  // Show the time slots when available
                   return SingleChildScrollView(
                     child: Wrap(
                       spacing: 10.0,
@@ -173,16 +226,17 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                             width: 120,
                             decoration: BoxDecoration(
                               color: _selectedButtonIndex == index
-                                  ? Colors.blue
-                                  : Colors.grey[300],
+                                  ? Pallet.PRIMARY_COLOR
+                                  : Pallet.PRAMARY_75,
                             ),
                             child: Center(
                               child: Text(
                                 '${value[index].split(' - ')[0]}', //* Display only the start time
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.normal,
+                                  fontStyle: FontStyle.normal,
                                   color: _selectedButtonIndex == index
                                       ? Colors.white
                                       : Colors.black,
