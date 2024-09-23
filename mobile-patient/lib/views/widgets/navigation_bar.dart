@@ -23,22 +23,27 @@ class CustomBottomNavigationBar extends StatelessWidget {
         onTap(index); //* Call the provided callback to handle tap events
         switch (index) {
           case 0:
-            Navigator.pushNamed(context, '/home_page');
+            Navigator.pushNamed(context, '/appointments');
             break;
           case 1:
             Navigator.pushNamed(context, '/doctors');
             break;
+          // case 0:
+          //   Navigator.pushNamed(context, '/appointments');
+          //   break;
           case 2:
-            Navigator.pushNamed(context, '/appointments');
-            break;
-          case 3:
             Navigator.pushNamed(context, '/profile_settings');
             break;
         }
       },
       items: [
+        // _buildBottomNavigationBarItem(
+        //   icon: 'assets/images/Icon open-home.png',
+        //   label: '',
+        //   isSelected: currentIndex == 0,
+        // ),
         _buildBottomNavigationBarItem(
-          icon: 'assets/images/Icon open-home.png',
+          icon: 'assets/images/Icon open-calendar.png',
           label: '',
           isSelected: currentIndex == 0,
         ),
@@ -47,11 +52,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: '',
           isSelected: currentIndex == 1,
         ),
-        _buildBottomNavigationBarItem(
-          icon: 'assets/images/Icon open-calendar.png',
-          label: '',
-          isSelected: currentIndex == 2,
-        ),
+        
         _buildBottomNavigationBarItem(
           icon: 'assets/images/Icon awesome-user-alt.png',
           label: '',

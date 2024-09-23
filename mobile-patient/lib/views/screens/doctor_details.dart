@@ -208,40 +208,39 @@ class _DoctorDetailsState extends State<DoctorDetails> {
           height: 60,
           width: 60,
           color: Colors.white,
-          child: Icon(icon, color: Pallet.PRIMARY_COLOR,),
+          child: Icon(
+            icon,
+            color: Pallet.PRIMARY_COLOR,
+          ),
         ),
         const SizedBox(width: 2),
-        Container(
-          height: 60,
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: 225,
-                  child: Text(
+        Expanded(
+          child: Container(
+            height: 60,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
                     title,
                     style: const TextStyle(
                       color: Pallet.BLACK,
                       fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.normal
+                      fontStyle: FontStyle.normal,
                     ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 17),
-                  child: Icon(
+                  const Icon(
                     Icons.arrow_forward_ios,
                     size: 12.0,
                     color: Pallet.NEUTRAL_200,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
