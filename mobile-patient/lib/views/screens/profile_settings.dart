@@ -177,38 +177,38 @@ class _ProfileSettingState extends State<ProfileSetting> {
                       ),
                       buildDivider(),
 
-                      // Account settings
-                      GestureDetector(
-                        onTap: () async {},
-                        child: Container(
-                          child: buildSectionTile(
-                              'Account settings', Icons.border_color),
-                        ),
-                      ),
-                      buildDivider(),
+                      // // Account settings
+                      // GestureDetector(
+                      //   onTap: () async {},
+                      //   child: Container(
+                      //     child: buildSectionTile(
+                      //         'Account settings', Icons.border_color),
+                      //   ),
+                      // ),
+                      // buildDivider(),
 
-                      // Notifications
-                      GestureDetector(
-                        onTap: () {
-                          // Handle notifications
-                        },
-                        child: Container(
-                          child: buildSectionTile(
-                              'Notification', Icons.notifications),
-                        ),
-                      ),
-                      buildDivider(),
+                      // // Notifications
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     // Handle notifications
+                      //   },
+                      //   child: Container(
+                      //     child: buildSectionTile(
+                      //         'Notification', Icons.notifications),
+                      //   ),
+                      // ),
+                      // buildDivider(),
 
-                      // Support
-                      GestureDetector(
-                        onTap: () {
-                          // Handle support
-                        },
-                        child: Container(
-                          child: buildSectionTile('Support', Icons.help),
-                        ),
-                      ),
-                      buildDivider(),
+                      // // Support
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     // Handle support
+                      //   },
+                      //   child: Container(
+                      //     child: buildSectionTile('Support', Icons.help),
+                      //   ),
+                      // ),
+                      // buildDivider(),
 
                       // Log out
                       GestureDetector(
