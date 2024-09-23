@@ -171,7 +171,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
             if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
               if (ApiHelper.retrieveLocaAPIToken(context) != null) {
-                initialRoute = AppRoutes.homePage;
+                initialRoute = AppRoutes.appointments;
               }
             }
 
