@@ -122,13 +122,13 @@ class _BookingsState extends State<Bookings> {
       //* Modify typeOfPayment based on the api requirements
       String modifyTypeOfPayment(String typeOfPayment) {
         // Modify typeOfPayment based on the condition
-        if (typeOfPayment == 'Before Visit') {
-          return 'BV';
-        } else if (typeOfPayment == 'After Visit') {
-          return 'AV';
-        }
+        // if (typeOfPayment == 'Before Visit') {
+        //   return 'BV';
+        // } else if (typeOfPayment == 'After Visit') {
+        //   return 'AV';
+        // }
         // Return the original typeOfPayment if no modification is needed
-        return typeOfPayment;
+        return "BV";
       }
 
       String modifiedPaymentType = modifyTypeOfPayment(typeOfPayment);
@@ -275,7 +275,7 @@ class _BookingsState extends State<Bookings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: buildSectionTitle('Please state the reason for your visit'),
+                      child: buildSectionTitle('Write the reason of your visit, please'),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -303,18 +303,18 @@ class _BookingsState extends State<Bookings> {
                     //fill uplaod input
                     buildDivider(),
                     buildSectionTitle(
-                        'You may upload related EHR files if you wish'),
+                        'You may upload related EHR files, if you wish'),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: EdgeInsets.all(15),
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(right: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 0),
                                 child: Container(
                                   width: 300,
                                   child: Text(
@@ -327,26 +327,29 @@ class _BookingsState extends State<Bookings> {
                                 ),
                               ),
                               SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: _pickFile,
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: Pallet.PRAMARY_75,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(
-                                      color: Pallet.PRIMARY_COLOR, 
-                                      width: 1.0, 
+                              Container(
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: _pickFile,
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Pallet.PRAMARY_75,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(
+                                        color: Pallet.PRIMARY_COLOR, 
+                                        width: 1.0, 
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.publish_sharp),
-                                    SizedBox(width: 7),
-                                    Text('UPLOAD'),
-                                  ],
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.publish_sharp),
+                                      SizedBox(width: 7),
+                                      Text('UPLOAD', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -367,27 +370,6 @@ class _BookingsState extends State<Bookings> {
                     ),
 
                     buildDivider(),
-                    buildSectionTitle('Have you visited the doctor before?'),
-                    RadioListTile(
-                      title: Text('Yes'),
-                      value: 'Before Visit',
-                      groupValue: typeOfPayment,
-                      onChanged: (value) {
-                        setState(() {
-                          typeOfPayment = value as String;
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      title: Text('No'),
-                      value: 'After Visit', // TODO[Thabang] :
-                      groupValue: typeOfPayment,
-                      onChanged: (value) {
-                        setState(() {
-                          typeOfPayment = value as String;
-                        });
-                      },
-                    ),
                     Center(
                       child: MyButtonWidgets(
                           buttonTextPrimary: 'NEXT',
@@ -406,6 +388,7 @@ class _BookingsState extends State<Bookings> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //doctor name
+                    SizedBox(height: 20,),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
@@ -422,15 +405,16 @@ class _BookingsState extends State<Bookings> {
                                   style: TextStyle(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                 ),
+                                SizedBox(height: 8,),
                                 Text(
-                                  widget.doctor.doctorLastName,
+                                  "${widget.doctor.doctorFullName}",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ],
@@ -464,14 +448,15 @@ class _BookingsState extends State<Bookings> {
                                   style: TextStyle(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                 ),
+                                SizedBox(height: 8,),
                                 Text(
                                   "${dayOfAppiontment != null ? "${dayOfAppiontment!.day} ${_getMonthName(dayOfAppiontment!.month)} ${dayOfAppiontment!.year}" : "Select a day"}",
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -507,14 +492,15 @@ class _BookingsState extends State<Bookings> {
                                   style: TextStyle(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                 ),
+                                SizedBox(height: 8,),
                                 Text(
                                   timeOfTheAppointment ?? "Select a time",
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -549,14 +535,15 @@ class _BookingsState extends State<Bookings> {
                                   style: TextStyle(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                   ),
                                 ),
+                                SizedBox(height: 8,),
                                 Text(
                                    widget.doctor.appointmentType?.cost.toString() ?? '',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
