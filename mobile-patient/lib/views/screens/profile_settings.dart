@@ -16,7 +16,7 @@ class ProfileSetting extends StatefulWidget {
 }
 
 class _ProfileSettingState extends State<ProfileSetting> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   // Method to handle navigation
   void _onItemTapped(int index) {

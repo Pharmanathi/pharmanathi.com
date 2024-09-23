@@ -91,7 +91,7 @@ class ProfileCard extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 0, right: 12, left: 12, bottom: 5),
-        child: Container(
+        child: SizedBox(
           height: 160,
           child: Column(
             children: [
@@ -152,7 +152,7 @@ class ProfileCard extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(right: 30),
                                           child: SizedBox(
-                                            width: 200,
+                                            // width: 100,
                                             child: Text(
                                               'Dr. $alteredname',
                                               style: TextStyle(
