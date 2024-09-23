@@ -17,7 +17,7 @@ class Appointments extends StatefulWidget {
 class _AppointmentsState extends State<Appointments> {
   String selectedButton = 'Completed';
   Color primaryColor = const Color(0xFFF7F9FC);
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
   int selectedDay = -1;
   bool isLoading = true;
   late AppointmentRepository _appointmentRepository;
