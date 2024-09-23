@@ -111,7 +111,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         children: [
           Padding(
             padding:
-                const EdgeInsets.only(left: 15, right: 15, top: 25, bottom: 5),
+                const EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 5),
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -130,6 +130,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 calendarStyle: CalendarStyle(
                   outsideDaysVisible: true,
                   markerSize: 0,
+                  defaultTextStyle: const TextStyle(fontSize: 16),
+                  weekendTextStyle: const TextStyle(fontSize: 16),
                   todayDecoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Pallet.PRAMARY_75,
@@ -143,14 +145,14 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                     fontWeight: FontWeight.bold,
                   ),
                   selectedTextStyle: const TextStyle(
-                    color: Color.fromARGB(255, 26, 25, 25),
+                    color: Pallet.PRAMARY_75,
                     fontWeight: FontWeight.normal,
                   ),
                   selectedDecoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    color: Pallet.PRAMARY_75,
+                    color: Pallet.PRIMARY_COLOR,
                     border: Border.all(
-                      color: Pallet.PRIMARY_COLOR,
+                      color: Pallet.PRAMARY_75,
                       width: 1.0,
                     ),
                   ),
@@ -182,7 +184,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 'Available Time',
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 15.0,
+                    fontSize: 16,
                     fontWeight: FontWeight.normal,
                     fontStyle: FontStyle.normal),
               ),
@@ -222,7 +224,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                             _onTimeSlotSelected(value[index]);
                           },
                           child: Container(
-                            height: 35,
+                            height: 45,
                             width: 120,
                             decoration: BoxDecoration(
                               color: _selectedButtonIndex == index
@@ -234,7 +236,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                                 '${value[index].split(' - ')[0]}', //* Display only the start time
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 13.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.normal,
                                   fontStyle: FontStyle.normal,
                                   color: _selectedButtonIndex == index

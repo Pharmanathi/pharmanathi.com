@@ -61,10 +61,11 @@ class Doctor {
   //* Returns all specialty names
   String getAllSpecialityNames() {
     String joinedSpecialities = specialities.join('\n');
-    if (joinedSpecialities.length > 30) {
-      return '${joinedSpecialities.substring(0, 30)}...';
-    } else {
-      return joinedSpecialities;
-    }
+    // if (joinedSpecialities.length > 30) {
+    //   return '${joinedSpecialities.substring(0, 30)}...';
+    // } else {
+    //   return joinedSpecialities;
+    // }
+    return specialities.length > 1 ? "${specialities[0]} & more": "${specialities[0]}" ;
   }
 }
