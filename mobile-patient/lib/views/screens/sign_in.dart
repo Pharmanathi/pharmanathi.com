@@ -101,7 +101,7 @@ class GoogleSignInWidget extends StatelessWidget {
                                             });
                                       } else {
                                         Navigator.pushNamed(
-                                            context, AppRoutes.homePage,
+                                            context, AppRoutes.appointments,
                                             arguments: {
                                               'email': googleUser.email,
                                             });
