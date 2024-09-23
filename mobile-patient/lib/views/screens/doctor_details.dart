@@ -45,11 +45,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         child: Column(
           children: [
             const HeaderWidget(
-              text: 'Doctor Profile',
+              text: "Doctor's Profile",
               showBackButton: true,
             ),
             // ignore: prefer_const_constructors
-            SizedBox(height: 20,),
+            Container(
+              height: 10,
+              color: Pallet.BACKGROUND_COLOR,
+              // color: const Color.fromARGB(255, 22, 76, 156),
+              // child: const SizedBox(height: 20,),
+            ),
+            const SizedBox(height: 20,),
             //* Container for video icon and text icon
             Container(
               child: Column(
@@ -229,6 +235,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       color: Pallet.BLACK,
                       fontWeight: FontWeight.normal,
                       fontStyle: FontStyle.normal,
+                      fontSize: 16
                     ),
                   ),
                   const Icon(

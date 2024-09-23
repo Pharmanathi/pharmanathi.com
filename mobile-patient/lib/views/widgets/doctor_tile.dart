@@ -47,15 +47,17 @@ class CustomDoctorCard extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 2, left: 10, right: 8, bottom: 8),
+      padding: const EdgeInsets.only(top: 5, left: 10, right: 8, bottom: 8),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           color: Pallet.BACKGROUND_COLOR,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
+          // padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: () {
@@ -71,6 +73,7 @@ class CustomDoctorCard extends StatelessWidget {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                       children: [
@@ -79,13 +82,13 @@ class CustomDoctorCard extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius:
-                                  35, 
+                                  50, 
                               backgroundColor:Pallet.PURE_WHITE,
                               child: CircleAvatar(
                                 backgroundColor: doctor.imageURL.isNotEmpty
                                     ? null // No background color if imageURL is available
                                     : getRandomColor(), // Random background color if imageURL is not available
-                                radius: 25, // Inner circle radius
+                                radius: 35, // Inner circle radius
                                 child: doctor.imageURL.isNotEmpty
                                     ? ClipOval(
                                         child: Image.network(
@@ -100,7 +103,7 @@ class CustomDoctorCard extends StatelessWidget {
                                             ? doctor.doctorLastName[0]
                                             : '',
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 60,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -131,15 +134,15 @@ class CustomDoctorCard extends StatelessWidget {
                             Text(
                               alteredname,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
                                   fontStyle: FontStyle.normal),
                             ),
                             Text(
                               doctor.getAllSpecialityNames(),
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 12,
+                                  fontSize: 14,
                                   fontStyle: FontStyle.normal),
                             ),
                             // Text(
@@ -183,9 +186,9 @@ class CustomDoctorCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              // SizedBox(
+              //   height: 20,
+              // ),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
