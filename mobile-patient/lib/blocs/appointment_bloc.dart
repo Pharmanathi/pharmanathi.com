@@ -61,12 +61,14 @@ class AppointmentBloc {
   }
 
   void _showSuccessMessage(BuildContext context) {
-    if (context.mounted) {
-      SuccessMessageWidget.show(
-        context,
-        message: 'Your appointment has been booked successfully!',
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Your appointment has been booked successfully!'),
+        duration: Duration(seconds: 5),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   void _navigateToAppointmentScreen(BuildContext context) {
