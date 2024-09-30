@@ -1,22 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 
 class ClickableDay extends StatefulWidget {
   final String selectedMonth;
+  final Map<int, int>
+      appointmentsPerDay; // Map of day to number of appointments
   final void Function(int) onDaySelected; // Callback function
 
-  const ClickableDay(
-      {required this.selectedMonth, required this.onDaySelected});
+  const ClickableDay({
+    required this.selectedMonth,
+    required this.onDaySelected,
+    required this.appointmentsPerDay,
+  });
 
   @override
   _ClickableDayState createState() => _ClickableDayState();
 }
 
 class _ClickableDayState extends State<ClickableDay> {
-  int selectedDay = -1;
+  int selectedDay = -1; // To track the currently selected day
+  final DateTime today = DateTime.now(); // Track current day
+  late final ScrollController _scrollController; // Define ScrollController
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController(); // Initialize it here
+
+    // Wait for the widget to be built before scrolling to the current day
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrentDay();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose(); // Dispose controller when not needed
+    super.dispose();
+  }
+
+  // Function to scroll to the current day when the widget is built
+  void _scrollToCurrentDay() {
+    final monthMap = {
+      'January': 1,
+      'February': 2,
+      'March': 3,
+      'April': 4,
+      'May': 5,
+      'June': 6,
+      'July': 7,
+      'August': 8,
+      'September': 9,
+      'October': 10,
+      'November': 11,
+      'December': 12,
+    };
+
+    DateTime now = DateTime.now();
+    DateTime monthDate = DateTime(now.year, monthMap[widget.selectedMonth]!, 1);
+
+    // Calculate the position of the current day
+    if (today.month == monthDate.month && today.year == monthDate.year) {
+      final currentDayIndex = today.day - 1;
+      // Scroll to the position of the current day (adjust with width of the card)
+      _scrollController.animateTo(
+        currentDayIndex * 50.0, // 45 width + some padding
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Define a map to convert month names to numeric values
+    // Map to convert month names to numeric values
     final monthMap = {
       'January': 1,
       'February': 2,
@@ -37,9 +94,10 @@ class _ClickableDayState extends State<ClickableDay> {
     DateTime monthDate = DateTime(now.year, monthMap[widget.selectedMonth]!, 1);
 
     return Container(
-      height: 100, // Adjust the height as needed
+      height: 70, // Adjust the height as needed
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        controller: _scrollController, // Attach the ScrollController
         child: Row(
           children: List<Widget>.generate(
             DateTime(monthDate.year, monthDate.month + 1, 0).day,
@@ -48,31 +106,15 @@ class _ClickableDayState extends State<ClickableDay> {
               final dayOfWeek =
                   DateTime(monthDate.year, monthDate.month, day).weekday;
 
-              String dayName = "";
-              switch (dayOfWeek) {
-                case 1:
-                  dayName = 'Mon';
-                  break;
-                case 2:
-                  dayName = 'Tue';
-                  break;
-                case 3:
-                  dayName = 'Wed';
-                  break;
-                case 4:
-                  dayName = 'Thu';
-                  break;
-                case 5:
-                  dayName = 'Fri';
-                  break;
-                case 6:
-                  dayName = 'Sat';
-                  break;
-                case 7:
-                  dayName = 'Sun';
-                  break;
-              }
+              // Get the number of appointments for this day
+              final appointmentsForDay = widget.appointmentsPerDay[day] ?? 0;
 
+              // Determine if this is the current day
+              final isToday = today.year == monthDate.year &&
+                  today.month == monthDate.month &&
+                  today.day == day;
+
+              // Determine if this day is selected
               final isClicked = selectedDay == day;
 
               return GestureDetector(
@@ -84,37 +126,58 @@ class _ClickableDayState extends State<ClickableDay> {
                   // Call the callback function with the selected day
                   widget.onDaySelected(day);
                 },
-                child: Column(
-                  children: [
-                    Container(
-                      width: 50, // Width of the day container
-                      height: 50, // Height of the day container
-                      decoration: BoxDecoration(
-                        color: isClicked
-                            ? const Color.fromARGB(255, 188, 214, 239)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Center(
-                        child: Text(
+                child: Card(
+                  elevation: 0,
+                  color: isClicked
+                      ? Pallet.PRIMARY_COLOR 
+                      : (isToday ? Pallet.PRIMARY_200 : Pallet.PRAMARY_80),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Container(
+                    width: 45, // Set width for each day card
+                    height: 55, // Set height for each day card
+                    padding: const EdgeInsets.all(4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Day number at the top left
+                        Text(
                           day.toString(),
                           style: TextStyle(
-                            fontSize: 23,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: isClicked ? Colors.white : Colors.black,
+                            color: isClicked || isToday
+                                ? Colors.white
+                                : Colors.black,
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 5),
+                        // Skeleton lines representing appointments
+                        Flexible(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics:
+                                const NeverScrollableScrollPhysics(), // Disable scrolling
+                            itemCount: appointmentsForDay,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2),
+                                child: Container(
+                                  height: 2,
+                                  width: double.infinity,
+                                  color: isClicked || isToday
+                                      ? Pallet.SECONDARY_500
+                                      : Pallet.SECONDARY_500
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      dayName,
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                    const SizedBox(
-                      width:
-                          65, // Adjust the width to control spacing between days
-                    ),
-                  ],
+                  ),
                 ),
               );
             },

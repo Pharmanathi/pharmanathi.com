@@ -58,7 +58,7 @@ Future<void> main() async {
 Future<void> _loadEnvironmentVariables() async {
   // Load environment variables from appropriate .env file
   await dotenv.load(
-      fileName: kReleaseMode ? '.env.production' : '.env.development');
+      fileName: kReleaseMode ? '.env.production' : '.env.production');
 }
 
 Future<void> _setPreferredOrientation() async {
@@ -123,6 +123,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'OpenSans',
+      ),
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.generateRoute,
