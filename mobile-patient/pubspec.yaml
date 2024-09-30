@@ -20,7 +20,7 @@ dependencies:
   firebase_auth: ^5.2.0
   shared_preferences: ^2.3.2
   location: ^5.0.3
-  device_info: ^2.0.3
+  device_info_plus: ^10.1.2
   flutter_secure_storage: ^9.0.0
   flutter_dotenv: ^5.1.0
   http: ^1.2.2
@@ -29,8 +29,9 @@ dependencies:
   sentry_flutter: ^8.8.0
   webview_flutter: ^3.0.4
   flutter_bloc: ^8.0.0
+  app_links: ^6.3.2
   # url_launcher: ^6.3.0
-  uni_links: ^0.5.1 # @TODO(nehemie): move to app_links(https://pub.dev/packages/app_links)
+  # uni_links: ^0.5.1 # @TODO(nehemie): move to app_links(https://pub.dev/packages/app_links)
 
 dev_dependencies:
   flutter_test:
