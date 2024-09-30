@@ -1,6 +1,8 @@
+import 'package:app_links/app_links.dart';
 import 'package:client_pharmanathi/Repository/doctor_repository.dart';
 import 'package:client_pharmanathi/Repository/sign_in_repository.dart';
 import 'package:client_pharmanathi/blocs/sign_in_bloc.dart';
+import 'package:client_pharmanathi/helpers/api_helpers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,14 +10,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:uni_links/uni_links.dart';
 import 'dart:async';
 import 'routes/app_routes.dart';
 import 'services/api_provider.dart';
 import 'Repository/appointment_repository.dart';
 import 'screens/components/UserProvider.dart';
 import 'firebase_options.dart';
-import 'helpers/api_helpers.dart';
+import '../helpers/api_helpers.dart' as http_helpers;
 
 // Global Navigator Key
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -101,7 +102,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  late StreamSubscription _sub;
+  late final AppLinks _appLinks;
+  late final StreamSubscription<Uri?> _sub;
   final DeepLinkHandler _deepLinkHandler = DeepLinkHandler();
 
   @override
@@ -110,39 +112,36 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     _initializeDeepLinking();
   }
 
-  Future<void> _initializeDeepLinking() async {
-    try {
-      //* Handle the case when the app is started by a deep link
-      final initialLink = await getInitialLink();
-      if (initialLink != null) {
-        _deepLinkHandler.handleDeepLink(initialLink);
-      }
-
-      //* Handle the case when the app is already running and receives a deep link
-      _sub = linkStream.listen(
-        (String? link) {
-          if (link != null) {
-            // Add a slight delay to ensure the context is valid
-            Future.delayed(const Duration(milliseconds: 100), () {
-              if (mounted) {
-                _deepLinkHandler.handleDeepLink(link);
-              }
-            });
-          }
-        },
-        onError: (err) {
-          print("Link stream error: $err");
-        },
-      );
-    } on Exception catch (e) {
-      print("Deep linking initialization error: $e");
-    }
-  }
-
   @override
   void dispose() {
     _sub.cancel();
     super.dispose();
+  }
+
+  Future<void> _initializeDeepLinking() async {
+    //* Instantiate AppLinks early
+    _appLinks = AppLinks();
+
+    //* Subscribe to all events (initial link and further deep links)
+    _sub = _appLinks.uriLinkStream.listen(
+      (Uri? uri) {
+        if (uri != null) {
+          //* Add a slight delay to ensure the context is valid
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              _deepLinkHandler.handleDeepLink(uri.toString());
+            }
+          });
+        }
+      },
+      onError: (err, stackTrace) {
+        //* Handle exception with your helper
+        http_helpers.ApiHelper.handleException(context, err);
+
+        //* Report the exception to Sentry
+        Sentry.captureException(err, stackTrace: stackTrace);
+      },
+    );
   }
 
   Future<bool> _checkFirstTimeSignIn() async {
@@ -189,12 +188,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 class DeepLinkHandler {
   void handleDeepLink(String link) {
     final uri = Uri.parse(link);
+
     if (uri.scheme == 'unilinks' && uri.host.contains("pharmanathi.com")) {
-      navigatorKey.currentState
-          ?.pushNamed("${uri.queryParameters['screen']}")
-          .catchError((e) {
-        print("Error during navigation: $e"); // Log to Sentry if needed
-      });
+      // Use navigatorKey.currentContext safely
+      final context = navigatorKey.currentContext;
+      if (context != null) {
+        navigatorKey.currentState
+            ?.pushNamed("${uri.queryParameters['screen']}")
+            .catchError((err, stackTrace) {
+          //* Log the error using the ApiHelper
+          http_helpers.ApiHelper.handleException(context, err);
+
+          //* Report the exception to Sentry with stack trace
+          Sentry.captureException(err, stackTrace: stackTrace);
+        });
+      } 
     }
   }
 }
