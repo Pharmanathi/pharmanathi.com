@@ -17,7 +17,7 @@ class Appointments extends StatefulWidget {
 
 class _AppointmentsState extends State<Appointments> {
   late AppointmentRepository _appointmentRepository;
-  String selectedButton = 'InPerson';
+  String selectedButton = 'all';
   Color primaryColor = Color(0xFFF7F9FC);
   int _selectedIndex = 1;
   int selectedDay = DateTime.now().day;
@@ -165,7 +165,17 @@ class _AppointmentsState extends State<Appointments> {
         bool matchesMonthYear =
             appointmentMonth == selectedMonth && appointmentYear == currentYear;
 
-        return matchesDay && matchesMonthYear;
+        //* Determine if the appointment matches the filter (online or in-person)
+        bool matchesAppointmentType = true;
+        if (selectedButton == 'Online') {
+          matchesAppointmentType = appointment.isOnlineAppointment == true;
+        } else if (selectedButton == 'InPerson') {
+          matchesAppointmentType = appointment.isOnlineAppointment == false;
+        } else if (selectedButton == 'all') {
+          matchesAppointmentType = true; // Return all for 'allt'
+        }
+
+        return matchesDay && matchesMonthYear && matchesAppointmentType;
       }).toList();
     });
   }
@@ -189,7 +199,7 @@ class _AppointmentsState extends State<Appointments> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10,top: 20,bottom: 15),
+                padding: const EdgeInsets.only(left: 10, top: 20, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -203,64 +213,6 @@ class _AppointmentsState extends State<Appointments> {
                   ],
                 ),
               ),
-              // Buttons container
-              // Container(
-              //   height: 50,
-              //   width: 400,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(12),
-              //     color: Colors.white,
-              //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     children: [
-              //       ElevatedButton(
-              //         onPressed: () {
-              //           _onButtonPressed('InPerson');
-              //           setState(() {
-              //             primaryColor = Color(0xFFF7F9FC);
-              //           });
-              //         },
-              //         style: ElevatedButton.styleFrom(
-              //           backgroundColor: Colors.transparent,
-              //           minimumSize: Size(175, 40),
-              //           elevation: 0,
-              //         ),
-              //         child: Text(
-              //           'In Person Visit',
-              //           style: TextStyle(
-              //             color: selectedButton == 'InPerson'
-              //                 ? Color(0xFF6F7ED7)
-              //                 : Colors.grey,
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(width: 5),
-              //       ElevatedButton(
-              //         onPressed: () {
-              //           _onButtonPressed('Online');
-              //           setState(() {
-              //             primaryColor = Colors.white;
-              //           });
-              //         },
-              //         style: ElevatedButton.styleFrom(
-              //           backgroundColor: Colors.transparent,
-              //           minimumSize: Size(175, 40),
-              //           elevation: 0,
-              //         ),
-              //         child: Text(
-              //           'Online Consultation',
-              //           style: TextStyle(
-              //             color: selectedButton == 'Online'
-              //                 ? Color(0xFF6F7ED7)
-              //                 : Colors.grey,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 20),
               // Months container
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -360,41 +312,181 @@ class _AppointmentsState extends State<Appointments> {
                 child: Container(
                   color: Pallet.PRAMARY_75,
                   child: SingleChildScrollView(
-                    child: isLoading
-                        ? Center(child: CircularProgressIndicator())
-                        : filteredAppointments.isEmpty
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/nodata.png',
-                                      width: 120,
-                                      height: 120,
+                    child: Column(
+                      children: [
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: 
+                                  Text(
+                                    'mon',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Pallet.Black,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    SizedBox(height: 20),
-                                    Text(
-                                      'No appointments available',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: filteredAppointments.length,
-                                itemBuilder: (context, index) {
-                                  final data = filteredAppointments[index];
-                                  return AppointmentTile(
-                                    appointment:
-                                        data, // Pass appointment object here
-                                  );
-                                },
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: 
+                                  Text(
+                                    '$selectedDay',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Pallet.Black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // 'allt' button (default selected)
+                                TextButton(
+                                  onPressed: () {
+                                    _onButtonPressed('all');
+                                    setState(() {
+                                      primaryColor = const Color(0xFFF7F9FC);
+                                    });
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: selectedButton == 'all' ||
+                                            selectedButton.isEmpty
+                                        ? Colors.black
+                                        : Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 0),
+                                    minimumSize:
+                                        const Size(50, 22), // height set to 22
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'all',
+                                    style: TextStyle(
+                                      color: selectedButton == 'all' ||
+                                              selectedButton.isEmpty
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                // 'Online' button
+                                TextButton(
+                                  onPressed: () {
+                                    _onButtonPressed('Online');
+                                    setState(() {
+                                      primaryColor = Colors.white;
+                                    });
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: selectedButton == 'Online'
+                                        ? Colors.black
+                                        : Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 0),
+                                    minimumSize:
+                                        const Size(50, 22), // height set to 22
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Online',
+                                    style: TextStyle(
+                                      color: selectedButton == 'Online'
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                // 'In Person Visit' button
+                                TextButton(
+                                  onPressed: () {
+                                    _onButtonPressed('InPerson');
+                                    setState(() {
+                                      primaryColor = const Color(0xFFF7F9FC);
+                                    });
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        selectedButton == 'InPerson'
+                                            ? Colors.black
+                                            : Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 0),
+                                    minimumSize:
+                                        const Size(50, 22), // height set to 22
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'In Person',
+                                    style: TextStyle(
+                                      color: selectedButton == 'InPerson'
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+
+                        // Main Content (Loading or Appointments List)
+                        isLoading
+                            ? Center(child: CircularProgressIndicator())
+                            : filteredAppointments.isEmpty
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/nodata.png',
+                                          width: 120,
+                                          height: 120,
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(
+                                          'No appointments available',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: filteredAppointments.length,
+                                    itemBuilder: (context, index) {
+                                      final data = filteredAppointments[index];
+                                      return AppointmentTile(
+                                        appointment:
+                                            data, // Pass appointment object here
+                                      );
+                                    },
+                                  ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
