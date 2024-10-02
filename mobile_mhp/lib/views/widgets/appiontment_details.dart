@@ -1,75 +1,80 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 
 import '../../models/appointment.dart';
 
 class AppiontmentDetails extends StatelessWidget {
-   final Appointment appointment;
+  final Appointment appointment;
 
   const AppiontmentDetails({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF7F9FC),
+      backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-              children: [
-                //back button and the heading
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(25)),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 25, right: 30, left: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
+            children: [
+              // Back button and the heading
+              Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(25)),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25, right: 30, left: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Color(0xFF6F7ED7),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 100, bottom: 0),
+                        child: Text(
+                          'Summary',
+                          style: TextStyle(
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFF6F7ED7),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 110, bottom: 2),
-                          child: Text(
-                            'Booking',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF6F7ED7),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                //heading(personal infor)
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Personal Info',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                //profile information
-                Container(
+              ),
+              // Heading (personal info)
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Text(
+                      'Personal Info',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              // Profile information
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Container(
                   width: double.infinity,
-                  color: Color(0xFFFFFFFF),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Pallet.PURE_WHITE
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: Row(
                       children: [
                         Stack(
@@ -78,7 +83,7 @@ class AppiontmentDetails extends StatelessWidget {
                             CircleAvatar(
                               backgroundImage:
                                   NetworkImage(appointment.imageURL),
-                              radius: 30,
+                              radius: 25,
                             ),
                             Positioned(
                               right: 0,
@@ -86,7 +91,7 @@ class AppiontmentDetails extends StatelessWidget {
                               child: Container(
                                 width: 12,
                                 height: 20,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.green,
                                 ),
@@ -94,251 +99,122 @@ class AppiontmentDetails extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               appointment.patientName,
                               maxLines: 1,
-                              overflow: TextOverflow
-                                  .ellipsis,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               appointment.consult_details,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
                               ),
                             ),
                           ],
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 40, top: 50),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     crossAxisAlignment: CrossAxisAlignment.end,
-                        //     children: [
-                        //       Icon(
-                        //         Icons.video_call_sharp,
-                        //         color: Colors.grey,
-                        //       ),
-                        //       Icon(
-                        //         Icons.phone,
-                        //         color: Colors.grey,
-                        //       ),
-                        //       Icon(
-                        //         Icons.messenger,
-                        //         size: 19,
-                        //         color: Colors.grey,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
                 ),
-                //heading(booking infor)
+              ),
+              // Heading (booking info)
+              const Padding(
+                padding: EdgeInsets.all(25.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Booking Info',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              //* Booking details
+              _buildBookingDetail(Icons.location_on_sharp,
+                  appointment.clinic_name, appointment.clinic_address),
+              _buildBookingDetail(Icons.calendar_month, 'Appointment Date',
+                  appointment.appointmentDate),
+              _buildBookingDetail(
+                  Icons.timer, 'Time', appointment.appointmentTime),
+              _buildBookingDetail(Icons.location_on_sharp,
+                  'Reason for Consultation', appointment.consult_details),
+              _buildBookingDetail(
+                  Icons.money, 'Consultation Fee', appointment.consultationFee),
+              //* Buttons
+              const SizedBox(height: 40),
+              // Center(
+              //   child: MyButtonWidgets(
+              //     buttonText1: 'RESCHEDULE',
+              //     onPressed1: () {
+              //       // Handle the custom button action
+              //     },
+              //     buttonText2: 'REJECT',
+              //     onPressed2: () {
+              //       // Handle the custom button action
+              //     },
+              //   ).buildButton(),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBookingDetail(IconData icon, String title, String subtitle) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 15,
+              top: 15,
+              right: 15,
+              bottom: 10,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 19,
+                  color: Colors.grey,
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Booking Info',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                //location ////////////////////////////////
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, top: 15, right: 15, bottom: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_sharp,
-                              size: 19,
-                              color: Colors.grey,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                appointment.clinic_name,
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //SizedBox(height: 8), // Add space between the main text and subtext
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45, top: 0),
-                        child: Container(
-                          width: 150,
-                          child: Text(
-                            appointment.clinic_address,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    Colors.grey), // Customize the subtext style
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                //date///////////////////////////
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, top: 15, right: 15, bottom: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.calendar_month,
-                              size: 19,
-                              color: Colors.grey,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                'Appointment Date',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //SizedBox(height: 8), // Add space between the main text and subtext
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45, top: 0),
-                        child: Text(
-                          appointment.appointmentDate,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color:
-                                  Colors.grey), // Customize the subtext style
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                //time ///////////////////////////
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, top: 15, right: 15, bottom: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.timer,
-                              size: 19,
-                              color: Colors.grey,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                'Time',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //SizedBox(height: 8), // Add space between the main text and subtext
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45, top: 0),
-                        child: Text(
-                          appointment.appointmentTime,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color:
-                                  Colors.grey), // Customize the subtext style
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                //consultation details ///////////////////////////////
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, top: 15, right: 15, bottom: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_sharp,
-                              size: 19,
-                              color: Colors.grey,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                'Reason for Consultation',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //SizedBox(height: 8), // Add space between the main text and subtext
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45, top: 0),
-                        child: Container(
-                          width: 200,
-                          child: Text(
-                            appointment.consult_details,
-                            style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    Colors.grey), // Customize the subtext style
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                //buttons////////////////
-                SizedBox(height: 40),
-                // Center(
-                //   child: MyButtonWidgets(
-                //     buttonText1: 'RESCHEDULE',
-                //     onPressed1: () {
-                //       // Handle the custom button action
-                //       // print('Custom button pressed');
-                //     },
-                //     buttonText2: 'REJECT',
-                //     onPressed2: () {
-                //       // Handle the custom button action
-                //       // print('Custom button pressed');
-                //     },
-                //   ).buildButton(),
-                // ),
               ],
             ),
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 45, top: 0),
+            child: Container(
+              width: 200,
+              child: Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

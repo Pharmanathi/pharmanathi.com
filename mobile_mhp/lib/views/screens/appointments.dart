@@ -317,41 +317,49 @@ class _AppointmentsState extends State<Appointments> {
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: 
-                                  Text(
-                                    'mon',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Pallet.Black,
-                                      fontWeight: FontWeight.bold,
+                            Container(
+                              width: 60,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      'mon', //TODO [Thabang] : set this to get  days auto
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Pallet.Black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: 
-                                  Text(
-                                    '$selectedDay',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Pallet.Black,
-                                      fontWeight: FontWeight.bold,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      '$selectedDay',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Pallet.Black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(
-                              width: 30,
+                              width: 15,
+                            ),
+                            Container(
+                              width: 1,
+                              height: 50,
+                              color: Pallet.SECONDARY_500,
+                            ),
+                            SizedBox(
+                              width: 15,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // 'allt' button (default selected)
                                 TextButton(
                                   onPressed: () {
                                     _onButtonPressed('all');
@@ -366,8 +374,7 @@ class _AppointmentsState extends State<Appointments> {
                                         : Colors.white,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 0),
-                                    minimumSize:
-                                        const Size(50, 22), // height set to 22
+                                    minimumSize: const Size(50, 22),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -397,8 +404,7 @@ class _AppointmentsState extends State<Appointments> {
                                         : Colors.white,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 0),
-                                    minimumSize:
-                                        const Size(50, 22), // height set to 22
+                                    minimumSize: const Size(50, 22),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -428,8 +434,7 @@ class _AppointmentsState extends State<Appointments> {
                                             : Colors.white,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 0),
-                                    minimumSize:
-                                        const Size(50, 22), // height set to 22
+                                    minimumSize: const Size(50, 22),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -447,8 +452,13 @@ class _AppointmentsState extends State<Appointments> {
                             )
                           ],
                         ),
+                        Container(
+                          width: double.infinity,
+                          height: 1,
+                          color: Pallet.SECONDARY_500,
+                        ),
 
-                        // Main Content (Loading or Appointments List)
+                        //* Main Content (Loading or Appointments List)
                         isLoading
                             ? Center(child: CircularProgressIndicator())
                             : filteredAppointments.isEmpty
@@ -477,8 +487,7 @@ class _AppointmentsState extends State<Appointments> {
                                     itemBuilder: (context, index) {
                                       final data = filteredAppointments[index];
                                       return AppointmentTile(
-                                        appointment:
-                                            data, // Pass appointment object here
+                                        appointment: data,
                                       );
                                     },
                                   ),

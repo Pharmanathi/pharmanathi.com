@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/views/widgets/appiontment_details.dart';
-import '../../models/appointment.dart';
 
 class AppointmentTile extends StatelessWidget {
   final Appointment appointment;
@@ -21,24 +22,37 @@ class AppointmentTile extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Appointment Time Text
-            Text(
-              appointment.appointmentTime,
-              style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w100,
+            //* Appointment Time Text
+            Expanded(
+              flex: 1,
+              child: Text(
+                appointment.appointmentTime,
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Pallet.SECONDARY_500,
+                  fontWeight: FontWeight.w100,
+                ),
               ),
             ),
-            const SizedBox(width: 6), // Space between time text and container
+            //* Vertical Divider
+            Container(
+              width: 1,
+              height: 100, 
+              color: Pallet.SECONDARY_500,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+            ),
             // Details Container
             Expanded(
+              flex: 5,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: appointment.status == 'In Progress'
+                      ? Pallet.PRIMARY_COLOR
+                      : Pallet.PURE_WHITE,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
@@ -54,7 +68,7 @@ class AppointmentTile extends StatelessWidget {
                           backgroundImage: NetworkImage(appointment.imageURL),
                         ),
                       ),
-                      const SizedBox(width: 8), // Space between avatar and text
+                      const SizedBox(width: 8), 
                       // Appointment Details
                       Expanded(
                         child: Column(
@@ -62,50 +76,93 @@ class AppointmentTile extends StatelessWidget {
                           children: [
                             Text(
                               appointment.patientName,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
+                                color: appointment.status == 'In Progress'
+                                    ? Pallet.PRIMARY_COLOR
+                                    : Pallet.Black,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 3),
-                            Text(
-                              appointment.appointmentTime,
-                              style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w100,
-                              ),
-                            ),
-                            const SizedBox(height: 3),
-                            // Appointment Status Container
-                            Container(
-                              decoration: BoxDecoration(
-                                color: appointment.status == 'Upcoming'
-                                    ? const Color(0xFFECF7EF)
-                                    : appointment.status == 'In Progress'
-                                        ? const Color(0xFF6F7ED7)
-                                        : appointment.status == 'Completed'
-                                            ? const Color(0xFFECF7EF)
-                                            : const Color(0xFFECF7EF),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 6),
-                                child: Text(
-                                  appointment.status,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: appointment.status == 'Upcoming'
-                                        ? Colors.grey
-                                        : appointment.status == 'In Progress'
-                                            ? Colors.white
-                                            : appointment.status == 'Completed'
-                                                ? Colors.blue
-                                                : Colors.blue,
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                appointment.appointmentDuration,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w100,
+                                  color: appointment.status == 'In Progress'
+                                      ? Pallet.PRIMARY_COLOR
+                                      : Pallet.SECONDARY_500,
                                 ),
                               ),
+                            ),
+                            // Appointment Status Container
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: appointment.status == 'Upcoming'
+                                        ? Pallet.SECONDARY_500
+                                        : appointment.status == 'In Progress'
+                                            ? Pallet.PURE_WHITE
+                                            : appointment.status == 'Completed'
+                                                ? Pallet.SECONDARY_500
+                                                : Pallet.SECONDARY_500,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 6),
+                                    child: Text(
+                                      appointment.status,
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color:
+                                              appointment.status == 'Upcoming'
+                                                  ? Pallet.PURE_WHITE
+                                                  : appointment.status ==
+                                                          'In Progress'
+                                                      ? Pallet.PRIMARY_COLOR
+                                                      : appointment.status ==
+                                                              'Completed'
+                                                          ? Pallet.PURE_WHITE
+                                                          : Pallet.PURE_WHITE),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: appointment.isOnlineAppointment
+                                        ? Pallet.SECONDARY_500
+                                        : appointment.status == 'In Progress'
+                                            ? Pallet.PURE_WHITE
+                                            : Pallet.SECONDARY_500,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 6),
+                                    child: Text(
+                                      appointment.isOnlineAppointment
+                                          ? 'Online'
+                                          : 'In Person',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: appointment.isOnlineAppointment
+                                            ? Pallet.PURE_WHITE
+                                            : appointment.status ==
+                                                    'In Progress'
+                                                ? Pallet.PRIMARY_COLOR
+                                                : Pallet.PURE_WHITE,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
