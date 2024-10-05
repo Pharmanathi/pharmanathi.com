@@ -317,8 +317,8 @@ class _AppointmentsState extends State<Appointments> {
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              width: 60,
+                            Expanded(
+                              flex: 1,
                               child: Column(
                                 children: [
                                   Padding(
@@ -346,109 +346,111 @@ class _AppointmentsState extends State<Appointments> {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 15,
-                            ),
                             Container(
                               width: 1,
                               height: 50,
                               color: Pallet.SECONDARY_500,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 12),
                             ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    _onButtonPressed('all');
-                                    setState(() {
-                                      primaryColor = const Color(0xFFF7F9FC);
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: selectedButton == 'all' ||
-                                            selectedButton.isEmpty
-                                        ? Colors.black
-                                        : Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 0),
-                                    minimumSize: const Size(50, 22),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                            Expanded(
+                              flex: 5,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      _onButtonPressed('all');
+                                      setState(() {
+                                        primaryColor = const Color(0xFFF7F9FC);
+                                      });
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          selectedButton == 'all' ||
+                                                  selectedButton.isEmpty
+                                              ? Colors.black
+                                              : Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 0),
+                                      minimumSize: const Size(50, 22),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'all',
+                                      style: TextStyle(
+                                        color: selectedButton == 'all' ||
+                                                selectedButton.isEmpty
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'all',
-                                    style: TextStyle(
-                                      color: selectedButton == 'all' ||
-                                              selectedButton.isEmpty
-                                          ? Colors.white
-                                          : Colors.black,
+                                  const SizedBox(width: 5),
+                                  // 'Online' button
+                                  TextButton(
+                                    onPressed: () {
+                                      _onButtonPressed('Online');
+                                      setState(() {
+                                        primaryColor = Colors.white;
+                                      });
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          selectedButton == 'Online'
+                                              ? Colors.black
+                                              : Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 0),
+                                      minimumSize: const Size(50, 22),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Online',
+                                      style: TextStyle(
+                                        color: selectedButton == 'Online'
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 5),
-                                // 'Online' button
-                                TextButton(
-                                  onPressed: () {
-                                    _onButtonPressed('Online');
-                                    setState(() {
-                                      primaryColor = Colors.white;
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: selectedButton == 'Online'
-                                        ? Colors.black
-                                        : Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 0),
-                                    minimumSize: const Size(50, 22),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                                  const SizedBox(width: 5),
+                                  // 'In Person Visit' button
+                                  TextButton(
+                                    onPressed: () {
+                                      _onButtonPressed('InPerson');
+                                      setState(() {
+                                        primaryColor = const Color(0xFFF7F9FC);
+                                      });
+                                    },
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          selectedButton == 'InPerson'
+                                              ? Colors.black
+                                              : Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 0),
+                                      minimumSize: const Size(50, 22),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'In Person',
+                                      style: TextStyle(
+                                        color: selectedButton == 'InPerson'
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
-                                  child: Text(
-                                    'Online',
-                                    style: TextStyle(
-                                      color: selectedButton == 'Online'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                // 'In Person Visit' button
-                                TextButton(
-                                  onPressed: () {
-                                    _onButtonPressed('InPerson');
-                                    setState(() {
-                                      primaryColor = const Color(0xFFF7F9FC);
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        selectedButton == 'InPerson'
-                                            ? Colors.black
-                                            : Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 0),
-                                    minimumSize: const Size(50, 22),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'In Person',
-                                    style: TextStyle(
-                                      color: selectedButton == 'InPerson'
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             )
                           ],
                         ),

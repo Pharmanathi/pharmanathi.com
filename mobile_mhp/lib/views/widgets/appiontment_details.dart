@@ -37,7 +37,7 @@ class AppiontmentDetails extends StatelessWidget {
                         ),
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(left: 100, bottom: 0),
+                        padding: EdgeInsets.only(left: 100, bottom: 5),
                         child: Text(
                           'Summary',
                           style: TextStyle(
@@ -66,13 +66,12 @@ class AppiontmentDetails extends StatelessWidget {
               ),
               // Profile information
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Pallet.PURE_WHITE
-                  ),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Pallet.PURE_WHITE),
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Row(
@@ -83,7 +82,7 @@ class AppiontmentDetails extends StatelessWidget {
                             CircleAvatar(
                               backgroundImage:
                                   NetworkImage(appointment.imageURL),
-                              radius: 25,
+                              radius: 27,
                             ),
                             Positioned(
                               right: 0,
@@ -126,18 +125,20 @@ class AppiontmentDetails extends StatelessWidget {
               ),
               // Heading (booking info)
               const Padding(
-                padding: EdgeInsets.all(25.0),
+                padding: EdgeInsets.all(15.0),
                 child: Row(
                   children: [
                     Text(
                       'Booking Info',
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
+
               //* Booking details
+
               _buildBookingDetail(Icons.location_on_sharp,
                   appointment.clinic_name, appointment.clinic_address),
               _buildBookingDetail(Icons.calendar_month, 'Appointment Date',
@@ -148,7 +149,9 @@ class AppiontmentDetails extends StatelessWidget {
                   'Reason for Consultation', appointment.consult_details),
               _buildBookingDetail(
                   Icons.money, 'Consultation Fee', appointment.consultationFee),
+
               //* Buttons
+              
               const SizedBox(height: 40),
               // Center(
               //   child: MyButtonWidgets(
@@ -185,7 +188,7 @@ class AppiontmentDetails extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  size: 19,
+                  size: 22,
                   color: Colors.grey,
                 ),
                 Padding(
@@ -193,7 +196,7 @@ class AppiontmentDetails extends StatelessWidget {
                   child: Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

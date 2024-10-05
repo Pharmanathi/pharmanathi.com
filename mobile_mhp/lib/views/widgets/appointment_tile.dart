@@ -43,7 +43,7 @@ class AppointmentTile extends StatelessWidget {
               width: 1,
               height: 100, 
               color: Pallet.SECONDARY_500,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 2),
             ),
             // Details Container
             Expanded(
