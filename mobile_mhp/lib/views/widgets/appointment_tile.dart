@@ -40,7 +40,7 @@ class AppointmentTile extends StatelessWidget {
             ),
             //* Vertical Divider
             Container(
-              width: 1,
+              width: 0.2,
               height: 100, 
               color: Pallet.SECONDARY_500,
               margin: const EdgeInsets.symmetric(horizontal: 2),

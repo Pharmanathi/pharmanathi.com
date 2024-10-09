@@ -53,7 +53,7 @@ class AppiontmentDetails extends StatelessWidget {
               ),
               // Heading (personal info)
               const Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
                 child: Row(
                   children: [
                     Text(
@@ -99,24 +99,27 @@ class AppiontmentDetails extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              appointment.patientName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              appointment.consult_details,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                appointment.patientName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          ],
+                              Text(
+                                appointment.consult_details,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

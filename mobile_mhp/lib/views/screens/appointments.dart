@@ -347,7 +347,7 @@ class _AppointmentsState extends State<Appointments> {
                               ),
                             ),
                             Container(
-                              width: 1,
+                              width: 0.2,
                               height: 50,
                               color: Pallet.SECONDARY_500,
                               margin:
@@ -382,6 +382,7 @@ class _AppointmentsState extends State<Appointments> {
                                     child: Text(
                                       'all',
                                       style: TextStyle(
+                                        fontSize: 12,
                                         color: selectedButton == 'all' ||
                                                 selectedButton.isEmpty
                                             ? Colors.white
@@ -413,6 +414,7 @@ class _AppointmentsState extends State<Appointments> {
                                     child: Text(
                                       'Online',
                                       style: TextStyle(
+                                        fontSize: 12,
                                         color: selectedButton == 'Online'
                                             ? Colors.white
                                             : Colors.black,
@@ -443,6 +445,7 @@ class _AppointmentsState extends State<Appointments> {
                                     child: Text(
                                       'In Person',
                                       style: TextStyle(
+                                        fontSize: 12,
                                         color: selectedButton == 'InPerson'
                                             ? Colors.white
                                             : Colors.black,
@@ -456,7 +459,7 @@ class _AppointmentsState extends State<Appointments> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 1,
+                          height: 0.2,
                           color: Pallet.SECONDARY_500,
                         ),
 
