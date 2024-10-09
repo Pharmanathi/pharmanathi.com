@@ -8,12 +8,15 @@ class Pallet {
   static const Color PRIMARY_COLOR = Color.fromARGB(255, 101, 115, 207);
   static const Color SECONDARY_COLOR = Color(0xFF8D96A6);
   static const Color SUCCESS = Color(0xFF96D14E);
+  static const Color Black = Colors.black;
   static const Color BACKGROUND_COLOR = Color(0xFFF7F9FC);
   static const Color PURE_WHITE = Color.fromRGBO(255, 255, 255, 1);
   static const Color BACKGROUND_50 = Color(0xFFF7F9FC);
   static const Color WARNING = Color(0xFFFCDC620);
   static const Color NATURAL_FAINT = Color(0xFFFF4F7FA);
   static const Color PRAMARY_50 = Color(0xFFFF1F2FB);
+  static const Color PRAMARY_75 = Color(0xFFF7F9FC);
+  static const Color PRAMARY_80 = Color(0xFFEDEFF8);
   static const Color PRAMARY_100 = Color(0xFFFD2D7F3);
   static const Color PRIMARY_200 = Color(0xFFFBDC4ED);
   static const Color PRIMARY_300 = Color(0xFFF9FA9E4);

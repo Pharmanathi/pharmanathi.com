@@ -61,6 +61,10 @@ flutter:
     - assets/images/
     - .env.development
     - .env.production
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-VariableFont_wdth,wght.ttf  
   uses-material-design: true
 
 icons_launcher:
