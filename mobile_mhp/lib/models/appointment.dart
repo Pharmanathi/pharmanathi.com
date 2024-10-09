@@ -4,6 +4,7 @@ class Appointment {
   final String patientdetails;
   final String appointmentTime;
   final String imageURL;
+  final String consultationFee;
   final String status;
   final String clinic_name;
   final String consult_details;
@@ -11,11 +12,13 @@ class Appointment {
   final String appointmentDate;
   final String patientName;
   final bool isOnlineAppointment;
+  final String appointmentDuration;
 
   Appointment({
     required this.patientName,
     required this.isOnlineAppointment,
     required this.patientdetails,
+    required this.consultationFee,
     required this.clinic_name,
     required this.clinic_address,
     required this.consult_details,
@@ -23,6 +26,7 @@ class Appointment {
     required this.imageURL,
     required this.status,
     required this.appointmentDate,
+    required this.appointmentDuration,
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
@@ -33,6 +37,31 @@ class Appointment {
     final DateFormat timeFormatter = DateFormat('HH:mm a', 'en_US');
     final String formattedTime = timeFormatter.format(dateTimeLocal);
 
+    //* Method to determine the appointment duration
+    String determineAppointmentDuration(Map<String, dynamic> json) {
+      String duration = '';
+      try {
+        final DateTime startDateTime = DateTime.parse(json['start_time']);
+        final DateTime endDateTime = DateTime.parse(json['end_time']);
+
+        Duration difference = endDateTime.difference(startDateTime);
+        int hours = difference.inHours;
+        int minutes = difference.inMinutes.remainder(60);
+
+        if (hours > 0) {
+          duration =
+              '$hours hour${hours > 1 ? "s" : ""} ${minutes > 0 ? "$minutes minutes" : ""}';
+        } else {
+          duration = '$minutes min';
+        }
+      } catch (error) {
+        print('Error calculating appointment duration: $error');
+        duration = 'Unknown';
+      }
+      return duration;
+    }
+
+    //* Method to determine the appointment status
     String determineStatus(Map<String, dynamic> json) {
       String status = '';
       try {
@@ -49,10 +78,16 @@ class Appointment {
           status = 'Completed';
         }
       } catch (error) {
-        print('Error parsing date time: $error');
+        print('Error determining status: $error');
       }
       return status;
     }
+
+    //* Access cost from the appointment_types array
+    String consultationFee = (json['doctor']['appointment_types'] != null &&
+            json['doctor']['appointment_types'].isNotEmpty)
+        ? json['doctor']['appointment_types'][0]['cost'] ?? ''
+        : 'Unknown';
 
     return Appointment(
       isOnlineAppointment: json['appointment_type']['is_online'],
@@ -64,8 +99,10 @@ class Appointment {
       patientdetails: json['details'] ?? 'patient details',
       appointmentTime: formattedTime,
       appointmentDate: formattedDate,
-      imageURL: json['patient']['image_url'], 
+      consultationFee: consultationFee,
+      imageURL: json['patient']['image_url'],
       status: determineStatus(json),
+      appointmentDuration: determineAppointmentDuration(json),
     );
   }
 }
