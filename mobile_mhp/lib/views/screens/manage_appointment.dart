@@ -3,6 +3,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -203,326 +204,402 @@ class _ManageAppointmentState extends State<ManageAppointment> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-              children: [
-                //* Top heading with back button section
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 25, right: 30, left: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Color(0xFF6F7ED7),
-                          ),
+            children: [
+              //* Top heading with back button section
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 20, left: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Color(0xFF6F7ED7),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
 
-                //* heading and information text section
-                Column(
-                  children: [
-                    Text(
-                      'Manage Appointments',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+              //* heading and information text section
+              Column(
+                children: [
+                  Text(
+                    'Manage Appointments',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 22, left: 45, right: 40),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 10),
+                    child: Center(
                       child: Text(
                         'Your information will be shared with our Medical Expert team who will verify your identity',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 12,
                           color: Colors.grey,
                         ),
                       ),
                     ),
-                  ],
-                ),
-
-                //* Appointment types section
-                SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Appointment Type',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ],
                   ),
-                ),
+                ],
+              ),
 
-                //* Appointment type buttons section
-                Column(
+              //* Appointment types section
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            userProvider
-                                .updateAppointmentType('In Person Visit');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                userProvider.selectedAppointmentType ==
-                                        'In Person Visit'
-                                    ? Colors.blue
-                                    : Colors.transparent,
-                            minimumSize: Size(180, 40),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            'In Person Visit',
-                            style: TextStyle(
-                              color: userProvider.selectedAppointmentType ==
-                                      'In Person Visit'
-                                  ? Colors.white
-                                  : Colors.grey,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (userProvider.selectedAppointmentType !=
-                                'Online Consultation') {
-                              userProvider
-                                  .updateAppointmentType('Online Consultation');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Online Consultation is not available for now.',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                userProvider.selectedAppointmentType ==
-                                        'Online Consultation'
-                                    ? Colors.blue
-                                    : Colors.transparent,
-                            minimumSize: Size(180, 40),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            'Online Consultation',
-                            style: TextStyle(
-                              color: userProvider.selectedAppointmentType ==
-                                      'Online Consultation'
-                                  ? Colors.white
-                                  : Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Appointment Type',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
-                    if (userProvider.selectedAppointmentType ==
-                        'Online Consultation')
-                      SizedBox(
-                        height: 40,
-                        child: Center(
-                          child: Text(
-                            'Online Consultation is not available for now.',
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          ),
-                        ),
-                      ),
                   ],
                 ),
+              ),
 
-                //* Consultation Fee section
-                SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 20, left: 20, top: 20, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Consultation Fee',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+              //* Appointment type buttons section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Pallet.PURE_WHITE,
+                    borderRadius: BorderRadius.circular(
+                        12), // Adjust the radius as needed
                   ),
-                ),
-
-                //* Consultation Fee text field section
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      controller: consultationFeeController,
-                      decoration: InputDecoration(
-                        hintText: 'e.g.: R500',
-                        hintStyle: TextStyle(
-                          fontSize: 16.0,
-                          height: 1, // Adjust this value as needed
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              userProvider
+                                  .updateAppointmentType('In Person Visit');
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    userProvider.selectedAppointmentType ==
+                                            'In Person Visit'
+                                        ? Colors.blue
+                                        : Colors.transparent,
+                                minimumSize: Size(160, 37),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      7), // Adjust the radius as needed
+                                )),
+                            child: Text(
+                              'In Person Visit',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: userProvider.selectedAppointmentType ==
+                                        'In Person Visit'
+                                    ? Pallet.PURE_WHITE
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (userProvider.selectedAppointmentType !=
+                                  'Online Consultation') {
+                                userProvider.updateAppointmentType(
+                                    'Online Consultation');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Online Consultation is not available for now.',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                    ),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    userProvider.selectedAppointmentType ==
+                                            'Online Consultation'
+                                        ? Colors.blue.shade800
+                                        : Colors.transparent,
+                                minimumSize: Size(160, 37),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      7), // Adjust the radius as needed
+                                )),
+                            child: Text(
+                              'Online Consultation',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: userProvider.selectedAppointmentType ==
+                                        'Online Consultation'
+                                    ? Pallet.PURE_WHITE
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (userProvider.selectedAppointmentType ==
+                          'Online Consultation')
+                        SizedBox(
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              'Online Consultation is not available for now.',
+                              style: TextStyle(color: Colors.red, fontSize: 12),
+                            ),
+                          ),
                         ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(10.0),
-                      ),
-                    ),
-                  ),
-                ),
-
-                //* No Show Fee section
-                SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 20, left: 20, top: 10, bottom: 5),
-                  child: Row(
-                    children: [
-                      Text(
-                        'No Show Fee',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
                     ],
                   ),
                 ),
+              ),
 
-                //* No Show Fee text field section
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
+              //* Consultation Fee section
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 20, left: 20, top: 10, bottom: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      'Consultation Fee',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      controller: noShowFeeController,
-                      decoration: InputDecoration(
-                        hintText: 'Free',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(10.0),
+                  ],
+                ),
+              ),
+
+              //* Consultation Fee text field section
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Pallet.PURE_WHITE,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    controller: consultationFeeController,
+                    decoration: InputDecoration(
+                      hintText: 'e.g.: R500',
+                      hintStyle: TextStyle(
+                        fontSize: 16.0,
+                        height: 0.5,
                       ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 25.0),
                     ),
+                    textAlignVertical: TextAlignVertical.center,
                   ),
                 ),
+              ),
 
-                //* Appointment Duration section
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
+              //* No Show Fee section
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 20, left: 20, top: 10, bottom: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      'No Show Fee',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+
+              //* No Show Fee text field section
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Pallet.PURE_WHITE,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    controller: noShowFeeController,
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(
+                        fontSize: 16.0,
+                        height: 0.5,
+                      ),
+                      hintText: 'Free',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 25.0),
+                    ),
+                    textAlignVertical: TextAlignVertical.center,
+                  ),
+                ),
+              ),
+
+              //* Appointment Duration section
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 20, left: 20, top: 10, bottom: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      'Appointment Duration',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+
+              //* Appointment Duration inputs section
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Container(
+                  height: 30,
+                  // padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Pallet.PURE_WHITE,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: Row(
                     children: [
-                      Text(
-                        'Appointment Duration',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //* Appointment Duration inputs section
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Row(
-                      children: [
-                        GestureDetector(
+                      Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: appointmentDuration == 15
+                              ? Colors.blue.shade600
+                              : Pallet.PURE_WHITE,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: GestureDetector(
                           onTap: () {
                             setState(() {
                               appointmentDuration = 15;
                             });
                             _updateAppointmentDuration(15);
                           },
-                          child: Text(
-                            '15 min',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: appointmentDuration == 15
-                                  ? Colors.blue
-                                  : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 2, right: 5),
+                            child: Text(
+                              '15 min',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                                color: appointmentDuration == 15
+                                    ? Pallet.PURE_WHITE
+                                    : Colors.grey,
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 15),
-                        GestureDetector(
+                      ),
+                      SizedBox(width: 15),
+                      Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: appointmentDuration == 30
+                              ? Colors.blue.shade600
+                              : Pallet.PURE_WHITE,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: GestureDetector(
                           onTap: () {
                             setState(() {
                               appointmentDuration = 30;
                             });
                             _updateAppointmentDuration(30);
                           },
-                          child: Text(
-                            '30 min',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: appointmentDuration == 30
-                                  ? Colors.blue
-                                  : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 2, right: 5),
+                            child: Text(
+                              '30 min',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: appointmentDuration == 30
+                                    ? Pallet.PURE_WHITE
+                                    : Colors.grey,
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 15),
-                        GestureDetector(
+                      ),
+                      SizedBox(width: 15),
+                      Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: appointmentDuration == 60
+                              ? Colors.blue.shade600
+                              : Pallet.PURE_WHITE,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: GestureDetector(
                           onTap: () {
                             setState(() {
                               appointmentDuration = 60;
                             });
                             _updateAppointmentDuration(60);
                           },
-                          child: Text(
-                            '60 min',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: appointmentDuration == 60
-                                  ? Colors.blue
-                                  : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 2, right: 5),
+                            child: Text(
+                              '60 min',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: appointmentDuration == 60
+                                    ? Pallet.PURE_WHITE
+                                    : Colors.grey,
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 5),
-                        VerticalDivider(
-                            width: 7, thickness: 1, color: Colors.grey),
-                        SizedBox(width: 5),
-                        ElevatedButton(
+                      ),
+                      SizedBox(width: 2),
+                      VerticalDivider(
+                          width: 7, thickness: 1, color: Colors.grey),
+                      SizedBox(width: 2),
+                      Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: (appointmentDuration != 15 &&
+                                  appointmentDuration != 30 &&
+                                  appointmentDuration != 60)
+                              ? Colors.blue.shade600
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: ElevatedButton(
                           onPressed: () {
                             _showCustomDurationDialog(context, (duration) {
                               setState(() {
@@ -539,156 +616,160 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                           child: Text(
                             'Custom',
                             style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
                               color: (appointmentDuration != 15 &&
                                       appointmentDuration != 30 &&
                                       appointmentDuration != 60)
-                                  ? Colors.blue
+                                  ? Pallet.PURE_WHITE
                                   : Colors.grey,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                //* Date Range section
-                Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Date Range',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
+              ),
 
-                //* Date Range inputs
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              //* Date Range section
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 20, left: 20, top: 10, bottom: 5),
+                child: Row(
                   children: [
-                    Radio(
-                      value: 'Within a date range',
-                      groupValue: selectedRadioButton,
-                      onChanged: (String? value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedRadioButton = value;
-                            selectedDateRange = 'Select a Range';
-                          });
-                          _updateSelectedRadioButton(value);
-                        }
-                      },
+                    Text(
+                      'Date Range',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
-                    Text('Within a date range'),
-                    if (selectedRadioButton == 'Within a date range')
-                      GestureDetector(
+                  ],
+                ),
+              ),
+
+              //* Date Range inputs
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Radio(
+                    value: 'Within a date range',
+                    groupValue: selectedRadioButton,
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedRadioButton = value;
+                          selectedDateRange = 'Select a Range';
+                        });
+                        _updateSelectedRadioButton(value);
+                      }
+                    },
+                  ),
+                  Text('Within a date range'),
+                  SizedBox(width: 10,),
+                  if (selectedRadioButton == 'Within a date range')
+                    Container(
+                      height: 40,
+                      color: Pallet.PURE_WHITE,
+                      child: GestureDetector(
                         onTap: () {
                           _selectDateRange(
                               context); //* Function to select date range
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                         padding: const EdgeInsets.only(
+                                left: 5, top: 7, right: 5),
                           child: Text(
                             selectedDateRange,
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
-                  ],
-                ),
-
-                Row(
-                  children: [
-                    Radio(
-                      value: 'Continue indefinitely',
-                      groupValue: selectedRadioButton,
-                      onChanged: (String? value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedRadioButton = value;
-                            selectedDateRange = 'Continue indefinitely';
-                          });
-                          _updateSelectedRadioButton(value);
-                        }
-                      },
                     ),
-                    Text('Continue indefinitely'),
-                  ],
-                ),
+                ],
+              ),
 
-                //buttons....................
-                SizedBox(
-                  height: 2,
-                ),
-                MyButtonWidgets(
-                  buttonTextPrimary: 'Save',
-                  onPressedPrimary: () {
-                    //* Get all inputs
-                    double? consultationFee =
-                        double.tryParse(consultationFeeController.text);
-                    double? noShowFee =
-                        double.tryParse(noShowFeeController.text);
-                    String appointmentType =
-                        userProvider.selectedAppointmentType;
-                    //* function to determmine a boolean valuefor appointmentType
-                    bool isOnlineConsultation(String appointmentType) {
-                      if (appointmentType == 'Online Consultation') {
-                        return true;
-                      } else if (appointmentType == 'in person visit') {
-                        return false;
+              Row(
+                children: [
+                  Radio(
+                    value: 'Continue indefinitely',
+                    groupValue: selectedRadioButton,
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedRadioButton = value;
+                          selectedDateRange = 'Continue indefinitely';
+                        });
+                        _updateSelectedRadioButton(value);
                       }
+                    },
+                  ),
+                  Text('Continue indefinitely'),
+                ],
+              ),
+
+              //buttons....................
+              SizedBox(
+                height: 2,
+              ),
+              MyButtonWidgets(
+                buttonTextPrimary: 'Save',
+                onPressedPrimary: () {
+                  //* Get all inputs
+                  double? consultationFee =
+                      double.tryParse(consultationFeeController.text);
+                  double? noShowFee = double.tryParse(noShowFeeController.text);
+                  String appointmentType = userProvider.selectedAppointmentType;
+                  //* function to determmine a boolean valuefor appointmentType
+                  bool isOnlineConsultation(String appointmentType) {
+                    if (appointmentType == 'Online Consultation') {
+                      return true;
+                    } else if (appointmentType == 'in person visit') {
                       return false;
                     }
+                    return false;
+                  }
 
-                    bool isOnlineAppointment =
-                        isOnlineConsultation(appointmentType);
+                  bool isOnlineAppointment =
+                      isOnlineConsultation(appointmentType);
 
-                    //* function to determmine a boolean valuefor appointmentType
-                    bool isRunForever(String selectedRadioButton) {
-                      if (selectedRadioButton == 'Continue indefinitely') {
-                        return true;
-                      } else if (selectedRadioButton == 'Within a date range') {
-                        return false;
-                      }
+                  //* function to determmine a boolean valuefor appointmentType
+                  bool isRunForever(String selectedRadioButton) {
+                    if (selectedRadioButton == 'Continue indefinitely') {
+                      return true;
+                    } else if (selectedRadioButton == 'Within a date range') {
                       return false;
                     }
+                    return false;
+                  }
 
-                    bool isRunForeverResults =
-                        isRunForever(selectedRadioButton);
+                  bool isRunForeverResults = isRunForever(selectedRadioButton);
 
-                    //* Update the JSON data with new inputs
-                    APIService.updateRequestBody(
-                      consultationFee: consultationFee,
-                      noShowFee: noShowFee,
-                      appointmentType: isOnlineAppointment,
-                      appointmentDuration: appointmentDuration,
-                      selectedRadioButton: isRunForeverResults,
-                      selectedDateRange: selectedDateRange,
-                    );
-                    //* Now send the updated JSON data to the backend
-                    APIService.sendDataToBackendFromJSONFile(context,
-                        onSuccess: () {
-                      _navigateToProfilePage();
-                    });
-                  },
-                  buttonTextSecondary: 'Cancel',
-                  onPressedSecondary: () {
-                    Navigator.pop(context);
-                  },
-                ).buildButtons(primaryFirst: true),
-              ],
-            ),
-
+                  //* Update the JSON data with new inputs
+                  APIService.updateRequestBody(
+                    consultationFee: consultationFee,
+                    noShowFee: noShowFee,
+                    appointmentType: isOnlineAppointment,
+                    appointmentDuration: appointmentDuration,
+                    selectedRadioButton: isRunForeverResults,
+                    selectedDateRange: selectedDateRange,
+                  );
+                  //* Now send the updated JSON data to the backend
+                  APIService.sendDataToBackendFromJSONFile(context,
+                      onSuccess: () {
+                    _navigateToProfilePage();
+                  });
+                },
+                buttonTextSecondary: 'Cancel',
+                onPressedSecondary: () {
+                  Navigator.pop(context);
+                },
+              ).buildButtons(primaryFirst: true),
+            ],
+          ),
         ),
         //buttons....................
       ),
