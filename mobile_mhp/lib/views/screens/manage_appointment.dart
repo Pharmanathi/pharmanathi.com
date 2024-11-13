@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
+import 'package:pharma_nathi/screens/pages/working_hours.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -191,8 +192,11 @@ class _ManageAppointmentState extends State<ManageAppointment> {
     super.dispose();
   }
 
-  void _navigateToProfilePage() {
-    Navigator.pop(context);
+  void _navigateTOWorkingHoursPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorkingHours()),
+    );
   }
 
   @override
@@ -665,7 +669,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     },
                   ),
                   Text('Within a date range'),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   if (selectedRadioButton == 'Within a date range')
                     Container(
                       height: 40,
@@ -676,8 +682,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                               context); //* Function to select date range
                         },
                         child: Padding(
-                         padding: const EdgeInsets.only(
-                                left: 5, top: 7, right: 5),
+                          padding:
+                              const EdgeInsets.only(left: 5, top: 7, right: 5),
                           child: Text(
                             selectedDateRange,
                             style: TextStyle(
@@ -716,14 +722,15 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                 height: 2,
               ),
               MyButtonWidgets(
-                buttonTextPrimary: 'Save',
+                buttonTextPrimary: 'Next',
                 onPressedPrimary: () {
                   //* Get all inputs
                   double? consultationFee =
                       double.tryParse(consultationFeeController.text);
                   double? noShowFee = double.tryParse(noShowFeeController.text);
                   String appointmentType = userProvider.selectedAppointmentType;
-                  //* function to determmine a boolean valuefor appointmentType
+
+                  //* Function to determine a boolean value for appointmentType
                   bool isOnlineConsultation(String appointmentType) {
                     if (appointmentType == 'Online Consultation') {
                       return true;
@@ -736,7 +743,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   bool isOnlineAppointment =
                       isOnlineConsultation(appointmentType);
 
-                  //* function to determmine a boolean valuefor appointmentType
+                  //* Function to determine a boolean value for appointmentType
                   bool isRunForever(String selectedRadioButton) {
                     if (selectedRadioButton == 'Continue indefinitely') {
                       return true;
@@ -757,10 +764,11 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     selectedRadioButton: isRunForeverResults,
                     selectedDateRange: selectedDateRange,
                   );
+
                   //* Now send the updated JSON data to the backend
                   APIService.sendDataToBackendFromJSONFile(context,
                       onSuccess: () {
-                    _navigateToProfilePage();
+                    _navigateTOWorkingHoursPage();
                   });
                 },
                 buttonTextSecondary: 'Cancel',

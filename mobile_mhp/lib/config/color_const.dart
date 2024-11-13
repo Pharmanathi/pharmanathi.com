@@ -66,4 +66,5 @@ class Pallet {
   static const Color DANGER_700 = Color(0xFFF9B3512);
   static const Color DANGER_800 = Color(0xFFF78290E);
   static const Color DANGER_900 = Color(0xFFF5C1F0B);
+  static const Color TRANSPARENT = Colors.transparent;
 }
