@@ -652,69 +652,75 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               ),
 
               //* Date Range inputs
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Radio(
-                    value: 'Within a date range',
-                    groupValue: selectedRadioButton,
-                    onChanged: (String? value) {
-                      if (value != null) {
-                        setState(() {
-                          selectedRadioButton = value;
-                          selectedDateRange = 'Select a Range';
-                        });
-                        _updateSelectedRadioButton(value);
-                      }
-                    },
-                  ),
-                  Text('Within a date range'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  if (selectedRadioButton == 'Within a date range')
-                    Container(
-                      height: 40,
-                      color: Pallet.PURE_WHITE,
-                      child: GestureDetector(
-                        onTap: () {
-                          _selectDateRange(
-                              context); //* Function to select date range
-                        },
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: 5, top: 7, right: 5),
-                          child: Text(
-                            selectedDateRange,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Radio(
+                      value: 'Within a date range',
+                      groupValue: selectedRadioButton,
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedRadioButton = value;
+                            selectedDateRange = 'Select a Range';
+                          });
+                          _updateSelectedRadioButton(value);
+                        }
+                      },
+                    ),
+                    Text('Within a date range'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    if (selectedRadioButton == 'Within a date range')
+                      Container(
+                        height: 40,
+                        color: Pallet.PURE_WHITE,
+                        child: GestureDetector(
+                          onTap: () {
+                            _selectDateRange(
+                                context); //* Function to select date range
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 5, top: 7, right: 5),
+                            child: Text(
+                              selectedDateRange,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
 
-              Row(
-                children: [
-                  Radio(
-                    value: 'Continue indefinitely',
-                    groupValue: selectedRadioButton,
-                    onChanged: (String? value) {
-                      if (value != null) {
-                        setState(() {
-                          selectedRadioButton = value;
-                          selectedDateRange = 'Continue indefinitely';
-                        });
-                        _updateSelectedRadioButton(value);
-                      }
-                    },
-                  ),
-                  Text('Continue indefinitely'),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    Radio(
+                      value: 'Continue indefinitely',
+                      groupValue: selectedRadioButton,
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedRadioButton = value;
+                            selectedDateRange = 'Continue indefinitely';
+                          });
+                          _updateSelectedRadioButton(value);
+                        }
+                      },
+                    ),
+                    Text('Continue indefinitely'),
+                  ],
+                ),
               ),
 
               //buttons....................

@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
+import 'package:pharma_nathi/views/widgets/shared/showErrorSnackBar.dart';
+import 'package:pharma_nathi/views/widgets/shared/success_snackbar.dart';
 import '../../services/working_hours_api.dart';
 import '../../views/widgets/WorkingHoursInput.dart';
 import '../../views/widgets/buttons.dart';
@@ -38,7 +40,7 @@ class _WorkingHoursState extends State<WorkingHours> {
   /// Compare ToDs so that we display a sorted schedule
   int compareSlots(List<TimeOfDay> slot1, List<TimeOfDay> slot2) {
     if (slot1.isEmpty || slot2.isEmpty) {
-      return 0; 
+      return 0;
     }
 
     var totalMinutes1 = slot1[0].hour * 60 + slot1[0].minute;
@@ -59,7 +61,8 @@ class _WorkingHoursState extends State<WorkingHours> {
           }
 
           if (value[1] is TimeOfDay && value[2] is TimeOfDay) {
-            weeklySchedule[weekDayIndex]['schedule'][value[0]] = <TimeOfDay>[value[1], value[2]];
+            weeklySchedule[weekDayIndex]['schedule']
+                [value[0]] = <TimeOfDay>[value[1], value[2]];
           } else {
             weeklySchedule[weekDayIndex]['schedule'][value[0]] = <TimeOfDay>[];
           }
@@ -70,7 +73,8 @@ class _WorkingHoursState extends State<WorkingHours> {
   }
 
   Future<void> _fetchScheduleFromApi() async {
-    Map<String, List> fetchedSchedule = await WorkingHourApiService.fetchScheduleFromApi(context);
+    Map<String, List> fetchedSchedule =
+        await WorkingHourApiService.fetchScheduleFromApi(context);
 
     TimeOfDay buildTOD(String timeString) {
       List<int> parts = timeString.split(':').map(int.parse).toList();
@@ -89,18 +93,15 @@ class _WorkingHoursState extends State<WorkingHours> {
     });
   }
 
-  // Method to send schedule to API
+  //* Method to send schedule to API
   void _sendScheduleToApi() {
     List<Map> convertedRealSchedule = [];
 
-    if (weeklySchedule.isEmpty) {
-      print("The weekly schedule is empty.");
-      return;
-    }
-
+    //* Process the schedule
     for (int i = 0; i < weeklySchedule.length; i++) {
       var schedule = weeklySchedule[i]["schedule"];
 
+      //*This extra checks are present to handle edge cases that might arise when processing the schedule.They might seem redundant,but their purpose is to ensure the code is robust and avoids runtime errors.
       if (schedule != null && schedule.isNotEmpty) {
         schedule.forEach((slot) {
           if (slot != null && slot.length >= 2) {
@@ -109,47 +110,32 @@ class _WorkingHoursState extends State<WorkingHours> {
               "start_time": "${slot[0].hour}:${slot[0].minute}",
               "end_time": "${slot[1].hour}:${slot[1].minute}",
             });
-          } else {
-            print("Invalid slot for day ${i + 1}. Slot does not contain 2 elements: $slot");
           }
         });
-      } else {
-        print("Schedule for day ${i + 1} is empty.");
       }
     }
 
-    if (convertedRealSchedule.isNotEmpty) {
-      WorkingHourApiService.sendSchedule(convertedRealSchedule, context, onSuccess: () {
-        _showSuccessMessage();
+    //* Always call the API, even if the converted schedule is empty
+    WorkingHourApiService.sendSchedule(
+      convertedRealSchedule,
+      context,
+      onSuccess: () {
+        showSuccessSnackBar(
+            context, "Your schedule has been saved successfully!");
         _navigateToProfilePage();
-      });
-    } else {
-      print("Converted schedule is empty. No data to send.");
-    }
-  }
-
-  // Method to show a success message using a SnackBar
-  void _showSuccessMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Schedule saved successfully!'),
-        duration: Duration(seconds: 5),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.green,
-      ),
+      },
     );
+
+    if (convertedRealSchedule.isEmpty) {
+      showSuccessSnackBar(
+          context, "Your schedule has been cleared successfully!");
+      return;
+    }
   }
 
   // Method to navigate to the profile page
   void _navigateToProfilePage() {
     Navigator.pop(context);
-  }
-
-  // Remove a specific row
-  void _removeTimeRow(int weekDayIndex, int index) {
-    setState(() {
-      weeklySchedule[weekDayIndex]["schedule"].removeAt(index);
-    });
   }
 
   @override
