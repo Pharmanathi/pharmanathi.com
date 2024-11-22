@@ -208,7 +208,7 @@ class _WorkingHoursState extends State<WorkingHours> {
                   onPressedSecondary: () {
                     Navigator.pop(context);
                   },
-                ).buildButtons(primaryFirst: true),
+                ).buildButtons(primaryFirst: false),
               ],
             ),
           ),

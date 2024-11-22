@@ -728,7 +728,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                 height: 2,
               ),
               MyButtonWidgets(
-                buttonTextPrimary: 'Next',
+                buttonTextPrimary: 'Save',
                 onPressedPrimary: () {
                   //* Get all inputs
                   double? consultationFee =
@@ -781,7 +781,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                 onPressedSecondary: () {
                   Navigator.pop(context);
                 },
-              ).buildButtons(primaryFirst: true),
+              ).buildButtons(primaryFirst: false),
             ],
           ),
         ),

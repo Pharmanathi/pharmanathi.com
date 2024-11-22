@@ -105,18 +105,18 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
         children: [
           if (i > 0)
             const SizedBox(
-              width:
-                  60, 
+              width: 60,
             ),
-          if (i > 0) //* Only showing the remove button for rows after the first one
+          if (i >
+              0) //* Only showing the remove button for rows after the first one
             IconButton(
               icon: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Pallet.TRANSPARENT,
                   border: Border.all(
-                    color: Pallet.Black, 
-                    width: 1, 
+                    color: Pallet.Black,
+                    width: 1,
                   ),
                 ),
                 padding: const EdgeInsets.all(6),
@@ -156,24 +156,31 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Switch(
-              value: isAvailable,
-              onChanged: (value) {
-                setState(() {
-                  if (!isAvailable) {
-                    widget.onTimeChanged([
-                      0,
-                      const TimeOfDay(hour: 9, minute: 0),
-                      const TimeOfDay(hour: 10, minute: 0)
-                    ]);
-                  } else {
-                    widget.daySchedule!.clear();
-                  }
-                  isAvailable = !isAvailable;
-                });
-              },
+            Transform.scale(
+              scale: 0.6, 
+              child: Switch(
+                activeColor: Pallet.PURE_WHITE,
+                activeTrackColor: Pallet.PRIMARY_COLOR,
+                inactiveTrackColor: Pallet.SECONDARY_500,
+                inactiveThumbColor: Pallet.PURE_WHITE,
+                value: isAvailable,
+                onChanged: (value) {
+                  setState(() {
+                    if (!isAvailable) {
+                      widget.onTimeChanged([
+                        0,
+                        const TimeOfDay(hour: 9, minute: 0),
+                        const TimeOfDay(hour: 10, minute: 0)
+                      ]);
+                    } else {
+                      widget.daySchedule!.clear();
+                    }
+                    isAvailable = !isAvailable;
+                  });
+                },
+              ),
             ),
-            const SizedBox(width: 10), 
+            const SizedBox(width: 10),
             Text(
               widget.day,
               style: const TextStyle(
