@@ -1,0 +1,45 @@
+name: Test, Build and Release Pharmanathi MHP Android APKs
+
+on: 
+    push:
+        paths:
+            - 'mobile_mhp/**' 
+    workflow_dispatch:
+
+jobs:
+  test_build_deploy:
+    name: Test, Build and Release MHP App
+    defaults:
+      run:
+          working-directory: ./mobile_mhp
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create .env file
+      run: |
+        cat << EOF > .env.production
+        API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
+        APP_LABEL=mhp
+        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
+        SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
+        SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
+        EOF
+        touch .env.development
+
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '17.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.24.1'
+    - run: flutter pub get
+    - run: flutter build apk --split-per-abi --release
+    - name: Compute short SHA
+      id: short_sha_compute 
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Upload release artificats
+      uses: actions/upload-artifact@v4
+      with:
+        name: mhp.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
+        path: mobile_mhp/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
