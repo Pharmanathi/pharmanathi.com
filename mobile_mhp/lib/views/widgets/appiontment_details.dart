@@ -53,7 +53,7 @@ class AppiontmentDetails extends StatelessWidget {
               ),
               // Heading (personal info)
               const Padding(
-                padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
+                padding: EdgeInsets.only(left: 15, top: 10, bottom: 10),
                 child: Row(
                   children: [
                     Text(
@@ -154,20 +154,8 @@ class AppiontmentDetails extends StatelessWidget {
                   Icons.money, 'Consultation Fee', appointment.consultationFee),
 
               //* Buttons
-              
+
               const SizedBox(height: 40),
-              // Center(
-              //   child: MyButtonWidgets(
-              //     buttonText1: 'RESCHEDULE',
-              //     onPressed1: () {
-              //       // Handle the custom button action
-              //     },
-              //     buttonText2: 'REJECT',
-              //     onPressed2: () {
-              //       // Handle the custom button action
-              //     },
-              //   ).buildButton(),
-              // ),
             ],
           ),
         ),

@@ -58,7 +58,7 @@ Future<void> main() async {
 Future<void> _loadEnvironmentVariables() async {
   // Load environment variables from appropriate .env file
   await dotenv.load(
-      fileName: kReleaseMode ? '.env.production' : '.env.production');
+      fileName: kReleaseMode ? '.env.production' : '.env.development');
 }
 
 Future<void> _setPreferredOrientation() async {
