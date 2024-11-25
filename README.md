@@ -9,15 +9,15 @@ Welcome to Pharmanathi.com.
 This is the repo containing all development resources for the Pharmanthi.com project; backend and front-end clients. From a bird's eye view, the repo is organised as follows:
 
 ```lua
-├── mobile-mhp      -- Medical Health Professional Flutter project.
-├── mobile-patient  -- Patient app, a flutter project
+├── mobile_mhp      -- Medical Health Professional Flutter project.
+├── mobile_patient  -- Patient app, a flutter project
 └── pharmanathi.com -- Pharmanathi.com backend, a Django-based project
 ```
 
 Each inner project may present it's own requried setup, so make sure to read their related README file. You may find them using the following links which points to their location in their respective project's folder:
 
-- [Patient Mobile Client's README](./mobile-mhp/README.md)
-- [MHP Mobile Client's README](./mobile-patient/README.md)
+- [Patient Mobile Client's README](./mobile_mhp/README.md)
+- [MHP Mobile Client's README](./mobile_patient/README.md)
 - [Backend's README](./pharmanathi.com/README.md)
 
 ## Contribution Guidelines
