@@ -34,7 +34,7 @@ migrate:
 	@docker compose run --rm django python manage.py migrate
 
 pre-commit:
-	@docker compose run --rm django pre-commit run --show-diff-on-failure --color=always --all-files
+	@docker compose exec django pre-commit run --show-diff-on-failure --color=always --all-files
 
 test-verifi:
 	@export COVERAGE=$$(docker compose run --rm verifi bash -c "coverage run -m pytest && coverage report -m" | tee /dev/tty | grep TOTAL) && \

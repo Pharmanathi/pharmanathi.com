@@ -11,7 +11,6 @@ import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/services/api_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
@@ -133,7 +132,7 @@ class GoogleSignInWidget extends StatelessWidget {
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                                'Sign-in failed. Please try again. ${dotenv.env['API_BASE_URL']}'),
+                                                'Sign-in failed. Please try again.'),
                                           ),
                                         );
                                       }
