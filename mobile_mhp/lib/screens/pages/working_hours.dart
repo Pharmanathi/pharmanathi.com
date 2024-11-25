@@ -1,7 +1,10 @@
 // ignore_for_file: use_super_parameters, prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
+import 'package:pharma_nathi/views/widgets/shared/showErrorSnackBar.dart';
+import 'package:pharma_nathi/views/widgets/shared/success_snackbar.dart';
 import '../../services/working_hours_api.dart';
 import '../../views/widgets/WorkingHoursInput.dart';
 import '../../views/widgets/buttons.dart';
@@ -16,18 +19,17 @@ class WorkingHours extends StatefulWidget {
 class _WorkingHoursState extends State<WorkingHours> {
   late List<Widget> dayInputs;
   final log = logger(WorkingHours);
-  final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>(); // GlobalKey for the Scaffold
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-List<Map<String, dynamic>> weeklySchedule = [
-  {"dayStr": "Mon", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Tue", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Wed", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Thu", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Fri", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Sat", "schedule": <List<TimeOfDay>>[]},
-  {"dayStr": "Sun", "schedule": <List<TimeOfDay>>[]}
-];
+  List<Map<String, dynamic>> weeklySchedule = [
+    {"dayStr": "Mon", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Tue", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Wed", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Thu", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Fri", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Sat", "schedule": <List<TimeOfDay>>[]},
+    {"dayStr": "Sun", "schedule": <List<TimeOfDay>>[]}
+  ];
 
   @override
   void initState() {
@@ -36,22 +38,34 @@ List<Map<String, dynamic>> weeklySchedule = [
   }
 
   /// Compare ToDs so that we display a sorted schedule
-  /// credit: https://stackoverflow.com/a/74023447/5253580
   int compareSlots(List<TimeOfDay> slot1, List<TimeOfDay> slot2) {
+    if (slot1.isEmpty || slot2.isEmpty) {
+      return 0;
+    }
+
     var totalMinutes1 = slot1[0].hour * 60 + slot1[0].minute;
     var totalMinutes2 = slot2[0].hour * 60 + slot2[0].minute;
     return totalMinutes1.compareTo(totalMinutes2);
   }
 
-  //* Method to build WorkingHoursInput widget for a day
+  // Method to build WorkingHoursInput widget for a day
   Widget _buildWorkingHoursInput(int weekDayIndex, Map weekDay) {
     weekDay["schedule"].sort(compareSlots);
+
     return WorkingHoursInput(
       day: weekDay['dayStr'],
       onTimeChanged: (List<dynamic> value) {
         setState(() {
-          if(weeklySchedule[weekDayIndex]['schedule'].length <= value[0]) weeklySchedule[weekDayIndex]['schedule'].add(<TimeOfDay>[]);
-            weeklySchedule[weekDayIndex]['schedule'][value[0]] = <TimeOfDay>[value[1], value[2]];
+          if (weeklySchedule[weekDayIndex]['schedule'].length <= value[0]) {
+            weeklySchedule[weekDayIndex]['schedule'].add(<TimeOfDay>[]);
+          }
+
+          if (value[1] is TimeOfDay && value[2] is TimeOfDay) {
+            weeklySchedule[weekDayIndex]['schedule']
+                [value[0]] = <TimeOfDay>[value[1], value[2]];
+          } else {
+            weeklySchedule[weekDayIndex]['schedule'][value[0]] = <TimeOfDay>[];
+          }
         });
       },
       daySchedule: weekDay["schedule"],
@@ -59,22 +73,21 @@ List<Map<String, dynamic>> weeklySchedule = [
   }
 
   Future<void> _fetchScheduleFromApi() async {
-    //* Call the fetchScheduleFromApi method
     Map<String, List> fetchedSchedule =
         await WorkingHourApiService.fetchScheduleFromApi(context);
 
-    
-    TimeOfDay buildTOD(String timeString){
-        List<int> parts = timeString.split(':').map(int.parse).toList();
-        return TimeOfDay(hour: parts[0], minute: parts[1]);
-      }
+    TimeOfDay buildTOD(String timeString) {
+      List<int> parts = timeString.split(':').map(int.parse).toList();
+      return TimeOfDay(hour: parts[0], minute: parts[1]);
+    }
 
     setState(() {
-      fetchedSchedule.forEach((index, schdl){
+      fetchedSchedule.forEach((index, schdl) {
         weeklySchedule[int.parse(index) - 1]["schedule"].clear();
-        for(int i=0;  i < schdl.length; i++){ 
-        var [start, end] = schdl[i].split(',');
-          weeklySchedule[int.parse(index) - 1]["schedule"].add([buildTOD(start), buildTOD(end)]);
+        for (int i = 0; i < schdl.length; i++) {
+          var [start, end] = schdl[i].split(',');
+          weeklySchedule[int.parse(index) - 1]["schedule"]
+              .add([buildTOD(start), buildTOD(end)]);
         }
       });
     });
@@ -83,49 +96,57 @@ List<Map<String, dynamic>> weeklySchedule = [
   //* Method to send schedule to API
   void _sendScheduleToApi() {
     List<Map> convertedRealSchedule = [];
-    for(int i = 0; i < weeklySchedule.length; i++ ){
-      weeklySchedule[i]["schedule"].forEach((slot){
-          convertedRealSchedule.add({
-            "day": i+1, 
-            "start_time": "${slot[0].hour}:${slot[0].minute}",
-            "end_time": "${slot[1].hour}:${slot[1].minute}",
+
+    //* Process the schedule
+    for (int i = 0; i < weeklySchedule.length; i++) {
+      var schedule = weeklySchedule[i]["schedule"];
+
+      //*This extra checks are present to handle edge cases that might arise when processing the schedule.They might seem redundant,but their purpose is to ensure the code is robust and avoids runtime errors.
+      if (schedule != null && schedule.isNotEmpty) {
+        schedule.forEach((slot) {
+          if (slot != null && slot.length >= 2) {
+            convertedRealSchedule.add({
+              "day": i + 1,
+              "start_time": "${slot[0].hour}:${slot[0].minute}",
+              "end_time": "${slot[1].hour}:${slot[1].minute}",
             });
-      });
+          }
+        });
+      }
     }
 
-    WorkingHourApiService.sendSchedule(convertedRealSchedule, context, onSuccess: () {
-      _showSuccessMessage();
-      _navigateToProfilePage();
-    });
-  }
-
-  //* Method to show a success message using a SnackBar
-  void _showSuccessMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Schedule saved successfully!'),
-        duration: Duration(seconds: 5),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.green,
-      ),
+    //* Always call the API, even if the converted schedule is empty
+    WorkingHourApiService.sendSchedule(
+      convertedRealSchedule,
+      context,
+      onSuccess: () {
+        showSuccessSnackBar(
+            context, "Your schedule has been saved successfully!");
+        _navigateToProfilePage();
+      },
     );
+
+    if (convertedRealSchedule.isEmpty) {
+      showSuccessSnackBar(
+          context, "Your schedule has been cleared successfully!");
+      return;
+    }
   }
 
-  //* Method to navigate to the profile page
+  // Method to navigate to the profile page
   void _navigateToProfilePage() {
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    //* Initialize the list with one WorkingHoursInput widget for each day
     dayInputs = <Widget>[];
     weeklySchedule.asMap().forEach((index, weekday) {
       dayInputs.add(_buildWorkingHoursInput(index, weekday));
     });
 
     return Scaffold(
-      key: _scaffoldKey, //* Assign the GlobalKey to the Scaffold
+      key: _scaffoldKey,
       backgroundColor: Color(0xFFF7F9FC),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -134,7 +155,6 @@ List<Map<String, dynamic>> weeklySchedule = [
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //* Top heading with back button
                 Padding(
                   padding: const EdgeInsets.only(top: 25, left: 25),
                   child: GestureDetector(
@@ -148,17 +168,16 @@ List<Map<String, dynamic>> weeklySchedule = [
                   ),
                 ),
                 SizedBox(height: 20),
-                //* Title and description
                 Padding(
                   padding: const EdgeInsets.only(left: 25),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'Working Hours',
                         style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
                           color: Colors.black,
                         ),
                       ),
@@ -166,15 +185,15 @@ List<Map<String, dynamic>> weeklySchedule = [
                       Text(
                         'Your information will be shared with our Medical Expert team who will verify your identity',
                         style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey,
+                          fontSize: 12,
+                          color: Pallet.SECONDARY_500,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 20),
-                //* Render WorkingHoursInput widgets dynamically
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Column(
@@ -182,7 +201,6 @@ List<Map<String, dynamic>> weeklySchedule = [
                   ),
                 ),
                 SizedBox(height: 20),
-                //* Buttons
                 MyButtonWidgets(
                   buttonTextPrimary: 'SAVE',
                   onPressedPrimary: _sendScheduleToApi,
@@ -190,7 +208,7 @@ List<Map<String, dynamic>> weeklySchedule = [
                   onPressedSecondary: () {
                     Navigator.pop(context);
                   },
-                ).buildButtons(primaryFirst: true),
+                ).buildButtons(primaryFirst: false),
               ],
             ),
           ),
