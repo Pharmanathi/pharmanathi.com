@@ -10,5 +10,5 @@
 venv
 .git
 .envs/
-mobile-mhp
-mobile-patient
+mobile_mhp
+mobile_patient
