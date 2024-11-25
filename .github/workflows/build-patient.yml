@@ -1,0 +1,44 @@
+name: Test, Build and Release Android Pharmanathi Patient App
+
+on: 
+    push:
+        paths:
+            - 'mobile_patient/**'
+    workflow_dispatch:
+
+jobs:
+  test_build_deploy:
+    name: Test, Build and Release Patient App
+    defaults:
+      run:
+          working-directory: ./mobile_patient
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create .env file
+      run: |
+        cat << EOF > .env
+        API_BASE_URL=${{ secrets.API_BASE_URL }}
+        APP_LABEL=patient
+        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
+        SENTRY_ON=true
+        SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+        EOF
+
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '17.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.24.1'
+    - run: flutter pub get
+    - run: flutter build apk --debug --split-per-abi
+    - name: Compute short SHA
+      id: short_sha_compute 
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Upload release artificats
+      uses: actions/upload-artifact@v4
+      with:
+        name: mhp.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
+        path: mobile_patient/build/app/outputs/flutter-apk/app-arm64-v8a-debug.apk

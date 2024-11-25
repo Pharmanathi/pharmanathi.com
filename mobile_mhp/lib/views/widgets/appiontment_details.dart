@@ -109,12 +109,12 @@ class AppiontmentDetails extends StatelessWidget {
                                 appointment.patientName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style:  GoogleFonts.openSans(
+                                style: GoogleFonts.openSans(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 appointment.consult_details,
-                                style:  GoogleFonts.openSans(
+                                style: GoogleFonts.openSans(
                                   color: Colors.grey,
                                   fontSize: 14,
                                 ),
@@ -157,18 +157,6 @@ class AppiontmentDetails extends StatelessWidget {
               //* Buttons
 
               const SizedBox(height: 40),
-              // Center(
-              //   child: MyButtonWidgets(
-              //     buttonText1: 'RESCHEDULE',
-              //     onPressed1: () {
-              //       // Handle the custom button action
-              //     },
-              //     buttonText2: 'REJECT',
-              //     onPressed2: () {
-              //       // Handle the custom button action
-              //     },
-              //   ).buildButton(),
-              // ),
             ],
           ),
         ),
