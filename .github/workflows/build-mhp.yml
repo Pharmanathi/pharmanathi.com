@@ -34,12 +34,12 @@ jobs:
       with:
         flutter-version: '3.24.1'
     - run: flutter pub get
-    - run: flutter build apk --split-per-abi --release
+    - run: flutter build apk --split-per-abi --debug
     - name: Compute short SHA
       id: short_sha_compute 
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-    - name: Upload release artificats
+    - name: Upload debug artificats
       uses: actions/upload-artifact@v4
       with:
         name: mhp.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
-        path: mobile_mhp/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+        path: mobile_mhp/build/app/outputs/flutter-apk/app-arm64-v8a-debug.apk
