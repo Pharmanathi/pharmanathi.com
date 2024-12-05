@@ -34,6 +34,8 @@ dependencies:
   # uni_links: ^0.5.1 # @TODO(nehemie): move to app_links(https://pub.dev/packages/app_links)
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0

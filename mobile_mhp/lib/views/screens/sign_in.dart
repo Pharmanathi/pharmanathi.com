@@ -132,7 +132,7 @@ class GoogleSignInWidget extends StatelessWidget {
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                             content: Text(
                                                 'Sign-in failed. Please try again.'),
                                           ),
