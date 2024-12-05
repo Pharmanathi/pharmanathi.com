@@ -33,7 +33,7 @@ jobs:
       with:
         flutter-version: '3.24.1'
     - run: flutter pub get
-    - run: flutter build apk --debug --split-per-abi
+    - run: flutter build apk --release --split-per-abi
     - name: Compute short SHA
       id: short_sha_compute 
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
