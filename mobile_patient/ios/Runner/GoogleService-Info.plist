@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>710242232170-jetc349ucliase4l5t8v2lgebd6sphbu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.710242232170-jetc349ucliase4l5t8v2lgebd6sphbu</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>710242232170-5b7ag0nh8sd216930nt2pvgktl3vo8jk.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCLmoD7QM-XguAdd0bdJ1-gyfDgATNjpfg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>710242232170</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.pharmanathi.patient</string>
+	<key>PROJECT_ID</key>
+	<string>pharmanathi-b3482</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pharmanathi-b3482.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:710242232170:ios:db657a82f8108c77906713</string>
+</dict>
+</plist>
