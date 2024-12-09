@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 
 import '../../models/appointment.dart';
@@ -31,19 +32,19 @@ class AppiontmentDetails extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back,
-                          color: Color(0xFF6F7ED7),
+                          color: Pallet.PRIMARY_COLOR,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 100, bottom: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 100, bottom: 5),
                         child: Text(
                           'Summary',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
                             fontSize: 21,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF6F7ED7),
+                            color: Pallet.PRIMARY_COLOR,
                           ),
                         ),
                       ),
@@ -52,14 +53,14 @@ class AppiontmentDetails extends StatelessWidget {
                 ),
               ),
               // Heading (personal info)
-              const Padding(
-                padding: EdgeInsets.only(left: 15,top: 10,bottom: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10),
                 child: Row(
                   children: [
                     Text(
                       'Personal Info',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.openSans(
+                          fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -108,12 +109,12 @@ class AppiontmentDetails extends StatelessWidget {
                                 appointment.patientName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
+                                style:  GoogleFonts.openSans(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 appointment.consult_details,
-                                style: const TextStyle(
+                                style:  GoogleFonts.openSans(
                                   color: Colors.grey,
                                   fontSize: 14,
                                 ),
@@ -127,14 +128,14 @@ class AppiontmentDetails extends StatelessWidget {
                 ),
               ),
               // Heading (booking info)
-              const Padding(
-                padding: EdgeInsets.all(15.0),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
                 child: Row(
                   children: [
                     Text(
                       'Booking Info',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.openSans(
+                          fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -154,7 +155,7 @@ class AppiontmentDetails extends StatelessWidget {
                   Icons.money, 'Consultation Fee', appointment.consultationFee),
 
               //* Buttons
-              
+
               const SizedBox(height: 40),
               // Center(
               //   child: MyButtonWidgets(
@@ -198,7 +199,7 @@ class AppiontmentDetails extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     title,
-                    style: const TextStyle(
+                    style: GoogleFonts.openSans(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),

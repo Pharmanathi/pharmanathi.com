@@ -3,7 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/config/text_theme.dart';
 import 'package:pharma_nathi/models/user.dart';
 import 'package:provider/provider.dart';
 import '../../logging.dart';
@@ -145,9 +148,9 @@ class _HomePageState extends State<HomePage> {
                           width: 270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
                           child: Text(
                             'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
-                            style: TextStyle(
+                            style: GoogleFonts.openSans(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 14.sp,
                             ),
                             softWrap:
                                 true, 
@@ -171,14 +174,17 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Upcoming Appointments',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                     Text(
                       'See All',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Color(0xFF6F7ED7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                   ],
@@ -186,7 +192,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(left: 10),
               height: 180,
               child: isLoading
                   ? Center(
@@ -230,16 +236,19 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Appointments Statistics',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                     Row(
                       children: [
                         Text(
                           'Last 12 Months',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
                             color: Color(0xFF6F7ED7),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.sp
                           ),
                         ),
                         Icon(
@@ -265,10 +274,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Total',
-                            style: TextStyle(
-                              fontSize: 12,
+                            style: GoogleFonts.openSans(
+                              fontSize: 12.sp,
                               color: Colors.grey,
-                              fontWeight: FontWeight.w800,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 8),
@@ -276,8 +286,8 @@ class _HomePageState extends State<HomePage> {
                             appointmentData.isEmpty
                                 ? '0'
                                 : appointmentData.length.toString(),
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -290,15 +300,16 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             'Online',
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w800),
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 8),
                           Text(
                             '$onlineAppointmentsCount',
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -311,15 +322,15 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             'In Person',
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 12.sp,
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w800),
+                                fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 8),
                           Text(
                             '$inPersonVisitAppointmentsCount',
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -367,7 +378,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'Online Consultation',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
+                            fontSize: 8.sp,
+                            fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),
                           ),
                         ),
@@ -381,8 +394,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'In person Visit',
-                          style: TextStyle(
-                            color: Colors.blue.shade500,
+                         style: GoogleFonts.openSans(
+                            fontSize: 8.sp,
+                            fontStyle: FontStyle.normal,
+                            color: Color(0xFF6F7ED7),
                           ),
                         ),
                       ],
