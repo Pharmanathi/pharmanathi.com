@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
@@ -54,17 +55,17 @@ class GoogleSignInWidget extends StatelessWidget {
                               'assets/images/pharmanathi-mhp-icon.png',
                               height: 100,
                             ),
-                            const Text(
+                            Text(
                               'PHARMA',
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w900,
                                 color: Color.fromARGB(255, 253, 253, 253),
                               ),
                             ),
-                            const Text(
+                             Text(
                               'NATHI',
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                 fontSize: 23,
                                 fontWeight: FontWeight.w900,
                                 color: Color.fromARGB(255, 253, 253, 253),

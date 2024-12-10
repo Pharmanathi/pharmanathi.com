@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, unrelated_type_equality_checks
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:provider/provider.dart';
@@ -205,7 +206,7 @@ class _AppointmentsState extends State<Appointments> {
                   children: [
                     Text(
                       'Appointments',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -232,7 +233,7 @@ class _AppointmentsState extends State<Appointments> {
                     SizedBox(width: 25),
                     Text(
                       '$selectedMonth $currentYear',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -269,7 +270,7 @@ class _AppointmentsState extends State<Appointments> {
                     padding: const EdgeInsets.only(left: 25, bottom: 10),
                     child: Text(
                       '${appointmentsPerDay.length} activities',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontSize: 12,
                         decoration: TextDecoration.underline,
                         color: Pallet.PRIMARY_COLOR,
@@ -284,7 +285,7 @@ class _AppointmentsState extends State<Appointments> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       'upcoming on',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -297,7 +298,7 @@ class _AppointmentsState extends State<Appointments> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       '$selectedDay $selectedMonth $currentYear',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontSize: 12,
                         color: Pallet.PRIMARY_COLOR,
                         decoration: TextDecoration.underline,
@@ -325,7 +326,7 @@ class _AppointmentsState extends State<Appointments> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       'mon', //TODO [Thabang] : set this to get  days auto
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 10,
                                         color: Pallet.Black,
                                         fontWeight: FontWeight.bold,
@@ -336,7 +337,7 @@ class _AppointmentsState extends State<Appointments> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       '$selectedDay',
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 20,
                                         color: Pallet.Black,
                                         fontWeight: FontWeight.bold,
@@ -381,7 +382,7 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'all',
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 12,
                                         color: selectedButton == 'all' ||
                                                 selectedButton.isEmpty
@@ -413,7 +414,7 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'Online',
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 12,
                                         color: selectedButton == 'Online'
                                             ? Colors.white
@@ -444,7 +445,7 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'In Person',
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 12,
                                         color: selectedButton == 'InPerson'
                                             ? Colors.white
@@ -480,7 +481,7 @@ class _AppointmentsState extends State<Appointments> {
                                         SizedBox(height: 20),
                                         Text(
                                           'No appointments available',
-                                          style: TextStyle(fontSize: 12),
+                                          style: GoogleFonts.openSans(fontSize: 12),
                                         ),
                                       ],
                                     ),

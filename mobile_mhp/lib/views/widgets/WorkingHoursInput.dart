@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
 
@@ -52,7 +53,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
       ),
       child: Text(
         selectedTime.format(context),
-        style: TextStyle(
+        style: GoogleFonts.openSans(
           fontWeight: FontWeight.bold,
           color: Pallet.Black, // Change text color here
           fontSize: 12, // Optional: adjust text size
@@ -183,7 +184,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
             const SizedBox(width: 10),
             Text(
               widget.day,
-              style: const TextStyle(
+              style:  GoogleFonts.openSans(
                 fontSize: 12,
                 color: Pallet.Black,
                 fontWeight: FontWeight.bold,
@@ -191,9 +192,9 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
             ),
             const SizedBox(width: 15),
             if (!isAvailable)
-              const Text(
+               Text(
                 'Unavailable',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                   fontSize: 12,
                   color: Pallet.SECONDARY_500,
                 ),

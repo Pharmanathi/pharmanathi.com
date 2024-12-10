@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 
 class ClickableDay extends StatefulWidget {
@@ -144,7 +145,7 @@ class _ClickableDayState extends State<ClickableDay> {
                         // Day number at the top left
                         Text(
                           day.toString(),
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: isClicked || isToday

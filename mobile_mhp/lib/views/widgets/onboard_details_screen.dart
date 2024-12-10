@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/doctor_bloc.dart';
 import 'package:pharma_nathi/blocs/speciality_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
@@ -272,9 +273,10 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                             },
                           ),
                         ),
-                        const Text(
+                        
+                         Text(
                           'Professional Details',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontSize: 22.0,
                             fontWeight: FontWeight.bold,
@@ -293,9 +295,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                   padding: const EdgeInsets.all(8.0),
                   children: [
                     const SizedBox(height: 16.0),
-                    const Text(
+                     Text(
                       'HPCSA Number',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Pallet.NEUTRAL_300,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
@@ -307,7 +309,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                         controller: _hpcsaNoController,
                         decoration: InputDecoration(
                           hintText: 'HPCSA Number',
-                          hintStyle: const TextStyle(
+                          hintStyle:  GoogleFonts.openSans(
                             color: Pallet.NEUTRAL_100,
                             fontWeight: FontWeight.normal,
                             fontSize: 10,
@@ -327,9 +329,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                         },
                       ),
                     ),
-                    const Text(
+                     Text(
                       'SAPC Number',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Pallet.NEUTRAL_300,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
@@ -341,7 +343,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                         controller: _mpNoController,
                         decoration: InputDecoration(
                           hintText: 'SAPC Number',
-                          hintStyle: const TextStyle(
+                          hintStyle:  GoogleFonts.openSans(
                             color: Pallet.NEUTRAL_100,
                             fontWeight: FontWeight.normal,
                             fontSize: 10,
@@ -365,9 +367,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    const Text(
+                     Text(
                       'Specialities',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Pallet.NEUTRAL_300,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
@@ -394,7 +396,7 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                   .toList(),
                               title: const Text('Select Specialities'),
                               selectedItemsTextStyle:
-                                  const TextStyle(color: Pallet.NEUTRAL_100),
+                                   GoogleFonts.openSans(color: Pallet.NEUTRAL_100),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Pallet.BACKGROUND_50,
@@ -403,9 +405,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                                 Icons.arrow_drop_down,
                                 color: Colors.black,
                               ),
-                              buttonText: const Text(
+                              buttonText:  Text(
                                 'Select Specialities',
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                     color: Pallet.NEUTRAL_100, fontSize: 10),
                               ),
                               onConfirm: (selected) {
@@ -432,9 +434,9 @@ class _OnboardDetailsScreenState extends State<OnboardDetailsScreen> {
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
-                          child: const Text(
+                          child:  Text(
                             'Add Practice Location',
-                            style: TextStyle(color: Pallet.NEUTRAL_400),
+                            style: GoogleFonts.openSans(color: Pallet.NEUTRAL_400),
                           ),
                         ),
                       ),

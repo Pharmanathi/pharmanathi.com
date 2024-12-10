@@ -214,7 +214,7 @@ class AppiontmentDetails extends StatelessWidget {
               width: 200,
               child: Text(
                 subtitle,
-                style: const TextStyle(
+                style: GoogleFonts.openSans(
                   fontSize: 12,
                   color: Colors.grey,
                 ),

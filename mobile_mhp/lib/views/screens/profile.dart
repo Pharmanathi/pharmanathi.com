@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters, use_build_context_synchronously
 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/views/screens/manage_appointment.dart';
@@ -48,7 +50,7 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(height: 10),
                 Text(
                   'Log Out?',
-                  style: TextStyle(
+                  style: GoogleFonts.openSans(
                     fontSize: 25,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -118,7 +120,7 @@ class _MyProfileState extends State<MyProfile> {
                       padding: const EdgeInsets.all(80),
                       child: Text(
                         'Profile',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                           fontSize: 25,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -166,7 +168,7 @@ class _MyProfileState extends State<MyProfile> {
                               width: 170,
                               child: Text(
                                 'Dr. ${userProvider.user?.firstName} ${userProvider.user?.lastName}',
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -176,7 +178,7 @@ class _MyProfileState extends State<MyProfile> {
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
                                 profession,
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                   fontSize: 14,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -239,7 +241,7 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                                 Text(
                                   'Account Information',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -294,7 +296,7 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                                 Text(
                                   'Education',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -349,7 +351,7 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                                 Text(
                                   'Profesional Information',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -401,7 +403,8 @@ class _MyProfileState extends State<MyProfile> {
                                       backgroundColor: Color(0xFF6F7ED7),
                                       minimumSize: Size(320, 50),
                                     ),
-                                    child: Text('Working Hours'),
+                                    child: Text('Working Hours',
+                                    style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),),
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -425,7 +428,9 @@ class _MyProfileState extends State<MyProfile> {
                                         width: 1,
                                       ),
                                     ),
-                                    child: Text('Manage Appointments'),
+                                    child: Text('Manage Appointments',
+                                     style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -457,7 +462,7 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                                 Text(
                                   'Manage Schedule',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -563,7 +568,7 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                                 Text(
                                   'Log out',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),

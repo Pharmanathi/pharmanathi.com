@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../logging.dart';
@@ -78,7 +79,7 @@ class _PatientListState extends State<PatientList> {
                 children: [
                   Text(
                     'Patient List',
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),
@@ -107,7 +108,7 @@ class _PatientListState extends State<PatientList> {
                   : patientAppointments.isEmpty
                       ? Center(
                           child: Text('No Patients available',
-                              style: TextStyle(fontSize: 12)),
+                              style: GoogleFonts.openSans(fontSize: 12)),
                         )
                       : ListView.builder(
                           itemCount: patientAppointments.length,

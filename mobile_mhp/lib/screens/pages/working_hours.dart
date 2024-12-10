@@ -1,6 +1,7 @@
 // ignore_for_file: use_super_parameters, prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/views/widgets/shared/showErrorSnackBar.dart';
@@ -175,16 +176,16 @@ class _WorkingHoursState extends State<WorkingHours> {
                     children: [
                       Text(
                         'Working Hours',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                           fontSize: 24,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 22),
                       Text(
                         'Your information will be shared with our Medical Expert team who will verify your identity',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                           fontSize: 12,
                           color: Pallet.SECONDARY_500,
                         ),

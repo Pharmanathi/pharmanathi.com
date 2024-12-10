@@ -3,6 +3,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
@@ -238,7 +240,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                 children: [
                   Text(
                     'Manage Appointments',
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -251,8 +253,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                       child: Text(
                         'Your information will be shared with our Medical Expert team who will verify your identity',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: GoogleFonts.openSans(
+                          fontSize: 12.sp,
                           color: Colors.grey,
                         ),
                       ),
@@ -269,7 +271,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     Text(
                       'Appointment Type',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          GoogleFonts.openSans(fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -300,7 +302,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                             'In Person Visit'
                                         ? Colors.blue
                                         : Colors.transparent,
-                                minimumSize: Size(160, 37),
+                                minimumSize: Size(160.sp, 37.sp),
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
@@ -308,8 +310,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 )),
                             child: Text(
                               'In Person Visit',
-                              style: TextStyle(
-                                fontSize: 12,
+                              style: GoogleFonts.openSans(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                                 color: userProvider.selectedAppointmentType ==
                                         'In Person Visit'
@@ -329,8 +331,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                   SnackBar(
                                     content: Text(
                                       'Online Consultation is not available for now.',
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 12),
+                                      style: GoogleFonts.openSans(
+                                          color: Colors.red, fontSize: 12.sp),
                                     ),
                                     duration: Duration(seconds: 2),
                                   ),
@@ -343,7 +345,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                             'Online Consultation'
                                         ? Colors.blue.shade800
                                         : Colors.transparent,
-                                minimumSize: Size(160, 37),
+                                minimumSize: Size(160.sp, 37.sp),
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
@@ -351,8 +353,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 )),
                             child: Text(
                               'Online Consultation',
-                              style: TextStyle(
-                                fontSize: 12,
+                              style: GoogleFonts.openSans(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                                 color: userProvider.selectedAppointmentType ==
                                         'Online Consultation'
@@ -366,11 +368,11 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                       if (userProvider.selectedAppointmentType ==
                           'Online Consultation')
                         SizedBox(
-                          height: 40,
+                          height: 40.h,
                           child: Center(
                             child: Text(
                               'Online Consultation is not available for now.',
-                              style: TextStyle(color: Colors.red, fontSize: 12),
+                              style: GoogleFonts.openSans(color: Colors.red, fontSize: 12.sp),
                             ),
                           ),
                         ),
@@ -380,7 +382,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               ),
 
               //* Consultation Fee section
-              SizedBox(height: 5),
+              SizedBox(height: 5.h),
               Padding(
                 padding: const EdgeInsets.only(
                     right: 20, left: 20, top: 10, bottom: 5),
@@ -389,7 +391,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     Text(
                       'Consultation Fee',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          GoogleFonts.openSans(fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -399,7 +401,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Container(
-                  height: 40,
+                  height: 40.h,
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
                     borderRadius: BorderRadius.circular(10.0),
@@ -410,13 +412,13 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     controller: consultationFeeController,
                     decoration: InputDecoration(
                       hintText: 'e.g.: R500',
-                      hintStyle: TextStyle(
-                        fontSize: 16.0,
-                        height: 0.5,
+                      hintStyle: GoogleFonts.openSans(
+                        fontSize: 16.0.sp,
+                        height: 0.5.h,
                       ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 25.0),
+                          vertical: 15.0.h, horizontal: 25.0.w),
                     ),
                     textAlignVertical: TextAlignVertical.center,
                   ),
@@ -424,7 +426,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               ),
 
               //* No Show Fee section
-              SizedBox(height: 5),
+              SizedBox(height: 5.h),
               Padding(
                 padding: const EdgeInsets.only(
                     right: 20, left: 20, top: 10, bottom: 5),
@@ -433,7 +435,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     Text(
                       'No Show Fee',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          GoogleFonts.openSans(fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -443,7 +445,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Container(
-                  height: 40,
+                  height: 40.h,
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
                     borderRadius: BorderRadius.circular(10.0),
@@ -453,14 +455,14 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: noShowFeeController,
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(
-                        fontSize: 16.0,
-                        height: 0.5,
+                      hintStyle: GoogleFonts.openSans(
+                        fontSize: 16.0.sp,
+                        height: 0.5.sp,
                       ),
                       hintText: 'Free',
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 25.0),
+                          vertical: 15.0.h, horizontal: 25.0.w),
                     ),
                     textAlignVertical: TextAlignVertical.center,
                   ),
@@ -476,7 +478,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     Text(
                       'Appointment Duration',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          GoogleFonts.openSans(fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -486,7 +488,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
               Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Container(
-                  height: 30,
+                  height: 30.h,
                   // padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
@@ -495,7 +497,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   child: Row(
                     children: [
                       Container(
-                        height: 30,
+                        height: 30.h,
                         decoration: BoxDecoration(
                           color: appointmentDuration == 15
                               ? Colors.blue.shade600
@@ -514,9 +516,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 left: 5, top: 2, right: 5),
                             child: Text(
                               '15 min',
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                 fontWeight: FontWeight.normal,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 color: appointmentDuration == 15
                                     ? Pallet.PURE_WHITE
                                     : Colors.grey,
@@ -525,9 +527,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 15),
+                      SizedBox(width: 15.w),
                       Container(
-                        height: 30,
+                        height: 30.h,
                         decoration: BoxDecoration(
                           color: appointmentDuration == 30
                               ? Colors.blue.shade600
@@ -546,8 +548,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 left: 5, top: 2, right: 5),
                             child: Text(
                               '30 min',
-                              style: TextStyle(
-                                fontSize: 16,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.normal,
                                 color: appointmentDuration == 30
                                     ? Pallet.PURE_WHITE
@@ -557,9 +559,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 15),
+                      SizedBox(width: 15.w),
                       Container(
-                        height: 30,
+                        height: 30.h,
                         decoration: BoxDecoration(
                           color: appointmentDuration == 60
                               ? Colors.blue.shade600
@@ -578,8 +580,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 left: 5, top: 2, right: 5),
                             child: Text(
                               '60 min',
-                              style: TextStyle(
-                                fontSize: 16,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.normal,
                                 color: appointmentDuration == 60
                                     ? Pallet.PURE_WHITE
@@ -589,9 +591,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 2),
+                      SizedBox(width: 2.w),
                       VerticalDivider(
-                          width: 7, thickness: 1, color: Colors.grey),
+                          width: 7.w, thickness: 1.sp, color: Colors.grey),
                       SizedBox(width: 2),
                       Container(
                         height: 30,
@@ -614,13 +616,13 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
-                            minimumSize: Size(5, 4),
+                            minimumSize: Size(5.sp, 4.sp),
                             elevation: 0,
                           ),
                           child: Text(
                             'Custom',
-                            style: TextStyle(
-                              fontSize: 16,
+                            style: GoogleFonts.openSans(
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.normal,
                               color: (appointmentDuration != 15 &&
                                       appointmentDuration != 30 &&
@@ -645,7 +647,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     Text(
                       'Date Range',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          GoogleFonts.openSans(fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -672,11 +674,11 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                     ),
                     Text('Within a date range'),
                     SizedBox(
-                      width: 10,
+                      width: 10.w,
                     ),
                     if (selectedRadioButton == 'Within a date range')
                       Container(
-                        height: 40,
+                        height: 40.h,
                         color: Pallet.PURE_WHITE,
                         child: GestureDetector(
                           onTap: () {
@@ -688,8 +690,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 const EdgeInsets.only(left: 5, top: 7, right: 5),
                             child: Text(
                               selectedDateRange,
-                              style: TextStyle(
-                                fontSize: 15,
+                              style: GoogleFonts.openSans(
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black,
                               ),
@@ -725,7 +727,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
 
               //buttons....................
               SizedBox(
-                height: 2,
+                height: 2.h,
               ),
               MyButtonWidgets(
                 buttonTextPrimary: 'Save',
