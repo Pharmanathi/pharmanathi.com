@@ -50,6 +50,9 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: "true"
+
     }
 
     buildTypes {
@@ -65,7 +68,12 @@ android {
         debug {
             matchingFallbacks = ['debug']
         }
+    } 
+    
+    testOptions {
+        execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
+
 }
 
 flutter {
@@ -73,7 +81,8 @@ flutter {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.12.0")
+    implementation "com.google.android.material:material:1.12.0"
+    androidTestUtil "androidx.test:orchestrator:1.5.1"
 }
 
 apply plugin: 'com.google.gms.google-services'
