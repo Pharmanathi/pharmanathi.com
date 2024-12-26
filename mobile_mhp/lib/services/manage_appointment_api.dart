@@ -1,3 +1,5 @@
+//TODO:[Thabang] migrate all this to bloc
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/logging.dart';

@@ -8,11 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
+import 'package:pharma_nathi/services/manage_appointment_api.dart';
+import 'package:pharma_nathi/views/widgets/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../services/manage_appointment_api.dart';
-import '../widgets/buttons.dart';
 
 class ManageAppointment extends StatefulWidget {
   @override
@@ -241,7 +241,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   Text(
                     'Manage Appointments',
                     style: GoogleFonts.openSans(
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -284,7 +284,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
                     borderRadius: BorderRadius.circular(
-                        12), // Adjust the radius as needed
+                        12.sp), 
                   ),
                   child: Column(
                     children: [
@@ -349,7 +349,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      7), // Adjust the radius as needed
+                                      7.sp), 
                                 )),
                             child: Text(
                               'Online Consultation',
@@ -594,9 +594,9 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                       SizedBox(width: 2.w),
                       VerticalDivider(
                           width: 7.w, thickness: 1.sp, color: Colors.grey),
-                      SizedBox(width: 2),
+                      SizedBox(width: 2.w),
                       Container(
-                        height: 30,
+                        height: 30.h,
                         decoration: BoxDecoration(
                           color: (appointmentDuration != 15 &&
                                   appointmentDuration != 30 &&
