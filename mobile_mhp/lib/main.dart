@@ -28,11 +28,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Only initialize if not in test mode
-  if (!bool.fromEnvironment('PATROL_ENABLED')) {
-    WidgetsFlutterBinding.ensureInitialized();
-  }
-
   await _loadEnvironmentVariables();
   await _setPreferredOrientation();
   await _initializeFirebase();
