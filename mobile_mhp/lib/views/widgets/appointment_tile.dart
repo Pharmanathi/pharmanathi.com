@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/views/widgets/appiontment_details.dart';
@@ -31,7 +32,7 @@ class AppointmentTile extends StatelessWidget {
               flex: 1,
               child: Text(
                 appointment.appointmentTime,
-                style: const TextStyle(
+                style:  GoogleFonts.openSans(
                   fontSize: 10,
                   color: Pallet.SECONDARY_500,
                   fontWeight: FontWeight.w100,
@@ -76,7 +77,7 @@ class AppointmentTile extends StatelessWidget {
                           children: [
                             Text(
                               appointment.patientName,
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: appointment.status == 'In Progress'
@@ -90,7 +91,7 @@ class AppointmentTile extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Text(
                                 appointment.appointmentDuration,
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w100,
                                   color: appointment.status == 'In Progress'
@@ -118,7 +119,7 @@ class AppointmentTile extends StatelessWidget {
                                         horizontal: 8, vertical: 6),
                                     child: Text(
                                       appointment.status,
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                           fontSize: 10,
                                           color:
                                               appointment.status == 'Upcoming'
@@ -150,7 +151,7 @@ class AppointmentTile extends StatelessWidget {
                                       appointment.isOnlineAppointment
                                           ? 'Online'
                                           : 'In Person',
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                         fontSize: 10,
                                         color: appointment.isOnlineAppointment
                                             ? Pallet.PURE_WHITE

@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
@@ -46,27 +48,27 @@ class GoogleSignInWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 60),
                       child: SizedBox(
-                        height: 200,
+                        height: 200.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
                               'assets/images/pharmanathi-mhp-icon.png',
-                              height: 100,
+                              height: 100.h,
                             ),
-                            const Text(
+                            Text(
                               'PHARMA',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w900,
+                              style: GoogleFonts.openSans(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 253, 253, 253),
                               ),
                             ),
-                            const Text(
+                             Text(
                               'NATHI',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w900,
+                              style: GoogleFonts.openSans(
+                                fontSize: 23.sp,
+                                fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 253, 253, 253),
                               ),
                             ),
@@ -153,9 +155,9 @@ class GoogleSignInWidget extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/images/google.png',
-                                height: 24,
+                                height: 24.h,
                               ),
-                              const SizedBox(width: 8),
+                               SizedBox(width: 8.w),
                               const Text('Sign In with Google'),
                             ],
                           ),

@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
 import 'package:pharma_nathi/firebase_options.dart';
 import 'package:pharma_nathi/repositories/sign_in_repository.dart';
@@ -122,28 +124,33 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'OpenSans',
-      ),
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: AppRoutes.generateRoute,
-      home: Builder(
-        builder: (context) {
-          String initialRoute = AppRoutes.signIn;
-          if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
-            if (Apihelper.retrieveLocaAPIToken(context) != null) {
-              initialRoute = AppRoutes.homePage;
-            } else {
-              initialRoute = AppRoutes.signIn;
+    return ScreenUtilInit(
+      designSize: const Size(390, 845),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+        ),
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: AppRoutes.generateRoute,
+        home: Builder(
+          builder: (context) {
+            String initialRoute = AppRoutes.signIn;
+            if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+              if (Apihelper.retrieveLocaAPIToken(context) != null) {
+                initialRoute = AppRoutes.homePage;
+              } else {
+                initialRoute = AppRoutes.signIn;
+              }
             }
-          }
-          return Navigator(
-            initialRoute: initialRoute,
-            onGenerateRoute: AppRoutes.generateRoute,
-          );
-        },
+            return Navigator(
+              initialRoute: initialRoute,
+              onGenerateRoute: AppRoutes.generateRoute,
+            );
+          },
+        ),
       ),
     );
   }

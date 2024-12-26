@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters, use_build_context_synchronously, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -100,7 +102,7 @@ class _EditAccountState extends State<EditAccount> {
       body: Column(
         children: [
           Container(
-            height: 110,
+            height: 110.h,
             color: Color(0xFF6F7ED7),
             child: Padding(
               padding: const EdgeInsets.only(top: 35, right: 30, left: 30),
@@ -137,8 +139,8 @@ class _EditAccountState extends State<EditAccount> {
                     padding: const EdgeInsets.only(left: 100, bottom: 2),
                     child: Text(
                       'Edit Account',
-                      style: TextStyle(
-                        fontSize: 25,
+                      style: GoogleFonts.openSans(
+                        fontSize: 25.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -158,7 +160,7 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Container(
                           width: double.infinity,
-                          height: 270,
+                          height: 270.h,
                           child: imageFile != null
                               ? Image.file(
                                   imageFile!,
@@ -168,8 +170,8 @@ class _EditAccountState extends State<EditAccount> {
                               : Placeholder(), //i thought maybe we might need something when theres no picture
                         ),
                         Positioned(
-                          top: 200,
-                          left: 110,
+                          top: 200.sp,
+                          left: 110.sp,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
@@ -179,7 +181,7 @@ class _EditAccountState extends State<EditAccount> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.add_a_photo),
-                                SizedBox(width: 8),
+                                SizedBox(width: 8.sp),
                                 Text('Change Picture'),
                               ],
                             ),
@@ -196,8 +198,8 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Personal info',
-                          style: TextStyle(
-                            fontSize: 17,
+                          style: GoogleFonts.openSans(
+                            fontSize: 17.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -211,16 +213,16 @@ class _EditAccountState extends State<EditAccount> {
                             children: [
                               Icon(
                                 Icons.edit,
-                                size: 10,
+                                size: 10.sp,
                                 color: Color(0xFF6F7ED7),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 10.sp,
                               ),
                               Text(
                                 'Edit',
-                                style: TextStyle(
-                                  fontSize: 12,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 12.sp,
                                   color: Color(0xFF6F7ED7),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -239,19 +241,19 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                            'First Name',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 102,
+                          width: 102.sp,//TODO:[Thabang] this is weird, need to find out why
                         ),
                         Text(
                           firstName,
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -260,10 +262,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w,//TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //surname.......................
@@ -274,19 +276,19 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Surname',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 117,
+                          width: 117.sp, //TODO:[Thabang] this is weird, need to find out why
                         ),
                         Text(
                          lastName,
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -295,10 +297,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //username name............................
@@ -309,19 +311,19 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Username',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 110,
+                          width: 110.sp, //TODO:[Thabang] this is weird, need to find out why
                         ),
                         Text(
                           'Flaviyo',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -330,10 +332,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w,//TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //contact details..............................
@@ -344,19 +346,19 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Phone Number',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 75,
+                          width: 75.sp,//TODO:[Thabang] this is weird, need to find out why
                         ),
                         Text(
                           '069 321 3995',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -365,10 +367,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w,//TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //location..........................
@@ -379,19 +381,19 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Location',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 115,
+                          width: 115.w, //TODO:[Thabang] this is weird, need to find out why
                         ),
                         Text(
                           ' Johannesburg',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -400,10 +402,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w,//TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //Address.............................
@@ -414,21 +416,21 @@ class _EditAccountState extends State<EditAccount> {
                       children: [
                         Text(
                           'Address',
-                          style: TextStyle(
-                            fontSize: 15,
+                          style: GoogleFonts.openSans(
+                            fontSize: 15.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          width: 120,
+                          width: 120.w,//TODO:[Thabang] this is weird, need to find out why
                         ),
                         Container(
-                          width: 150,
+                          width: 150.w, 
                           child: Text(
                             '26 Maven , Alberton',
-                            style: TextStyle(
-                              fontSize: 15,
+                            style: GoogleFonts.openSans(
+                              fontSize: 15.sp,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
@@ -438,10 +440,10 @@ class _EditAccountState extends State<EditAccount> {
                     ),
                   ),
                   Container(
-                    width: 500,
+                    width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                     child: Divider(
                       color: Colors.grey,
-                      thickness: 0.5,
+                      thickness: 0.5.sp,
                     ),
                   ),
                   //persona info .........................

@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pharma_nathi/config/text_theme.dart';
 import 'package:pharma_nathi/logging.dart';
 
 import '../../config/color_const.dart';
@@ -35,22 +38,22 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   children: [
                     Image.asset(
                       'assets/images/pharmanathi-mhp-icon.png',
-                      height: 100,
+                      height: 100.h,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       'Welcome to',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
+                      style: GoogleFonts.openSans(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 253, 253, 253),
                       ),
                     ),
                     Text(
                       'PharmaNathi',
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w900,
+                      style: GoogleFonts.openSans(
+                        fontSize: 23.sp,
+                        fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 247, 247, 251),
                       ),
                     ),
@@ -64,35 +67,35 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   children: [
                     Image.asset(
                       'assets/images/onboard_pic1.png',
-                      height: 200,
+                      height: 200.h,
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    SizedBox(height: 10),
+                  children:[
+                    SizedBox(height: 10.h),
                    Text(
                       'Control Your\nSchedule with Ease',
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 17,
+                      style: GoogleFonts.openSans(
+                        fontSize: 17.sp,
                         color: Pallet.NATURAL_FAINT,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       'Easily view, schedule, and manage appointments all in one place. Customize\n'
                       'your availability, reduce no-shows with automatic reminders, and keep your practice\n'
                       'running smoothly.',
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: GoogleFonts.openSans(
+                        fontSize: 14.sp,
                         color: Pallet.NATURAL_FAINT,
                         fontWeight: FontWeight.normal,
                       ),
@@ -100,7 +103,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Row(
@@ -124,7 +127,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
             ],
           ),
         ),

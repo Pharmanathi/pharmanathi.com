@@ -2,13 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pharma_nathi/logging.dart';
+import 'package:pharma_nathi/models/appointment.dart';
+import 'package:pharma_nathi/repositories/appointment_repository.dart';
+import 'package:pharma_nathi/views/widgets/navigationbar.dart';
+import 'package:pharma_nathi/views/widgets/patiant_profile_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../logging.dart';
-import '../../models/appointment.dart';
-import '../../repositories/appointment_repository.dart';
-import '../widgets/navigationbar.dart';
-import '../widgets/patiant_profile_tile.dart';
 
 class PatientList extends StatefulWidget {
   const PatientList({Key? key});
@@ -78,8 +80,8 @@ class _PatientListState extends State<PatientList> {
                 children: [
                   Text(
                     'Patient List',
-                    style: TextStyle(
-                      fontSize: 25,
+                    style: GoogleFonts.openSans(
+                      fontSize: 25.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -90,7 +92,7 @@ class _PatientListState extends State<PatientList> {
                         color: Color(0xFF6F7ED7),
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 15.w,
                       ),
                       Icon(
                         Icons.filter_list,
@@ -107,7 +109,7 @@ class _PatientListState extends State<PatientList> {
                   : patientAppointments.isEmpty
                       ? Center(
                           child: Text('No Patients available',
-                              style: TextStyle(fontSize: 12)),
+                              style: GoogleFonts.openSans(fontSize: 12.sp)),
                         )
                       : ListView.builder(
                           itemCount: patientAppointments.length,

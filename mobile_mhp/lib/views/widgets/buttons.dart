@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyButtonWidgets {
   final String? buttonTextPrimary;
@@ -26,7 +27,7 @@ class MyButtonWidgets {
       style: style,
       child: Text(
         text,
-        style: TextStyle(
+        style: GoogleFonts.openSans(
           color: textColor,
           fontSize: 16,
           fontWeight: FontWeight.bold,
@@ -45,7 +46,7 @@ class MyButtonWidgets {
       minimumSize: Size(320, 45),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero, // No border radius
+        borderRadius: BorderRadius.circular(2),
       ),
     );
 
@@ -71,14 +72,15 @@ class MyButtonWidgets {
           )
         : null;
 
-    final secondaryButton = buttonTextSecondary != null && onPressedSecondary != null
-        ? buildButton(
-            text: buttonTextSecondary!,
-            onPressed: onPressedSecondary!,
-            style: secondaryButtonStyle,
-            textColor: Color(0xFF6F7ED7), // Text color for secondary button
-          )
-        : null;
+    final secondaryButton =
+        buttonTextSecondary != null && onPressedSecondary != null
+            ? buildButton(
+                text: buttonTextSecondary!,
+                onPressed: onPressedSecondary!,
+                style: secondaryButtonStyle,
+                textColor: Color(0xFF6F7ED7), // Text color for secondary button
+              )
+            : null;
 
     List<Widget> buttons = [];
     if (showPrimary && primaryButton != null) {

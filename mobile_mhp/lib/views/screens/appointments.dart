@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, unrelated_type_equality_checks
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:provider/provider.dart';
@@ -205,8 +207,8 @@ class _AppointmentsState extends State<Appointments> {
                   children: [
                     Text(
                       'Appointments',
-                      style: TextStyle(
-                        fontSize: 24,
+                      style: GoogleFonts.openSans(
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -224,26 +226,26 @@ class _AppointmentsState extends State<Appointments> {
                       onTap: _showPreviousMonth,
                       child: Icon(
                         Icons.arrow_back_ios,
-                        size: 12.0,
-                        weight: 700,
+                        size: 12.0.sp,
+                        weight: 700.sp,
                         color: Pallet.Black,
                       ),
                     ),
-                    SizedBox(width: 25),
+                    SizedBox(width: 25.w),
                     Text(
                       '$selectedMonth $currentYear',
-                      style: TextStyle(
-                        fontSize: 12,
+                      style: GoogleFonts.openSans(
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 25),
+                    SizedBox(width: 25.w),
                     GestureDetector(
                       onTap: _showNextMonth,
                       child: Icon(
                         Icons.arrow_forward_ios,
-                        size: 12.0,
-                        weight: 700,
+                        size: 12.0.sp,
+                        weight: 700.sp,
                         color: Pallet.Black,
                       ),
                     ),
@@ -269,8 +271,8 @@ class _AppointmentsState extends State<Appointments> {
                     padding: const EdgeInsets.only(left: 25, bottom: 10),
                     child: Text(
                       '${appointmentsPerDay.length} activities',
-                      style: TextStyle(
-                        fontSize: 12,
+                      style: GoogleFonts.openSans(
+                        fontSize: 12.sp,
                         decoration: TextDecoration.underline,
                         color: Pallet.PRIMARY_COLOR,
                         fontWeight: FontWeight.bold,
@@ -278,27 +280,27 @@ class _AppointmentsState extends State<Appointments> {
                     ),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 5.w,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       'upcoming on',
-                      style: TextStyle(
-                        fontSize: 12,
+                      style: GoogleFonts.openSans(
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 5.w,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       '$selectedDay $selectedMonth $currentYear',
-                      style: TextStyle(
-                        fontSize: 12,
+                      style: GoogleFonts.openSans(
+                        fontSize: 12.sp,
                         color: Pallet.PRIMARY_COLOR,
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold,
@@ -325,8 +327,8 @@ class _AppointmentsState extends State<Appointments> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       'mon', //TODO [Thabang] : set this to get  days auto
-                                      style: TextStyle(
-                                        fontSize: 10,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 10.sp,
                                         color: Pallet.Black,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -336,8 +338,8 @@ class _AppointmentsState extends State<Appointments> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       '$selectedDay',
-                                      style: TextStyle(
-                                        fontSize: 20,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 20.sp,
                                         color: Pallet.Black,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -347,8 +349,8 @@ class _AppointmentsState extends State<Appointments> {
                               ),
                             ),
                             Container(
-                              width: 0.2,
-                              height: 50,
+                              width: 0.2.w,
+                              height: 50.h,
                               color: Pallet.SECONDARY_500,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 12),
@@ -381,8 +383,8 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'all',
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12.sp,
                                         color: selectedButton == 'all' ||
                                                 selectedButton.isEmpty
                                             ? Colors.white
@@ -390,7 +392,7 @@ class _AppointmentsState extends State<Appointments> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 5),
+                                   SizedBox(width: 5.w),
                                   // 'Online' button
                                   TextButton(
                                     onPressed: () {
@@ -413,15 +415,15 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'Online',
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12.sp,
                                         color: selectedButton == 'Online'
                                             ? Colors.white
                                             : Colors.black,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 5),
+                                   SizedBox(width: 5.w),
                                   // 'In Person Visit' button
                                   TextButton(
                                     onPressed: () {
@@ -444,8 +446,8 @@ class _AppointmentsState extends State<Appointments> {
                                     ),
                                     child: Text(
                                       'In Person',
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12.sp,
                                         color: selectedButton == 'InPerson'
                                             ? Colors.white
                                             : Colors.black,
@@ -459,7 +461,7 @@ class _AppointmentsState extends State<Appointments> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 0.2,
+                          height: 0.2.h,
                           color: Pallet.SECONDARY_500,
                         ),
 
@@ -474,13 +476,13 @@ class _AppointmentsState extends State<Appointments> {
                                       children: [
                                         Image.asset(
                                           'assets/images/nodata.png',
-                                          width: 120,
-                                          height: 120,
+                                          width: 120.w,
+                                          height: 120.h,
                                         ),
-                                        SizedBox(height: 20),
+                                        SizedBox(height: 20.h),
                                         Text(
                                           'No appointments available',
-                                          style: TextStyle(fontSize: 12),
+                                          style: GoogleFonts.openSans(fontSize: 12.sp),
                                         ),
                                       ],
                                     ),

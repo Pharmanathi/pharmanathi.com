@@ -3,17 +3,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
-import 'package:pharma_nathi/models/user.dart';
+import 'package:pharma_nathi/logging.dart';
+import 'package:pharma_nathi/models/appointment.dart';
+import 'package:pharma_nathi/repositories/appointment_repository.dart';
+import 'package:pharma_nathi/screens/components/UserProvider.dart';
+import 'package:pharma_nathi/screens/components/bargraph/bargraph.dart';
+import 'package:pharma_nathi/views/widgets/navigationbar.dart';
+import 'package:pharma_nathi/views/widgets/upcoming_appointment_tile.dart';
 import 'package:provider/provider.dart';
-import '../../logging.dart';
-import '../../models/appointment.dart';
-import '../../repositories/appointment_repository.dart';
-import '../../repositories/user_repository.dart';
-import '../widgets/upcoming_appointment_tile.dart';
-import '../../screens/components/UserProvider.dart';
-import '../../screens/components/bargraph/bargraph.dart';
-import '../widgets/navigationbar.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -121,7 +122,6 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 0),
             Container(
               color: Color(0xFFFFFFFF),
               child: Padding(
@@ -130,24 +130,24 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(userProvider.picture ?? ''),
-                      radius: 30,
+                      radius: 30.sp,
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 10.w),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Welcome Back!',
-                          style: TextStyle(fontSize: 14),
+                          style: GoogleFonts.openSans(fontSize: 14),
                         ),
                         Container(
                           width: 270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
                           child: Text(
                             'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
-                            style: TextStyle(
+                            style: GoogleFonts.openSans(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 14.sp,
                             ),
                             softWrap:
                                 true, 
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Container(
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
@@ -171,14 +171,17 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Upcoming Appointments',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                     Text(
                       'See All',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Color(0xFF6F7ED7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                   ],
@@ -186,8 +189,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 20),
-              height: 180,
+              padding: EdgeInsets.only(left: 10),
+              height: 180.h,
               child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -199,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                       ? Center(
                           child: Text(
                             'No upcoming appointments available',
-                            style: TextStyle(fontSize: 12),
+                            style: GoogleFonts.openSans(fontSize: 12.sp),
                           ),
                         )
                       : ListView.builder(
@@ -230,16 +233,19 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Appointments Statistics',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
+                        fontSize: 12.sp
                       ),
                     ),
                     Row(
                       children: [
                         Text(
                           'Last 12 Months',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
                             color: Color(0xFF6F7ED7),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.sp
                           ),
                         ),
                         Icon(
@@ -265,23 +271,24 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Total',
-                            style: TextStyle(
-                              fontSize: 12,
+                            style: GoogleFonts.openSans(
+                              fontSize: 12.sp,
                               color: Colors.grey,
-                              fontWeight: FontWeight.w800,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                           Text(
                             appointmentData.isEmpty
                                 ? '0'
                                 : appointmentData.length.toString(),
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                         ],
                       ),
                       Column(
@@ -290,19 +297,20 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             'Online',
                             style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w800),
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                           Text(
                             '$onlineAppointmentsCount',
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                         ],
                       ),
                       Column(
@@ -310,20 +318,20 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'In Person',
-                            style: TextStyle(
-                                fontSize: 15,
+                            style: GoogleFonts.openSans(
+                                fontSize: 12.sp,
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w800),
+                                fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                           Text(
                             '$inPersonVisitAppointmentsCount',
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.openSans(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                         ],
                       ),
                     ],
@@ -333,8 +341,8 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: Container(
-                width: 430,
-                height: 250,
+                width: 430.w,
+                height: 250.h,
                 child: isLoading
                     ? Center(child: CircularProgressIndicator())
                     : MyBarGraph(
@@ -362,12 +370,14 @@ class _HomePageState extends State<HomePage> {
                           child: Icon(
                             Icons.circle,
                             color: Colors.blue.shade500,
-                            size: 12,
+                            size: 12.sp,
                           ),
                         ),
                         Text(
                           'Online Consultation',
-                          style: TextStyle(
+                          style: GoogleFonts.openSans(
+                            fontSize: 8.sp,
+                            fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),
                           ),
                         ),
@@ -376,13 +386,15 @@ class _HomePageState extends State<HomePage> {
                           child: Icon(
                             Icons.circle,
                             color: Colors.grey,
-                            size: 12,
+                            size: 12.sp,
                           ),
                         ),
                         Text(
                           'In person Visit',
-                          style: TextStyle(
-                            color: Colors.blue.shade500,
+                         style: GoogleFonts.openSans(
+                            fontSize: 8.sp,
+                            fontStyle: FontStyle.normal,
+                            color: Color(0xFF6F7ED7),
                           ),
                         ),
                       ],

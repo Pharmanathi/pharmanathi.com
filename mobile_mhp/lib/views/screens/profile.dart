@@ -1,17 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_super_parameters, use_build_context_synchronously
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
+import 'package:pharma_nathi/views/screens/account.dart';
 import 'package:pharma_nathi/views/screens/manage_appointment.dart';
 import 'package:pharma_nathi/screens/pages/working_hours.dart';
+import 'package:pharma_nathi/views/widgets/buttons.dart';
+import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pharma_nathi/screens/components/image_data.dart';
-import '../widgets/buttons.dart';
-import '../widgets/navigationbar.dart';
-import 'account.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile(
@@ -25,7 +27,7 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   int _selectedIndex = 3;
 
-  // method with modal for logging out
+  //* method with modal for logging out
   void _showModal(BuildContext context, GoogleSignInBloc googleSignInBloc) {
     showDialog(
       context: context,
@@ -48,8 +50,8 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(height: 10),
                 Text(
                   'Log Out?',
-                  style: TextStyle(
-                    fontSize: 25,
+                  style: GoogleFonts.openSans(
+                    fontSize: 25.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -110,7 +112,7 @@ class _MyProfileState extends State<MyProfile> {
             children: [
               Container(
                 width: double.infinity,
-                height: 200,
+                height: 200.h,
                 color: Color(0xFF6F7ED7),
                 child: Column(
                   children: [
@@ -118,8 +120,8 @@ class _MyProfileState extends State<MyProfile> {
                       padding: const EdgeInsets.all(80),
                       child: Text(
                         'Profile',
-                        style: TextStyle(
-                          fontSize: 25,
+                        style: GoogleFonts.openSans(
+                          fontSize: 25.sp,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
@@ -130,18 +132,18 @@ class _MyProfileState extends State<MyProfile> {
               ),
               Container(
                 color: Colors.white,
-                height: 300,
+                height: 300.h,
               ),
             ],
           ),
           Positioned(
-            top: 140,
-            left: 30,
-            right: 30,
-            bottom: 2,
+            top: 140.sp,
+            left: 30.sp,
+            right: 30.sp,
+            bottom: 2.sp,
             child: Container(
               color: Color(0xFFF7F9FC),
-              height: 100,
+              height: 100.h,
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
@@ -156,19 +158,19 @@ class _MyProfileState extends State<MyProfile> {
                           //     ? FileImage(imageProvider.imageFile!)
                           //     : AssetImage('assets/images/sample.JPG')
                           //         as ImageProvider,
-                          radius: 30,
+                          radius: 30.sp,
                         ),
-                        SizedBox(width: 20),
+                        SizedBox(width: 20.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 170,
+                              width: 170.w,
                               child: Text(
                                 'Dr. ${userProvider.user?.firstName} ${userProvider.user?.lastName}',
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                 ),
                               ),
                             ),
@@ -176,8 +178,8 @@ class _MyProfileState extends State<MyProfile> {
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
                                 profession,
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 14.sp,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -187,13 +189,13 @@ class _MyProfileState extends State<MyProfile> {
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     SizedBox(
-                      width: 560,
+                      width: 560.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                     //account information...........
@@ -235,13 +237,13 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.w,
                                 ),
                                 Text(
                                   'Account Information',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -259,10 +261,10 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500,
+                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                     //Education.............................
@@ -290,13 +292,13 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.w,
                                 ),
                                 Text(
                                   'Education',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -314,10 +316,10 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500,
+                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                     //Profesional information....................
@@ -345,13 +347,13 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.w,
                                 ),
                                 Text(
                                   'Profesional Information',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -369,10 +371,10 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500,
+                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                     //Manage Schedule.............................
@@ -399,12 +401,13 @@ class _MyProfileState extends State<MyProfile> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFF6F7ED7),
-                                      minimumSize: Size(320, 50),
+                                      minimumSize: Size(320.sp, 50.sp),
                                     ),
-                                    child: Text('Working Hours'),
+                                    child: Text('Working Hours',
+                                    style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),),
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: 10.h,
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
@@ -418,14 +421,16 @@ class _MyProfileState extends State<MyProfile> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFF6F7ED7),
-                                      minimumSize: Size(320, 50),
+                                      minimumSize: Size(320.sp, 50.sp),
                                       shadowColor: Colors.transparent,
                                       side: BorderSide(
                                         color: Color(0xFF6F7ED7),
-                                        width: 1,
+                                        width: 1.w,
                                       ),
                                     ),
-                                    child: Text('Manage Appointments'),
+                                    child: Text('Manage Appointments',
+                                     style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -453,13 +458,13 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.w,
                                 ),
                                 Text(
                                   'Manage Schedule',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -528,10 +533,10 @@ class _MyProfileState extends State<MyProfile> {
                     //   ),
                     // ),
                     SizedBox(
-                      width: 500,
+                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                     //log out........................
@@ -559,13 +564,13 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.w,
                                 ),
                                 Text(
                                   'Log out',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -583,10 +588,10 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500,
+                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0.5,
+                        thickness: 0.5.sp,
                       ),
                     ),
                   ],

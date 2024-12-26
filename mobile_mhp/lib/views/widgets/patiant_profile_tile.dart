@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/appointment.dart';
 
 class PatientProfileTile extends StatelessWidget {
@@ -38,7 +39,7 @@ class PatientProfileTile extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundColor: (appointment.imageURL?.isNotEmpty ?? false)
+                    backgroundColor: (appointment.imageURL.isNotEmpty)
                         ? null // No background color if imageURL is available
                         : getRandomColor(), // Random background color if imageURL is not available
                     child: ClipOval(
@@ -72,14 +73,14 @@ class PatientProfileTile extends StatelessWidget {
                 children: [
                   Text(
                     appointment.patientName,
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   Text(
                     appointment.patientdetails,
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       color: Colors.grey,
                       fontSize: 14,
                     ),

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../helpers/http_helpers.dart' as http_helpers;
-import '../models/user.dart';
 
 class ApiProvider {
   Future<http.Response> fetchAppointmentData(BuildContext context) async {
