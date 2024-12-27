@@ -82,7 +82,7 @@ jobs:
         SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
         SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
         EOF
-        cp .env.development .env.production
+        cp .env.production .env.development 
     
     - uses: futureware-tech/simulator-action@v3
       with:
