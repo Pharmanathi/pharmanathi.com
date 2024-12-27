@@ -7,22 +7,129 @@ on:
   workflow_dispatch:
 
 jobs:
-  # androind_integration_test:
-  #   name: Run Android integration tests
+  androind_integration_test:
+    name: Run Android integration tests
+    defaults:
+      run:
+          working-directory: ./mobile_mhp
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Enable KVM
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+    - name: Gradle cache
+      uses: gradle/actions/setup-gradle@v3
+      
+    - name: AVD cache
+      uses: actions/cache@v4
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-32
+
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        # api-level: 32
+        # force-avd-creation: false
+        # emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        # disable-animations: false
+        # script: echo "Generated AVD snapshot for caching."
+        # --------> Claude.ai's suggested changes
+        api-level: 32
+        target: default        # explicitly set target
+        arch: x86_64          # specify architecture
+        avd-name: test        # name to match with cache
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        script: echo "Generated AVD snapshot for caching."
+
+    - name: Create .env file
+      run: |
+        pwd
+        cat << EOF > .env.${{ secrets.ENVIRONMENT }}
+        API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
+        APP_LABEL=mhp
+        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
+        SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
+        SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
+        EOF
+        cp .env.${{ secrets.ENVIRONMENT }} .env.development
+        cat .env.${{ secrets.ENVIRONMENT }}
+        cat .env.development
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 3.27.1
+        channel: stable
+        cache: true
+
+    - name: Install dependencies
+      run: flutter pub get
+    - name: Install & Check Patrol cli
+      run: |
+        flutter pub global activate patrol_cli
+        patrol doctor
+    - name: run integration tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        # api-level: 32
+        # target: google_apis
+        # arch: arm64-v8a
+        # force-avd-creation: false
+        # emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        # disable-animations: true
+        # script: cd mobile_mhp && patrol test --verbose integration_test/sign_in_test.dart
+        # --------> Claude.ai's suggested changes
+        api-level: 32
+        target: default
+        arch: x86_64
+        avd-name: test
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        working-directory: mobile_mhp
+        script: |
+          pwd
+          ls -al
+          cat .env.development
+          cat .env.production
+          patrol test --verbose integration_test/sign_in_test.dart
+    # - name: Setup Android emulator and run tests
+    #   uses: reactivecircus/android-emulator-runner@v2
+    #   with:
+    #     api-level: 32
+    #     script: cd mobile_mhp && patrol test --verbose integration_test/sign_in_test.dart
+
+    - name: Upload Android crash logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-crash-logs
+        path: crash_log.txt
+  
+  # #******************************iOS ******************************#
+  # ios_integration_test:
+  #   name: Run iOS integration tests
   #   defaults:
   #     run:
   #         working-directory: ./mobile_mhp
-  #   runs-on: ubuntu-latest
+  #   runs-on: macos-latest
   #   timeout-minutes: 20
+    
   #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Enable KVM
-  #     run: |
-  #       echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-  #       sudo udevadm control --reload-rules
-  #       sudo udevadm trigger --name-match=kvm
-
+  #   - uses: actions/checkout@v3
+  #   - name: Select Xcode version
+  #     run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
   #   - name: Create .env file
   #     run: |
   #       cat << EOF > .env.production
@@ -32,7 +139,11 @@ jobs:
   #       SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
   #       SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
   #       EOF
-  #       touch .env.development
+  #       cp .env.production .env.development 
+    
+  #   - uses: futureware-tech/simulator-action@v3
+  #     with:
+  #       model: 'iPhone 15'
 
   #   - name: Setup Flutter
   #     uses: subosito/flutter-action@v2
@@ -40,73 +151,19 @@ jobs:
   #       flutter-version: 3.27.1
   #       channel: stable
   #       cache: true
-
   #   - name: Install dependencies
   #     run: flutter pub get
   #   - name: Install & Check Patrol cli
   #     run: |
   #       flutter pub global activate patrol_cli
   #       patrol doctor
-  #   - name: Setup Android emulator and run tests
-  #     uses: reactivecircus/android-emulator-runner@v2
-  #     with:
-  #       api-level: 29
-  #       script: cd mobile_mhp && flutter test --verbose integration_test/sign_in_test.dart
-
-  #   - name: Upload Android crash logs
+  #   - name: Run iOS integration tests
+  #     run: |
+  #       ls -al
+  #       patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
+  #   - name: Upload iOS crash logs
   #     if: failure()
   #     uses: actions/upload-artifact@v3
   #     with:
-  #       name: android-crash-logs
+  #       name: ios-crash-logs
   #       path: crash_log.txt
-  
-  #******************************iOS ******************************#
-  ios_integration_test:
-    name: Run iOS integration tests
-    defaults:
-      run:
-          working-directory: ./mobile_mhp
-    runs-on: macos-latest
-    timeout-minutes: 20
-    
-    steps:
-    - uses: actions/checkout@v3
-    - name: Select Xcode version
-      run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
-    - name: Create .env file
-      run: |
-        cat << EOF > .env.production
-        API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
-        APP_LABEL=mhp
-        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
-        SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
-        SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
-        EOF
-        cp .env.production .env.development 
-    
-    - uses: futureware-tech/simulator-action@v3
-      with:
-        model: 'iPhone 15'
-
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: 3.27.1
-        channel: stable
-        cache: true
-    - name: Install dependencies
-      run: flutter pub get
-    - name: Install & Check Patrol cli
-      run: |
-        flutter pub global activate patrol_cli
-        patrol doctor
-    - name: Run iOS integration tests
-      run: |
-        ls -al
-        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
-    - name: Upload iOS crash logs
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: ios-crash-logs
-        path: crash_log.txt

@@ -34,6 +34,8 @@ void main() {
         reason: 'NATHI text should be visible',
       );
 
+      // Delete this comment line!!!
+
       // Verify the Google Sign-In button is present
       final signInButton = find.byType(ElevatedButton);
       expect(
