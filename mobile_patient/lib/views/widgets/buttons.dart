@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:client_pharmanathi/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyButtonWidgets {
   final String? buttonTextPrimary;
@@ -26,9 +29,9 @@ class MyButtonWidgets {
       style: style,
       child: Text(
         text,
-        style: TextStyle(
+        style: GoogleFonts.openSans(
           color: textColor,
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -43,7 +46,7 @@ class MyButtonWidgets {
   }) {
     final primaryButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: Color(0xFF6F7ED7), // Background color for primary button
-      minimumSize: Size(320, 45),
+      minimumSize: Size(320.sp, 45.sp),
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
@@ -52,11 +55,11 @@ class MyButtonWidgets {
 
     final secondaryButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: Colors.white, // Background color for secondary button
-      minimumSize: Size(320, 45),
+      minimumSize: Size(320.sp, 45.sp),
       elevation: 0,
       side: BorderSide(
         color: Color(0xFF6F7ED7),
-        width: 1,
+        width: 1.w,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),

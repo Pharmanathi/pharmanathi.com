@@ -5,6 +5,8 @@ import 'package:patient/views/widgets/navigation_bar.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:patient/views/widgets/appointment_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Appointments extends StatefulWidget {
@@ -54,9 +56,9 @@ class _AppointmentsState extends State<Appointments> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
-      appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(120),
-          child: HeaderWidget(
+      appBar:  PreferredSize(
+          preferredSize: Size.fromHeight(120.sp),
+          child: const HeaderWidget(
             text: 'Appointments',
             showBackButton: false, //* Hide the back button if not needed
           )),
@@ -76,13 +78,13 @@ class _AppointmentsState extends State<Appointments> {
                           children: [
                             Image.asset(
                               'assets/images/nodata.png',
-                              width: 120,
-                              height: 120,
+                              width: 120.w,
+                              height: 120.h,
                             ),
                             const SizedBox(height: 20),
-                            const Text(
+                             Text(
                               'No appointments available',
-                              style: TextStyle(fontSize: 12),
+                              style: GoogleFonts.openSans(fontSize: 12),
                             ),
                           ],
                         ),

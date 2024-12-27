@@ -1,5 +1,7 @@
 import 'package:patient/config/color_const.dart';
+import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -74,21 +76,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10.0),
             child: Image.asset(
               icon,
-              width: 54,
-              height: 24,
+              width: 54.w,
+              height: 24.h,
               color: isSelected ? selectedColor : unselectedColor,
             ),
           ),
           if (isSelected)
             Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
+              top: 0.sp,
+              left: 0.sp,
+              right: 0.sp,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Container(
-                  width: 50,
-                  height: 4.0,
+                  width: 50.w,
+                  height: 4.0.h,
                   decoration: BoxDecoration(
                     color: selectedColor,
                     borderRadius: BorderRadius.circular(15),

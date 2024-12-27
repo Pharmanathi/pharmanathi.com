@@ -1,7 +1,10 @@
 import 'package:patient/config/color_const.dart';
 import 'package:patient/helpers/api_helpers.dart';
+import 'package:patient/main.dart';
 import 'package:patient/model/appointment_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RecentAppointmentsTile extends StatelessWidget {
   final Appointment appointment;
@@ -28,27 +31,27 @@ class RecentAppointmentsTile extends StatelessWidget {
           children: [
             Text(
               name,
-              style: const TextStyle(
-                fontSize: 12,
+              style: GoogleFonts.openSans(
+                fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
               ),
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Text(
               appointment.appointmentDate,
-              style: const TextStyle(
-                fontSize: 12,
+              style: GoogleFonts.openSans(
+                fontSize: 12.sp,
                 color: Pallet.NEUTRAL_200,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6.h),
             Text(
               formatAppointmentTime(
                   appointment.appointmentTime, appointment.endTime),
-              style: const TextStyle(
-                fontSize: 12,
+              style: GoogleFonts.openSans(
+                fontSize: 12.sp,
                 color: Pallet.NEUTRAL_200,
                 fontWeight: FontWeight.w300,
               ),

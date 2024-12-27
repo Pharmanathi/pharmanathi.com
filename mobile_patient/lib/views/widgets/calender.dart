@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print, unnecessary_string_interpolations, prefer_final_fields
 
 import 'package:patient/config/color_const.dart';
+import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:patient/services/timeslot_api.dart';
 
@@ -116,7 +119,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Pallet.PRAMARY_100,
-                  width: 1.0,
+                  width: 1.0.w,
                 ),
                 borderRadius: BorderRadius.circular(5.0),
               ),
@@ -137,14 +140,14 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                     color: Pallet.PRAMARY_75,
                     border: Border.all(
                       color: Pallet.PRIMARY_COLOR,
-                      width: 1.0,
+                      width: 1.0.w,
                     ),
                   ),
-                  todayTextStyle: const TextStyle(
+                  todayTextStyle: GoogleFonts.openSans(
                     color: Color.fromARGB(255, 26, 25, 25),
                     fontWeight: FontWeight.bold,
                   ),
-                  selectedTextStyle: const TextStyle(
+                  selectedTextStyle: GoogleFonts.openSans(
                     color: Pallet.PRAMARY_75,
                     fontWeight: FontWeight.normal,
                   ),
@@ -175,16 +178,16 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               ),
             ),
           ),
-          const SizedBox(height: 1.0),
-          const Padding(
+          SizedBox(height: 1.0.h),
+          Padding(
             padding: EdgeInsets.only(left: 30, top: 20, bottom: 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Available Time',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.normal,
                     fontStyle: FontStyle.normal),
               ),
@@ -201,18 +204,18 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                   );
                 } else if (value.isEmpty) {
                   // Show 'No time available' if there are no time slots
-                  return const Center(
+                  return Center(
                     child: Text(
                       'No time available',
-                      style: TextStyle(fontSize: 16),
+                      style: GoogleFonts.openSans(fontSize: 16.sp),
                     ),
                   );
                 } else {
                   // Show the time slots when available
                   return SingleChildScrollView(
                     child: Wrap(
-                      spacing: 10.0,
-                      runSpacing: 8.0,
+                      spacing: 10.0.sp,
+                      runSpacing: 8.0.sp,
                       children: List.generate(
                         value.length,
                         (index) => GestureDetector(
@@ -224,8 +227,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                             _onTimeSlotSelected(value[index]);
                           },
                           child: Container(
-                            height: 45,
-                            width: 120,
+                            height: 45.h,
+                            width: 120.w,
                             decoration: BoxDecoration(
                               color: _selectedButtonIndex == index
                                   ? Pallet.PRIMARY_COLOR
@@ -235,8 +238,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                               child: Text(
                                 '${value[index].split(' - ')[0]}', //* Display only the start time
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.0,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 16.0.sp,
                                   fontWeight: FontWeight.normal,
                                   fontStyle: FontStyle.normal,
                                   color: _selectedButtonIndex == index
