@@ -1,21 +1,78 @@
 name: Test, Build and Release Pharmanathi MHP Android APKs
 
 on: 
-    push:
-        paths:
-            - 'mobile_mhp/**' 
-    workflow_dispatch:
+  push:
+    paths:
+       - 'mobile_mhp/**' 
+  workflow_dispatch:
 
 jobs:
-  test_build_deploy:
-    name: Test, Build and Release MHP App
+  # androind_integration_test:
+  #   name: Run Android integration tests
+  #   defaults:
+  #     run:
+  #         working-directory: ./mobile_mhp
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@v4
+
+  #   - name: Enable KVM
+  #     run: |
+  #       echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+  #       sudo udevadm control --reload-rules
+  #       sudo udevadm trigger --name-match=kvm
+
+  #   - name: Create .env file
+  #     run: |
+  #       cat << EOF > .env.production
+  #       API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
+  #       APP_LABEL=mhp
+  #       ENVIRONMENT=${{ secrets.ENVIRONMENT }}
+  #       SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
+  #       SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
+  #       EOF
+  #       touch .env.development
+
+  #   - name: Setup Flutter
+  #     uses: subosito/flutter-action@v2
+  #     with:
+  #       flutter-version: 3.27.1
+  #       channel: stable
+  #       cache: true
+
+  #   - name: Install dependencies
+  #     run: flutter pub get
+  #   - name: Install & Check Patrol cli
+  #     run: |
+  #       flutter pub global activate patrol_cli
+  #       patrol doctor
+  #   - name: Setup Android emulator and run tests
+  #     uses: reactivecircus/android-emulator-runner@v2
+  #     with:
+  #       api-level: 29
+  #       script: cd mobile_mhp && flutter test --verbose integration_test/sign_in_test.dart
+
+  #   - name: Upload Android crash logs
+  #     if: failure()
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: android-crash-logs
+  #       path: crash_log.txt
+  
+  #******************************iOS ******************************#
+  ios_integration_test:
+    name: Run iOS integration tests
     defaults:
       run:
           working-directory: ./mobile_mhp
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    timeout-minutes: 20
+    
     steps:
-    - uses: actions/checkout@v4
-
+    - uses: actions/checkout@v3
+    - name: Select Xcode version
+      run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
         cat << EOF > .env.production
@@ -25,21 +82,31 @@ jobs:
         SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
         SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
         EOF
-        touch .env.development
+        cp .env.development .env.production
+    
+    - uses: futureware-tech/simulator-action@v3
+      with:
+        model: 'iPhone 15'
 
-    - uses: actions/setup-java@v1
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
       with:
-        java-version: '17.x'
-    - uses: subosito/flutter-action@v1
+        flutter-version: 3.27.1
+        channel: stable
+        cache: true
+    - name: Install dependencies
+      run: flutter pub get
+    - name: Install & Check Patrol cli
+      run: |
+        flutter pub global activate patrol_cli
+        patrol doctor
+    - name: Run iOS integration tests
+      run: |
+        ls -al
+        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
+    - name: Upload iOS crash logs
+      if: failure()
+      uses: actions/upload-artifact@v3
       with:
-        flutter-version: '3.24.1'
-    - run: flutter pub get
-    - run: flutter build apk --split-per-abi --debug
-    - name: Compute short SHA
-      id: short_sha_compute 
-      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-    - name: Upload debug artificats
-      uses: actions/upload-artifact@v4
-      with:
-        name: mhp.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
-        path: mobile_mhp/build/app/outputs/flutter-apk/app-arm64-v8a-debug.apk
+        name: ios-crash-logs
+        path: crash_log.txt
