@@ -9,6 +9,8 @@ void main() {
     (tester) async {
       await app.main();
 
+      // Add longer initial wait for CI
+      await Future.delayed(const Duration(seconds: 7));
       // Wait for the app to stabilize
       await tester.pumpAndSettle(duration: Duration(seconds: 3));
       await tester.pump(const Duration(seconds: 1));
@@ -20,17 +22,17 @@ void main() {
         reason: 'Pharma Nathi logo should be visible',
       );
 
-      // expect(
-      //   find.text('PHARMA'),
-      //   findsOneWidget,
-      //   reason: 'PHARMA text should be visible',
-      // );
+      expect(
+        find.text('PHARMA'),
+        findsOneWidget,
+        reason: 'PHARMA text should be visible',
+      );
 
-      // expect(
-      //   find.text('NATHI'),
-      //   findsOneWidget,
-      //   reason: 'NATHI text should be visible',
-      // );
+      expect(
+        find.text('NATHI'),
+        findsOneWidget,
+        reason: 'NATHI text should be visible',
+      );
 
       // Verify the Google Sign-In button is present
       final signInButton = find.byType(ElevatedButton);
