@@ -6,8 +6,11 @@ import 'package:patient/model/doctor_data.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:patient/views/widgets/doctor_tile.dart';
 import 'package:patient/views/widgets/navigation_bar.dart';
+import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Doctors extends StatefulWidget {
@@ -299,13 +302,14 @@ class _DoctorsState extends State<Doctors> {
                                 children: [
                                   Image.asset(
                                     'assets/images/nodata.png',
-                                    width: 120,
-                                    height: 120,
+                                    width: 120.w,
+                                    height: 120.h,
                                   ),
-                                  const SizedBox(height: 20),
-                                  const Text(
+                                  SizedBox(height: 20.h),
+                                  Text(
                                     'No doctors available',
-                                    style: TextStyle(fontSize: 12),
+                                    style:
+                                        GoogleFonts.openSans(fontSize: 12.sp),
                                   ),
                                 ],
                               ),

@@ -2,10 +2,13 @@
 
 import 'package:patient/config/color_const.dart';
 import 'package:patient/helpers/api_helpers.dart';
+import 'package:patient/main.dart';
 import 'package:patient/model/appointment_data.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:patient/views/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppiontmentDetails extends StatelessWidget {
   final Appointment appointment;
@@ -31,7 +34,7 @@ class AppiontmentDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
               child: Container(
-                width: double.infinity,
+                width: double.infinity.sp,
                 decoration: BoxDecoration(
                   color: Pallet.PURE_WHITE,
                   borderRadius: BorderRadius.circular(15),
@@ -46,7 +49,7 @@ class AppiontmentDetails extends StatelessWidget {
                           CircleAvatar(
                             backgroundImage:
                                 NetworkImage(appointment.doctor.imageURL),
-                            radius: 25,
+                            radius: 25.sp,
                           ),
                           // Positioned(
                           //   right: 0,
@@ -62,7 +65,7 @@ class AppiontmentDetails extends StatelessWidget {
                           // ),
                         ],
                       ),
-                      SizedBox(width: 20),
+                      SizedBox(width: 20.h),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -70,13 +73,13 @@ class AppiontmentDetails extends StatelessWidget {
                             'Dr. $alteredname',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                            style: GoogleFonts.openSans(
+                                fontSize: 14.sp, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             appointment.doctor.getAllSpecialityNames(),
-                            style: TextStyle(
-                              fontSize: 12,
+                            style: GoogleFonts.openSans(
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.normal,
                               color: Colors.grey,
                             ),
@@ -120,7 +123,8 @@ class AppiontmentDetails extends StatelessWidget {
                 children: [
                   Text(
                     'Booking Info',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.openSans(
+                        fontSize: 12.sp, fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
@@ -141,8 +145,8 @@ class AppiontmentDetails extends StatelessWidget {
                             padding: const EdgeInsets.all(6),
                             child: Text(
                               appointment.status,
-                              style: TextStyle(
-                                fontSize: 10,
+                              style: GoogleFonts.openSans(
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.normal,
                                 color: {
                                   'Upcoming': Colors.white,
@@ -192,7 +196,7 @@ class AppiontmentDetails extends StatelessWidget {
               ),
             ),
             //buttons
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
                 .buildButtons(primaryFirst: false),
           ],
@@ -227,15 +231,15 @@ class AppiontmentDetails extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 19,
+                size: 19.sp,
                 color: Colors.grey,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: GoogleFonts.openSans(
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -247,8 +251,8 @@ class AppiontmentDetails extends StatelessWidget {
           padding: const EdgeInsets.only(left: 45, top: 0),
           child: Text(
             displayValue,
-            style: TextStyle(
-              fontSize: 12,
+            style: GoogleFonts.openSans(
+              fontSize: 12.sp,
               color: Colors.grey,
             ),
           ),

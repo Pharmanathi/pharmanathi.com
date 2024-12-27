@@ -3,9 +3,12 @@
 import 'dart:math';
 
 import 'package:patient/config/color_const.dart';
+import 'package:patient/main.dart';
 import 'package:patient/model/doctor_data.dart';
 import 'package:patient/screens/components/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/api_helpers.dart';
@@ -81,13 +84,19 @@ class CustomDoctorCard extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             CircleAvatar(
+<<<<<<< HEAD
                               radius: 50,
                               backgroundColor: Pallet.PURE_WHITE,
+=======
+                              radius:
+                                  35, 
+                              backgroundColor:Pallet.PURE_WHITE,
+>>>>>>> 45de284a (feat: add screenutils and google fonts)
                               child: CircleAvatar(
                                 backgroundColor: doctor.imageURL.isNotEmpty
                                     ? null // No background color if imageURL is available
                                     : getRandomColor(), // Random background color if imageURL is not available
-                                radius: 35, // Inner circle radius
+                                radius: 28, // Inner circle radius
                                 child: doctor.imageURL.isNotEmpty
                                     ? ClipOval(
                                         child: Image.network(
@@ -101,8 +110,8 @@ class CustomDoctorCard extends StatelessWidget {
                                         doctor.doctorLastName.isNotEmpty
                                             ? doctor.doctorLastName[0]
                                             : '',
-                                        style: TextStyle(
-                                          fontSize: 60,
+                                        style: GoogleFonts.openSans(
+                                          fontSize: 14.sp,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -126,22 +135,22 @@ class CustomDoctorCard extends StatelessWidget {
                             // ),
                           ],
                         ),
-                        SizedBox(width: 30),
+                        SizedBox(width: 25.sp),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               alteredname,
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontStyle: FontStyle.normal),
                             ),
                             Text(
                               doctor.getAllSpecialityNames(),
-                              style: TextStyle(
+                              style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 14,
+                                  fontSize: 12.sp,
                                   fontStyle: FontStyle.normal),
                             ),
                             // Text(

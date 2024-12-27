@@ -1,4 +1,7 @@
+import 'package:client_pharmanathi/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String text;
@@ -15,8 +18,8 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 120,
+      width: double.infinity.sp,
+      height: 120.h,
       color: const Color(0xFF6F7ED7),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,23 +42,21 @@ class HeaderWidget extends StatelessWidget {
                     ),
                   ),
                 if (!showBackButton)
-                  const SizedBox(width: 10), // Placeholder for back button space
-
-                const Spacer(), // Push text to center
-
+                   SizedBox(width: 10.h), // Placeholder for back button space
+                const Spacer(), 
                 Text(
                   text,
-                  style: const TextStyle(
+                  style:GoogleFonts.openSans(
                     color: Colors.white,
-                    fontSize: 21,
+                    fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const Spacer(), // Push text to center
+                const Spacer(), 
 
                 if (showBackButton)
-                  const SizedBox(width: 30), // Placeholder to balance the back button width
+                   SizedBox(width: 30.w), //* Placeholder to balance the back button width
               ],
             ),
           ),

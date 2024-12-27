@@ -5,6 +5,8 @@ import 'package:patient/blocs/sign_in_bloc.dart';
 import 'package:patient/helpers/api_helpers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -151,35 +153,41 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'OpenSans',
-      ),
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: AppRoutes.generateRoute,
-      home: FutureBuilder<bool>(
-        future: _checkFirstTimeSignIn(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox.shrink();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            String initialRoute =
-                snapshot.data == true ? AppRoutes.signIn : AppRoutes.onboarding;
-            if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
-              if (ApiHelper.retrieveLocaAPIToken(context) != null) {
-                initialRoute = AppRoutes.appointments;
+    return ScreenUtilInit(
+      designSize: const Size(390, 845),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+        ),
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: AppRoutes.generateRoute,
+        home: FutureBuilder<bool>(
+          future: _checkFirstTimeSignIn(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox.shrink();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              String initialRoute = snapshot.data == true
+                  ? AppRoutes.signIn
+                  : AppRoutes.onboarding;
+              if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+                if (ApiHelper.retrieveLocaAPIToken(context) != null) {
+                  initialRoute = AppRoutes.appointments;
+                }
               }
-            }
 
-            return Navigator(
-              initialRoute: initialRoute,
-              onGenerateRoute: AppRoutes.generateRoute,
-            );
-          }
-        },
+              return Navigator(
+                initialRoute: initialRoute,
+                onGenerateRoute: AppRoutes.generateRoute,
+              );
+            }
+          },
+        ),
       ),
     );
   }

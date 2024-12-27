@@ -4,9 +4,12 @@ import 'dart:math';
 
 import 'package:patient/config/color_const.dart';
 import 'package:patient/helpers/api_helpers.dart';
+import 'package:patient/main.dart';
 import 'package:patient/model/appointment_data.dart';
 import 'package:patient/views/widgets/appointment_details_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentListItem extends StatelessWidget {
@@ -84,7 +87,6 @@ class ProfileCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => AppiontmentDetails(
               appointment: appointment,
-              // Add more parameters as needed
             ),
           ),
         );
@@ -92,7 +94,7 @@ class ProfileCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 0, right: 12, left: 12, bottom: 5),
         child: SizedBox(
-          height: 160,
+          height: 160.h,
           child: Column(
             children: [
               Container(
@@ -129,16 +131,16 @@ class ProfileCard extends StatelessWidget {
                                         appointment.patient.firstName.isNotEmpty
                                             ? appointment.patient.firstName[0]
                                             : '',
-                                        style: TextStyle(
-                                            fontSize: 14,
+                                        style: GoogleFonts.openSans(
+                                            fontSize: 14.sp,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
 
-                                radius: 28,
+                                radius: 28.sp,
                               ),
                               SizedBox(
-                                width: 26,
+                                width: 26.w,
                               ),
                               Column(
                                 children: [
@@ -155,9 +157,8 @@ class ProfileCard extends StatelessWidget {
                                             // width: 100,
                                             child: Text(
                                               'Dr. $alteredname',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'OpenSans',
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                               overflow: TextOverflow.ellipsis,
@@ -170,8 +171,8 @@ class ProfileCard extends StatelessWidget {
                                           child: Text(
                                             appointment.doctor
                                                 .getAllSpecialityNames(),
-                                            style: TextStyle(
-                                              fontSize: 10,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 10.sp,
                                               fontWeight: FontWeight.normal,
                                               color: Colors.grey,
                                             ),
@@ -189,7 +190,7 @@ class ProfileCard extends StatelessWidget {
                             width: double.infinity,
                             child: Divider(
                               color: Color(0xFFF7F9FC),
-                              thickness: 2,
+                              thickness: 2.sp,
                             ),
                           ),
                           Padding(
@@ -207,8 +208,8 @@ class ProfileCard extends StatelessWidget {
                                               const EdgeInsets.only(left: 0),
                                           child: Text(
                                             'Date',
-                                            style: TextStyle(
-                                                fontSize: 10,
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -220,8 +221,8 @@ class ProfileCard extends StatelessWidget {
                                               const EdgeInsets.only(left: 0),
                                           child: Text(
                                             'Time',
-                                            style: TextStyle(
-                                                fontSize: 10,
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
@@ -233,8 +234,8 @@ class ProfileCard extends StatelessWidget {
                                           Text(
                                             formatAppointmentDate(
                                                 appointment.appointmentDate),
-                                            style: const TextStyle(
-                                              fontSize: 10,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 10.sp,
                                               fontWeight: FontWeight.w200,
                                             ),
                                           ),
@@ -242,8 +243,8 @@ class ProfileCard extends StatelessWidget {
                                             formatAppointmentTime(
                                                 appointment.appointmentTime,
                                                 appointment.endTime),
-                                            style: const TextStyle(
-                                              fontSize: 10,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 10.sp,
                                               fontWeight: FontWeight.w200,
                                             ),
                                           ),
@@ -270,8 +271,8 @@ class ProfileCard extends StatelessWidget {
                                               padding: const EdgeInsets.all(6),
                                               child: Text(
                                                 appointment.status,
-                                                style: TextStyle(
-                                                  fontSize: 10,
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 10.sp,
                                                   fontWeight: FontWeight.normal,
                                                   color: {
                                                     'Upcoming': Colors.white,
