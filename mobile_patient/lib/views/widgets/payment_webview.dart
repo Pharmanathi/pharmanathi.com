@@ -1,4 +1,8 @@
+import 'package:client_pharmanathi/config/color_const.dart';
+import 'package:client_pharmanathi/views/widgets/HeaderWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../main.dart';
 
@@ -22,7 +26,12 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Paystack Payment')),
+      appBar:  PreferredSize(
+          preferredSize: Size.fromHeight(120.sp),
+          child: const HeaderWidget(
+            text: 'Payment',
+            showBackButton: false, //* Hide the back button if not needed
+          )),
       body: Stack(
         children: [
           WebView(

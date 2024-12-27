@@ -4,6 +4,8 @@ import 'package:client_pharmanathi/model/appointment_data.dart';
 import 'package:client_pharmanathi/views/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/recent_appointments_tile.dart';
 
 
@@ -59,13 +61,13 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+           Padding(
             padding: EdgeInsets.only(top: 50,left: 25,right: 20,bottom: 10),
             child: Text(
               'Recently Visited',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontWeight: FontWeight.bold,
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
           ),

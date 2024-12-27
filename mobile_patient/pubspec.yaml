@@ -30,6 +30,8 @@ dependencies:
   webview_flutter: ^3.0.4
   flutter_bloc: ^8.0.0
   app_links: ^6.3.2
+  flutter_screenutil: ^5.9.3
+  google_fonts: ^6.2.1
   # url_launcher: ^6.3.0
   # uni_links: ^0.5.1 # @TODO(nehemie): move to app_links(https://pub.dev/packages/app_links)
 

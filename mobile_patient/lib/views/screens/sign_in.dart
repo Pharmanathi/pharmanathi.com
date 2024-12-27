@@ -2,10 +2,13 @@
 
 import 'package:client_pharmanathi/Repository/sign_in_repository.dart';
 import 'package:client_pharmanathi/blocs/sign_in_bloc.dart';
+import 'package:client_pharmanathi/main.dart';
 import 'package:client_pharmanathi/routes/app_routes.dart';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
 import 'package:client_pharmanathi/services/api_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,27 +35,27 @@ class GoogleSignInWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 60),
                       child: SizedBox(
-                        height: 200,
+                        height: 200.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
                               'assets/images/pharmanathi-patient-icon.png',
-                              height: 100,
+                              height: 100.h,
                             ),
-                            const Text(
+                             Text(
                               'PHARMA',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w900,
+                              style: GoogleFonts.openSans(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 101, 115, 207),
                               ),
                             ),
-                            const Text(
+                             Text(
                               'NATHI',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w900,
+                              style: GoogleFonts.openSans(
+                                fontSize: 23.sp,
+                                fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 101, 115, 207),
                               ),
                             ),
@@ -122,9 +125,9 @@ class GoogleSignInWidget extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/images/google.png',
-                                height: 24,
+                                height: 24.h,
                               ),
-                              const SizedBox(width: 8),
+                               SizedBox(width: 8.h),
                               const Text('Sign In with Google'),
                             ],
                           ),

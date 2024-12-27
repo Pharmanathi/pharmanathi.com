@@ -4,12 +4,15 @@ import 'dart:io';
 import 'package:client_pharmanathi/Repository/appointment_repository.dart';
 import 'package:client_pharmanathi/blocs/appointment_bloc.dart';
 import 'package:client_pharmanathi/config/color_const.dart';
+import 'package:client_pharmanathi/main.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/views/widgets/buttons.dart';
 import 'package:flutter/services.dart';
 import 'package:client_pharmanathi/views/widgets/calender.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../services/api_provider.dart';
 import '../../model/calender_events.dart';
 
@@ -168,7 +171,7 @@ class _BookingsState extends State<Bookings> {
           //  header container
           Container(
             width: double.infinity,
-            height: 130,
+            height: 130.h,
             color: const Color(0xFF6F7ED7),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,11 +193,11 @@ class _BookingsState extends State<Bookings> {
                           ),
                         ),
                       ),
-                      const Text(
+                       Text(
                         'Booking',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Colors.white,
-                            fontSize: 21.0,
+                            fontSize: 21.0.sp,
                             fontWeight: FontWeight.normal,
                             fontStyle: FontStyle.normal),
                       ),
@@ -213,7 +216,7 @@ class _BookingsState extends State<Bookings> {
                 border: Border(
                   bottom: BorderSide(
                     color: Colors.grey,
-                    width: 0.2,
+                    width: 0.2.w,
                   ),
                 ),
               ),
@@ -230,11 +233,11 @@ class _BookingsState extends State<Bookings> {
           //* Switch between different sections based on the selected button index
           if (selectedButtonIndex == 0)
             Container(
-                height: 600,
+                height: 600.h,
                 child: Column(
                   children: [
                     Container(
-                      height: 550,
+                      height: 550.h,
                       child: Visibility(
                         visible: selectedButtonIndex == 0,
                         child: TableEventsExample(
@@ -283,7 +286,7 @@ class _BookingsState extends State<Bookings> {
                         controller: reasonForVisitControler,
                         decoration: InputDecoration(
                           hintText: 'Reason for your visit',
-                          hintStyle: TextStyle(
+                          hintStyle: GoogleFonts.openSans(
                               color: Colors.grey,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.normal),
@@ -293,8 +296,8 @@ class _BookingsState extends State<Bookings> {
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 25.0, horizontal: 5),
+                          contentPadding:  EdgeInsets.symmetric(
+                              vertical: 25.0.sp, horizontal: 5.sp),
                         ),
                         maxLines: null,
                       ),
@@ -316,19 +319,19 @@ class _BookingsState extends State<Bookings> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 0),
                                 child: Container(
-                                  width: 300,
+                                  width: 300.w,
                                   child: Text(
                                     'These files will only be available for your Doctor',
-                                    style: TextStyle(
+                                    style: GoogleFonts.openSans(
                                       color: Pallet.PRIMARY_250,
-                                      fontSize: 12
+                                      fontSize: 12.sp
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 20.h),
                               Container(
-                                height: 50,
+                                height: 50.h,
                                 child: ElevatedButton(
                                   onPressed: _pickFile,
                                   style: ElevatedButton.styleFrom(
@@ -338,7 +341,7 @@ class _BookingsState extends State<Bookings> {
                                       borderRadius: BorderRadius.circular(5.0),
                                       side: BorderSide(
                                         color: Pallet.PRIMARY_COLOR, 
-                                        width: 1.0, 
+                                        width: 1.0.w, 
                                       ),
                                     ),
                                   ),
@@ -346,19 +349,20 @@ class _BookingsState extends State<Bookings> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.publish_sharp),
-                                      SizedBox(width: 7),
-                                      Text('UPLOAD', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                                      SizedBox(width: 7.w),
+                                      Text('UPLOAD', style: GoogleFonts.openSans(fontSize: 14.sp, fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 10.h
+                              ),
                               _pickedFile != null
                                   ? Column(
                                       children: [
                                         Text(
                                             'Selected File: ${_pickedFile!.path}'),
-                                        SizedBox(height: 20),
+                                        SizedBox(height: 20.h),
                                         Image.file(_pickedFile!),
                                       ],
                                     )
@@ -388,7 +392,7 @@ class _BookingsState extends State<Bookings> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //doctor name
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20.h,),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
@@ -396,25 +400,25 @@ class _BookingsState extends State<Bookings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 300,
+                            width: 300.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Doctor",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(height: 8.h,),
                                 Text(
                                   "${widget.doctor.doctorFullName}",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
                               ],
@@ -439,24 +443,24 @@ class _BookingsState extends State<Bookings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 300,
+                            width: 300.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Date",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(height: 8.h,),
                                 Text(
                                   "${dayOfAppiontment != null ? "${dayOfAppiontment!.day} ${_getMonthName(dayOfAppiontment!.month)} ${dayOfAppiontment!.year}" : "Select a day"}",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -483,24 +487,24 @@ class _BookingsState extends State<Bookings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 300,
+                            width: 300.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Time",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(height: 8.h,),
                                 Text(
                                   timeOfTheAppointment ?? "Select a time",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -526,24 +530,24 @@ class _BookingsState extends State<Bookings> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 300,
+                            width: 300.w,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Consultation fes",
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                   ),
                                 ),
-                                SizedBox(height: 8,),
+                                SizedBox(height: 8.h,),
                                 Text(
                                    widget.doctor.appointmentType?.cost.toString() ?? '',
-                                  style: TextStyle(
+                                  style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -561,7 +565,7 @@ class _BookingsState extends State<Bookings> {
                       ),
                     ),
                     buildDivider(),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20.h,),
                     Center(
                       child: MyButtonWidgets(
                         buttonTextPrimary: _isLoading
@@ -576,7 +580,7 @@ class _BookingsState extends State<Bookings> {
                             ? CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                     Colors.white), // Loading indicator color
-                                strokeWidth: 2.0, // Spinner thickness
+                                strokeWidth: 1.0, 
                               )
                             : null, // Only show the spinner when loading
                       ),
@@ -604,7 +608,7 @@ class _BookingsState extends State<Bookings> {
                 color: selectedButtonIndex == index
                     ? const Color(0xFF6F7ED7)
                     : Colors.transparent,
-                width: 3,
+                width: 3.w,
               ),
             ),
           ),
@@ -612,9 +616,9 @@ class _BookingsState extends State<Bookings> {
             padding: const EdgeInsets.only(right: 10),
             child: Text(
               text,
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontStyle: FontStyle.normal,
                 color: selectedButtonIndex == index
                     ? const Color(0xFF6F7ED7)
@@ -633,9 +637,9 @@ class _BookingsState extends State<Bookings> {
       padding: const EdgeInsets.only(top: 10, left: 15),
       child: Text(
         title,
-        style: const TextStyle(
+        style:GoogleFonts.openSans(
           color: Colors.black,
-          fontSize: 15.0,
+          fontSize: 15.0.sp,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.normal,
         ),
@@ -650,9 +654,8 @@ class _BookingsState extends State<Bookings> {
       child: Align(
         alignment: Alignment.center,
         child: FractionallySizedBox(
-          widthFactor: 0.95, //* Set the width to 95% of the available space
+          widthFactor: 0.95.sp, //* Set the width to 95% of the available space
           child: Divider(
-            height: 0,
             color: Colors.grey[200],
           ),
         ),

@@ -3,10 +3,13 @@
 import 'dart:math';
 
 import 'package:client_pharmanathi/config/color_const.dart';
+import 'package:client_pharmanathi/main.dart';
 import 'package:client_pharmanathi/model/doctor_data.dart';
 import 'package:client_pharmanathi/screens/components/UserProvider.dart';
 import 'package:client_pharmanathi/views/widgets/HeaderWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'bookings.dart';
 
@@ -50,12 +53,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             ),
             // ignore: prefer_const_constructors
             Container(
-              height: 10,
+              height: 10.h,
               color: Pallet.BACKGROUND_COLOR,
               // color: const Color.fromARGB(255, 22, 76, 156),
               // child: const SizedBox(height: 20,),
             ),
-            const SizedBox(height: 20,),
+             SizedBox(height: 20.h,),
             //* Container for video icon and text icon
             Container(
               child: Column(
@@ -80,40 +83,40 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 widget.doctor.doctorFullName.isNotEmpty
                                     ? widget.doctor.doctorFullName[0]
                                     : '',
-                                style: const TextStyle(
-                                    fontSize: 50,
+                                style:GoogleFonts.openSans(
+                                    fontSize: 50.sp,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
-                        radius: 50,
+                        radius: 50.sp,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                   SizedBox(height: 10.h),
                   // Doctor's name
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Text(
                       'Dr ${widget.doctor.doctorFullName}',
-                      style: const TextStyle(
+                      style:  GoogleFonts.openSans(
                         color: Colors.black,
-                        fontSize: 22.0,
+                        fontSize: 22.0.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Text(
                     widget.doctor.getAllSpecialityNames(),
-                    style: const TextStyle(
+                    style:GoogleFonts.openSans(
                       color: Pallet.NEUTRAL_200,
-                      fontSize: 15.0,
+                      fontSize: 15.0.sp,
                       fontStyle: FontStyle.normal
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+             SizedBox(height: 30.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -121,28 +124,28 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      const Text(
+                       Text(
                         'Consultation fee',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                           color: Colors.black,
-                          fontSize: 11.0,
+                          fontSize: 11.0.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         'R ${widget.doctor.appointmentType?.cost ?? 'N/A'}',
-                        style: const TextStyle(
+                        style:GoogleFonts.openSans(
                           color: Pallet.NEUTRAL_200,
-                          fontSize: 16.0,
+                          fontSize: 16.0.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 25),
+                 SizedBox(width: 25.w),
                 Container(
-                  height: 32,
+                  height: 32.h,
                   child: ElevatedButton(
                     onPressed: () {
                       // Navigate to the booking  page
@@ -168,11 +171,11 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
+                    child: Text(
                       "Book Appointment",
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Pallet.PURE_WHITE,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal
                       ),
@@ -181,10 +184,10 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 ),
               ],
             ),
-            const SizedBox(height: 35),
+             SizedBox(height: 35.h),
             Expanded(
               child: Container(
-                width: double.infinity,
+                width: double.infinity.sp,
                 color: Pallet.BACKGROUND_COLOR,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -193,7 +196,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       children: [
                         buildSectionTile('Experience and Qualifications',
                             Icons.military_tech_outlined),
-                        const SizedBox(height: 10),
+                         SizedBox(height: 10.h),
                         buildSectionTile('Working Address', Icons.location_pin),
                       ],
                     ),
@@ -211,18 +214,18 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     return Row(
       children: [
         Container(
-          height: 60,
-          width: 60,
+          height: 60.h,
+          width: 60.w,
           color: Colors.white,
           child: Icon(
             icon,
             color: Pallet.PRIMARY_COLOR,
           ),
         ),
-        const SizedBox(width: 2),
+         SizedBox(width: 2.w),
         Expanded(
           child: Container(
-            height: 60,
+            height: 60.h,
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -231,16 +234,16 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style:GoogleFonts.openSans(
                       color: Pallet.BLACK,
                       fontWeight: FontWeight.normal,
                       fontStyle: FontStyle.normal,
-                      fontSize: 16
+                      fontSize: 16.sp
                     ),
                   ),
-                  const Icon(
+                   Icon(
                     Icons.arrow_forward_ios,
-                    size: 12.0,
+                    size: 12.0.sp,
                     color: Pallet.NEUTRAL_200,
                   ),
                 ],
