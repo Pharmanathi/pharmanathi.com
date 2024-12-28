@@ -29,7 +29,7 @@ void main() {
       );
 
       expect(
-        find.text('NATHIX'),
+        find.text('NATHI'),
         findsOneWidget,
         reason: 'NATHI text should be visible',
       );
