@@ -103,7 +103,7 @@ jobs:
           ls -al
           cat .env.development
           cat .env.production
-          patrol test --verbose integration_test/sign_in_test.dart
+          patrol test integration_test/sign_in_test.dart
     # - name: Setup Android emulator and run tests
     #   uses: reactivecircus/android-emulator-runner@v2
     #   with:
