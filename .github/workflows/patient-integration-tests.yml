@@ -1,7 +1,8 @@
 name: Patient App Integration Tests
 
 on: 
-  push:
+  pull_request:
+    branches: ['main']
     paths:
        - 'mobile_patient/**' 
   workflow_dispatch:
