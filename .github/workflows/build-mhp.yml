@@ -51,8 +51,8 @@ jobs:
 
     - name: Create .env file
       run: | # we also create .development because referenced inside pubspec
-        echo .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
-        touch .env.development
+        cat .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        cp .env.production .env.development
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -78,7 +78,9 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: mobile_mhp
-        script: patrol test integration_test/sign_in_test.dart
+        script: |
+          ls -al
+          patrol test integration_test/sign_in_test.dart
 
     - name: Upload Android crash logs
       if: failure()
@@ -102,8 +104,8 @@ jobs:
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        echo .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
-        touch .env.development
+        cat .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        cp .env.production .env.development
     
     - uses: futureware-tech/simulator-action@v3
       with:
@@ -122,7 +124,9 @@ jobs:
         flutter pub global activate patrol_cli
         patrol doctor
     - name: Run iOS integration tests
-      run: patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
+      run: |
+        ls -al
+        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
     - name: Upload iOS crash logs
       if: failure()
       uses: actions/upload-artifact@v3

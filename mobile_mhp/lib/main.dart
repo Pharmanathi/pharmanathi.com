@@ -137,7 +137,8 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             String initialRoute = AppRoutes.signIn;
-            if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+            if (dotenv.get('ENVIRONMENT', fallback: 'production') ==
+                'development') {
               if (Apihelper.retrieveLocaAPIToken(context) != null) {
                 initialRoute = AppRoutes.homePage;
               } else {
