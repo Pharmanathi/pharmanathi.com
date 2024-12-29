@@ -1,6 +1,6 @@
 # Pharmanathi.com
 
-[![CI](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
+[![backend](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/backend.yml/badge.svg?branch=main)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
 [![django](https://img.shields.io/badge/django_test_coverage-85%25-brightgreen)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
 [![verifi](https://img.shields.io/badge/verifi_test_coverage-49%25-red)](https://github.com/Pharmanathi/pharmanathi.com/actions/workflows/ci.yml?query=branch%3Amain)
 
