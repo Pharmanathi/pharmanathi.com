@@ -1,44 +1,131 @@
-name: Test, Build and Release Android Pharmanathi Patient App
+name: Patient App Integration Tests
 
 on: 
-    push:
-        paths:
-            - 'mobile_patient/**'
-    workflow_dispatch:
+  push:
+    paths:
+       - 'mobile_patient/**' 
+  workflow_dispatch:
 
 jobs:
-  test_build_deploy:
-    name: Test, Build and Release Patient App
+  androind_integration_test:
+    name: Run Android integration tests
     defaults:
       run:
           working-directory: ./mobile_patient
     runs-on: ubuntu-latest
+    timeout-minutes: 17 # Adjust as needed.
     steps:
     - uses: actions/checkout@v4
 
+    - name: Enable KVM
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+    - name: Gradle cache
+      uses: gradle/actions/setup-gradle@v3
+      
+    - name: AVD cache
+      uses: actions/cache@v4
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-32 # note(nehemie): In case of change to the API level(currently 32), ensure all references in this file are also updated.
+
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        # Note(nehemie): The following options are essential to
+        # ensure the action does not fallback to its default options
+        api-level: 32
+        target: default       # explicitly set target
+        arch: x86_64          # specify architecture
+        avd-name: test        # name to match with cache
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        script: echo "Generated AVD snapshot for caching."
+
+    - name: Create .env file
+      run: | # we also create .development because referenced inside pubspec
+        echo .env.${{ secrets.PATIENT_TEST_ENV }} >> .env.production
+        cp .env.production .env.development
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 3.27.1
+        channel: stable
+        cache: true
+
+    - name: Install dependencies
+      run: flutter pub get
+    - name: Install & Check Patrol cli
+      run: |
+        flutter pub global activate patrol_cli
+        patrol doctor
+    - name: run integration tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 32
+        target: default
+        arch: x86_64
+        avd-name: test
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        working-directory: mobile_patient
+        script: patrol test -t integration_test/sign_in_test.dart
+
+    - name: Upload Android crash logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-crash-logs
+        path: crash_log.txt
+  
+  #******************************iOS ******************************#
+  ios_integration_test:
+    name: Run iOS integration tests
+    defaults:
+      run:
+          working-directory: ./mobile_patient
+    runs-on: macos-latest
+    timeout-minutes: 15
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Select Xcode version
+      run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        cat << EOF > .env
-        API_BASE_URL=${{ secrets.API_BASE_URL }}
-        APP_LABEL=patient
-        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
-        SENTRY_ON=true
-        SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-        EOF
+        echo .env.${{ secrets.PATIENT_TEST_ENV }} >> .env.production
+        cp .env.production .env.development
+    
+    - uses: futureware-tech/simulator-action@v3
+      with:
+        model: 'iPhone 15'
 
-    - uses: actions/setup-java@v1
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
       with:
-        java-version: '17.x'
-    - uses: subosito/flutter-action@v1
+        flutter-version: 3.27.1
+        channel: stable
+        cache: true
+    - name: Install dependencies
+      run: flutter pub get
+    - name: Install & Check Patrol cli
+      run: |
+        flutter pub global activate patrol_cli
+        patrol doctor
+    - name: Run iOS integration tests
+      run: patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
+    - name: Upload iOS crash logs
+      if: failure()
+      uses: actions/upload-artifact@v3
       with:
-        flutter-version: '3.24.1'
-    - run: flutter pub get
-    - run: flutter build apk --debug --split-per-abi
-    - name: Compute short SHA
-      id: short_sha_compute 
-      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-    - name: Upload debug artificats
-      uses: actions/upload-artifact@v4
-      with:
-        name: patient.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
-        path: mobile_patient/build/app/outputs/flutter-apk/app-arm64-v8a-debug.apk
+        name: ios-crash-logs
+        path: crash_log.txt
