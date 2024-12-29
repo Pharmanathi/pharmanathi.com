@@ -60,7 +60,7 @@ dev_dependencies:
     sdk: flutter
 
 patrol:
-  app_name: Pharmanthi Medical Professional
+  app_name: Pharmanathi Medical Professional
   android:
     package_name: com.pharmanathi.mhp
   ios:

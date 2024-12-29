@@ -1,4 +1,4 @@
-name: Test, Build and Release Pharmanathi MHP Android APKs
+name: MHP App Integration Tests
 
 on: 
   push:
@@ -13,7 +13,7 @@ jobs:
       run:
           working-directory: ./mobile_mhp
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 17 # Adjust as needed.
     steps:
     - uses: actions/checkout@v4
 
@@ -32,14 +32,16 @@ jobs:
         path: |
           ~/.android/avd/*
           ~/.android/adb*
-        key: avd-32
+        key: avd-32 # note(nehemie): In case of change to the API level(currently 32), ensure all references in this file are also updated.
 
     - name: create AVD and generate snapshot for caching
       if: steps.avd-cache.outputs.cache-hit != 'true'
       uses: reactivecircus/android-emulator-runner@v2
       with:
+        # Note(nehemie): The following options are essential to
+        # ensure the action does not fallback to its default options
         api-level: 32
-        target: default        # explicitly set target
+        target: default       # explicitly set target
         arch: x86_64          # specify architecture
         avd-name: test        # name to match with cache
         force-avd-creation: false
@@ -48,18 +50,10 @@ jobs:
         script: echo "Generated AVD snapshot for caching."
 
     - name: Create .env file
-      run: |
-        pwd
-        cat << EOF > .env.${{ secrets.ENVIRONMENT }}
-        API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
-        APP_LABEL=mhp
-        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
-        SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
-        SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
-        EOF
-        cp .env.${{ secrets.ENVIRONMENT }} .env.development
-        cat .env.${{ secrets.ENVIRONMENT }}
-        cat .env.development
+      run: | # we also create .development because referenced inside pubspec
+        echo .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        touch .env.development
+
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -84,12 +78,7 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: mobile_mhp
-        script: |
-          pwd
-          ls -al
-          cat .env.development
-          cat .env.production
-          patrol test integration_test/sign_in_test.dart
+        script: patrol test integration_test/sign_in_test.dart
 
     - name: Upload Android crash logs
       if: failure()
@@ -105,7 +94,7 @@ jobs:
       run:
           working-directory: ./mobile_mhp
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     
     steps:
     - uses: actions/checkout@v3
@@ -113,14 +102,8 @@ jobs:
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        cat << EOF > .env.production
-        API_BASE_URL=${{ secrets.TEST_API_BASE_URL }}
-        APP_LABEL=mhp
-        ENVIRONMENT=${{ secrets.ENVIRONMENT }}
-        SENTRY_ON=${{ secrets.MHP_SENTRY_ON }}
-        SENTRY_DSN=${{ secrets.MHP_SENTRY_DSN }}
-        EOF
-        cp .env.production .env.development 
+        echo .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        touch .env.development
     
     - uses: futureware-tech/simulator-action@v3
       with:
@@ -139,9 +122,7 @@ jobs:
         flutter pub global activate patrol_cli
         patrol doctor
     - name: Run iOS integration tests
-      run: |
-        ls -al
-        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
+      run: patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
     - name: Upload iOS crash logs
       if: failure()
       uses: actions/upload-artifact@v3
