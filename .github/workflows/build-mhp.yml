@@ -80,7 +80,7 @@ jobs:
         working-directory: mobile_mhp
         script: |
           ls -al
-          patrol test integration_test/sign_in_test.dart
+          patrol test -t integration_test/sign_in_test.dart
 
     - name: Upload Android crash logs
       if: failure()
@@ -126,7 +126,7 @@ jobs:
     - name: Run iOS integration tests
       run: |
         ls -al
-        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 integration_test/sign_in_test.dart
+        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
     - name: Upload iOS crash logs
       if: failure()
       uses: actions/upload-artifact@v3
