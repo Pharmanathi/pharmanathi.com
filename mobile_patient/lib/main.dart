@@ -209,6 +209,8 @@ class DeepLinkHandler {
 
           //* Report the exception to Sentry with stack trace
           Sentry.captureException(err, stackTrace: stackTrace);
+
+          return err;
         });
       }
     }

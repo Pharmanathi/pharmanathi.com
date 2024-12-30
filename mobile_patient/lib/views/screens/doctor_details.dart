@@ -6,7 +6,6 @@ import 'package:patient/config/color_const.dart';
 import 'package:patient/model/doctor_data.dart';
 import 'package:patient/screens/components/UserProvider.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
-import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,13 +57,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               // color: const Color.fromARGB(255, 22, 76, 156),
               // child: const SizedBox(height: 20,),
             ),
-<<<<<<< HEAD
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.h,
             ),
-=======
-             SizedBox(height: 20.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
             //* Container for video icon and text icon
             Container(
               child: Column(
@@ -89,7 +84,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                 widget.doctor.doctorFullName.isNotEmpty
                                     ? widget.doctor.doctorFullName[0]
                                     : '',
-                                style:GoogleFonts.openSans(
+                                style: GoogleFonts.openSans(
                                     fontSize: 50.sp,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -98,13 +93,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       ),
                     ],
                   ),
-                   SizedBox(height: 10.h),
+                  SizedBox(height: 10.h),
                   // Doctor's name
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Text(
                       'Dr ${widget.doctor.doctorFullName}',
-                      style:  GoogleFonts.openSans(
+                      style: GoogleFonts.openSans(
                         color: Colors.black,
                         fontSize: 22.0.sp,
                         fontWeight: FontWeight.bold,
@@ -113,23 +108,15 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   ),
                   Text(
                     widget.doctor.getAllSpecialityNames(),
-<<<<<<< HEAD
-                    style: const TextStyle(
+                    style: GoogleFonts.openSans(
                         color: Pallet.NEUTRAL_200,
-                        fontSize: 15.0,
+                        fontSize: 15.0.sp,
                         fontStyle: FontStyle.normal),
-=======
-                    style:GoogleFonts.openSans(
-                      color: Pallet.NEUTRAL_200,
-                      fontSize: 15.0.sp,
-                      fontStyle: FontStyle.normal
-                    ),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                   ),
                 ],
               ),
             ),
-             SizedBox(height: 30.h),
+            SizedBox(height: 30.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -137,7 +124,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                       Text(
+                      Text(
                         'Consultation fee',
                         style: GoogleFonts.openSans(
                           color: Colors.black,
@@ -147,7 +134,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       ),
                       Text(
                         'R ${widget.doctor.appointmentType?.cost ?? 'N/A'}',
-                        style:GoogleFonts.openSans(
+                        style: GoogleFonts.openSans(
                           color: Pallet.NEUTRAL_200,
                           fontSize: 16.0.sp,
                           fontWeight: FontWeight.bold,
@@ -156,21 +143,21 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     ],
                   ),
                 ),
-                 SizedBox(width: 25.w),
+                SizedBox(width: 25.w),
                 Container(
                   height: 32.h,
                   child: ElevatedButton(
                     onPressed: () {
                       // Navigate to the booking  page
                       var selectedDay;
-                      var _selectedTimeSlots;
+                      var selectedTimeSlots;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Bookings(
                               doctor: widget.doctor,
                               selectedTimeSlots:
-                                  _selectedTimeSlots ?? ValueNotifier([]),
+                                  selectedTimeSlots ?? ValueNotifier([]),
                               selectedDay: selectedDay ?? DateTime.now(),
                             ),
                           ));
@@ -186,26 +173,17 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                     ),
                     child: Text(
                       "Book Appointment",
-<<<<<<< HEAD
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                           color: Pallet.PURE_WHITE,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.normal),
-=======
-                      style: GoogleFonts.openSans(
-                        color: Pallet.PURE_WHITE,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal
-                      ),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                     ),
                   ),
                 ),
               ],
             ),
-             SizedBox(height: 35.h),
+            SizedBox(height: 35.h),
             Expanded(
               child: Container(
                 width: double.infinity.sp,
@@ -217,7 +195,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                       children: [
                         buildSectionTile('Experience and Qualifications',
                             Icons.military_tech_outlined),
-                         SizedBox(height: 10.h),
+                        SizedBox(height: 10.h),
                         buildSectionTile('Working Address', Icons.location_pin),
                       ],
                     ),
@@ -243,7 +221,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             color: Pallet.PRIMARY_COLOR,
           ),
         ),
-         SizedBox(width: 2.w),
+        SizedBox(width: 2.w),
         Expanded(
           child: Container(
             height: 60.h,
@@ -255,22 +233,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 children: [
                   Text(
                     title,
-<<<<<<< HEAD
-                    style: const TextStyle(
+                    style: GoogleFonts.openSans(
                         color: Pallet.BLACK,
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal,
-                        fontSize: 16),
-=======
-                    style:GoogleFonts.openSans(
-                      color: Pallet.BLACK,
-                      fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 16.sp
-                    ),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
+                        fontSize: 16.sp),
                   ),
-                   Icon(
+                  Icon(
                     Icons.arrow_forward_ios,
                     size: 12.0.sp,
                     color: Pallet.NEUTRAL_200,

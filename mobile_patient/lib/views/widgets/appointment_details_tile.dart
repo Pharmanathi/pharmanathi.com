@@ -2,7 +2,6 @@
 
 import 'package:patient/config/color_const.dart';
 import 'package:patient/helpers/api_helpers.dart';
-import 'package:patient/main.dart';
 import 'package:patient/model/appointment_data.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:patient/views/widgets/buttons.dart';

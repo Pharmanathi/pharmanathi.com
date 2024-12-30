@@ -28,14 +28,6 @@ class CustomDoctorCard extends StatelessWidget {
 
     // Update the provider with the doctorId
     userProvider.selectedDoctorId = doctorId;
-    String truncateText(String text, int maxLength) {
-      if (text.length > maxLength) {
-        return text.substring(0, maxLength) + '...';
-      } else {
-        return text;
-      }
-    }
-
     String alteredname = ApiHelper.toTitleCase(doctor.doctorFullName);
 
     //* Function to generate a random color
@@ -84,14 +76,8 @@ class CustomDoctorCard extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             CircleAvatar(
-<<<<<<< HEAD
-                              radius: 50,
+                              radius: 35,
                               backgroundColor: Pallet.PURE_WHITE,
-=======
-                              radius:
-                                  35, 
-                              backgroundColor:Pallet.PURE_WHITE,
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                               child: CircleAvatar(
                                 backgroundColor: doctor.imageURL.isNotEmpty
                                     ? null // No background color if imageURL is available

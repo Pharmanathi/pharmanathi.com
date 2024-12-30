@@ -11,7 +11,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String truncateText(String text, int maxLength) {
       if (text.length > maxLength) {
-        return text.substring(0, maxLength) + '...';
+        return "${text.substring(0, maxLength)}...";
       } else {
         return text;
       }
