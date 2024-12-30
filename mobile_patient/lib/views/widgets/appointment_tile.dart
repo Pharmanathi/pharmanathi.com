@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:patient/config/color_const.dart';
 import 'package:patient/helpers/api_helpers.dart';
-import 'package:patient/main.dart';
 import 'package:patient/model/appointment_data.dart';
 import 'package:patient/views/widgets/appointment_details_tile.dart';
 import 'package:flutter/material.dart';

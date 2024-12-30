@@ -1,5 +1,4 @@
 import 'package:patient/config/color_const.dart';
-import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

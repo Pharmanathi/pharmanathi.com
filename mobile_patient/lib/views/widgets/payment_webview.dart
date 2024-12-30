@@ -1,5 +1,5 @@
-import 'package:client_pharmanathi/config/color_const.dart';
-import 'package:client_pharmanathi/views/widgets/HeaderWidget.dart';
+import 'package:patient/config/color_const.dart';
+import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +26,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  PreferredSize(
+      appBar: PreferredSize(
           preferredSize: Size.fromHeight(120.sp),
           child: const HeaderWidget(
             text: 'Payment',

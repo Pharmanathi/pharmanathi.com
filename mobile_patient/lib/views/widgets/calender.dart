@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, unnecessary_string_interpolations, prefer_final_fields
 
 import 'package:patient/config/color_const.dart';
-import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

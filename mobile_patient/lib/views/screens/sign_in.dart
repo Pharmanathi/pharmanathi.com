@@ -2,7 +2,6 @@
 
 import 'package:patient/Repository/sign_in_repository.dart';
 import 'package:patient/blocs/sign_in_bloc.dart';
-import 'package:patient/main.dart';
 import 'package:patient/routes/app_routes.dart';
 import 'package:patient/screens/components/UserProvider.dart';
 import 'package:patient/services/api_provider.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
@@ -46,7 +44,7 @@ class GoogleSignInWidget extends StatelessWidget {
                               style: GoogleFonts.openSans(
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 101, 115, 207),
+                                color: const Color.fromARGB(255, 101, 115, 207),
                               ),
                             ),
                             Text(

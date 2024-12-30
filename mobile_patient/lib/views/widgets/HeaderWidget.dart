@@ -1,4 +1,4 @@
-import 'package:client_pharmanathi/main.dart';
+import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,9 +30,10 @@ class HeaderWidget extends StatelessWidget {
               children: [
                 if (showBackButton)
                   GestureDetector(
-                    onTap: onBackTap ?? () {
-                      Navigator.pop(context);
-                    },
+                    onTap: onBackTap ??
+                        () {
+                          Navigator.pop(context);
+                        },
                     child: const Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Icon(
@@ -42,21 +43,23 @@ class HeaderWidget extends StatelessWidget {
                     ),
                   ),
                 if (!showBackButton)
-                   SizedBox(width: 10.h), // Placeholder for back button space
-                const Spacer(), 
+                  SizedBox(width: 10.h), // Placeholder for back button space
+                const Spacer(),
                 Text(
                   text,
-                  style:GoogleFonts.openSans(
+                  style: GoogleFonts.openSans(
                     color: Colors.white,
                     fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const Spacer(), 
+                const Spacer(),
 
                 if (showBackButton)
-                   SizedBox(width: 30.w), //* Placeholder to balance the back button width
+                  SizedBox(
+                      width: 30
+                          .w), //* Placeholder to balance the back button width
               ],
             ),
           ),

@@ -6,7 +6,6 @@ import 'package:patient/model/doctor_data.dart';
 import 'package:patient/views/widgets/HeaderWidget.dart';
 import 'package:patient/views/widgets/doctor_tile.dart';
 import 'package:patient/views/widgets/navigation_bar.dart';
-import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

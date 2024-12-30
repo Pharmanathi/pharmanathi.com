@@ -193,7 +193,7 @@ class _BookingsState extends State<Bookings> {
                           ),
                         ),
                       ),
-                       Text(
+                      Text(
                         'Booking',
                         style: GoogleFonts.openSans(
                             color: Colors.white,
@@ -297,7 +297,7 @@ class _BookingsState extends State<Bookings> {
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding:  EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 25.0.sp, horizontal: 5.sp),
                         ),
                         maxLines: null,
@@ -323,16 +323,9 @@ class _BookingsState extends State<Bookings> {
                                   width: 300.w,
                                   child: Text(
                                     'These files will only be available for your Doctor',
-<<<<<<< HEAD
-                                    style: TextStyle(
-                                        color: Pallet.PRIMARY_250,
-                                        fontSize: 12),
-=======
                                     style: GoogleFonts.openSans(
-                                      color: Pallet.PRIMARY_250,
-                                      fontSize: 12.sp
-                                    ),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
+                                        color: Pallet.PRIMARY_250,
+                                        fontSize: 12.sp),
                                   ),
                                 ),
                               ),
@@ -347,13 +340,8 @@ class _BookingsState extends State<Bookings> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                       side: BorderSide(
-<<<<<<< HEAD
                                         color: Pallet.PRIMARY_COLOR,
-                                        width: 1.0,
-=======
-                                        color: Pallet.PRIMARY_COLOR, 
-                                        width: 1.0.w, 
->>>>>>> 45de284a (feat: add screenutils and google fonts)
+                                        width: 1.0.w,
                                       ),
                                     ),
                                   ),
@@ -361,22 +349,16 @@ class _BookingsState extends State<Bookings> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons.publish_sharp),
-<<<<<<< HEAD
-                                      SizedBox(width: 7),
-                                      Text('UPLOAD',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold)),
-=======
                                       SizedBox(width: 7.w),
-                                      Text('UPLOAD', style: GoogleFonts.openSans(fontSize: 14.sp, fontWeight: FontWeight.bold)),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
+                                      Text('UPLOAD',
+                                          style: GoogleFonts.openSans(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold)),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.h
-                              ),
+                              SizedBox(height: 10.h),
                               _pickedFile != null
                                   ? Column(
                                       children: [
@@ -412,13 +394,9 @@ class _BookingsState extends State<Bookings> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //doctor name
-<<<<<<< HEAD
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
-=======
-                    SizedBox(height: 20.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
@@ -438,13 +416,9 @@ class _BookingsState extends State<Bookings> {
                                     fontSize: 16.sp,
                                   ),
                                 ),
-<<<<<<< HEAD
                                 SizedBox(
-                                  height: 8,
+                                  height: 8.h,
                                 ),
-=======
-                                SizedBox(height: 8.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                                 Text(
                                   "${widget.doctor.doctorFullName}",
                                   style: GoogleFonts.openSans(
@@ -487,13 +461,9 @@ class _BookingsState extends State<Bookings> {
                                     fontSize: 16.sp,
                                   ),
                                 ),
-<<<<<<< HEAD
                                 SizedBox(
-                                  height: 8,
+                                  height: 8.h,
                                 ),
-=======
-                                SizedBox(height: 8.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                                 Text(
                                   "${dayOfAppiontment != null ? "${dayOfAppiontment!.day} ${_getMonthName(dayOfAppiontment!.month)} ${dayOfAppiontment!.year}" : "Select a day"}",
                                   style: GoogleFonts.openSans(
@@ -537,13 +507,9 @@ class _BookingsState extends State<Bookings> {
                                     fontSize: 16.sp,
                                   ),
                                 ),
-<<<<<<< HEAD
                                 SizedBox(
-                                  height: 8,
+                                  height: 8.h,
                                 ),
-=======
-                                SizedBox(height: 8.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                                 Text(
                                   timeOfTheAppointment ?? "Select a time",
                                   style: GoogleFonts.openSans(
@@ -586,21 +552,14 @@ class _BookingsState extends State<Bookings> {
                                     fontSize: 16.sp,
                                   ),
                                 ),
-<<<<<<< HEAD
                                 SizedBox(
-                                  height: 8,
+                                  height: 8.h,
                                 ),
                                 Text(
                                   widget.doctor.appointmentType?.cost
                                           .toString() ??
                                       '',
-                                  style: TextStyle(
-=======
-                                SizedBox(height: 8.h,),
-                                Text(
-                                   widget.doctor.appointmentType?.cost.toString() ?? '',
                                   style: GoogleFonts.openSans(
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                                     color: Colors.black,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
@@ -620,13 +579,9 @@ class _BookingsState extends State<Bookings> {
                       ),
                     ),
                     buildDivider(),
-<<<<<<< HEAD
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
-=======
-                    SizedBox(height: 20.h,),
->>>>>>> 45de284a (feat: add screenutils and google fonts)
                     Center(
                       child: MyButtonWidgets(
                         buttonTextPrimary: _isLoading
@@ -641,7 +596,7 @@ class _BookingsState extends State<Bookings> {
                             ? CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                     Colors.white), // Loading indicator color
-                                strokeWidth: 1.0, 
+                                strokeWidth: 1.0,
                               )
                             : null, // Only show the spinner when loading
                       ),
@@ -698,7 +653,7 @@ class _BookingsState extends State<Bookings> {
       padding: const EdgeInsets.only(top: 10, left: 15),
       child: Text(
         title,
-        style:GoogleFonts.openSans(
+        style: GoogleFonts.openSans(
           color: Colors.black,
           fontSize: 15.0.sp,
           fontStyle: FontStyle.normal,
