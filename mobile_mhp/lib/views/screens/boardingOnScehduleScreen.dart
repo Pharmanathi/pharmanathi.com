@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pharma_nathi/config/text_theme.dart';
 import 'package:pharma_nathi/logging.dart';
 
 import '../../config/color_const.dart';
@@ -77,9 +76,9 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
+                  children: [
                     SizedBox(height: 10.h),
-                   Text(
+                    Text(
                       'Control Your\nSchedule with Ease',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.openSans(
@@ -105,14 +104,14 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
               ),
               SizedBox(height: 20.h),
               Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(14.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyButtonWidgets(
                       buttonTextSecondary: 'GET STARTED',
                       onPressedSecondary: () {
-                         Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => OnboardDetailsScreen(),
@@ -121,7 +120,7 @@ class _OnboardScreenState extends State<SecondBoardingScreen> {
                       },
                       buttonTextPrimary: 'BACK',
                       onPressedPrimary: () {
-                         Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                     ).buildButtons(primaryFirst: true),
                   ],
