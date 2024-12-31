@@ -67,7 +67,7 @@ class _MyProfileState extends State<MyProfile> {
                 await googleSignInBloc.signOut();
                 Navigator.of(context).pop();
                 Navigator.pushNamedAndRemoveUntil(
-                    context,AppRoutes.signIn, (route) => false);
+                    context, AppRoutes.signIn, (route) => false);
               },
               buttonTextSecondary: 'Cancel',
               onPressedSecondary: () {
@@ -93,7 +93,7 @@ class _MyProfileState extends State<MyProfile> {
         Provider.of<GoogleSignInBloc>(context, listen: false);
     final imageProvider = Provider.of<ImageDataProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
-    final specialities = userProvider.user?.doctorProfile?.specialities;
+    final specialities = userProvider.user?.doctorProfile.specialities;
 
     String profession = 'Not Specified';
     if (specialities != null && specialities.isNotEmpty) {
@@ -192,7 +192,8 @@ class _MyProfileState extends State<MyProfile> {
                       height: 20.h,
                     ),
                     SizedBox(
-                      width: 560.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 560
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
@@ -261,7 +262,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 500
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
@@ -316,7 +318,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 500
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
@@ -371,7 +374,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 500
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
@@ -403,8 +407,11 @@ class _MyProfileState extends State<MyProfile> {
                                       backgroundColor: Color(0xFF6F7ED7),
                                       minimumSize: Size(320.sp, 50.sp),
                                     ),
-                                    child: Text('Working Hours',
-                                    style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),),
+                                    child: Text(
+                                      'Working Hours',
+                                      style: GoogleFonts.openSans(
+                                          color: Pallet.PURE_WHITE),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 10.h,
@@ -428,8 +435,10 @@ class _MyProfileState extends State<MyProfile> {
                                         width: 1.w,
                                       ),
                                     ),
-                                    child: Text('Manage Appointments',
-                                     style: GoogleFonts.openSans(color: Pallet.PURE_WHITE),
+                                    child: Text(
+                                      'Manage Appointments',
+                                      style: GoogleFonts.openSans(
+                                          color: Pallet.PURE_WHITE),
                                     ),
                                   ),
                                 ],
@@ -533,7 +542,8 @@ class _MyProfileState extends State<MyProfile> {
                     //   ),
                     // ),
                     SizedBox(
-                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 500
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
@@ -588,7 +598,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     SizedBox(
-                      width: 500.w, //TODO:[Thabang] this is weird, need to find out why
+                      width: 500
+                          .w, //TODO:[Thabang] this is weird, need to find out why
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0.5.sp,
