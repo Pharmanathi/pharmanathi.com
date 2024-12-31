@@ -1,5 +1,4 @@
 from django.urls import reverse
-
 from pharmanathi_backend.users.models import User
 
 
