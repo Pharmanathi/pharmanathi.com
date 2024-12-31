@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# This script overrides the default $GIT_DIR/hooks
+# to point to the githooks directory.
+
+HOOKS_DIR="$(pwd)/githooks"
+GIT_HOOKS_DIR="$(git rev-parse --git-dir)/hooks"
+
+echo "\nStarted symlinking hooks..."
+for HOOK in $(ls $HOOKS_DIR); do
+    ln -sf "$HOOKS_DIR/$HOOK" "$GIT_HOOKS_DIR/$HOOK"
+    echo "symlinked $HOOK"
+done
+
+echo "\nGit hooks symlinked successfully!"
