@@ -14,6 +14,18 @@ This is the repo containing all development resources for the Pharmanthi.com pro
 └── pharmanathi.com -- Pharmanathi.com backend, a Django-based project
 ```
 
+## Getting Started (General)
+
+Clone this repository on your local and before doing anything else, ensure you can successfully run the command used to setup Git hooks required to contribute to this project. You may skip this step if you do not intend on contributing to this repo:
+
+```bash
+cd pharmanathi.com # or whatever folder name you used
+chmod +x setup_hooks
+./setup_hooks
+```
+
+## Specific steps for each sub-repo
+
 Each inner project may present it's own requried setup, so make sure to read their related README file. You may find them using the following links which points to their location in their respective project's folder:
 
 - [Patient Mobile Client's README](./mobile_mhp/README.md)
@@ -33,3 +45,4 @@ We use the same convention to label tickets on GitHub.
 
 The project's various boards are avaiblable [here](https://github.com/orgs/Pharmanathi/projects) as GitHub projects(v2). The initial project is [mvp-v-2.0](https://github.com/orgs/Pharmanathi/projects/5).
 anathi/projects/5).
+

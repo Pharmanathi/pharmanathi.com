@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -o pipefail
+set -o nounset
+set -o errexit
+
+BASE_DIR="$(pwd)"
+MHP_DIR="$BASE_DIR/mobile_mhp"
+PATIENT_DIR="$BASE_DIR/mobile_patient"
+BACKEND_DIR="$BASE_DIR/pharmanathi.com"
+
+# Backend Pre-Commit and Tests
+run_backend() {
+    echo "Starting Backend Pre-Commit and Tests..."
+    cd $BACKEND_DIR
+    make pre-commit
+    make test
+    echo "Backend Pre-Commit and Tests completed!"
+}
+
+# MHP App Integration Tests
+run_mhp_tests() {
+    echo "Starting MHP App Integration Tests..."
+    cd $MHP_DIR
+    patrol test -t integration_test/sign_in_test.dart
+    echo "MHP App Integration Tests completed!"
+}
+
+# Patient App Integration Tests
+run_patient_tests() {
+    echo "Starting Patient App Integration Tests..."
+    cd $PATIENT_DIR
+    patrol test -t integration_test/sign_in_test.dart
+    echo "Patient App Integration Tests completed!"
+}
+
+run_backend
+run_mhp_tests
+run_patient_tests
