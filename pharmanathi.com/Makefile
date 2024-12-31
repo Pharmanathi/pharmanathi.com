@@ -34,14 +34,14 @@ migrate:
 	@docker compose run --rm django python manage.py migrate
 
 pre-commit:
-	@docker compose exec django pre-commit run --show-diff-on-failure --color=always --all-files
+	@docker compose exec -T django pre-commit run --show-diff-on-failure --color=always --all-files
 
 test-verifi:
-	@export COVERAGE=$$(docker compose run --rm verifi bash -c "coverage run -m pytest && coverage report -m" | tee /dev/tty | grep TOTAL) && \
+	@export COVERAGE=$$(docker compose run -T --rm verifi bash -c "coverage run -m pytest && coverage report -m" | tee /dev/tty | grep TOTAL) && \
 	python update_coverage_badge.py --badge-text verifi_test_coverage --starting-with "[![verifi]" -p $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
 
 test: test-verifi
-	@export COVERAGE=$$(docker compose run --rm -ti django bash -c "coverage run -m pytest && coverage report" | tee /dev/tty | grep TOTAL) && \
+	@export COVERAGE=$$(docker compose run --rm -T django bash -c "coverage run -m pytest && coverage report" | tee /dev/tty | grep TOTAL) && \
 	python update_coverage_badge.py --badge-text django_test_coverage --starting-with "[![django]" -p $$(echo $$COVERAGE | awk '{print $$4}' | sed 's/%//')
 
 django-shell:
