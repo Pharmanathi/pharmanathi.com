@@ -1,0 +1,93 @@
+volumes:
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  production_traefik: {}
+  production_traefik2: {}
+
+networks:
+  default:
+    name: nginxed
+    external: true
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+
+    image: pharmanathi_backend_production_django
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+      - ./.envs/.production/.version
+      - ./.envs/.production/.verifi
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: pharmanathi_backend_production_postgres
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+      - production_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.production/.postgres
+
+  traefik:
+    build:
+      context: .
+      dockerfile: ./compose/production/traefik/Dockerfile
+    image: pharmanathi_backend_production_traefik
+    depends_on:
+      - django
+    volumes:
+      - production_traefik2:/etc/traefik/acme
+    ports:
+      - '0.0.0.0:5555:5555'
+
+  redis:
+    image: redis:6
+
+  celeryworker:
+    <<: *django
+    image: pharmanathi_backend_production_celeryworker
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: pharmanathi_backend_production_celerybeat
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: pharmanathi_backend_production_flower
+    command: /start-flower
+
+  web-driver:
+    image: selenium/standalone-chrome:4.8.1-20230306
+    shm_size: 2gb
+
+  verifi:
+    image: pharmanathi_backend_production_verifi
+    depends_on:
+      - web-driver
+    build:
+      context: ./
+      dockerfile: ./compose/production/verifi/Dockerfile
+    env_file: ./.envs/.production/.verifi
+    command: /start
+
+  awscli:
+    build:
+      context: .
+      dockerfile: ./compose/production/aws/Dockerfile
+    env_file:
+      - ./.envs/.production/.django
+    volumes:
+      - production_postgres_data_backups:/backups:z
+
+
