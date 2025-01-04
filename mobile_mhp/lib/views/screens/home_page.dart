@@ -120,6 +120,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 8.h),
             Container(
               height: 85.h,
               color: Color(0xFFFFFFFF),
@@ -165,7 +166,8 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10.h),
             Container(
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 25.0, right: 25.0, bottom: 14.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -187,7 +189,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Container(
               padding: EdgeInsets.only(left: 10),
-              height: 180.h,
+              height: 155.h,
               child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
@@ -333,27 +335,27 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                width: 430.w,
-                height: 250.h,
-                child: isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : MyBarGraph(
-                        monthlystats: monthlyStats
-                            .map((data) =>
-                                (data["onlineConsultation"] as num).toDouble())
-                            .toList(),
-                        monthlystats2: monthlyStats
-                            .map((data) =>
-                                (data["inPersonVisit"] as num).toDouble())
-                            .toList(),
-                      ),
-              ),
+            Container(
+              width: 353.25.sp,
+              height: 211.sp,
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : MyBarGraph(
+                      monthlystats: monthlyStats
+                          .map((data) =>
+                              (data["onlineConsultation"] as num).toDouble())
+                          .toList(),
+                      monthlystats2: monthlyStats
+                          .map((data) =>
+                              (data["inPersonVisit"] as num).toDouble())
+                          .toList(),
+                    ),
             ),
             Container(
               child: Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 10),
+                padding: const EdgeInsets.only(
+                  left: 25,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

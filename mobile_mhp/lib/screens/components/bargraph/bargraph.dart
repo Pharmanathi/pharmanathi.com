@@ -2,6 +2,7 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/bargraph/bar_data.dart';
 
@@ -26,6 +27,40 @@ class MyBarGraph extends StatelessWidget {
     myBardata.initialisebardata();
 
     return BarChart(BarChartData(
+      groupsSpace: 28.0.w,
+      alignment: BarChartAlignment.spaceBetween,
+      titlesData: FlTitlesData(
+          show: true,
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    return Text(
+                      value.toInt().toString(),
+                      style: const TextStyle(
+                        fontSize: 10, // Reduce this value to make text smaller
+                        fontWeight: FontWeight.bold,
+                        color: Pallet.NEUTRAL_300,
+                      ),
+                    );
+                  })),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                return Text(
+                  value.toInt().toString(),
+                  style: const TextStyle(
+                    fontSize: 10, // Reduce this value to make text smaller
+                    fontWeight: FontWeight.bold,
+                    color: Pallet.NEUTRAL_300,
+                  ),
+                );
+              },
+            ),
+          )),
       borderData: FlBorderData(
           show: true,
           border: Border(
@@ -40,7 +75,6 @@ class MyBarGraph extends StatelessWidget {
         drawVerticalLine: false,
         horizontalInterval: 20,
       ),
-      titlesData: FlTitlesData(),
       maxY: 100,
       minY: 0,
       barGroups: myBardata.barData.map((data) {
@@ -65,17 +99,18 @@ class MyBarGraph extends StatelessWidget {
 
         return BarChartGroupData(
           x: data.x,
+          barsSpace: 0,
           barRods: [
             BarChartRodData(
               borderRadius: BorderRadius.zero,
               toY: data.y,
-              color: Pallet.NEUTRAL_200, // Set the color for the first bar
+              color: Pallet.PRIMARY_COLOR, // Set the color for the first bar
               width: 18.0,
             ),
             BarChartRodData(
               borderRadius: BorderRadius.zero,
               toY: y2,
-              color: Pallet.PRIMARY_COLOR, // Set the color for the second bar
+              color: Pallet.NEUTRAL_200, // Set the color for the second bar
               width: 18.0,
             ),
           ],
