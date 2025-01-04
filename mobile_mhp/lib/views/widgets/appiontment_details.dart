@@ -151,9 +151,7 @@ class AppiontmentDetails extends StatelessWidget {
               _buildBookingDetail("assets/images/icons/timer.png", 'Time',
                   appointment.appointmentTime),
               _buildBookingDetail("assets/images/icons/info.png",
-                  'Reason for Consultation', appointment.consult_details),
-              _buildBookingDetail("assets/images/icons/info.png",
-                  'Consultation Fee', appointment.consultationFee),
+                  'Consultation Details', appointment.consult_details),
 
               //* Buttons
               const SizedBox(height: 40),

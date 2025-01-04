@@ -29,7 +29,7 @@ class UpcomingAppointmentTile extends StatelessWidget {
         );
       },
       child: Container(
-        height: 155.h,
+        // height: 155.h,
         width: 170.w,
         margin: EdgeInsets.only(right: 8.w),
         decoration: BoxDecoration(
@@ -40,7 +40,7 @@ class UpcomingAppointmentTile extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8.0, 40, 8, 8),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: 42.sp),
+            SizedBox(height: 18.sp),
             Text(
               appointment.patientName,
               maxLines: 1,
@@ -59,55 +59,8 @@ class UpcomingAppointmentTile extends StatelessWidget {
               appointment.appointmentDate,
               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             ),
-            // SizedBox(height: 8),
-            // Text(
-            //   'Status: ${appointment.status}',
-            //   style: TextStyle(
-            //     fontSize: 12,
-            //     color: appointment.status == "Upcoming"
-            //         ? Colors.green
-            //         : Colors.red,
-            //   ),
-            // ),
           ]),
         ),
-        // Padding(
-        //   padding: EdgeInsets.all(16),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       SizedBox(height: 42.sp),
-        //       Text(
-        //         appointment.patientName,
-        //         maxLines: 1,
-        //         overflow: TextOverflow.ellipsis,
-        //         style: GoogleFontsCustom.openSans(
-        //             fontSize: 16.sp, fontWeight: FontWeight.bold),
-        //       ),
-        //       SizedBox(height: 8),
-        //       Text(
-        //         appointment.appointmentTime,
-        //         style: GoogleFontsCustom.openSans(
-        //             fontSize: 12, color: Colors.grey),
-        //       ),
-        //       SizedBox(height: 8),
-        //       Text(
-        //         appointment.appointmentDate,
-        //         style: TextStyle(fontSize: 12, color: Colors.grey),
-        //       ),
-        //       // SizedBox(height: 8),
-        //       // Text(
-        //       //   'Status: ${appointment.status}',
-        //       //   style: TextStyle(
-        //       //     fontSize: 12,
-        //       //     color: appointment.status == "Upcoming"
-        //       //         ? Colors.green
-        //       //         : Colors.red,
-        //       //   ),
-        //       // ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
