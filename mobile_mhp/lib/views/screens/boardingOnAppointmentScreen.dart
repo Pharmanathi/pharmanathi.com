@@ -42,7 +42,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   children: [
                     Image.asset(
                       'assets/images/pharmanathi-mhp-icon.png',
-                      height: 100.h,
+                      height: 90.h,
                     ),
                     Text(
                       'Welcome to\nPharmaNathi',
@@ -65,7 +65,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                 ),
               ),
               SizedBox(
-                height: 5.0.h,
+                height: 4.0.h,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
@@ -74,7 +74,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   children: [
                     Image.asset(
                       'assets/images/onboard_appointments.png',
-                      height: 225.86.h,
+                      height: 200.0.h,
                     ),
                   ],
                 ),
