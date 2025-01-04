@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/views/widgets/appiontment_details.dart';
+import './custom_google_fonts.dart';
 
 class AppointmentTile extends StatelessWidget {
   final Appointment appointment;
@@ -32,9 +34,9 @@ class AppointmentTile extends StatelessWidget {
               flex: 1,
               child: Text(
                 appointment.appointmentTime,
-                style:  GoogleFonts.openSans(
-                  fontSize: 10,
-                  color: Pallet.SECONDARY_500,
+                style: GoogleFontsCustom.openSans(
+                  fontSize: 10.sp,
+                  color: Pallet.NEUTRAL_900,
                   fontWeight: FontWeight.w100,
                 ),
               ),
@@ -42,7 +44,7 @@ class AppointmentTile extends StatelessWidget {
             //* Vertical Divider
             Container(
               width: 0.2,
-              height: 100, 
+              height: 100,
               color: Pallet.SECONDARY_500,
               margin: const EdgeInsets.symmetric(horizontal: 2),
             ),
@@ -69,7 +71,7 @@ class AppointmentTile extends StatelessWidget {
                           backgroundImage: NetworkImage(appointment.imageURL),
                         ),
                       ),
-                      const SizedBox(width: 8), 
+                      const SizedBox(width: 8),
                       // Appointment Details
                       Expanded(
                         child: Column(
@@ -77,11 +79,11 @@ class AppointmentTile extends StatelessWidget {
                           children: [
                             Text(
                               appointment.patientName,
-                              style: GoogleFonts.openSans(
+                              style: GoogleFontsCustom.openSans(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: appointment.status == 'In Progress'
-                                    ? Pallet.PRIMARY_COLOR
+                                    ? Pallet.BACKGROUND_COLOR
                                     : Pallet.Black,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -91,11 +93,11 @@ class AppointmentTile extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Text(
                                 appointment.appointmentDuration,
-                                style: GoogleFonts.openSans(
+                                style: GoogleFontsCustom.openSans(
                                   fontSize: 10,
-                                  fontWeight: FontWeight.w100,
+                                  fontWeight: FontWeight.w500,
                                   color: appointment.status == 'In Progress'
-                                      ? Pallet.PRIMARY_COLOR
+                                      ? Pallet.BACKGROUND_COLOR
                                       : Pallet.SECONDARY_500,
                                 ),
                               ),
@@ -104,6 +106,7 @@ class AppointmentTile extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
+                                  height: 20.h,
                                   decoration: BoxDecoration(
                                     color: appointment.status == 'Upcoming'
                                         ? Pallet.SECONDARY_500
@@ -116,10 +119,10 @@ class AppointmentTile extends StatelessWidget {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 6),
+                                        horizontal: 6, vertical: 3),
                                     child: Text(
                                       appointment.status,
-                                      style: GoogleFonts.openSans(
+                                      style: GoogleFontsCustom.openSans(
                                           fontSize: 10,
                                           color:
                                               appointment.status == 'Upcoming'
@@ -136,6 +139,7 @@ class AppointmentTile extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 15),
                                 Container(
+                                  height: 20.h,
                                   decoration: BoxDecoration(
                                     color: appointment.isOnlineAppointment
                                         ? Pallet.SECONDARY_500
@@ -146,13 +150,13 @@ class AppointmentTile extends StatelessWidget {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 6),
+                                        horizontal: 6, vertical: 3),
                                     child: Text(
                                       appointment.isOnlineAppointment
                                           ? 'Online'
                                           : 'In Person',
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 10,
+                                      style: GoogleFontsCustom.openSans(
+                                        fontSize: 10.sp,
                                         color: appointment.isOnlineAppointment
                                             ? Pallet.PURE_WHITE
                                             : appointment.status ==
