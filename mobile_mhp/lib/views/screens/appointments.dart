@@ -19,7 +19,7 @@ class Appointments extends StatefulWidget {
 
 class _AppointmentsState extends State<Appointments> {
   late AppointmentRepository _appointmentRepository;
-  String selectedButton = 'all';
+  String selectedButton = 'All';
   Color primaryColor = Color(0xFFF7F9FC);
   int _selectedIndex = 1;
   int selectedDay = DateTime.now().day;
@@ -173,7 +173,7 @@ class _AppointmentsState extends State<Appointments> {
           matchesAppointmentType = appointment.isOnlineAppointment == true;
         } else if (selectedButton == 'InPerson') {
           matchesAppointmentType = appointment.isOnlineAppointment == false;
-        } else if (selectedButton == 'all') {
+        } else if (selectedButton == 'All') {
           matchesAppointmentType = true; // Return all for 'allt'
         }
 
@@ -358,19 +358,18 @@ class _AppointmentsState extends State<Appointments> {
                             Expanded(
                               flex: 5,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   TextButton(
                                     onPressed: () {
-                                      _onButtonPressed('all');
+                                      _onButtonPressed('All');
                                       setState(() {
                                         primaryColor = const Color(0xFFF7F9FC);
                                       });
                                     },
                                     style: TextButton.styleFrom(
                                       backgroundColor:
-                                          selectedButton == 'all' ||
+                                          selectedButton == 'All' ||
                                                   selectedButton.isEmpty
                                               ? Colors.black
                                               : Colors.white,
@@ -382,17 +381,17 @@ class _AppointmentsState extends State<Appointments> {
                                       ),
                                     ),
                                     child: Text(
-                                      'all',
+                                      'All',
                                       style: GoogleFonts.openSans(
                                         fontSize: 12.sp,
-                                        color: selectedButton == 'all' ||
+                                        color: selectedButton == 'All' ||
                                                 selectedButton.isEmpty
                                             ? Colors.white
                                             : Colors.black,
                                       ),
                                     ),
                                   ),
-                                   SizedBox(width: 5.w),
+                                  SizedBox(width: 5.w),
                                   // 'Online' button
                                   TextButton(
                                     onPressed: () {
@@ -423,7 +422,7 @@ class _AppointmentsState extends State<Appointments> {
                                       ),
                                     ),
                                   ),
-                                   SizedBox(width: 5.w),
+                                  SizedBox(width: 5.w),
                                   // 'In Person Visit' button
                                   TextButton(
                                     onPressed: () {
@@ -482,7 +481,8 @@ class _AppointmentsState extends State<Appointments> {
                                         SizedBox(height: 20.h),
                                         Text(
                                           'No appointments available',
-                                          style: GoogleFonts.openSans(fontSize: 12.sp),
+                                          style: GoogleFonts.openSans(
+                                              fontSize: 12.sp),
                                         ),
                                       ],
                                     ),

@@ -120,50 +120,6 @@
       "appiontment_date": "Friday, 2 August 2023",
       "time": "03:30PM - 04:30PM",
       "consult_details": "Sleep disorder, need advice on improving sleep quality"
-    },
-    {
-      "title": "Son Min",
-      "subtext1": "10AM - 10:30AM",
-      "subtext2": "Online Appointment",
-      "details": "M - 42ys - 178cm - 72kg",
-      "clinic_name": "Riverbank Wellness Clinic",
-      "clinic_address": "River Road, Riverside Town",
-      "appiontment_date": "Tuesday, 30 July 2023",
-      "time": "11:30AM - 12:30PM",
-      "consult_details": "Stress and anxiety, looking for relaxation techniques"
-    },
-    {
-      "title": "Vee Pan",
-      "subtext1": "10AM - 10:30AM",
-      "subtext2": "Online Appointment",
-      "details": "F - 33ys - 162cm - 53kg",
-      "clinic_name": "Golden Gate Medical Center",
-      "clinic_address": "Golden Avenue, Health District",
-      "appiontment_date": "Friday, 2 August 2023",
-      "time": "03:30PM - 04:30PM",
-      "consult_details": "Sleep disorder, need advice on improving sleep quality"
-    },
-    {
-      "title": "Son Min",
-      "subtext1": "10AM - 10:30AM",
-      "subtext2": "Online Appointment",
-      "details": "M - 42ys - 178cm - 72kg",
-      "clinic_name": "Riverbank Wellness Clinic",
-      "clinic_address": "River Road, Riverside Town",
-      "appiontment_date": "Tuesday, 30 July 2023",
-      "time": "11:30AM - 12:30PM",
-      "consult_details": "Stress and anxiety, looking for relaxation techniques"
-    },
-    {
-      "title": "Vee Pan",
-      "subtext1": "10AM - 10:30AM",
-      "subtext2": "Online Appointment",
-      "details": "F - 33ys - 162cm - 53kg",
-      "clinic_name": "Golden Gate Medical Center",
-      "clinic_address": "Golden Avenue, Health District",
-      "appiontment_date": "Friday, 2 August 2023",
-      "time": "03:30PM - 04:30PM",
-      "consult_details": "Sleep disorder, need advice on improving sleep quality"
     }
   ],
   "otherData": [
@@ -206,6 +162,14 @@
       "imageURL": "https://example.com/john_doe.jpg",
       "appiontment_date": "Friday, 2 August 2023",
       "status": "Completed"
+    },
+    {
+      "time": "4:30 PM",
+      "name": "Alice Johnson",
+      "appointmentTime": "03:00pm - 03:30pm",
+      "imageURL": "https://example.com/john_doe.jpg",
+      "appiontment_date": "Friday, 25 August 2023",
+      "status": "InPerson"
     }
   ],
   "monthlyStats": [
