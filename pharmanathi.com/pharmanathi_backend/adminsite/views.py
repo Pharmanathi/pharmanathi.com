@@ -20,9 +20,11 @@ def handle404errors(request):
 @staff_member_required()
 def main(request):
     today = datetime.date.today()
-    first_day_last_month = datetime.date.today().replace(day=1, month=today.month - 1)
+    last_month = today.month - 1
+    last_month = last_month if last_month != 0 else 12
+    year = today.year if last_month != 12 else today.year - 1
+    first_day_last_month = datetime.date.today().replace(day=1, month=last_month, year=year)
     last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
-    current_month = today.month
     Q_last_month = Q(date_created__date__gte=first_day_last_month) & Q(date_created__date__lte=last_day_last_month)
     count_signups_last_month = User.objects.filter(Q_last_month).count()
     count_signups_this_month = User.objects.filter(date_created__gte=today.replace(day=1)).count()
