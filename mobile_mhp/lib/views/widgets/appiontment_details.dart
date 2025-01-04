@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_super_parameters
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pharma_nathi/config/color_const.dart';
-
+import './custom_google_fonts.dart';
 import '../../models/appointment.dart';
 
 class AppiontmentDetails extends StatelessWidget {
@@ -40,9 +40,9 @@ class AppiontmentDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 100, bottom: 5),
                         child: Text(
-                          'Summary',
-                          style: GoogleFonts.openSans(
-                            fontSize: 21,
+                          'Booking',
+                          style: GoogleFontsCustom.openSans(
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             color: Pallet.PRIMARY_COLOR,
                           ),
@@ -59,7 +59,7 @@ class AppiontmentDetails extends StatelessWidget {
                   children: [
                     Text(
                       'Personal Info',
-                      style: GoogleFonts.openSans(
+                      style: GoogleFontsCustom.openSans(
                           fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -89,8 +89,8 @@ class AppiontmentDetails extends StatelessWidget {
                               right: 0,
                               bottom: 0,
                               child: Container(
-                                width: 12,
-                                height: 20,
+                                width: 16.w,
+                                height: 16.h,
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.green,
@@ -109,14 +109,15 @@ class AppiontmentDetails extends StatelessWidget {
                                 appointment.patientName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.openSans(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                                style: GoogleFontsCustom.openSans(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 appointment.consult_details,
-                                style: GoogleFonts.openSans(
+                                style: GoogleFontsCustom.openSans(
                                   color: Colors.grey,
-                                  fontSize: 14,
+                                  fontSize: 12.sp,
                                 ),
                               ),
                             ],
@@ -129,13 +130,13 @@ class AppiontmentDetails extends StatelessWidget {
               ),
               // Heading (booking info)
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 15, 0, 0.0),
                 child: Row(
                   children: [
                     Text(
                       'Booking Info',
-                      style: GoogleFonts.openSans(
-                          fontSize: 12, fontWeight: FontWeight.bold),
+                      style: GoogleFontsCustom.openSans(
+                          fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -143,16 +144,16 @@ class AppiontmentDetails extends StatelessWidget {
 
               //* Booking details
 
-              _buildBookingDetail(Icons.location_on_sharp,
+              _buildBookingDetail("assets/images/icons/location.png",
                   appointment.clinic_name, appointment.clinic_address),
-              _buildBookingDetail(Icons.calendar_month, 'Appointment Date',
-                  appointment.appointmentDate),
-              _buildBookingDetail(
-                  Icons.timer, 'Time', appointment.appointmentTime),
-              _buildBookingDetail(Icons.location_on_sharp,
+              _buildBookingDetail("assets/images/icons/calendar.png",
+                  'Appointment Date', appointment.appointmentDate),
+              _buildBookingDetail("assets/images/icons/timer.png", 'Time',
+                  appointment.appointmentTime),
+              _buildBookingDetail("assets/images/icons/info.png",
                   'Reason for Consultation', appointment.consult_details),
-              _buildBookingDetail(
-                  Icons.money, 'Consultation Fee', appointment.consultationFee),
+              _buildBookingDetail("assets/images/icons/info.png",
+                  'Consultation Fee', appointment.consultationFee),
 
               //* Buttons
               const SizedBox(height: 40),
@@ -175,7 +176,8 @@ class AppiontmentDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildBookingDetail(IconData icon, String title, String subtitle) {
+  Widget _buildBookingDetail(
+      String imageAssetPath, String title, String subtitle) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,16 +191,17 @@ class AppiontmentDetails extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  size: 22,
+                Image.asset(
+                  imageAssetPath,
+                  width: 15.w,
+                  // height: 22.w,
                   color: Colors.grey,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     title,
-                    style: GoogleFonts.openSans(
+                    style: GoogleFontsCustom.openSans(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -213,7 +216,7 @@ class AppiontmentDetails extends StatelessWidget {
               width: 200,
               child: Text(
                 subtitle,
-                style: GoogleFonts.openSans(
+                style: GoogleFontsCustom.openSans(
                   fontSize: 12,
                   color: Colors.grey,
                 ),

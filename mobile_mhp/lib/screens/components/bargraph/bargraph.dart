@@ -2,6 +2,7 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/screens/components/bargraph/bar_data.dart';
 
 class MyBarGraph extends StatelessWidget {
@@ -42,24 +43,25 @@ class MyBarGraph extends StatelessWidget {
       titlesData: FlTitlesData(),
       maxY: 100,
       minY: 0,
-     barGroups: myBardata.barData.map((data) {
-          final y2 =
-              myBardata.barData.indexOf(data) < monthlystats2.length ? monthlystats2[myBardata.barData.indexOf(data)] : 0.0;
+      barGroups: myBardata.barData.map((data) {
+        final y2 = myBardata.barData.indexOf(data) < monthlystats2.length
+            ? monthlystats2[myBardata.barData.indexOf(data)]
+            : 0.0;
 
-        Color bar1Color;
-        Color bar2Color;
+        // Color bar1Color;
+        // Color bar2Color;
 
-        if (data.y == data.y) {
-          bar1Color = Colors.blue;
-        } else {
-          bar1Color = Colors.blue;
-        }
+        // if (data.y == data.y) {
+        //   bar1Color = Colors.blue;
+        // } else {
+        //   bar1Color = Colors.blue;
+        // }
 
-        if (y2 == y2) {
-          bar2Color = Colors.grey;
-        } else {
-          bar2Color = Colors.grey;
-        }
+        // if (y2 == y2) {
+        //   bar2Color = Colors.grey;
+        // } else {
+        //   bar2Color = Colors.grey;
+        // }
 
         return BarChartGroupData(
           x: data.x,
@@ -67,12 +69,14 @@ class MyBarGraph extends StatelessWidget {
             BarChartRodData(
               borderRadius: BorderRadius.zero,
               toY: data.y,
-              color: bar1Color, // Set the color for the first bar
+              color: Pallet.NEUTRAL_200, // Set the color for the first bar
+              width: 18.0,
             ),
             BarChartRodData(
               borderRadius: BorderRadius.zero,
               toY: y2,
-              color: bar2Color, // Set the color for the second bar
+              color: Pallet.PRIMARY_COLOR, // Set the color for the second bar
+              width: 18.0,
             ),
           ],
         );

@@ -14,7 +14,7 @@ import 'package:pharma_nathi/screens/components/bargraph/bargraph.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:pharma_nathi/views/widgets/upcoming_appointment_tile.dart';
 import 'package:provider/provider.dart';
-
+import 'package:pharma_nathi/views/widgets/custom_google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,10 +32,8 @@ class _HomePageState extends State<HomePage> {
   int onlineAppointmentsCount = 0;
   int inPersonVisitAppointmentsCount = 0;
 
-
   List<Map<String, dynamic>> monthlyStats = [];
   List<Appointment> appointmentData = [];
-
 
   Future<void> loadMonthlyStatsData() async {
     try {
@@ -123,11 +121,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
+              height: 85.h,
               color: Color(0xFFFFFFFF),
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(0.0),
                 child: Row(
                   children: [
+                    SizedBox(width: 20.w),
                     CircleAvatar(
                       backgroundImage: NetworkImage(userProvider.picture ?? ''),
                       radius: 30.sp,
@@ -139,21 +139,21 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text(
                           'Welcome Back!',
-                          style: GoogleFonts.openSans(fontSize: 14),
+                          style: GoogleFontsCustom.openSans(
+                              fontSize: 12.sp, color: Pallet.NEUTRAL_300),
                         ),
                         Container(
-                          width: 270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
+                          width:
+                              270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
                           child: Text(
                             'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                               fontWeight: FontWeight.bold,
                               fontSize: 14.sp,
                             ),
-                            softWrap:
-                                true, 
-                            maxLines: 2, 
-                            overflow: TextOverflow
-                                .ellipsis, 
+                            softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -171,19 +171,16 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Upcoming Appointments',
-                      style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp
-                      ),
+                      style: GoogleFontsCustom.openSans(
+                          fontWeight: FontWeight.bold, fontSize: 12.sp),
                     ),
-                    Text(
-                      'See All',
-                      style: GoogleFonts.openSans(
-                        color: Color(0xFF6F7ED7),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp
-                      ),
-                    ),
+                    // Text(
+                    //   'See All',
+                    //   style: GoogleFontsCustom.openSans(
+                    //       color: Color(0xFF6F7ED7),
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 12.sp),
+                    // ),
                   ],
                 ),
               ),
@@ -202,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                       ? Center(
                           child: Text(
                             'No upcoming appointments available',
-                            style: GoogleFonts.openSans(fontSize: 12.sp),
+                            style: GoogleFontsCustom.openSans(fontSize: 12.sp),
                           ),
                         )
                       : ListView.builder(
@@ -227,33 +224,30 @@ class _HomePageState extends State<HomePage> {
             Container(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    top: 10, left: 25, right: 25, bottom: 25),
+                    top: 25, left: 25, right: 25, bottom: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Appointments Statistics',
-                      style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp
-                      ),
+                      style: GoogleFontsCustom.openSans(
+                          fontWeight: FontWeight.bold, fontSize: 12.sp),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'Last 12 Months',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFF6F7ED7),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp
-                          ),
-                        ),
-                        Icon(
-                          Icons.expand_more,
-                          color: Color(0xFF6F7ED7),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       'Last 12 Months',
+                    //       style: GoogleFontsCustom.openSans(
+                    //           color: Color(0xFF6F7ED7),
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 12.sp),
+                    //     ),
+                    //     Icon(
+                    //       Icons.expand_more,
+                    //       color: Color(0xFF6F7ED7),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -271,19 +265,19 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Total',
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                               fontSize: 12.sp,
                               color: Colors.grey,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 4.h),
                           Text(
                             appointmentData.isEmpty
                                 ? '0'
                                 : appointmentData.length.toString(),
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -302,10 +296,10 @@ class _HomePageState extends State<HomePage> {
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 4.h),
                           Text(
                             '$onlineAppointmentsCount',
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -318,15 +312,15 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'In Person',
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                                 fontSize: 12.sp,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 4.h),
                           Text(
                             '$inPersonVisitAppointmentsCount',
-                            style: GoogleFonts.openSans(
+                            style: GoogleFontsCustom.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -369,13 +363,13 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(right: 8),
                           child: Icon(
                             Icons.circle,
-                            color: Colors.blue.shade500,
+                            color: Pallet.PRIMARY_COLOR,
                             size: 12.sp,
                           ),
                         ),
                         Text(
                           'Online Consultation',
-                          style: GoogleFonts.openSans(
+                          style: GoogleFontsCustom.openSans(
                             fontSize: 8.sp,
                             fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),
@@ -391,7 +385,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'In person Visit',
-                         style: GoogleFonts.openSans(
+                          style: GoogleFontsCustom.openSans(
                             fontSize: 8.sp,
                             fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),
