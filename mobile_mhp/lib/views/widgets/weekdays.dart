@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 
@@ -127,56 +128,58 @@ class _ClickableDayState extends State<ClickableDay> {
                   // Call the callback function with the selected day
                   widget.onDaySelected(day);
                 },
-                child: Card(
-                  elevation: 0,
-                  color: isClicked
-                      ? Pallet.PRIMARY_COLOR 
-                      : (isToday ? Pallet.PRIMARY_200 : Pallet.PRAMARY_80),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
                   child: Container(
-                    width: 45, // Set width for each day card
-                    height: 55, // Set height for each day card
-                    padding: const EdgeInsets.all(4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Day number at the top left
-                        Text(
-                          day.toString(),
-                          style: GoogleFonts.openSans(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: isClicked || isToday
-                                ? Colors.white
-                                : Colors.black,
+                    // elevation: 0,
+                    height: 55.h,
+                    width: 45.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: isClicked
+                          ? Pallet.PRIMARY_COLOR
+                          : (isToday ? Pallet.PRIMARY_200 : Pallet.PRAMARY_80),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Day number at the top left
+                          Text(
+                            day.toString(),
+                            style: GoogleFonts.openSans(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isClicked || isToday
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 5),
-                        // Skeleton lines representing appointments
-                        Flexible(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics:
-                                const NeverScrollableScrollPhysics(), // Disable scrolling
-                            itemCount: appointmentsForDay,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 2),
-                                child: Container(
-                                  height: 2,
-                                  width: double.infinity,
-                                  color: isClicked || isToday
-                                      ? Pallet.SECONDARY_500
-                                      : Pallet.SECONDARY_500
-                                ),
-                              );
-                            },
+                          const SizedBox(height: 5),
+                          // Skeleton lines representing appointments
+                          Flexible(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics:
+                                  const NeverScrollableScrollPhysics(), // Disable scrolling
+                              itemCount: appointmentsForDay,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2),
+                                  child: Container(
+                                      height: 2,
+                                      width: double.infinity,
+                                      color: isClicked || isToday
+                                          ? Pallet.SECONDARY_500
+                                          : Pallet.SECONDARY_500),
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

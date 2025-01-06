@@ -34,7 +34,7 @@ class Appointment {
     final DateTime dateTimeLocal = dateTimeUtc.toLocal();
     final DateFormat dateFormatter = DateFormat('dd MMM yyyy', 'en_US');
     final String formattedDate = dateFormatter.format(dateTimeLocal);
-    final DateFormat timeFormatter = DateFormat('HH:mm a', 'en_US');
+    final DateFormat timeFormatter = DateFormat('HH:mm', 'en_US');
     final String formattedTime = timeFormatter.format(dateTimeLocal);
 
     //* Method to determine the appointment duration

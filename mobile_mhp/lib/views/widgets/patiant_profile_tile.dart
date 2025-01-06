@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/appointment.dart';
 
@@ -30,7 +31,8 @@ class PatientProfileTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           color: Color(0xFFF7F9FC),
         ),
-        width: 400,
+        height: 93.h,
+        width: 357.w,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
@@ -43,12 +45,12 @@ class PatientProfileTile extends StatelessWidget {
                         ? null // No background color if imageURL is available
                         : getRandomColor(), // Random background color if imageURL is not available
                     child: ClipOval(
-                            child: Image.network(
-                              appointment.imageURL,
-                              fit: BoxFit
-                                  .cover, //* Ensure the image fits well within the circle
-                            ),
-                          ),
+                      child: Image.network(
+                        appointment.imageURL,
+                        fit: BoxFit
+                            .cover, //* Ensure the image fits well within the circle
+                      ),
+                    ),
                     radius: 30,
                   ),
                   Positioned(
