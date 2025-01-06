@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:pharma_nathi/views/widgets/patiant_profile_tile.dart';
 import 'package:provider/provider.dart';
-
 
 class PatientList extends StatefulWidget {
   const PatientList({Key? key});
@@ -74,7 +74,7 @@ class _PatientListState extends State<PatientList> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(35),
+              padding: const EdgeInsets.fromLTRB(12, 35, 35, 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -89,14 +89,14 @@ class _PatientListState extends State<PatientList> {
                     children: [
                       Icon(
                         Icons.search,
-                        color: Color(0xFF6F7ED7),
+                        color: Pallet.NEUTRAL_300,
                       ),
                       SizedBox(
-                        width: 15.w,
+                        width: 8.w,
                       ),
                       Icon(
                         Icons.filter_list,
-                        color: Color(0xFF6F7ED7),
+                        color: Pallet.NEUTRAL_300,
                       ),
                     ],
                   ),

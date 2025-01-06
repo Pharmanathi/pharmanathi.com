@@ -254,15 +254,18 @@ class _AppointmentsState extends State<Appointments> {
               ),
 
               // Weekdays container
-              ClickableDay(
-                selectedMonth: selectedMonth,
-                appointmentsPerDay: appointmentsPerDay,
-                onDaySelected: (day) {
-                  setState(() {
-                    selectedDay = day;
-                    _filterAppointments();
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: ClickableDay(
+                  selectedMonth: selectedMonth,
+                  appointmentsPerDay: appointmentsPerDay,
+                  onDaySelected: (day) {
+                    setState(() {
+                      selectedDay = day;
+                      _filterAppointments();
+                    });
+                  },
+                ),
               ),
 
               Row(
@@ -312,6 +315,7 @@ class _AppointmentsState extends State<Appointments> {
               // Scrollable ProfileCard part
               Expanded(
                 child: Container(
+                  width: 354.w,
                   color: Pallet.PRAMARY_75,
                   child: SingleChildScrollView(
                     child: Column(
@@ -319,30 +323,24 @@ class _AppointmentsState extends State<Appointments> {
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(
-                              flex: 1,
+                            SizedBox(
+                              width: 45.w,
                               child: Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      'mon', //TODO [Thabang] : set this to get  days auto
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 10.sp,
-                                        color: Pallet.Black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  Text(
+                                    'mon', //TODO [Thabang] : set this to get  days auto
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 10.sp,
+                                      color: Pallet.Black,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      '$selectedDay',
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 20.sp,
-                                        color: Pallet.Black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  Text(
+                                    '$selectedDay',
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 20.sp,
+                                      color: Pallet.Black,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -352,8 +350,7 @@ class _AppointmentsState extends State<Appointments> {
                               width: 0.2.w,
                               height: 50.h,
                               color: Pallet.SECONDARY_500,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 12),
+                              margin: const EdgeInsets.only(right: 12),
                             ),
                             Expanded(
                               flex: 5,
