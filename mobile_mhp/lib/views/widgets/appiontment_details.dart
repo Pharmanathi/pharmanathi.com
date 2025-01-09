@@ -2,17 +2,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pharma_nathi/blocs/address_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
-import './custom_google_fonts.dart';
-import '../../models/appointment.dart';
+import 'package:pharma_nathi/models/appointment.dart';
+import 'package:pharma_nathi/models/user.dart';
+import 'package:pharma_nathi/screens/components/UserProvider.dart';
+import 'package:pharma_nathi/views/widgets/custom_google_fonts.dart';
+import 'package:provider/provider.dart';
 
-class AppiontmentDetails extends StatelessWidget {
+
+class AppiontmentDetails extends StatefulWidget {
   final Appointment appointment;
 
   const AppiontmentDetails({super.key, required this.appointment});
 
   @override
+  State<AppiontmentDetails> createState() => _AppiontmentDetailsState();
+}
+
+class _AppiontmentDetailsState extends State<AppiontmentDetails> {
+  @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final addressBloc = Provider.of<AddressBloc>(context, listen: false);
+    final userInfo = userProvider.user;
+    List<int> practiceLocationIds =
+        userInfo?.doctorProfile.practiceLocations ?? [];
+
+    // Fetch addresses
+    addressBloc.fetchAddresses(context, practiceLocationIds);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
@@ -82,7 +101,7 @@ class AppiontmentDetails extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundImage:
-                                  NetworkImage(appointment.imageURL),
+                                  NetworkImage(widget.appointment.imageURL),
                               radius: 27,
                             ),
                             Positioned(
@@ -106,20 +125,21 @@ class AppiontmentDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                appointment.patientName,
+                                widget.appointment.patientName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFontsCustom.openSans(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                appointment.consult_details,
-                                style: GoogleFontsCustom.openSans(
-                                  color: Colors.grey,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
+                              //TODO:wait for enpaint to get patient details
+                              // Text(
+                              //   widget.appointment.consult_details,
+                              //   style: GoogleFontsCustom.openSans(
+                              //     color: Colors.grey,
+                              //     fontSize: 12.sp,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -143,30 +163,40 @@ class AppiontmentDetails extends StatelessWidget {
               ),
 
               //* Booking details
-
-              _buildBookingDetail("assets/images/icons/location.png",
-                  appointment.clinic_name, appointment.clinic_address),
+              Consumer<AddressBloc>(
+                builder: (context, addressBloc, child) {
+                  if (addressBloc.isLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (addressBloc.error != null) {
+                    return Center(
+                      child: Text(
+                        'No address Found',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else {
+                    final address = addressBloc.addresses.isNotEmpty
+                        ? addressBloc.addresses.first
+                        : null;
+                    return _buildBookingDetail(
+                      "assets/images/icons/location.png",
+                      'Practice Location',
+                      address != null
+                          ? '${address.line1} \n${address.suburb} \n${address.city}\n${address.province}'
+                          : 'Address not available',
+                    );
+                  }
+                },
+              ),
               _buildBookingDetail("assets/images/icons/calendar.png",
-                  'Appointment Date', appointment.appointmentDate),
+                  'Appointment Date', widget.appointment.appointmentDate),
               _buildBookingDetail("assets/images/icons/timer.png", 'Time',
-                  appointment.appointmentTime),
+                  widget.appointment.appointmentTime),
               _buildBookingDetail("assets/images/icons/info.png",
-                  'Consultation Details', appointment.consult_details),
+                  'Consultation Details', widget.appointment.consult_details),
 
               //* Buttons
               const SizedBox(height: 40),
-              // Center(
-              //   child: MyButtonWidgets(
-              //     buttonText1: 'RESCHEDULE',
-              //     onPressed1: () {
-              //       // Handle the custom button action
-              //     },
-              //     buttonText2: 'REJECT',
-              //     onPressed2: () {
-              //       // Handle the custom button action
-              //     },
-              //   ).buildButton(),
-              // ),
             ],
           ),
         ),
@@ -192,7 +222,6 @@ class AppiontmentDetails extends StatelessWidget {
                 Image.asset(
                   imageAssetPath,
                   width: 15.w,
-                  // height: 22.w,
                   color: Colors.grey,
                 ),
                 Padding(
