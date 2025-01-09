@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pharma_nathi/blocs/address_bloc.dart';
 import 'package:pharma_nathi/views/widgets/appiontment_details.dart';
+import 'package:provider/provider.dart';
 import './custom_google_fonts.dart';
 import '../../models/appointment.dart';
 
@@ -22,8 +24,11 @@ class UpcomingAppointmentTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AppiontmentDetails(
-              appointment: appointment,
+            builder: (context) => ChangeNotifierProvider.value(
+              value: Provider.of<AddressBloc>(context, listen: false),
+              child: AppiontmentDetails(
+                appointment: appointment,
+              ),
             ),
           ),
         );

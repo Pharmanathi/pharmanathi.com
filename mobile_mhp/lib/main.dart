@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pharma_nathi/blocs/address_bloc.dart';
 import 'package:pharma_nathi/blocs/sign_in_bloc.dart';
 import 'package:pharma_nathi/firebase_options.dart';
+import 'package:pharma_nathi/repositories/address_repository.dart';
 import 'package:pharma_nathi/repositories/sign_in_repository.dart';
 import 'package:pharma_nathi/repositories/speciality_repository.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +41,7 @@ Future<void> main() async {
       AppointmentRepository(apiProvider);
   UserRepository userRepository = UserRepository(apiProvider);
   SpecialityRepository specialityRepository = SpecialityRepository(apiProvider);
+  AddressRepository addressRepository = AddressRepository(apiProvider);
   DoctorRepository doctorRepository = DoctorRepository(apiProvider);
   GoogleSignInRepository sign_in_repository =
       GoogleSignInRepository(apiProvider);
@@ -47,11 +50,11 @@ Future<void> main() async {
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(appointmentRepository, userRepository, specialityRepository,
+      await _runApp(appointmentRepository, userRepository,addressRepository, specialityRepository,
           doctorRepository, sign_in_repository);
     });
   } else {
-    await _runApp(appointmentRepository, userRepository, specialityRepository,
+    await _runApp(appointmentRepository, userRepository, addressRepository ,specialityRepository,
         doctorRepository, sign_in_repository);
   }
 }
@@ -90,12 +93,14 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
 Future<void> _runApp(
     AppointmentRepository appointmentRepository,
     UserRepository userRepository,
+    AddressRepository addressRepository,
     SpecialityRepository specialityRepository,
     DoctorRepository doctorRepository,
     GoogleSignInRepository sign_in_repository) async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AddressBloc(addressRepository)),
         ChangeNotifierProvider(create: (_) => ImageDataProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider<SpecialityBloc>(
