@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/gestures.dart';
 import 'package:patient/Repository/sign_in_repository.dart';
 import 'package:patient/blocs/sign_in_bloc.dart';
+import 'package:patient/config/color_const.dart';
 import 'package:patient/routes/app_routes.dart';
 import 'package:patient/screens/components/UserProvider.dart';
 import 'package:patient/services/api_provider.dart';
@@ -36,25 +38,25 @@ class GoogleSignInWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'assets/images/pharmanathi-patient-icon.png',
-                              height: 100.h,
+                              'assets/images/pharmanathi-stack-logoblue.png',
+                              height: 124.h,
                             ),
-                            Text(
-                              'PHARMA',
-                              style: GoogleFonts.openSans(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                                color: const Color.fromARGB(255, 101, 115, 207),
-                              ),
-                            ),
-                            Text(
-                              'NATHI',
-                              style: GoogleFonts.openSans(
-                                fontSize: 23.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 101, 115, 207),
-                              ),
-                            ),
+                            // Text(
+                            //   'PHARMA',
+                            //   style: GoogleFonts.openSans(
+                            //     fontSize: 24.sp,
+                            //     fontWeight: FontWeight.bold,
+                            //     color: const Color.fromARGB(255, 101, 115, 207),
+                            //   ),
+                            // ),
+                            // Text(
+                            //   'NATHI',
+                            //   style: GoogleFonts.openSans(
+                            //     fontSize: 23.sp,
+                            //     fontWeight: FontWeight.bold,
+                            //     color: Color.fromARGB(255, 101, 115, 207),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -130,6 +132,47 @@ class GoogleSignInWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Spacer(),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'By continuing you agree to Pharmanathi\'s ',
+                              style: GoogleFonts.openSans(
+                                color: Pallet.BLACK,
+                                fontSize: 14.sp,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Terms of Service',
+                                  style: GoogleFonts.openSans(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Open Terms of Service
+                                      print("Open Terms of Service page");
+                                    },
+                                ),
+                                const TextSpan(
+                                  text: ' and ',
+                                ),
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  style:GoogleFonts.openSans(
+                                    color: Pallet.PRIMARY_500,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      print("Need a policy page");
+                                    },
+                                ),
+                                const TextSpan(text: '.'),
+                              ],
+                            ))),
                   ],
                 ),
                 if (isLoading)

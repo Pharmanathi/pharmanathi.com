@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               return Text('Error: ${snapshot.error}');
             } else {
               String initialRoute = snapshot.data == true
-                  ? AppRoutes.signIn
+                  ? AppRoutes.onboarding
                   : AppRoutes.onboarding;
               if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
                 if (ApiHelper.retrieveLocaAPIToken(context) != null) {

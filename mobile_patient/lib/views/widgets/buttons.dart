@@ -46,23 +46,23 @@ class MyButtonWidgets {
   }) {
     final primaryButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: Color(0xFF6F7ED7), // Background color for primary button
-      minimumSize: Size(320.sp, 45.sp),
+      minimumSize: Size(340.sp, 40.sp),
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(3),
       ),
     );
 
     final secondaryButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: Colors.white, // Background color for secondary button
-      minimumSize: Size(320.sp, 45.sp),
+      minimumSize: Size(340.sp, 40.sp),
       elevation: 0,
       side: BorderSide(
         color: Color(0xFF6F7ED7),
         width: 1.w,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(3),
       ),
     );
 
