@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, use_super_parameters
+import 'package:patient/config/color_const.dart';
 import 'package:patient/views/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class _MyProfileState extends State<MyProfile> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
+      backgroundColor: Pallet.PURE_WHITE,
       body: Stack(
         children: [
           Column(
@@ -55,7 +57,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
               ),
               Container(
-                color: Colors.white,
+                color: Pallet.PURE_WHITE,
                 height: 300,
               ),
             ],
@@ -66,7 +68,7 @@ class _MyProfileState extends State<MyProfile> {
             right: 30,
             bottom: 2,
             child: Container(
-              color: Color(0xFFF7F9FC),
+              color: Pallet.PURE_WHITE,
               height: 200,
               child: Padding(
                 padding: const EdgeInsets.all(25.0),

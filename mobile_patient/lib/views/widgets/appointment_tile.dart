@@ -91,7 +91,7 @@ class ProfileCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 0, right: 12, left: 12, bottom: 5),
+        padding: const EdgeInsets.only( right: 12, left: 12,),
         child: SizedBox(
           height: 160.h,
           child: Column(
@@ -99,7 +99,7 @@ class ProfileCard extends StatelessWidget {
               Container(
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(

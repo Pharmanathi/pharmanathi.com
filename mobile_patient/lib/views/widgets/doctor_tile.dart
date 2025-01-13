@@ -121,7 +121,7 @@ class CustomDoctorCard extends StatelessWidget {
                             // ),
                           ],
                         ),
-                        SizedBox(width: 25.sp),
+                        SizedBox(width: 20.sp),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -129,12 +129,13 @@ class CustomDoctorCard extends StatelessWidget {
                               alteredname,
                               style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 18.sp,
+                                  fontSize: 14.sp,
                                   fontStyle: FontStyle.normal),
                             ),
                             Text(
                               doctor.getAllSpecialityNames(),
                               style: GoogleFonts.openSans(
+                                  color: Pallet.NEUTRAL_150,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12.sp,
                                   fontStyle: FontStyle.normal),
