@@ -288,7 +288,7 @@ class _BookingsState extends State<Bookings> {
                         decoration: InputDecoration(
                           hintText: 'Reason for your visit',
                           hintStyle: GoogleFonts.openSans(
-                              color: Colors.grey,
+                              color: Pallet.NEUTRAL_150,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.normal),
                           filled: true,
@@ -330,32 +330,31 @@ class _BookingsState extends State<Bookings> {
                                 ),
                               ),
                               SizedBox(height: 20.h),
-                              Container(
-                                height: 50.h,
-                                child: ElevatedButton(
-                                  onPressed: _pickFile,
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor: Pallet.PRAMARY_75,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                        color: Pallet.PRIMARY_COLOR,
-                                        width: 1.0.w,
-                                      ),
+                              ElevatedButton(
+                                onPressed: _pickFile,
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: Pallet.PRAMARY_75,
+                                  minimumSize: Size(117.sp, 40.sp),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                      color: Pallet.PRIMARY_600,
+                                      width: 1.0.w,
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.publish_sharp),
-                                      SizedBox(width: 7.w),
-                                      Text('UPLOAD',
-                                          style: GoogleFonts.openSans(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.publish_sharp),
+                                    SizedBox(width: 7.w),
+                                    Text('UPLOAD',
+                                        style: GoogleFonts.openSans(
+                                            fontSize: 14.sp,
+                                            color: Pallet.PRIMARY_650,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
                                 ),
                               ),
                               SizedBox(height: 10.h),
@@ -395,10 +394,10 @@ class _BookingsState extends State<Bookings> {
                   children: [
                     //doctor name
                     SizedBox(
-                      height: 20.h,
+                      height: 30.h,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.only(top: 5.0,left: 20,right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,8 +411,8 @@ class _BookingsState extends State<Bookings> {
                                   "Doctor",
                                   style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                                 SizedBox(
@@ -424,7 +423,7 @@ class _BookingsState extends State<Bookings> {
                                   style: GoogleFonts.openSans(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                               ],
@@ -443,7 +442,7 @@ class _BookingsState extends State<Bookings> {
                     buildDivider(),
                     //date..................
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.only(top: 5.0,left: 20,right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,8 +456,8 @@ class _BookingsState extends State<Bookings> {
                                   "Date",
                                   style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                                 SizedBox(
@@ -468,7 +467,7 @@ class _BookingsState extends State<Bookings> {
                                   "${dayOfAppiontment != null ? "${dayOfAppiontment!.day} ${_getMonthName(dayOfAppiontment!.month)} ${dayOfAppiontment!.year}" : "Select a day"}",
                                   style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -489,7 +488,7 @@ class _BookingsState extends State<Bookings> {
                     //time...........
 
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.only(top: 2.0,left: 20,right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -503,8 +502,8 @@ class _BookingsState extends State<Bookings> {
                                   "Time",
                                   style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                                 SizedBox(
@@ -514,7 +513,7 @@ class _BookingsState extends State<Bookings> {
                                   timeOfTheAppointment ?? "Select a time",
                                   style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -534,7 +533,7 @@ class _BookingsState extends State<Bookings> {
                     buildDivider(),
                     //insurence..................
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.only(top: 2.0,left: 20,right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -548,8 +547,8 @@ class _BookingsState extends State<Bookings> {
                                   "Consultation fes",
                                   style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_250,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                                 SizedBox(
@@ -561,7 +560,7 @@ class _BookingsState extends State<Bookings> {
                                       '',
                                   style: GoogleFonts.openSans(
                                     color: Colors.black,
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

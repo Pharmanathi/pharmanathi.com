@@ -62,44 +62,47 @@ class _AppointmentsState extends State<Appointments> {
             text: 'Appointments',
             showBackButton: false, //* Hide the back button if not needed
           )),
-      body: CustomScrollView(
-        slivers: [
-          isLoading
-              ? const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : appointmentData.isEmpty
-                  ? SliverFillRemaining(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/nodata.png',
-                              width: 120.w,
-                              height: 120.h,
-                            ),
-                            const SizedBox(height: 20),
-                             Text(
-                              'No appointments available',
-                              style: GoogleFonts.openSans(fontSize: 12),
-                            ),
-                          ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15.0,),
+        child: CustomScrollView(
+          slivers: [
+            isLoading
+                ? const SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : appointmentData.isEmpty
+                    ? SliverFillRemaining(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/nodata.png',
+                                width: 120.w,
+                                height: 120.h,
+                              ),
+                              const SizedBox(height: 20),
+                               Text(
+                                'No appointments available',
+                                style: GoogleFonts.openSans(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final data = appointmentData[index];
+                            return AppointmentListItem(appointment: data);
+                          },
+                          childCount: appointmentData.length,
                         ),
                       ),
-                    )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final data = appointmentData[index];
-                          return AppointmentListItem(appointment: data);
-                        },
-                        childCount: appointmentData.length,
-                      ),
-                    ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,
