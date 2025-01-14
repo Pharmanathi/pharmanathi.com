@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:patient/views/widgets/privacy_policy.dart';
+import 'package:patient/views/widgets/terms_of_service.dart';
 import 'package:provider/provider.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
@@ -134,11 +136,12 @@ class GoogleSignInWidget extends StatelessWidget {
                     ),
                     Spacer(),
                     Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 54.0),
                         child: RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: 'By continuing you agree to Pharmanathi\'s ',
+                              text:
+                                  'By continuing you agree to Pharmanathi\'s ',
                               style: GoogleFonts.openSans(
                                 color: Pallet.BLACK,
                                 fontSize: 14.sp,
@@ -147,13 +150,25 @@ class GoogleSignInWidget extends StatelessWidget {
                                 TextSpan(
                                   text: 'Terms of Service',
                                   style: GoogleFonts.openSans(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Pallet.PRIMARY_500,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      // Open Terms of Service
-                                      print("Open Terms of Service page");
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(16.0),
+                                          ),
+                                        ),
+                                        builder: (context) =>
+                                            FractionallySizedBox(
+                                          heightFactor: 0.7,
+                                          child: TermsOfServiceWidget(),
+                                        ),
+                                      );
                                     },
                                 ),
                                 const TextSpan(
@@ -161,13 +176,24 @@ class GoogleSignInWidget extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: 'Privacy Policy',
-                                  style:GoogleFonts.openSans(
+                                  style: GoogleFonts.openSans(
                                     color: Pallet.PRIMARY_500,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      print("Need a policy page");
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(26.0)),
+                                        ),
+                                        builder: (context) =>
+                                            FractionallySizedBox(
+                                              heightFactor: 0.7,
+                                                child: PrivacyPolicyWidget()),
+                                      );
                                     },
                                 ),
                                 const TextSpan(text: '.'),

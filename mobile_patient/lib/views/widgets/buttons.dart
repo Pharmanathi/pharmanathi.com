@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:patient/config/color_const.dart';
 import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +46,7 @@ class MyButtonWidgets {
     CircularProgressIndicator? primaryWidget,
   }) {
     final primaryButtonStyle = ElevatedButton.styleFrom(
-      backgroundColor: Color(0xFF6F7ED7), // Background color for primary button
+      backgroundColor: Pallet.PRIMARY_COLOR, // Background color for primary button
       minimumSize: Size(340.sp, 40.sp),
       elevation: 0,
       shape: RoundedRectangleBorder(
