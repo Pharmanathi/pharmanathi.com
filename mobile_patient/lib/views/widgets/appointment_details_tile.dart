@@ -179,7 +179,7 @@ class AppiontmentDetails extends StatelessWidget {
               value: appointment.appointmentTime,
             ),
             _buildDetailRow(
-              icon: Icons.location_on_sharp,
+              icon: Icons.info_rounded,
               title: 'Reason for Consultation',
               value: appointment.reason,
             ),

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, prefer_const_constructors_in_immutables, must_be_immutable, use_super_parameters
 
 import 'package:patient/config/color_const.dart';
+import 'package:patient/routes/app_routes.dart';
 import 'package:patient/views/widgets/buttons.dart';
 import 'package:patient/screens/components/text_and_heading.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class OnboardScreen extends StatefulWidget {
         super(key: key);
 
   void handleOnboardingCompletion(BuildContext context) {
-    Navigator.pushNamed(context, '/home_page');
+    Navigator.pushNamed(context, AppRoutes.appointments);
   }
 
 // New method to check if it's the first time opening the app
@@ -72,7 +73,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
         OnboardScreen.setOnboardingCompleted();
 
         // Navigate to the home_page
-        Navigator.pushNamed(context, '/home_page');
+        Navigator.pushNamed(context, AppRoutes.appointments);
       }
     });
   }

@@ -98,7 +98,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
               Container(
                 width: double.infinity.sp,
                 height: 290.h,
-                color: Color(0xFF6F7ED7),
+                color: Pallet.PRIMARY_COLOR,
                 child: Column(
                   children: [
                     Row(
@@ -135,7 +135,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
               color: Pallet.BACKGROUND_COLOR,
               height: 100.sp,
               child: Padding(
-                padding: const EdgeInsets.all(35.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: [
                     // Profile picture and details
@@ -145,11 +145,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           CircleAvatar(
                             backgroundImage:
                                 NetworkImage(userProvider.picture ?? ''),
-                            radius: 80.sp,
+                            radius: 60.sp,
                           ),
                           // Doctor's name
                           Padding(
-                            padding: const EdgeInsets.all(2.0),
+                            padding: const EdgeInsets.only(top: 18.0),
                             child: Text(
                               alteredname,
                               style: GoogleFonts.openSans(
