@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,8 @@ import 'package:pharma_nathi/repositories/user_repository.dart';
 import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/services/api_provider.dart';
+import 'package:pharma_nathi/views/widgets/privacy_policy.dart';
+import 'package:pharma_nathi/views/widgets/terms_of_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -56,22 +59,6 @@ class GoogleSignInWidget extends StatelessWidget {
                               'assets/images/pharmanathi-stack-logowhite.png',
                               height: 124.h,
                             ),
-                            // Text(
-                            //   'PHARMA',
-                            //   style: GoogleFonts.openSans(
-                            //     fontSize: 24.sp,
-                            //     fontWeight: FontWeight.bold,
-                            //     color: Color.fromARGB(255, 253, 253, 253),
-                            //   ),
-                            // ),
-                            // Text(
-                            //   'NATHI',
-                            //   style: GoogleFonts.openSans(
-                            //     fontSize: 23.sp,
-                            //     fontWeight: FontWeight.bold,
-                            //     color: Color.fromARGB(255, 253, 253, 253),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -164,6 +151,71 @@ class GoogleSignInWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Spacer(),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 54.0),
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text:
+                                  'By continuing you agree to Pharmanathi\'s ',
+                              style: GoogleFonts.openSans(
+                                color: Pallet.SECONDARY_100,
+                                fontSize: 14.sp,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Terms of Service',
+                                  style: GoogleFonts.openSans(
+                                    color: Pallet.NEUTRAL_200,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(16.0),
+                                          ),
+                                        ),
+                                        builder: (context) =>
+                                            FractionallySizedBox(
+                                          heightFactor: 0.7,
+                                          child: TermsOfServiceWidget(),
+                                        ),
+                                      );
+                                    },
+                                ),
+                                const TextSpan(
+                                  text: ' and ',
+                                ),
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  style: GoogleFonts.openSans(
+                                    color: Pallet.NEUTRAL_200,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(26.0)),
+                                        ),
+                                        builder: (context) =>
+                                            FractionallySizedBox(
+                                                heightFactor: 0.7,
+                                                child: PrivacyPolicyWidget()),
+                                      );
+                                    },
+                                ),
+                                const TextSpan(text: '.'),
+                              ],
+                            ))),
                   ],
                 ),
                 if (isLoading)
