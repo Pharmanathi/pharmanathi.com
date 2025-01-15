@@ -229,7 +229,7 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                   child: Text(
                     title,
                     style: GoogleFontsCustom.openSans(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -240,11 +240,11 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
           Padding(
             padding: const EdgeInsets.only(left: 45, top: 0),
             child: Container(
-              width: 200,
+              width: 200.w,
               child: Text(
                 subtitle,
                 style: GoogleFontsCustom.openSans(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: Colors.grey,
                 ),
               ),

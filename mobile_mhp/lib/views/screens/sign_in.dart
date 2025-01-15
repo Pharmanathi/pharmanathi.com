@@ -51,7 +51,7 @@ class GoogleSignInWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 200),
                       child: SizedBox(
-                        height: 200.h,
+                        // height: 200.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
