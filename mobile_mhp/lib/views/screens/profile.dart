@@ -201,23 +201,23 @@ class _MyProfileState extends State<MyProfile> {
                     ),
                     //account information...........
                     GestureDetector(
-                      onTap: () async {
-                        // Navigate to EditAccount and wait for the result
-                        final newImage = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditAccount(
-                              imageFile: imageProvider.imageFile,
-                              onImageChanged: (newImage) {
-                                // Update the image if the user picked a new one
-                                if (newImage != null) {
-                                  imageProvider.updateImageFile(newImage);
-                                }
-                              },
-                            ),
-                          ),
-                        );
-                      },
+                      // onTap: () async {
+                      //   // Navigate to EditAccount and wait for the result
+                      //   final newImage = await Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => EditAccount(
+                      //         imageFile: imageProvider.imageFile,
+                      //         onImageChanged: (newImage) {
+                      //           // Update the image if the user picked a new one
+                      //           if (newImage != null) {
+                      //             imageProvider.updateImageFile(newImage);
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   );
+                      // },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 15, bottom: 10),
                         child: Row(

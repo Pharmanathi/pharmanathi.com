@@ -44,8 +44,7 @@ class MyButtonWidgets {
     bool showSecondary = true,
   }) {
     final primaryButtonStyle = ElevatedButton.styleFrom(
-      backgroundColor: Color.fromARGB(
-          255, 132, 215, 111), // Background color for primary button
+      backgroundColor: Pallet.PRIMARY_COLOR,
       minimumSize: Size(360, 45),
       elevation: 0,
       shape: RoundedRectangleBorder(
