@@ -473,7 +473,7 @@ class _AppointmentsState extends State<Appointments> {
                                         Image.asset(
                                           'assets/images/nodata.png',
                                           width: 120.w,
-                                          height: 120.h,
+                                          height: MediaQuery.of(context).size.height,
                                         ),
                                         SizedBox(height: 20.h),
                                         Text(

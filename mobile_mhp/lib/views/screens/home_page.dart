@@ -1,16 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, empty_constructor_bodies, duplicate_ignore, use_build_context_synchronously
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
-import 'package:pharma_nathi/screens/components/bargraph/bargraph.dart';
+import 'package:pharma_nathi/views/widgets/bargraph/bargraph.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:pharma_nathi/views/widgets/upcoming_appointment_tile.dart';
 import 'package:provider/provider.dart';
@@ -35,29 +33,45 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> monthlyStats = [];
   List<Appointment> appointmentData = [];
 
-  Future<void> loadMonthlyStatsData() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
+  void _calculateMonthlyStats() {
+    Map<String, List<Appointment>> groupedByMonth = {};
 
-      if (monthlyStats.isEmpty) {
-        final jsonString = await rootBundle.loadString('assets/sample.json');
-        final jsonMap = json.decode(jsonString);
-        final monthlyStatsData = jsonMap['monthlyStats'];
-
-        if (monthlyStatsData is List) {
-          monthlyStats = List<Map<String, dynamic>>.from(monthlyStatsData);
-        } else {
-          log.d('monthlyStatsData is not a List');
-        }
+    for (var appointment in appointmentData) {
+      String month = '';
+      try {
+        //* Parse appointmentDate and extract the month
+        DateTime parsedDate = DateFormat('dd MMM yyyy', 'en_US')
+            .parse(appointment.appointmentDate);
+        month = parsedDate.month.toString(); //* Extract the month
+      } catch (error) {
+        print('Error parsing appointmentDate: $error');
+        month = 'Unknown'; //* Fallback in case of an error
       }
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      log.e('Error loading or parsing JSON: $e');
+
+      // Group appointments by month
+      if (!groupedByMonth.containsKey(month)) {
+        groupedByMonth[month] = [];
+      }
+      groupedByMonth[month]!.add(appointment);
     }
+
+    setState(() {
+      monthlyStats = groupedByMonth.entries.map((entry) {
+        double onlineCount = entry.value
+            .where((appointment) => appointment.isOnlineAppointment == true)
+            .length
+            .toDouble();
+        double inPersonCount = entry.value
+            .where((appointment) => appointment.isOnlineAppointment == false)
+            .length
+            .toDouble();
+        return {
+          "month": entry.key, // Include the month in the stats
+          "onlineConsultation": onlineCount,
+          "inPersonVisit": inPersonCount,
+        };
+      }).toList();
+    });
   }
 
   @override
@@ -69,7 +83,7 @@ class _HomePageState extends State<HomePage> {
 
   void _loadData() async {
     await _loadAppointmentData();
-    await loadMonthlyStatsData();
+    _calculateMonthlyStats();
   }
 
   Future<void> _loadAppointmentData() async {
@@ -143,9 +157,8 @@ class _HomePageState extends State<HomePage> {
                           style: GoogleFontsCustom.openSans(
                               fontSize: 12.sp, color: Pallet.NEUTRAL_300),
                         ),
-                        Container(
-                          width:
-                              270, //Dear maintainer, lookout for this one. Its a real pieece of shit(26/08.2024)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
                             'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
                             style: GoogleFontsCustom.openSans(
@@ -335,21 +348,28 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Container(
-              width: 353.25.sp,
-              height: 211.sp,
-              child: isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : MyBarGraph(
-                      monthlystats: monthlyStats
-                          .map((data) =>
-                              (data["onlineConsultation"] as num).toDouble())
-                          .toList(),
-                      monthlystats2: monthlyStats
-                          .map((data) =>
-                              (data["inPersonVisit"] as num).toDouble())
-                          .toList(),
-                    ),
+            Flexible(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  double screenHeight = MediaQuery.of(context).size.height;
+                  double containerHeight = (screenHeight * 0.7).clamp(0, 211.sp);
+              
+                  return Container(
+                    width: 353.25.sp,
+                    height: containerHeight,
+                    child: isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : MyBarGraph(
+                            monthlystats: monthlyStats
+                                .map((data) => data["onlineConsultation"]!)
+                                .toList(),
+                            monthlystats2: monthlyStats
+                                .map((data) => data["inPersonVisit"]!)
+                                .toList(),
+                          ),
+                  );
+                },
+              ),
             ),
             Container(
               child: Padding(
