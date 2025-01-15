@@ -109,7 +109,7 @@ class AppointmentTile extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 3),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
+                                  padding: const EdgeInsets.only(bottom: 5),
                                   child: Text(
                                     appointment.appointmentDuration,
                                     style: GoogleFontsCustom.openSans(
