@@ -115,7 +115,8 @@ class UserProvider with ChangeNotifier {
 
   //* Method to check if it's the first time sign-in
   Future<bool> isFirstTimeSignIn() async {
-    return checkFirstTime() == null ||
+    final firstTimeStatus = await checkFirstTime();
+    return firstTimeStatus == null ||
         email == null ||
         name == null ||
         picture == null ||
