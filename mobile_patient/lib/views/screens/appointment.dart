@@ -99,7 +99,7 @@ class _AppointmentsState extends State<Appointments> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(120.sp),
+          preferredSize: Size.fromHeight(110.sp),
           child: const HeaderWidget(
             text: 'Appointments',
             showBackButton: false, //* Hide the back button if not needed

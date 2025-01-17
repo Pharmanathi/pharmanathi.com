@@ -190,8 +190,8 @@ class AppiontmentDetails extends StatelessWidget {
                     'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
             //buttons
             SizedBox(height: 20.h),
-            MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
-                .buildButtons(primaryFirst: false),
+            // MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
+            //     .buildButtons(primaryFirst: false),
           ],
         ),
       ),
