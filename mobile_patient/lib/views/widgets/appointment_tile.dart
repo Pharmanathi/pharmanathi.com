@@ -91,9 +91,8 @@ class ProfileCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only( right: 12, left: 12,),
-        child: SizedBox(
-          height: 160.h,
+        padding: const EdgeInsets.only( right: 12, left: 12, bottom: 12),
+        child: Flexible(
           child: Column(
             children: [
               Container(
@@ -135,7 +134,7 @@ class ProfileCard extends StatelessWidget {
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
-
+                    
                                 radius: 28.sp,
                               ),
                               SizedBox(

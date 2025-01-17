@@ -232,44 +232,51 @@ class _BookingsState extends State<Bookings> {
 
           //* Switch between different sections based on the selected button index
           if (selectedButtonIndex == 0)
-            Container(
-                height: 600.h,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 550.h,
-                      child: Visibility(
-                        visible: selectedButtonIndex == 0,
-                        child: TableEventsExample(
-                          doctorId: widget.doctor.id,
-                          onAppointmentTimeSelected: (selectedTimeSlot) {
-                            setState(() {
-                              // Assign selectedTimeSlot to timeOfTheAppointment
-                              timeOfTheAppointment = selectedTimeSlot;
-
-                              print(
-                                  'Selected time slot in BookingScreen: $selectedTimeSlot');
-                              print(
-                                  'timeOfTheAppointment in BookingScreen: $timeOfTheAppointment');
-                            });
-                          },
-                          onAppointmentDaySelected: (selectedDate) {
-                            setState(() {
-                              dayOfAppiontment = selectedDate;
-                            });
-                          },
+            Flexible(
+              child: SingleChildScrollView(
+                child: Container(
+                    height: 600.h,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: Container(
+                           height: 550 .h,
+                            child: Visibility(
+                              visible: selectedButtonIndex == 0,
+                              child: TableEventsExample(
+                                doctorId: widget.doctor.id,
+                                onAppointmentTimeSelected: (selectedTimeSlot) {
+                                  setState(() {
+                                    // Assign selectedTimeSlot to timeOfTheAppointment
+                                    timeOfTheAppointment = selectedTimeSlot;
+                          
+                                    print(
+                                        'Selected time slot in BookingScreen: $selectedTimeSlot');
+                                    print(
+                                        'timeOfTheAppointment in BookingScreen: $timeOfTheAppointment');
+                                  });
+                                },
+                                onAppointmentDaySelected: (selectedDate) {
+                                  setState(() {
+                                    dayOfAppiontment = selectedDate;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Center(
-                      child: MyButtonWidgets(
-                          buttonTextPrimary: 'NEXT',
-                          onPressedPrimary: () {
-                            _navigateToNextStep();
-                          }).buildButtons(primaryFirst: false),
-                    ),
-                  ],
-                ))
+                        SizedBox(height: 10,),
+                        Center(
+                          child: MyButtonWidgets(
+                              buttonTextPrimary: 'NEXT',
+                              onPressedPrimary: () {
+                                _navigateToNextStep();
+                              }).buildButtons(primaryFirst: false),
+                        ),
+                      ],
+                    )),
+              ),
+            )
           else if (selectedButtonIndex == 1)
             Expanded(
               child: SingleChildScrollView(

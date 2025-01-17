@@ -106,48 +106,52 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
           // 2nd container for content
           SizedBox(height: 30,),
-          Container(
-            width: double.infinity,
-            color: Color(0xFFFFFFFF),
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
+          Flexible(
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                color: Color(0xFFFFFFFF),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (widget.currentIndex < widget.headings.length)
-                        TextAndHeadingComponents.buildHeading(
-                            widget.headings[widget.currentIndex]),
+                      Column(
+                        children: [
+                          if (widget.currentIndex < widget.headings.length)
+                            TextAndHeadingComponents.buildHeading(
+                                widget.headings[widget.currentIndex]),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        children: [
+                          if (widget.currentIndex < widget.texts.length)
+                            TextAndHeadingComponents.buildText(
+                                widget.texts[widget.currentIndex]),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Center(
+                        child: MyButtonWidgets(
+                          buttonTextSecondary: 'Skip',
+                          onPressedSecondary: () {
+                             widget.handleOnboardingCompletion(context);
+                          },
+                          buttonTextPrimary: 'Next',
+                          onPressedPrimary: () {
+                             updateContent(context);
+                          },
+                        ).buildButtons(primaryFirst: false),
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: [
-                      if (widget.currentIndex < widget.texts.length)
-                        TextAndHeadingComponents.buildText(
-                            widget.texts[widget.currentIndex]),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Center(
-                    child: MyButtonWidgets(
-                      buttonTextSecondary: 'Skip',
-                      onPressedSecondary: () {
-                         widget.handleOnboardingCompletion(context);
-                      },
-                      buttonTextPrimary: 'Next',
-                      onPressedPrimary: () {
-                         updateContent(context);
-                      },
-                    ).buildButtons(primaryFirst: false),
-                  ),
-                ],
+                ),
               ),
             ),
           )
