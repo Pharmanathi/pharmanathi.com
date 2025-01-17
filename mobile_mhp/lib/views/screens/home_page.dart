@@ -2,8 +2,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/helpers/http_helpers.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
@@ -12,7 +14,7 @@ import 'package:pharma_nathi/views/widgets/bargraph/bargraph.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:pharma_nathi/views/widgets/upcoming_appointment_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:pharma_nathi/views/widgets/custom_google_fonts.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,6 +130,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final userInfo = userProvider.user;
+    String alteredname = Apihelper.toTitleCase(
+        'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}');
 
     return Scaffold(
       backgroundColor: Pallet.BACKGROUND_COLOR,
@@ -154,14 +158,14 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text(
                           'Welcome Back!',
-                          style: GoogleFontsCustom.openSans(
+                          style: GoogleFonts.openSans(
                               fontSize: 12.sp, color: Pallet.NEUTRAL_300),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
-                            'Dr. ${userInfo?.firstName ?? ''} ${userInfo?.lastName ?? 'loading..'}',
-                            style: GoogleFontsCustom.openSans(
+                            alteredname,
+                            style: GoogleFonts.openSans(
                               fontWeight: FontWeight.bold,
                               fontSize: 14.sp,
                             ),
@@ -186,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Upcoming Appointments',
-                      style: GoogleFontsCustom.openSans(
+                      style: GoogleFonts.openSans(
                           fontWeight: FontWeight.bold, fontSize: 12.sp),
                     ),
                     // Text(
@@ -214,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                       ? Center(
                           child: Text(
                             'No upcoming appointments available',
-                            style: GoogleFontsCustom.openSans(fontSize: 12.sp),
+                            style: GoogleFonts.openSans(fontSize: 12.sp),
                           ),
                         )
                       : ListView.builder(
@@ -245,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Appointments Statistics',
-                      style: GoogleFontsCustom.openSans(
+                      style: GoogleFonts.openSans(
                           fontWeight: FontWeight.bold, fontSize: 12.sp),
                     ),
                     // Row(
@@ -280,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Total',
-                            style: GoogleFontsCustom.openSans(
+                            style: GoogleFonts.openSans(
                               fontSize: 12.sp,
                               color: Colors.grey,
                               fontStyle: FontStyle.normal,
@@ -292,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                             appointmentData.isEmpty
                                 ? '0'
                                 : appointmentData.length.toString(),
-                            style: GoogleFontsCustom.openSans(
+                            style: GoogleFonts.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -314,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 4.h),
                           Text(
                             '$onlineAppointmentsCount',
-                            style: GoogleFontsCustom.openSans(
+                            style: GoogleFonts.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -327,7 +331,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'In Person',
-                            style: GoogleFontsCustom.openSans(
+                            style: GoogleFonts.openSans(
                                 fontSize: 12.sp,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
@@ -335,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(height: 4.h),
                           Text(
                             '$inPersonVisitAppointmentsCount',
-                            style: GoogleFontsCustom.openSans(
+                            style: GoogleFonts.openSans(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -352,8 +356,9 @@ class _HomePageState extends State<HomePage> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   double screenHeight = MediaQuery.of(context).size.height;
-                  double containerHeight = (screenHeight * 0.7).clamp(0, 211.sp);
-              
+                  double containerHeight =
+                      (screenHeight * 0.7).clamp(0, 211.sp);
+
                   return Container(
                     width: 353.25.sp,
                     height: containerHeight,
@@ -391,7 +396,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'Online Consultation',
-                          style: GoogleFontsCustom.openSans(
+                          style: GoogleFonts.openSans(
                             fontSize: 8.sp,
                             fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),
@@ -407,7 +412,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'In person Visit',
-                          style: GoogleFontsCustom.openSans(
+                          style: GoogleFonts.openSans(
                             fontSize: 8.sp,
                             fontStyle: FontStyle.normal,
                             color: Color(0xFF6F7ED7),

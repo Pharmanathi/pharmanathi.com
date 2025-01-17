@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/address_bloc.dart';
+import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/views/widgets/appiontment_details.dart';
 import 'package:provider/provider.dart';
-import './custom_google_fonts.dart';
-import '../../models/appointment.dart';
+
 
 class UpcomingAppointmentTile extends StatelessWidget {
   final Appointment appointment;
@@ -51,13 +52,13 @@ class UpcomingAppointmentTile extends StatelessWidget {
                 appointment.patientName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFontsCustom.openSans(
+                style: GoogleFonts.openSans(
                     fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
               Text(
                 appointment.appointmentTime,
-                style: GoogleFontsCustom.openSans(
+                style: GoogleFonts.openSans(
                     fontSize: 12.sp, color: Colors.grey),
               ),
               SizedBox(height: 8),
