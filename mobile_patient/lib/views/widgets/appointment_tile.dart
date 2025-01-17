@@ -91,7 +91,7 @@ class ProfileCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only( right: 12, left: 12, bottom: 12),
+        padding: const EdgeInsets.only( right: 12, left: 12, bottom: 5),
         child: Flexible(
           child: Column(
             children: [
