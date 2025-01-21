@@ -28,4 +28,10 @@ class ApiProvider {
     return await http_helpers.ApiHelper.httpRequestWithAuthorization(
         context, apiEndpoint, 'GET', '');
   }
+
+  Future<http.Response> fetchAddressById(BuildContext context, int addressId) async {
+    final apiEndpoint = '${http_helpers.apiBaseURL}/addresses/$addressId/';
+    return await http_helpers.ApiHelper.httpRequestWithAuthorization(
+        context, apiEndpoint, 'GET', '');
+  }
 }

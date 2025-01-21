@@ -165,8 +165,7 @@ class AppiontmentDetails extends StatelessWidget {
             _buildDetailRow(
               icon: Icons.location_on_sharp,
               title: 'Location',
-              value:
-                  'Practice Name', // TODO: this should be the practice location
+              value: appointment.doctor.practiceLocations
             ),
             _buildDetailRow(
               icon: Icons.calendar_month,
