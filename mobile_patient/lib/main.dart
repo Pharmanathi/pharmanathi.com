@@ -1,5 +1,4 @@
 import 'package:app_links/app_links.dart';
-import 'package:patient/Repository/address_repository.dart';
 import 'package:patient/Repository/doctor_repository.dart';
 import 'package:patient/Repository/sign_in_repository.dart';
 import 'package:patient/blocs/sign_in_bloc.dart';
@@ -32,8 +31,6 @@ Future<void> main() async {
   await _initializeFirebase();
 
   ApiProvider apiProvider = ApiProvider();
-  AddressRepository addressRepository =
-      AddressRepository(apiProvider);
   AppointmentRepository appointmentRepository =
       AppointmentRepository(apiProvider);
   DoctorRepository doctortRepository = DoctorRepository();
@@ -45,10 +42,10 @@ Future<void> main() async {
   if (enableSentry) {
     await _initializeSentry(() async {
       await _runApp( 
-          appointmentRepository,addressRepository, doctortRepository, sign_in_repository,);
+          appointmentRepository, doctortRepository, sign_in_repository,);
     });
   } else {
-    await _runApp(appointmentRepository,addressRepository, doctortRepository, sign_in_repository);
+    await _runApp(appointmentRepository, doctortRepository, sign_in_repository);
   }
 }
 
@@ -83,7 +80,6 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
 
 Future<void> _runApp(
     AppointmentRepository appointmentRepository,
-    AddressRepository addressRepository,
     DoctorRepository doctortRepository,
     GoogleSignInRepository sign_in_repository) async {
   runApp(
@@ -91,7 +87,6 @@ Future<void> _runApp(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider.value(value: appointmentRepository),
-        Provider.value(value: addressRepository),
         Provider.value(value: doctortRepository),
         Provider(create: (_) => GoogleSignInBloc(sign_in_repository)),
         Provider(create: (_) => DeepLinkHandler()),
