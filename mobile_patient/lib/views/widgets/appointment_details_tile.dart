@@ -16,6 +16,7 @@ class AppiontmentDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firstLocation = appointment.doctor.practiceLocations[0];
     String alteredname =
         ApiHelper.toTitleCase(appointment.doctor.doctorFullName);
 
@@ -164,8 +165,8 @@ class AppiontmentDetails extends StatelessWidget {
             ),
             _buildDetailRow(
               icon: Icons.location_on_sharp,
-              title: 'Location',
-              value: appointment.doctor.practiceLocations
+              title: ApiHelper.toTitleCase(firstLocation.name),
+              value: firstLocation.address.fullAddress
             ),
             _buildDetailRow(
               icon: Icons.calendar_month,

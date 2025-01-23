@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pharmanathi_backend.payments.serializers import PaymentModelSerializer
-from pharmanathi_backend.users.api.serializers import DoctorPublicListSerializer, UserSerializerSimplified , PracticeLocationModelSerializer
+from pharmanathi_backend.users.api.serializers import DoctorPublicListSerializer, UserSerializerSimplified , PracticeLocationModelSerializerWithExtAddress
 
 
 from . import models
@@ -42,7 +42,7 @@ class AppointmentListTypeSerializer(serializers.ModelSerializer):
 
 class DoctorPublicListMinimalSerializer(DoctorPublicListSerializer):
     specialities = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
-    practicelocations = PracticeLocationModelSerializer(many=True, read_only=True)
+    practicelocations = PracticeLocationModelSerializerWithExtAddress(many=True, read_only=True)
 
     class Meta:
         model = models.Doctor
