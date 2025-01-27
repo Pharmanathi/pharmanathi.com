@@ -53,7 +53,9 @@ jobs:
     - name: Create .env file
       run: | # we also create .development because referenced inside pubspec
         echo ${{ secrets.MHP_TEST_ENV }} >> .env.production
-        cp .env.production .env.development
+        cp .env.production .env.
+        ls -al
+        cat .env.production
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -108,6 +110,8 @@ jobs:
       run: |
         echo ${{ secrets.MHP_TEST_ENV }} >> .env.production
         cp .env.production .env.development
+        ls -al
+        cat .env.production
     
     - uses: futureware-tech/simulator-action@v3
       with:
