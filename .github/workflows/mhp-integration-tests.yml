@@ -52,7 +52,6 @@ jobs:
 
     - name: Create .env file
       run: | # we also create .development because referenced inside pubspec
-        echo ${{ secrets.MHP_TEST_ENV }}
         cat ${{ secrets.MHP_TEST_ENV }} >> .env.production
         cp .env.production .env.development
 
@@ -106,7 +105,7 @@ jobs:
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        cat .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        cat ${{ secrets.MHP_TEST_ENV }} >> .env.production
         cp .env.production .env.development
     
     - uses: futureware-tech/simulator-action@v3

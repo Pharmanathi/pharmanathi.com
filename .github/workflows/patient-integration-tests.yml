@@ -104,7 +104,7 @@ jobs:
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        echo .env.${{ secrets.PATIENT_TEST_ENV }} >> .env.production
+        echo ${{ secrets.PATIENT_TEST_ENV }} >> .env.production
         cp .env.production .env.development
     
     - uses: futureware-tech/simulator-action@v3
