@@ -52,7 +52,8 @@ jobs:
 
     - name: Create .env file
       run: | # we also create .development because referenced inside pubspec
-        cat .env.${{ secrets.MHP_TEST_ENV }} >> .env.production
+        echo ${{ secrets.MHP_TEST_ENV }}
+        cat ${{ secrets.MHP_TEST_ENV }} >> .env.production
         cp .env.production .env.development
 
     - name: Setup Flutter
