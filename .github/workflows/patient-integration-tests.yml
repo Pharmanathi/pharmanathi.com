@@ -79,7 +79,8 @@ jobs:
         disable-animations: true
         working-directory: mobile_patient
         script: |
-          cat .env.development
+          ls -al
+          cat .env
           patrol test -t integration_test/sign_in_test.dart
 
     - name: Upload Android crash logs
@@ -124,7 +125,8 @@ jobs:
         patrol doctor
     - name: Run iOS integration tests
       run: |
-        cat .env.development
+        ls -al
+        cat .env
         patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
 
     - name: Upload iOS crash logs
