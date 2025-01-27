@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -15,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
 from pharmanathi_backend.users.forms import UserAdminChangeForm
-from pharmanathi_backend.users.models import User
+from pharmanathi_backend.users.models import User, Doctor, Speciality, PracticeLocation
 from pharmanathi_backend.users.permissions import IsVerifiedDoctor
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
@@ -25,6 +26,7 @@ from pharmanathi_backend.users.tests.factories import (
     VerificationReportFactory,
 )
 from pharmanathi_backend.users.views import UserRedirectView, UserUpdateView, user_detail_view
+from pharmanathi_backend.users.serializers import DoctorPublicListMinimalSerializer
 
 pytestmark = pytest.mark.django_db
 
@@ -377,3 +379,70 @@ def test_mp_can_bulk_update_doctor_profile(mhp_client, speciality):
     assert doctor.hpcsa_no == payload.get("hpcsa_no")
     assert doctor.practicelocations.filter(name=payload.get("practice_locations")[0].get("name"))
     assert speciality in doctor.specialities.all()
+
+
+# Test for DoctorPublicListMinimalSerializer
+def test_doctor_public_list_minimal_serializer():
+    user = User.objects.create_user(
+        email="doctor@example.com",
+        password="password",
+        first_name="Thabang",
+        last_name="Shongwe",
+        image_url="https://example.com/image.jpg"
+    )
+    doctor = Doctor.objects.create(user=user, is_verified=True)
+
+    speciality1 = Speciality.objects.create(name="Cardiology")
+    speciality2 = Speciality.objects.create(name="Dermatology")
+    doctor.specialities.add(speciality1, speciality2)
+
+    practice_location = PracticeLocation.objects.create(
+        name="Main Clinic",
+        doctor=doctor,
+        address_line_1="123 Main St",
+        suburb="Downtown",
+        city="Metropolis",
+        province="GP",
+        postal_code="12345"
+    )
+
+    serializer = DoctorPublicListMinimalSerializer(doctor)
+
+    expected_data = {
+        "user": {
+            "first_name": "Thabang",
+            "last_name": "Shongwe",
+            "contact_no": None,
+            "initials": None,
+            "title": None,
+            "id": user.id,
+            "image_url": "https://example.com/image.jpg"
+        },
+        "specialities": ["Cardiology", "Dermatology"],
+        "practicelocations": [
+            {
+                "id": practice_location.id,
+                "address": {
+                    "id": practice_location.address.id,
+                    "date_created": practice_location.address.date_created.isoformat(),
+                    "date_modified": practice_location.address.date_modified.isoformat(),
+                    "line_1": "123 Main St",
+                    "line_2": None,
+                    "suburb": "Downtown",
+                    "city": "Metropolis",
+                    "province": "GP",
+                    "postal_code": "12345",
+                    "lat": None,
+                    "long": None
+                },
+                "date_created": practice_location.date_created.isoformat(),
+                "date_modified": practice_location.date_modified.isoformat(),
+                "name": "Main Clinic"
+            }
+        ],
+        "is_verified": True,
+        "has_consulted_before": False,
+        "id": doctor.id
+    }
+    
+    assert serializer.data == expected_data
