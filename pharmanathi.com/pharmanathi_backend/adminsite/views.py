@@ -5,6 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404, render
+
 from pharmanathi_backend.users.api.serializers import UserSerializer
 from pharmanathi_backend.users.models import Doctor, InvalidationReason, User
 
