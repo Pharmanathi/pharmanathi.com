@@ -5,7 +5,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404, render
-
 from pharmanathi_backend.users.api.serializers import UserSerializer
 from pharmanathi_backend.users.models import Doctor, InvalidationReason, User
 
@@ -20,9 +19,10 @@ def handle404errors(request):
 @staff_member_required()
 def main(request):
     today = datetime.date.today()
-    first_day_last_month = datetime.date.today().replace(day=1, month=today.month - 1)
-    last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
     current_month = today.month
+    previous_month = current_month - 1 if current_month > 1 else 12
+    first_day_last_month = datetime.date.today().replace(day=1, month=previous_month)
+    last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
     Q_last_month = Q(date_created__date__gte=first_day_last_month) & Q(date_created__date__lte=last_day_last_month)
     count_signups_last_month = User.objects.filter(Q_last_month).count()
     count_signups_this_month = User.objects.filter(date_created__gte=today.replace(day=1)).count()
