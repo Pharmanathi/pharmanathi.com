@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:patient/blocs/sign_in_bloc.dart';
+import 'package:patient/config/color_const.dart';
 import 'package:patient/routes/app_routes.dart';
 import 'package:patient/views/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
     String alteredname = ApiHelper.toTitleCase('${userProvider.name}');
 
     return Scaffold(
+      backgroundColor: Pallet.PURE_WHITE,
       body: Stack(
         children: [
           Column(
@@ -96,7 +98,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
               Container(
                 width: double.infinity.sp,
                 height: 290.h,
-                color: Color(0xFF6F7ED7),
+                color: Pallet.PRIMARY_COLOR,
                 child: Column(
                   children: [
                     Row(
@@ -119,7 +121,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 ),
               ),
               Container(
-                color: Colors.white,
+                color: Pallet.PURE_WHITE,
                 height: 300.h,
               ),
             ],
@@ -130,10 +132,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
             right: 30.sp,
             bottom: 3.sp,
             child: Container(
-              color: Color(0xFFF7F9FC),
+              color: Pallet.BACKGROUND_COLOR,
               height: 100.sp,
               child: Padding(
-                padding: const EdgeInsets.all(35.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: [
                     // Profile picture and details
@@ -143,11 +145,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           CircleAvatar(
                             backgroundImage:
                                 NetworkImage(userProvider.picture ?? ''),
-                            radius: 80.sp,
+                            radius: 60.sp,
                           ),
                           // Doctor's name
                           Padding(
-                            padding: const EdgeInsets.all(2.0),
+                            padding: const EdgeInsets.only(top: 18.0),
                             child: Text(
                               alteredname,
                               style: GoogleFonts.openSans(

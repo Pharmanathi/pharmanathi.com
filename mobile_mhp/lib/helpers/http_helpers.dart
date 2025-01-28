@@ -209,4 +209,17 @@ class Apihelper {
     }
     return 'Unknown';
   }
+
+   static String toTitleCase(String input) {
+  // Split the input string by spaces
+  List<String> words = input.split(' ');
+
+  // Capitalize the first character of each word and make the rest lowercase
+  for (int i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+  }
+
+  // Join the words back together with spaces
+  return words.join(' ');
+}
 }

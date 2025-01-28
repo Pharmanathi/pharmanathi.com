@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, prefer_const_constructors_in_immutables, must_be_immutable, use_super_parameters
 
+import 'package:patient/config/color_const.dart';
+import 'package:patient/routes/app_routes.dart';
 import 'package:patient/views/widgets/buttons.dart';
 import 'package:patient/screens/components/text_and_heading.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +14,17 @@ class OnboardScreen extends StatefulWidget {
 
   // Sample onboarding texts
   static const List<String> sampleHeadings = [
-    'Welcome to Pharma Nathi',
-    'Connect with Patients Online',
-    'Manage Patient Records Easily',
-    'Personalized and Virtual Interactions',
+    'Welcome to \nPharma Nathi',
+    'Schedule \nAppointments',
+    'Receive Timely \nReminders',
+    'Personalized \nHealthcare',
   ];
 
   static const List<String> sampleTexts = [
-    'Experience hassle-free healthcare with PharmaNathi. Easily book, manage, and stay updated on your doctors appointmentsYour health journey starts here!',
-    'Say goodbye to long queues and phone calls. With PharmaNathi, booking appointments is a breeze.Choose your preferred doctor, select a convenient time, and manage your health on your terms',
-    'Never miss an appointment again. Our app keeps you informed with timely reminders, ensuring you are always prepared for your upcoming healthcare appointments. Your health, our priority',
-    'PharmaNathi puts you in control of your health. Enjoy unlimited access to your health records, prescription renewals, and more. Your journey to better health starts now.',
+    'Experience hassle-free healthcare with PharmaNathi.\n \nEasily book, manage, and stay updated on your doctors appointments \n \nYour health journey starts here!',
+    'Say goodbye to long queues and phone calls. \n \nWith PharmaNathi, booking appointments is a breeze.\n \nChoose your preferred doctor, select a convenient time, and manage your health on your terms',
+    'Never miss an appointment again.\n \nOur app keeps you informed with timely reminders, ensuring you are always prepared for your upcoming healthcare appointments.\n \nYour health, our priority',
+    'PharmaNathi puts you in control of your health.\n \nEnjoy unlimited access to your health records, prescription renewals, and more.\n \nYour journey to better health starts now.',
   ];
 
   OnboardScreen({
@@ -35,7 +37,7 @@ class OnboardScreen extends StatefulWidget {
         super(key: key);
 
   void handleOnboardingCompletion(BuildContext context) {
-    Navigator.pushNamed(context, '/home_page');
+    Navigator.pushNamed(context, AppRoutes.appointments);
   }
 
 // New method to check if it's the first time opening the app
@@ -71,7 +73,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
         OnboardScreen.setOnboardingCompleted();
 
         // Navigate to the home_page
-        Navigator.pushNamed(context, '/home_page');
+        Navigator.pushNamed(context, AppRoutes.appointments);
       }
     });
   }
@@ -79,6 +81,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Pallet.PURE_WHITE,
       body: Column(
         children: [
           // 1st container for the logo
@@ -93,75 +96,61 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   height: 25,
                 ),
                 Image.asset(
-                  'assets/images/Logo.png',
+                  'assets/images/onbaording-logo.png',
                   color: Colors.white,
-                  width: 50,
-                  height: 50,
-                ),
-                Text(
-                  'PHARMA',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  'NATHI',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+                  // height: 100,
                 ),
               ],
             ),
           ),
 
           // 2nd container for content
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              color: Color(0xFFFFFFFF),
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        if (widget.currentIndex < widget.headings.length)
-                          TextAndHeadingComponents.buildHeading(
-                              widget.headings[widget.currentIndex]),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Column(
-                      children: [
-                        if (widget.currentIndex < widget.texts.length)
-                          TextAndHeadingComponents.buildText(
-                              widget.texts[widget.currentIndex]),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Center(
-                      child: MyButtonWidgets(
-                        buttonTextSecondary: 'Next',
-                        onPressedSecondary: () {
-                          updateContent(context);
-                        },
-                        buttonTextPrimary: 'Skip',
-                        onPressedPrimary: () {
-                          widget.handleOnboardingCompletion(context);
-                        },
-                      ).buildButtons(primaryFirst: true),
-                    ),
-                  ],
+          SizedBox(height: 30,),
+          Flexible(
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                color: Color(0xFFFFFFFF),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          if (widget.currentIndex < widget.headings.length)
+                            TextAndHeadingComponents.buildHeading(
+                                widget.headings[widget.currentIndex]),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        children: [
+                          if (widget.currentIndex < widget.texts.length)
+                            TextAndHeadingComponents.buildText(
+                                widget.texts[widget.currentIndex]),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Center(
+                        child: MyButtonWidgets(
+                          buttonTextSecondary: 'Skip',
+                          onPressedSecondary: () {
+                             widget.handleOnboardingCompletion(context);
+                          },
+                          buttonTextPrimary: 'Next',
+                          onPressedPrimary: () {
+                             updateContent(context);
+                          },
+                        ).buildButtons(primaryFirst: false),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

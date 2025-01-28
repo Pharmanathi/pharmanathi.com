@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/blocs/address_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/models/appointment.dart';
 import 'package:pharma_nathi/models/user.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
-import 'package:pharma_nathi/views/widgets/custom_google_fonts.dart';
 import 'package:provider/provider.dart';
 
 
@@ -60,7 +60,7 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                         padding: const EdgeInsets.only(left: 100, bottom: 5),
                         child: Text(
                           'Booking',
-                          style: GoogleFontsCustom.openSans(
+                          style: GoogleFonts.openSans(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             color: Pallet.PRIMARY_COLOR,
@@ -78,7 +78,7 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                   children: [
                     Text(
                       'Personal Info',
-                      style: GoogleFontsCustom.openSans(
+                      style: GoogleFonts.openSans(
                           fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -128,7 +128,7 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                                 widget.appointment.patientName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFontsCustom.openSans(
+                                style: GoogleFonts.openSans(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -155,7 +155,7 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                   children: [
                     Text(
                       'Booking Info',
-                      style: GoogleFontsCustom.openSans(
+                      style: GoogleFonts.openSans(
                           fontSize: 12.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -228,8 +228,8 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     title,
-                    style: GoogleFontsCustom.openSans(
-                      fontSize: 12,
+                    style: GoogleFonts.openSans(
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -240,11 +240,11 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
           Padding(
             padding: const EdgeInsets.only(left: 45, top: 0),
             child: Container(
-              width: 200,
+              width: 200.w,
               child: Text(
                 subtitle,
-                style: GoogleFontsCustom.openSans(
-                  fontSize: 12,
+                style: GoogleFonts.openSans(
+                  fontSize: 12.sp,
                   color: Colors.grey,
                 ),
               ),

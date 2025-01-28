@@ -112,7 +112,7 @@ class _MyProfileState extends State<MyProfile> {
             children: [
               Container(
                 width: double.infinity,
-                height: 200.h,
+                height: MediaQuery.of(context).size.height * 0.4,
                 color: Color(0xFF6F7ED7),
                 child: Column(
                   children: [
@@ -144,468 +144,472 @@ class _MyProfileState extends State<MyProfile> {
             child: Container(
               color: Color(0xFFF7F9FC),
               height: 100.h,
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  children: [
-                    //profile picture and details
-                    Row(
+              child: Flexible(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(userProvider.picture ?? ''),
-                          // backgroundImage: imageProvider.imageFile != null
-                          //     ? FileImage(imageProvider.imageFile!)
-                          //     : AssetImage('assets/images/sample.JPG')
-                          //         as ImageProvider,
-                          radius: 30.sp,
-                        ),
-                        SizedBox(width: 20.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        //profile picture and details
+                        Row(
                           children: [
-                            SizedBox(
-                              width: 170.w,
-                              child: Text(
-                                'Dr. ${userProvider.user?.firstName} ${userProvider.user?.lastName}',
-                                style: GoogleFonts.openSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
+                            CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(userProvider.picture ?? ''),
+                              // backgroundImage: imageProvider.imageFile != null
+                              //     ? FileImage(imageProvider.imageFile!)
+                              //     : AssetImage('assets/images/sample.JPG')
+                              //         as ImageProvider,
+                              radius: 30.sp,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                profession,
-                                style: GoogleFonts.openSans(
-                                  fontSize: 14.sp,
+                            SizedBox(width: 20.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 170.w,
+                                  child: Text(
+                                    'Dr. ${userProvider.user?.firstName} ${userProvider.user?.lastName}',
+                                    style: GoogleFonts.openSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: Text(
+                                    profession,
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 14.sp,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        SizedBox(
+                          width: 560
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
+                        ),
+                        //account information...........
+                        GestureDetector(
+                          // onTap: () async {
+                          //   // Navigate to EditAccount and wait for the result
+                          //   final newImage = await Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => EditAccount(
+                          //         imageFile: imageProvider.imageFile,
+                          //         onImageChanged: (newImage) {
+                          //           // Update the image if the user picked a new one
+                          //           if (newImage != null) {
+                          //             imageProvider.updateImageFile(newImage);
+                          //           }
+                          //         },
+                          //       ),
+                          //     ),
+                          //   );
+                          // },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(69, 173, 182, 241),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Color(0xFF6F7ED7),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Account Information',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Color(0xFF6F7ED7),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 500
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
+                        ),
+                        //Education.............................
+                        GestureDetector(
+                          onTap: () {
+                            //handle
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(69, 173, 182, 241),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.cast_for_education_sharp,
+                                        color: Color(0xFF6F7ED7),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Education',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Color(0xFF6F7ED7),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 500
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
+                        ),
+                        //Profesional information....................
+                        GestureDetector(
+                          onTap: () {
+                            //handle
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(69, 173, 182, 241),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.info,
+                                        color: Color(0xFF6F7ED7),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Profesional Information',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Color(0xFF6F7ED7),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 500
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
+                        ),
+                        //Manage Schedule.............................
+                        GestureDetector(
+                          onTap: () {
+                            // Show a dialog with two options
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  // title: Text('Choose an option'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Navigate to the first page
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    WorkingHours()),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFF6F7ED7),
+                                          minimumSize: Size(320.sp, 50.sp),
+                                        ),
+                                        child: Text(
+                                          'Working Hours',
+                                          style: GoogleFonts.openSans(
+                                              color: Pallet.PURE_WHITE),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Navigate to the second page
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ManageAppointment()),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xFF6F7ED7),
+                                          minimumSize: Size(320.sp, 50.sp),
+                                          shadowColor: Colors.transparent,
+                                          side: BorderSide(
+                                            color: Color(0xFF6F7ED7),
+                                            width: 1.w,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Manage Appointments',
+                                          style: GoogleFonts.openSans(
+                                              color: Pallet.PURE_WHITE),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(69, 173, 182, 241),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.cast_for_education_sharp,
+                                        color: Color(0xFF6F7ED7),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Manage Schedule',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Color(0xFF6F7ED7),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                  
+                        // //settings.......................
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     //handle
+                        //   },
+                        //   child: Container(
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(top: 15, bottom: 10),
+                        //       child: Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               Container(
+                        //                 decoration: BoxDecoration(
+                        //                   color: Color.fromARGB(69, 173, 182, 241),
+                        //                   shape: BoxShape.rectangle,
+                        //                   borderRadius: BorderRadius.circular(8.0),
+                        //                 ),
+                        //                 padding: EdgeInsets.all(10),
+                        //                 child: Icon(
+                        //                   Icons.settings,
+                        //                   color: Color(0xFF6F7ED7),
+                        //                 ),
+                        //               ),
+                        //               SizedBox(
+                        //                 width: 15,
+                        //               ),
+                        //               Text(
+                        //                 'Settings',
+                        //                 style: TextStyle(
+                        //                   fontSize: 15,
+                        //                   fontWeight: FontWeight.w500,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //           Row(
+                        //             children: [
+                        //               Icon(
+                        //                 Icons.arrow_forward,
+                        //                 color: Color(0xFF6F7ED7),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          width: 500
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
+                        ),
+                        //log out........................
+                        GestureDetector(
+                          onTap: () {
+                            _showModal(context, googleSignInBloc);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(69, 173, 182, 241),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(
+                                        Icons.logout,
+                                        color: Color(0xFF6F7ED7),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.w,
+                                    ),
+                                    Text(
+                                      'Log out',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: Color(0xFF6F7ED7),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 500
+                              .w, //TODO:[Thabang] this is weird, need to find out why
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0.5.sp,
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 560
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                    //account information...........
-                    GestureDetector(
-                      onTap: () async {
-                        // Navigate to EditAccount and wait for the result
-                        final newImage = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditAccount(
-                              imageFile: imageProvider.imageFile,
-                              onImageChanged: (newImage) {
-                                // Update the image if the user picked a new one
-                                if (newImage != null) {
-                                  imageProvider.updateImageFile(newImage);
-                                }
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(69, 173, 182, 241),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Color(0xFF6F7ED7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  'Account Information',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF6F7ED7),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 500
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                    //Education.............................
-                    GestureDetector(
-                      onTap: () {
-                        //handle
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(69, 173, 182, 241),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.cast_for_education_sharp,
-                                    color: Color(0xFF6F7ED7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  'Education',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF6F7ED7),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 500
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                    //Profesional information....................
-                    GestureDetector(
-                      onTap: () {
-                        //handle
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(69, 173, 182, 241),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.info,
-                                    color: Color(0xFF6F7ED7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  'Profesional Information',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF6F7ED7),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 500
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                    //Manage Schedule.............................
-                    GestureDetector(
-                      onTap: () {
-                        // Show a dialog with two options
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              // title: Text('Choose an option'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Navigate to the first page
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                WorkingHours()),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF6F7ED7),
-                                      minimumSize: Size(320.sp, 50.sp),
-                                    ),
-                                    child: Text(
-                                      'Working Hours',
-                                      style: GoogleFonts.openSans(
-                                          color: Pallet.PURE_WHITE),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Navigate to the second page
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ManageAppointment()),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF6F7ED7),
-                                      minimumSize: Size(320.sp, 50.sp),
-                                      shadowColor: Colors.transparent,
-                                      side: BorderSide(
-                                        color: Color(0xFF6F7ED7),
-                                        width: 1.w,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Manage Appointments',
-                                      style: GoogleFonts.openSans(
-                                          color: Pallet.PURE_WHITE),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(69, 173, 182, 241),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.cast_for_education_sharp,
-                                    color: Color(0xFF6F7ED7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  'Manage Schedule',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF6F7ED7),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // //settings.......................
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     //handle
-                    //   },
-                    //   child: Container(
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.only(top: 15, bottom: 10),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           Row(
-                    //             children: [
-                    //               Container(
-                    //                 decoration: BoxDecoration(
-                    //                   color: Color.fromARGB(69, 173, 182, 241),
-                    //                   shape: BoxShape.rectangle,
-                    //                   borderRadius: BorderRadius.circular(8.0),
-                    //                 ),
-                    //                 padding: EdgeInsets.all(10),
-                    //                 child: Icon(
-                    //                   Icons.settings,
-                    //                   color: Color(0xFF6F7ED7),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(
-                    //                 width: 15,
-                    //               ),
-                    //               Text(
-                    //                 'Settings',
-                    //                 style: TextStyle(
-                    //                   fontSize: 15,
-                    //                   fontWeight: FontWeight.w500,
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Row(
-                    //             children: [
-                    //               Icon(
-                    //                 Icons.arrow_forward,
-                    //                 color: Color(0xFF6F7ED7),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      width: 500
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                    //log out........................
-                    GestureDetector(
-                      onTap: () {
-                        _showModal(context, googleSignInBloc);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 15, bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(69, 173, 182, 241),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: Icon(
-                                    Icons.logout,
-                                    color: Color(0xFF6F7ED7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  'Log out',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF6F7ED7),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 500
-                          .w, //TODO:[Thabang] this is weird, need to find out why
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0.5.sp,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

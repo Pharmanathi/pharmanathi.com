@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
-import 'package:pharma_nathi/screens/components/bargraph/bar_data.dart';
+import 'package:pharma_nathi/views/widgets/bargraph/bar_data.dart';
 
 class MyBarGraph extends StatelessWidget {
   final List monthlystats;
@@ -16,15 +15,18 @@ class MyBarGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myBardata = BarData(
-      junAmount: monthlystats.length > 5 ? monthlystats[5] : 0.0,
-      febAmount: monthlystats.length > 1 ? monthlystats[1] : 0.0,
-      janAmount: monthlystats.length > 0 ? monthlystats[0] : 0.0,
-      aprAmount: monthlystats.length > 3 ? monthlystats[3] : 0.0,
-      mayAmount: monthlystats.length > 4 ? monthlystats[4] : 0.0,
-      marAmount: monthlystats.length > 2 ? monthlystats[2] : 0.0,
+      junAmount: monthlystats.length > 5 ? monthlystats[5].toDouble() : 0.0,
+      febAmount: monthlystats.length > 1 ? monthlystats[1].toDouble() : 0.0,
+      janAmount: monthlystats.length > 0 ? monthlystats[0].toDouble() : 0.0,
+      aprAmount: monthlystats.length > 3 ? monthlystats[3].toDouble() : 0.0,
+      mayAmount: monthlystats.length > 4 ? monthlystats[4].toDouble() : 0.0,
+      marAmount: monthlystats.length > 2 ? monthlystats[2].toDouble() : 0.0,
     );
 
     myBardata.initialisebardata();
+
+    //* List of month labels
+    const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 
     return BarChart(BarChartData(
       groupsSpace: 28.0.w,
@@ -39,8 +41,8 @@ class MyBarGraph extends StatelessWidget {
                   getTitlesWidget: (value, meta) {
                     return Text(
                       value.toInt().toString(),
-                      style: const TextStyle(
-                        fontSize: 10, // Reduce this value to make text smaller
+                      style: GoogleFonts.openSans(
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.bold,
                         color: Pallet.NEUTRAL_300,
                       ),
@@ -50,14 +52,20 @@ class MyBarGraph extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                return Text(
-                  value.toInt().toString(),
-                  style: const TextStyle(
-                    fontSize: 10, // Reduce this value to make text smaller
-                    fontWeight: FontWeight.bold,
-                    color: Pallet.NEUTRAL_300,
-                  ),
-                );
+                //* Adjust index to start from 1
+                final index = value.toInt() - 1;
+                if (index >= 0 && index < monthLabels.length) {
+                  return Text(
+                    monthLabels[index],
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Pallet.NEUTRAL_300,
+                    ),
+                  );
+                } else {
+                  return const Text('');
+                }
               },
             ),
           )),
@@ -79,23 +87,8 @@ class MyBarGraph extends StatelessWidget {
       minY: 0,
       barGroups: myBardata.barData.map((data) {
         final y2 = myBardata.barData.indexOf(data) < monthlystats2.length
-            ? monthlystats2[myBardata.barData.indexOf(data)]
+            ? monthlystats2[myBardata.barData.indexOf(data)].toDouble()
             : 0.0;
-
-        // Color bar1Color;
-        // Color bar2Color;
-
-        // if (data.y == data.y) {
-        //   bar1Color = Colors.blue;
-        // } else {
-        //   bar1Color = Colors.blue;
-        // }
-
-        // if (y2 == y2) {
-        //   bar2Color = Colors.grey;
-        // } else {
-        //   bar2Color = Colors.grey;
-        // }
 
         return BarChartGroupData(
           x: data.x,
@@ -103,14 +96,14 @@ class MyBarGraph extends StatelessWidget {
           barRods: [
             BarChartRodData(
               borderRadius: BorderRadius.zero,
-              toY: data.y,
-              color: Pallet.PRIMARY_COLOR, // Set the color for the first bar
+              toY: data.y.toDouble(),
+              color: Pallet.PRIMARY_COLOR, //* Set the color for the first bar
               width: 18.0,
             ),
             BarChartRodData(
               borderRadius: BorderRadius.zero,
               toY: y2,
-              color: Pallet.NEUTRAL_200, // Set the color for the second bar
+              color: Pallet.NEUTRAL_200, //* Set the color for the second bar
               width: 18.0,
             ),
           ],

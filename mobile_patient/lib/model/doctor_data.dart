@@ -10,6 +10,7 @@ class Doctor {
   final List<String> specialities;
   final int id;
   final bool hasConsultedBefore;
+  final List<PracticeLocation> practiceLocations;
 
   Doctor({
     required this.isVerified,
@@ -21,6 +22,7 @@ class Doctor {
     required this.specialities,
     required this.id,
     required this.hasConsultedBefore,
+    required this.practiceLocations,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,12 @@ class Doctor {
             .toList() ??
         [];
 
+    //* Extract practice locations and their addresses
+    final practiceLocations = (json['practicelocations'] as List<dynamic>?)
+            ?.map((location) => PracticeLocation.fromJson(location))
+            .toList() ??
+        [];
+
     return Doctor(
       doctorFullName: doctorFullName,
       doctorFirstName: doctorFirstName,
@@ -50,6 +58,7 @@ class Doctor {
       specialities: specialities,
       id: json['id'],
       hasConsultedBefore: json['has_consulted_before'],
+       practiceLocations: practiceLocations,
     );
   }
 
@@ -69,5 +78,86 @@ class Doctor {
     return specialities.length > 1
         ? "${specialities[0]} & more"
         : "${specialities[0]}";
+  }
+}
+
+class Address {
+  final int id;
+  final String dateCreated;
+  final String dateModified;
+  final String line1;
+  final String? line2; // Nullable
+  final String suburb;
+  final String city;
+  final String province;
+  final String? lat; // Nullable
+  final String? long; // Nullable
+
+  Address({
+    required this.id,
+    required this.dateCreated,
+    required this.dateModified,
+    required this.line1,
+    this.line2,
+    required this.suburb,
+    required this.city,
+    required this.province,
+    this.lat,
+    this.long,
+  });
+
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      id: json['id'],
+      dateCreated: json['date_created'],
+      dateModified: json['date_modified'],
+      line1: json['line_1'],
+      line2: json['line_2'],
+      suburb: json['suburb'],
+      city: json['city'],
+      province: json['province'],
+      lat: json['lat'],
+      long: json['long'],
+    );
+  }
+   //* Getter to return the full address as a formatted string
+  String get fullAddress {
+    final addressParts = [
+      line1,
+      line2,
+      suburb,
+      city,
+      province,
+    ];
+
+    //* Remove null or empty parts and place in the next line
+    return addressParts.where((part) => part != null && part.isNotEmpty).join('\n');
+  }
+}
+
+
+class PracticeLocation {
+  final int id;
+  final String name;
+  final Address address; 
+  final String dateCreated;
+  final String dateModified;
+
+  PracticeLocation({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.dateCreated,
+    required this.dateModified,
+  });
+
+  factory PracticeLocation.fromJson(Map<String, dynamic> json) {
+    return PracticeLocation(
+      id: json['id'],
+      name: json['name'],
+      address: Address.fromJson(json['address']), 
+      dateCreated: json['date_created'],
+      dateModified: json['date_modified'],
+    );
   }
 }
