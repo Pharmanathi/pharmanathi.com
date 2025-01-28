@@ -1,0 +1,35 @@
+# Custom License
+
+Copyright (c) 2025 Pharmanthi
+
+All rights reserved.
+
+## Terms and Conditions
+
+1. **Viewing Rights**
+   - You are permitted to view the source code in this repository through GitHub's web interface or API.
+
+2. **Restricted Actions**
+   - You may NOT, without explicit written authorization from Pharmanthi:
+     - Download any portion of the code
+     - Copy or duplicate any portion of the code
+     - Fork this repository
+     - Create derivative works based on this code
+     - Use any portion of this code in any other project
+     - Distribute, sublicense, or transfer any portion of this code
+
+3. **Authorization Process**
+   - To request permission for any of the restricted actions listed above, written authorization must be obtained from Pharmanthi.
+   - Contact information and authorization requests should be directed to the repository owners through GitHub.
+
+4. **No Implied Rights**
+   - Viewing access to this repository does not grant any rights or licenses beyond those explicitly stated in this license.
+   - No other rights or licenses are granted by implication, estoppel, or otherwise.
+
+5. **Enforcement**
+   - Any violation of these terms may result in legal action.
+   - Pharmanthi reserves all rights to enforce these restrictions to the fullest extent permitted by law.
+
+## Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
