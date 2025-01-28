@@ -13,6 +13,11 @@ from pharmanathi_backend.appointments.tests.factories import (
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 
+from rest_framework.test import APIClient
+
+from pharmanathi_backend.appointments.tests.factories import AppointmentFactory, AppointmentTypeFactory
+from pharmanathi_backend.users.tests.factories import UserFactory, DoctorFactory
+
 pytestmark = pytest.mark.django_db
 
 
@@ -120,3 +125,74 @@ def test_mp_cannot_list_unpaidfor_appointments(verified_mhp_client, pending_paym
     res = verified_mhp_client.get("/api/appointments/")
     res.status_code == 200
     assert unpaid_appointment.id not in map(lambda a: a.id, res.data)
+
+@pytest.mark.django_db
+def test_appointments_endpoint_includes_nested_practice_locations():
+    """
+    Test that the /api/appointments/ endpoint includes the doctor, their practice locations, and addresses.
+    """
+    # Set up test data
+    client = APIClient()
+
+    # Create a user and authenticate
+    user = UserFactory()
+    client.force_authenticate(user=user)
+
+    # Create a doctor with practice locations and specialities
+    doctor = DoctorFactory()
+    practice_location = doctor.practicelocations.first()
+    appointment_type = AppointmentTypeFactory(doctor=doctor, duration=60)
+
+    # Create an appointment
+    AppointmentFactory(
+        doctor=doctor,
+        patient=user,
+        appointment_type=appointment_type,
+        start_time="2025-01-28T10:00:00+02:00",
+        end_time="2025-01-28T11:00:00+02:00",
+        reason="Routine check-up",
+    )
+
+    # Call the API endpoint
+    response = client.get("/api/appointments/")
+
+    # Verify the response
+    assert response.status_code == 200
+    assert len(response.data) > 0
+
+    # Verify the first appointment in the response
+    appointment_data = response.data[0]
+
+    # Check doctor details
+    doctor_data = appointment_data["doctor"]
+    assert doctor_data["id"] == doctor.id
+    assert doctor_data["user"]["first_name"] == doctor.user.first_name
+    assert doctor_data["user"]["last_name"] == doctor.user.last_name
+
+    # Verify specialities
+    assert doctor_data["specialities"] == [s.name for s in doctor.specialities.all()]
+
+    # Check practice locations
+    practice_locations = doctor_data["practicelocations"]
+    assert len(practice_locations) > 0
+
+    # Validate the first practice location
+    practice_location_data = practice_locations[0]
+    assert practice_location_data["name"] == practice_location.name
+
+    # Validate the address of the practice location
+    address = practice_location_data["address"]
+    db_address = practice_location.address
+    assert address["line_1"] == db_address.line_1
+    assert address["city"] == db_address.city
+    assert address["province"] == db_address.province
+
+    # Verify appointment type details
+    appointment_type_data = doctor_data["appointment_types"][0]
+    assert appointment_type_data["id"] == appointment_type.id
+    assert appointment_type_data["cost"] == str(appointment_type.cost)
+
+    # Check patient details
+    patient_data = appointment_data["patient"]
+    assert patient_data["first_name"] == user.first_name
+    assert patient_data["last_name"] == user.last_name
