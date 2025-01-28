@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from pharmanathi_backend.payments.serializers import PaymentModelSerializer
-from pharmanathi_backend.users.api.serializers import DoctorPublicListSerializer, UserSerializerSimplified
+from pharmanathi_backend.users.api.serializers import DoctorPublicListSerializer, UserSerializerSimplified , PracticeLocationModelSerializerWithExtAddress
+
 
 from . import models
 
@@ -41,11 +42,12 @@ class AppointmentListTypeSerializer(serializers.ModelSerializer):
 
 class DoctorPublicListMinimalSerializer(DoctorPublicListSerializer):
     specialities = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    practicelocations = PracticeLocationModelSerializerWithExtAddress(many=True, read_only=True)
 
     class Meta:
         model = models.Doctor
         depth = 1
-        fields = ["user", "specialities", "is_verified", "has_consulted_before", "id"]
+        fields = ["user", "specialities", "practicelocations", "is_verified", "has_consulted_before", "id"]
 
     # Use default since it passed down the needed appointment_types
     # def to_representation(self, instance):

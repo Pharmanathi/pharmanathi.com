@@ -41,8 +41,8 @@ Future<void> main() async {
 
   if (enableSentry) {
     await _initializeSentry(() async {
-      await _runApp(
-          appointmentRepository, doctortRepository, sign_in_repository);
+      await _runApp( 
+          appointmentRepository, doctortRepository, sign_in_repository,);
     });
   } else {
     await _runApp(appointmentRepository, doctortRepository, sign_in_repository);
