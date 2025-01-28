@@ -52,7 +52,7 @@ jobs:
 
     - name: Create .env file
       run: | # we also create .development because referenced inside pubspec
-        echo ${{ secrets.PATIENT_TEST_ENV }} >> .env
+        echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
         ls -al
         cat .env
 
@@ -107,7 +107,7 @@ jobs:
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
       run: |
-        echo ${{ secrets.PATIENT_TEST_ENV }} >> .env
+        echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
         ls -al
         cat .env
     
