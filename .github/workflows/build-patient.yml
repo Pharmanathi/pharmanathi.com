@@ -1,6 +1,5 @@
 
-name: Test, Build and Release Android Pharmanathi Patient App
-
+name: Build Patient Test Realease
 on: 
     push:
         paths:
