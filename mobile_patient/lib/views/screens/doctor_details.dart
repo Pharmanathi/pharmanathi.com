@@ -89,7 +89,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
-                        radius: 50.sp,
+                        radius: 40.sp,
                       ),
                     ],
                   ),
@@ -123,6 +123,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Consultation fee',
@@ -136,7 +137,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         'R ${widget.doctor.appointmentType?.cost ?? 'N/A'}',
                         style: GoogleFonts.openSans(
                           color: Pallet.NEUTRAL_200,
-                          fontSize: 16.0.sp,
+                          fontSize: 14.0.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -163,7 +164,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6F7ED7),
+                      backgroundColor:  Pallet.PRIMARY_650,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 2.0),
                       shape: RoundedRectangleBorder(
@@ -189,7 +190,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 width: double.infinity.sp,
                 color: Pallet.BACKGROUND_COLOR,
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.only(top: 25.0,left: 15,right: 15),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -227,7 +228,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             height: 60.h,
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(left: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -237,7 +238,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                         color: Pallet.BLACK,
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal,
-                        fontSize: 16.sp),
+                        fontSize: 15.sp),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,

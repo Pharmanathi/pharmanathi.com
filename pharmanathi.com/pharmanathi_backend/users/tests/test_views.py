@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -15,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
 from pharmanathi_backend.users.forms import UserAdminChangeForm
-from pharmanathi_backend.users.models import User
+from pharmanathi_backend.users.models import Doctor, PracticeLocation, Speciality, User
 from pharmanathi_backend.users.permissions import IsVerifiedDoctor
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,

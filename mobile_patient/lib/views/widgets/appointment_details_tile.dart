@@ -16,6 +16,7 @@ class AppiontmentDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final firstLocation = appointment.doctor.practiceLocations[0];
     String alteredname =
         ApiHelper.toTitleCase(appointment.doctor.doctorFullName);
 
@@ -31,7 +32,7 @@ class AppiontmentDetails extends StatelessWidget {
               showBackButton: true,
             )),
             Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+              padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
               child: Container(
                 width: double.infinity.sp,
                 decoration: BoxDecoration(
@@ -162,42 +163,35 @@ class AppiontmentDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              child: Column(
-                children: [
-                  _buildDetailRow(
-                    icon: Icons.location_on_sharp,
-                    title: 'Location',
-                    value:
-                        'Practice Name', // TODO: this should be the practice location
-                  ),
-                  _buildDetailRow(
-                    icon: Icons.calendar_month,
-                    title: 'Appointment Date',
-                    value: appointment.appointmentDate,
-                  ),
-                  _buildDetailRow(
-                    icon: Icons.timer,
-                    title: 'Time',
-                    value: appointment.appointmentTime,
-                  ),
-                  _buildDetailRow(
-                    icon: Icons.location_on_sharp,
-                    title: 'Reason for Consultation',
-                    value: appointment.reason,
-                  ),
-                  _buildDetailRow(
-                      icon: Icons.payment_outlined,
-                      title: 'Consultation Fee',
-                      value:
-                          'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
-                ],
-              ),
+            _buildDetailRow(
+              icon: Icons.location_on_sharp,
+              title: ApiHelper.toTitleCase(firstLocation.name),
+              value: firstLocation.address.fullAddress
             ),
+            _buildDetailRow(
+              icon: Icons.calendar_month,
+              title: 'Appointment Date',
+              value: appointment.appointmentDate,
+            ),
+            _buildDetailRow(
+              icon: Icons.timer,
+              title: 'Time',
+              value: appointment.appointmentTime,
+            ),
+            _buildDetailRow(
+              icon: Icons.info_rounded,
+              title: 'Reason for Consultation',
+              value: appointment.reason,
+            ),
+            _buildDetailRow(
+                icon: Icons.payment_outlined,
+                title: 'Consultation Fee',
+                value:
+                    'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
             //buttons
             SizedBox(height: 20.h),
-            MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
-                .buildButtons(primaryFirst: false),
+            // MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
+            //     .buildButtons(primaryFirst: false),
           ],
         ),
       ),
@@ -248,11 +242,14 @@ class AppiontmentDetails extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 45, top: 0),
-          child: Text(
-            displayValue,
-            style: GoogleFonts.openSans(
-              fontSize: 12.sp,
-              color: Colors.grey,
+          child: Container(
+            width: 300,
+            child: Text(
+              displayValue,
+              style: GoogleFonts.openSans(
+                fontSize: 12.sp,
+                color: Pallet.NEUTRAL_150,
+              ),
             ),
           ),
         ),

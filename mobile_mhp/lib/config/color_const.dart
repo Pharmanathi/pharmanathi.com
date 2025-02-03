@@ -23,6 +23,7 @@ class Pallet {
   static const Color PRIMMARY_400 = Color(0xFFF8C98DF);
   static const Color PRIMARY_500 = Color(0xFFF6F7ED7);
   static const Color PRIMARY_600 = Color(0xFFF6573C4);
+  static const Color PRIMARY_650 = Color(0xFFF6574Cf);
   static const Color PRIMARY_700 = Color(0xFFF4F5999);
   static const Color PRIMARY_800 = Color(0xFFF3D4576);
   static const Color PRIMARY_900 = Color(0xFFF2F355A);
@@ -70,7 +71,6 @@ class Pallet {
 }
 
 class AppColors {
-
   static const List<Color> primaryGradientColors = [
     primaryColor,
     secondaryColor,
@@ -114,7 +114,7 @@ class AppColors {
 
   static const Color lightGreen = Color(0xFFDFFEBF);
   static const Color black = Color(0xFF000000);
-  static const Color grey =  Color(0xffEEEEEE);
+  static const Color grey = Color(0xffEEEEEE);
   static const Color lightGrey = Color(0xFFF8F7F7);
 
   static const Color cardDark = Color(0xFF1F2326);
@@ -131,9 +131,6 @@ class AppColors {
 
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color darkBackground = Color(0xFF1B1E21);
-
-
-
 
   static const offBlack = Color(0xff444444);
   static const green = Color(0xffE2EDE1);
@@ -154,4 +151,3 @@ class AppColors {
   static const lightyellow = Color(0xffFFF4D1);
   static const borderForActivityContainerColor = Color(0xffE3D6EF);
 }
-

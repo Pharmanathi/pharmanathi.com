@@ -103,7 +103,7 @@ class _PatientListState extends State<PatientList> {
                 ],
               ),
             ),
-            Expanded(
+            Flexible(
               child: isLoading
                   ? Center(child: CircularProgressIndicator())
                   : patientAppointments.isEmpty

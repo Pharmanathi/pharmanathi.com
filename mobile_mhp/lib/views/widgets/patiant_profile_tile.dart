@@ -31,7 +31,7 @@ class PatientProfileTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           color: Color(0xFFF7F9FC),
         ),
-        height: 93.h,
+        height: 105.h,
         width: 357.w,
         child: Padding(
           padding: const EdgeInsets.all(20.0),

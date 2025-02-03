@@ -1,4 +1,4 @@
-import 'package:pharma_nathi/screens/components/bargraph/indivitual_bar.dart';
+import 'package:pharma_nathi/views/widgets/bargraph/indivitual_bar.dart';
 
 class BarData {
   final double janAmount;

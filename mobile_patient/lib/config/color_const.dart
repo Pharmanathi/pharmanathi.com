@@ -23,6 +23,7 @@ class Pallet {
   static const Color PRIMMARY_400 = Color(0xFFF8C98DF);
   static const Color PRIMARY_500 = Color(0xFFF6F7ED7);
   static const Color PRIMARY_600 = Color(0xFFF6573C4);
+  static const Color PRIMARY_650 = Color(0xFFF6574Cf);
   static const Color PRIMARY_700 = Color(0xFFF4F5999);
   static const Color PRIMARY_800 = Color(0xFFF3D4576);
   static const Color PRIMARY_900 = Color(0xFFF2F355A);
@@ -49,6 +50,7 @@ class Pallet {
   static const Color WARNING_900 = Color(0xFFF56530D);
   static const Color NEUTRAL_50 = Color(0xFFFE8E9EB);
   static const Color NEUTRAL_100 = Color(0xFFFB8B9BF);
+  static const Color NEUTRAL_150 = Color(0xFFF8D96A6);
   static const Color NEUTRAL_200 = Color(0xFFF9698A1);
   static const Color NEUTRAL_300 = Color(0xFFF666876);
   static const Color NEUTRAL_400 = Color(0xFFF484B5B);

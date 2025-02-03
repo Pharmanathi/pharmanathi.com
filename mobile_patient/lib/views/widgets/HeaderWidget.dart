@@ -1,9 +1,8 @@
-import 'package:patient/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HeaderWidget extends StatelessWidget {
+class HeaderWidget extends StatelessWidget implements PreferredSizeWidget {
   final String text;
   final bool showBackButton;
   final VoidCallback? onBackTap;
@@ -18,53 +17,48 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity.sp,
-      height: 120.h,
+      width: double.infinity,
       color: const Color(0xFF6F7ED7),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 75),
-            child: Row(
-              children: [
-                if (showBackButton)
-                  GestureDetector(
-                    onTap: onBackTap ??
-                        () {
-                          Navigator.pop(context);
-                        },
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
+      child: SafeArea(
+        bottom: false, // Prevents padding at the bottom
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 35.h),
+          child: Row(
+            children: [
+              if (showBackButton)
+                GestureDetector(
+                  onTap: onBackTap ?? () => Navigator.pop(context),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 24.sp,
                     ),
                   ),
-                if (!showBackButton)
-                  SizedBox(width: 10.h), // Placeholder for back button space
-                const Spacer(),
-                Text(
+                ),
+              if (!showBackButton)
+                SizedBox(width: 10.w), // Placeholder for back button space
+              Expanded(
+                child: Text(
                   text,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.openSans(
                     color: Colors.white,
                     fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
-                const Spacer(),
-
-                if (showBackButton)
-                  SizedBox(
-                      width: 30
-                          .w), //* Placeholder to balance the back button width
-              ],
-            ),
+              ),
+              if (showBackButton)
+                SizedBox(width: 40.w), // Balances the back button width
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(120.h);
 }

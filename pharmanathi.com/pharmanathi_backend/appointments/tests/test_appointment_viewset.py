@@ -1,16 +1,18 @@
 import datetime
 import random
-from unittest.mock import patch
+from decimal import Decimal
 
 import pytest
 
 from pharmanathi_backend.appointments.tests.factories import (
     Appointment,
     AppointmentFactory,
+    AppointmentTypeFactory,
     PaymentFactory,
     UserFactory,
 )
 from pharmanathi_backend.payments.models import Payment
+from pharmanathi_backend.users.tests.factories import DoctorFactory, UserFactory
 from pharmanathi_backend.utils import UTC_time_to_SA_time
 
 pytestmark = pytest.mark.django_db
@@ -120,3 +122,49 @@ def test_mp_cannot_list_unpaidfor_appointments(verified_mhp_client, pending_paym
     res = verified_mhp_client.get("/api/appointments/")
     res.status_code == 200
     assert unpaid_appointment.id not in map(lambda a: a.id, res.data)
+
+
+def test_appointments_endpoint_includes_nested_practice_locations(
+    authenticated_user_api_client, doctor_with_practice_location
+):
+    """
+    Test that the /api/appointments/ endpoint includes the doctor, their practice locations, and addresses.
+    """
+    user = authenticated_user_api_client.user
+    doctor = doctor_with_practice_location
+    practice_location = doctor.practicelocations.first()
+    appointment_type = AppointmentTypeFactory(doctor=doctor, duration=60)
+
+    AppointmentFactory(doctor=doctor, patient=user, appointment_type=appointment_type)
+
+    response = authenticated_user_api_client.get("/api/appointments/")
+
+    assert response.status_code == 200
+    assert len(response.data) > 0
+
+    appointment_data = response.data[0]
+    doctor_data = appointment_data.get("doctor")
+    assert doctor_data.get("id") == doctor.id
+    assert doctor_data.get("user").get("first_name") == doctor.user.first_name
+    assert doctor_data.get("user").get("last_name") == doctor.user.last_name
+    assert doctor_data.get("specialities") == [s.name for s in doctor.specialities.all()]
+
+    practice_locations = doctor_data.get("practicelocations")
+    assert len(practice_locations) > 0
+
+    practice_location_data = practice_locations[0]
+    assert practice_location_data.get("name") == practice_location.name
+
+    address = practice_location_data.get("address")
+    db_address = practice_location.address
+    assert address.get("line_1") == db_address.line_1
+    assert address.get("city") == db_address.city
+    assert address.get("province") == db_address.province
+
+    appointment_type_data = doctor_data.get("appointment_types")[0]
+    assert appointment_type_data.get("id") == appointment_type.id
+    assert Decimal(appointment_type_data.get("cost")) == appointment_type.cost
+
+    patient_data = appointment_data.get("patient")
+    assert patient_data.get("first_name") == user.first_name
+    assert patient_data.get("last_name") == user.last_name

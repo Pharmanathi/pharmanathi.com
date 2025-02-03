@@ -134,3 +134,87 @@ class Speciality {
     };
   }
 }
+
+class PracticeLocation {
+  int id;
+  Address address;
+  String dateCreated;
+  String dateModified;
+  String name;
+
+  PracticeLocation({
+    required this.id,
+    required this.address,
+    required this.dateCreated,
+    required this.dateModified,
+    required this.name,
+  });
+
+  factory PracticeLocation.fromJson(Map<String, dynamic> json) {
+    return PracticeLocation(
+      id: json['id'],
+      address: Address.fromJson(json['address']),
+      dateCreated: json['date_created'],
+      dateModified: json['date_modified'],
+      name: json['name'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'address': address.toJson(),
+      'date_created': dateCreated,
+      'date_modified': dateModified,
+      'name': name,
+    };
+  }
+}
+
+class Address {
+  int id;
+  String dateCreated;
+  String dateModified;
+  String line1;
+  String? line2;
+  String suburb;
+  String city;
+  String province;
+
+  Address({
+    required this.id,
+    required this.dateCreated,
+    required this.dateModified,
+    required this.line1,
+    this.line2,
+    required this.suburb,
+    required this.city,
+    required this.province,
+  });
+
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      id: json['id'] as int,
+      dateCreated: json['date_created'],
+      dateModified: json['date_modified'],
+      line1: json['line_1'] as String,
+      line2: json['line_2'] as String?, // Nullable
+      suburb: json['suburb'] as String,
+      city: json['city'] as String,
+      province: json['province'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'date_created': dateCreated,
+      'date_modified': dateModified,
+      'line_1': line1,
+      'line_2': line2,
+      'suburb': suburb,
+      'city': city,
+      'province': province,
+    };
+  }
+}

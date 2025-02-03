@@ -91,15 +91,14 @@ class ProfileCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 0, right: 12, left: 12, bottom: 5),
-        child: SizedBox(
-          height: 160.h,
+        padding: const EdgeInsets.only( right: 12, left: 12, bottom: 5),
+        child: Flexible(
           child: Column(
             children: [
               Container(
                   decoration: BoxDecoration(
                     color: Pallet.PURE_WHITE,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -135,7 +134,7 @@ class ProfileCard extends StatelessWidget {
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ), //* Display the first letter of the name if imageURL is not available
-
+                    
                                 radius: 28.sp,
                               ),
                               SizedBox(
