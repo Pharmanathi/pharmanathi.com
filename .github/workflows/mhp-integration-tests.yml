@@ -88,7 +88,7 @@ jobs:
 
     - name: Upload Android crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: android-crash-logs
         path: crash_log.txt
@@ -136,7 +136,7 @@ jobs:
         patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
     - name: Upload iOS crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ios-crash-logs
         path: crash_log.txt

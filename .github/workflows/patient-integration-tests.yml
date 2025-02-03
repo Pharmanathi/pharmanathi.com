@@ -87,7 +87,7 @@ jobs:
 
     - name: Upload Android crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: android-crash-logs
         path: crash_log.txt
@@ -135,7 +135,7 @@ jobs:
 
     - name: Upload iOS crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ios-crash-logs
         path: crash_log.txt
