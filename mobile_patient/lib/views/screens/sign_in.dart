@@ -14,6 +14,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:patient/views/widgets/privacy_policy.dart';
 import 'package:patient/views/widgets/terms_of_service.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:patient/views/widgets/shared/showErrorSnackBar.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
@@ -70,54 +72,59 @@ class GoogleSignInWidget extends StatelessWidget {
                           onPressed: isLoading
                               ? null
                               : () async {
-                                  final googleUser =
-                                      await _googleSignIn.signIn();
-                                  if (googleUser != null) {
-                                    final googleAuth =
-                                        await googleUser.authentication;
-                                    await googleSignInBloc.signInWithGoogle(
-                                      context,
-                                      googleAuth.idToken ?? '',
-                                    );
-
-                                    if (googleSignInBloc.error.value == null) {
-                                      final userProvider =
-                                          Provider.of<UserProvider>(context,
-                                              listen: false);
-                                      await userProvider.setUserInformation(
-                                        googleUser.email,
-                                        googleUser.displayName ?? '',
-                                        googleUser.photoUrl ?? '',
-                                        googleSignInBloc.backendToken.value ??
-                                            '',
+                                  try {
+                                    final googleUser =
+                                        await _googleSignIn.signIn();
+                                    if (googleUser != null) {
+                                      final googleAuth =
+                                          await googleUser.authentication;
+                                      await googleSignInBloc.signInWithGoogle(
+                                        context,
+                                        googleAuth.idToken ?? '',
                                       );
 
-                                      final isFirstTimeSignInResult =
-                                          await userProvider
-                                              .isFirstTimeSignIn();
+                                      if (googleSignInBloc.error.value ==
+                                          null) {
+                                        final userProvider =
+                                            Provider.of<UserProvider>(context,
+                                                listen: false);
+                                        await userProvider.setUserInformation(
+                                          googleUser.email,
+                                          googleUser.displayName ?? '',
+                                          googleUser.photoUrl ?? '',
+                                          googleSignInBloc.backendToken.value ??
+                                              '',
+                                        );
 
-                                      if (isFirstTimeSignInResult) {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.onboarding,
-                                            arguments: {
-                                              'email': googleUser.email,
-                                            });
+                                        final isFirstTimeSignInResult =
+                                            await userProvider
+                                                .isFirstTimeSignIn();
+
+                                        if (isFirstTimeSignInResult) {
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.onboarding,
+                                              arguments: {
+                                                'email': googleUser.email,
+                                              });
+                                        } else {
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.appointments,
+                                              arguments: {
+                                                'email': googleUser.email,
+                                              });
+                                        }
                                       } else {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.appointments,
-                                            arguments: {
-                                              'email': googleUser.email,
-                                            });
+                                        showErrorSnackBar(context, 'Sign-in failed. Please try again.');
+                                        Sentry.captureMessage(
+                                          'Sign-in failed with error: ${googleSignInBloc.error.value}',
+                                          level: SentryLevel.error,);
                                       }
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Sign-in failed. Please try again.'),
-                                        ),
-                                      );
                                     }
+                                  } catch (e, stackTrace) {
+                                    Sentry.captureException(e, stackTrace: stackTrace);
+                                    showErrorSnackBar(context, 'Sign-in failed. Please try again.');
+                                  } finally {
+                                    googleSignInBloc.isLoading.value = false;
                                   }
                                 },
                           child: Row(
@@ -191,7 +198,7 @@ class GoogleSignInWidget extends StatelessWidget {
                                         ),
                                         builder: (context) =>
                                             FractionallySizedBox(
-                                              heightFactor: 0.7,
+                                                heightFactor: 0.7,
                                                 child: PrivacyPolicyWidget()),
                                       );
                                     },
