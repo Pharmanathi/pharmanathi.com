@@ -51,10 +51,7 @@ jobs:
         script: echo "Generated AVD snapshot for caching."
 
     - name: Create .env file
-      run: | # we also create .development because referenced inside pubspec
-        echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
-        ls -al
-        cat .env
+      run: echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -80,14 +77,11 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         working-directory: mobile_patient
-        script: |
-          ls -al
-          cat .env
-          patrol test -t integration_test/sign_in_test.dart
+        script: patrol test -t integration_test/sign_in_test.dart
 
     - name: Upload Android crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: android-crash-logs
         path: crash_log.txt
@@ -106,10 +100,7 @@ jobs:
     - name: Select Xcode version
       run: sudo xcode-select -s '/Applications/Xcode_16.1.0.app'
     - name: Create .env file
-      run: |
-        echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
-        ls -al
-        cat .env
+      run: echo "${{ secrets.PATIENT_TEST_ENV }}" >> .env
     
     - uses: futureware-tech/simulator-action@v3
       with:
@@ -128,14 +119,11 @@ jobs:
         flutter pub global activate patrol_cli
         patrol doctor
     - name: Run iOS integration tests
-      run: |
-        ls -al
-        cat .env
-        patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
+      run: patrol test --verbose --debug --test-server-port 8089 --app-server-port 8090 -t integration_test/sign_in_test.dart
 
     - name: Upload iOS crash logs
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ios-crash-logs
         path: crash_log.txt
