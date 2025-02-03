@@ -1,8 +1,11 @@
 from rest_framework import serializers
 
 from pharmanathi_backend.payments.serializers import PaymentModelSerializer
-from pharmanathi_backend.users.api.serializers import DoctorPublicListSerializer, UserSerializerSimplified , PracticeLocationModelSerializerWithExtAddress
-
+from pharmanathi_backend.users.api.serializers import (
+    DoctorPublicListSerializer,
+    PracticeLocationModelSerializerWithExtAddress,
+    UserSerializerSimplified,
+)
 
 from . import models
 

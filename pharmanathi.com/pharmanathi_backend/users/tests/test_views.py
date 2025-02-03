@@ -16,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 
 from pharmanathi_backend.appointments.tests.factories import AppointmentTypeFactory, TimeSlotFactory
 from pharmanathi_backend.users.forms import UserAdminChangeForm
-from pharmanathi_backend.users.models import User, Doctor, Speciality, PracticeLocation
+from pharmanathi_backend.users.models import Doctor, PracticeLocation, Speciality, User
 from pharmanathi_backend.users.permissions import IsVerifiedDoctor
 from pharmanathi_backend.users.tests.factories import (
     DoctorFactory,
@@ -378,4 +378,3 @@ def test_mp_can_bulk_update_doctor_profile(mhp_client, speciality):
     assert doctor.hpcsa_no == payload.get("hpcsa_no")
     assert doctor.practicelocations.filter(name=payload.get("practice_locations")[0].get("name"))
     assert speciality in doctor.specialities.all()
-

@@ -3,20 +3,18 @@ import random
 from unittest.mock import patch
 
 import pytest
+from rest_framework.test import APIClient
 
 from pharmanathi_backend.appointments.tests.factories import (
     Appointment,
     AppointmentFactory,
+    AppointmentTypeFactory,
     PaymentFactory,
     UserFactory,
 )
 from pharmanathi_backend.payments.models import Payment
+from pharmanathi_backend.users.tests.factories import DoctorFactory, UserFactory
 from pharmanathi_backend.utils import UTC_time_to_SA_time
-
-from rest_framework.test import APIClient
-
-from pharmanathi_backend.appointments.tests.factories import AppointmentFactory, AppointmentTypeFactory
-from pharmanathi_backend.users.tests.factories import UserFactory, DoctorFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -125,6 +123,7 @@ def test_mp_cannot_list_unpaidfor_appointments(verified_mhp_client, pending_paym
     res = verified_mhp_client.get("/api/appointments/")
     res.status_code == 200
     assert unpaid_appointment.id not in map(lambda a: a.id, res.data)
+
 
 @pytest.mark.django_db
 def test_appointments_endpoint_includes_nested_practice_locations():
