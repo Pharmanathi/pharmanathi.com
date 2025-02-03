@@ -1,0 +1,37 @@
+
+name: Build MHP Test Realease
+on: 
+    push:
+        paths:
+            - 'mobile_mhp/**'
+    workflow_dispatch:
+
+jobs:
+  test_build_deploy:
+    name: Build Test Release
+    defaults:
+      run:
+          working-directory: ./mobile_mhp
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create .env file
+      run: echo "${{ secrets.MHP_TEST_ENV }}" >> .env.production
+
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '17.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.24.1'
+    - run: flutter pub get
+    - run: flutter build apk --release
+    - name: Compute short SHA
+      id: short_sha_compute 
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Upload debug artificats
+      uses: actions/upload-artifact@v4
+      with:
+        name: mhp.pharmanathi.${{ steps.short_sha_compute.outputs.sha_short }}
+        path: mobile_mhp/build/app/outputs/flutter-apk/app-release.apk
