@@ -262,39 +262,7 @@ class TermsOfServiceWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: '[Insert Email Address]\n',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16.0.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Phone: ',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16.0.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '[Insert Phone Number]\n',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16.0.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Address: ',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16.0.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '[Insert Physical Address]\n\n',
+                          text: 'support@pharmanathi.com\n',
                           style: GoogleFonts.openSans(
                             fontSize: 16.0.sp,
                             fontWeight: FontWeight.normal,
