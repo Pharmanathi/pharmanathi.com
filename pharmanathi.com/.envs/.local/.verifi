@@ -1,4 +1,0 @@
-VERIFI_GLOBAL_SOFT_LIMIT=300
-VERIFI_URL=http://verifi:8000
-HPCSA_ENTRY_URL=http://verifi-sudo:8000/hpcsa
-SAPC_ENTRY_URL=http://verifi-sudo:8000/sapc
