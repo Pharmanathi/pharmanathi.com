@@ -16,7 +16,10 @@ class AppiontmentDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstLocation = appointment.doctor.practiceLocations[0];
+    final firstLocation = appointment.doctor.practiceLocations.isNotEmpty
+        ? appointment.doctor.practiceLocations[0]
+        : null;
+
     String alteredname =
         ApiHelper.toTitleCase(appointment.doctor.doctorFullName);
 
@@ -69,12 +72,13 @@ class AppiontmentDetails extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Dr. $alteredname',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.openSans(
-                                fontSize: 14.sp, fontWeight: FontWeight.bold),
+                          SizedBox(
+                            width: 250,
+                            child: Text(
+                              'Dr. $alteredname',
+                              style: GoogleFonts.openSans(
+                                  fontSize: 14.sp, fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Text(
                             appointment.doctor.getAllSpecialityNames(),
@@ -165,9 +169,14 @@ class AppiontmentDetails extends StatelessWidget {
             ),
             _buildDetailRow(
               icon: Icons.location_on_sharp,
-              title: ApiHelper.toTitleCase(firstLocation.name),
-              value: firstLocation.address.fullAddress
+              title: firstLocation != null
+                  ? ApiHelper.toTitleCase(firstLocation.name)
+                  : "No Location",
+              value: firstLocation != null
+                  ? firstLocation.address.fullAddress
+                  : "Address not available",
             ),
+
             _buildDetailRow(
               icon: Icons.calendar_month,
               title: 'Appointment Date',
@@ -186,8 +195,7 @@ class AppiontmentDetails extends StatelessWidget {
             _buildDetailRow(
                 icon: Icons.payment_outlined,
                 title: 'Consultation Fee',
-                value:
-                    'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
+                value: 'R ${appointment.doctor.appointmentType?.cost ?? 0}'),
             //buttons
             SizedBox(height: 20.h),
             // MyButtonWidgets(buttonTextPrimary: 'Done', onPressedPrimary: () {})
