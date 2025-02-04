@@ -96,16 +96,24 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                   SizedBox(height: 10.h),
                   // Doctor's name
                   Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(
-                      'Dr ${widget.doctor.doctorFullName}',
-                      style: GoogleFonts.openSans(
-                        color: Colors.black,
-                        fontSize: 22.0.sp,
-                        fontWeight: FontWeight.bold,
+                    padding: const EdgeInsets.all(
+                        2.0),
+                    child: Center(
+                      child: Text(
+                        'Dr ${widget.doctor.doctorFullName}',
+                        textAlign: TextAlign
+                            .center,
+                        style: GoogleFonts.openSans(
+                          color: Colors.black,
+                          fontSize:
+                              22.0.sp, 
+                          fontWeight: FontWeight
+                              .bold,
+                        ),
                       ),
                     ),
                   ),
+
                   Text(
                     widget.doctor.getAllSpecialityNames(),
                     style: GoogleFonts.openSans(
@@ -164,7 +172,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                           ));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:  Pallet.PRIMARY_650,
+                      backgroundColor: Pallet.PRIMARY_650,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 2.0),
                       shape: RoundedRectangleBorder(
@@ -190,7 +198,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 width: double.infinity.sp,
                 color: Pallet.BACKGROUND_COLOR,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 25.0,left: 15,right: 15),
+                  padding:
+                      const EdgeInsets.only(top: 25.0, left: 15, right: 15),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [

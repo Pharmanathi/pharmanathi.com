@@ -72,7 +72,7 @@ Future<void> _initializeSentry(Future<void> Function() appRunner) async {
   await SentryFlutter.init(
     (options) {
       options.dsn = dotenv.env['SENTRY_DSN']!;
-      options.environment = dotenv.env['ENVIRONMENT'] ?? 'prod';
+      options.environment = dotenv.env['ENVIRONMENT'] ?? 'production';
     },
     appRunner: appRunner,
   );
@@ -175,7 +175,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               String initialRoute = snapshot.data == true
                   ? AppRoutes.signIn
                   : AppRoutes.onboarding;
-              if (dotenv.get('ENVIRONMENT', fallback: 'prod') == 'dev') {
+              if (dotenv.get('ENVIRONMENT', fallback: 'production') == 'development') {
                 if (ApiHelper.retrieveLocaAPIToken(context) != null) {
                   initialRoute = AppRoutes.appointments;
                 }

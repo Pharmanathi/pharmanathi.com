@@ -16,6 +16,7 @@ import 'package:pharma_nathi/views/widgets/privacy_policy.dart';
 import 'package:pharma_nathi/views/widgets/terms_of_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:pharma_nathi/views/widgets/shared/showErrorSnackBar.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
@@ -117,22 +118,16 @@ class GoogleSignInWidget extends StatelessWidget {
                                               });
                                         }
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Sign-in failed. Please try again.'),
-                                          ),
-                                        );
+                                        showErrorSnackBar(context,
+                                        'Sign-in failed. Please try again.');
+                                        Sentry.captureMessage(
+                                          'Sign-in failed with error: ${googleSignInBloc.error.value}',
+                                          level: SentryLevel.error,);
                                       }
                                     }
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Failed to sign in. Please try again.'),
-                                      ),
-                                    );
+                                  } catch (e, stackTrace) {
+                                    Sentry.captureException(e, stackTrace: stackTrace);
+                                    showErrorSnackBar(context, "Failed to sign in. Please try again.");
                                   } finally {
                                     googleSignInBloc.isLoading.value = false;
                                   }

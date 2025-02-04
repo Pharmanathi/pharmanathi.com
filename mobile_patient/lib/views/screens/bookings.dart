@@ -308,6 +308,7 @@ class _BookingsState extends State<Bookings> {
                               vertical: 25.0.sp, horizontal: 5.sp),
                         ),
                         maxLines: null,
+                        maxLength: 400,
                       ),
                     ),
 
