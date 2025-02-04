@@ -72,6 +72,7 @@ class GoogleSignInWidget extends StatelessWidget {
                           onPressed: isLoading
                               ? null
                               : () async {
+                                googleSignInBloc.isLoading.value = true; //* Disable button immediately
                                   try {
                                     final googleUser =
                                         await _googleSignIn.signIn();
