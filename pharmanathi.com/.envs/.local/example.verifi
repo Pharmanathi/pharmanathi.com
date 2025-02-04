@@ -1,0 +1,4 @@
+VERIFI_GLOBAL_SOFT_LIMIT=htpp://invalid-uri
+VERIFI_URL=htpp://invalid-uri
+HPCSA_ENTRY_URL=htpp://invalid-uri
+SAPC_ENTRY_URL=htpp://invalid-uri

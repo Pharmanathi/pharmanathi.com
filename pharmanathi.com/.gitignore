@@ -283,3 +283,5 @@ pharmanathi_backend/media/
 # custom
 .python_shell_template_code
 coverage_html/
+.envs/
+!.ens/.local/example.*
