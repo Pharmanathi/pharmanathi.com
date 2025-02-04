@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
-import 'package:pharma_nathi/screens/pages/working_hours.dart';
+import 'package:pharma_nathi/views/screens/working_hours.dart';
 import 'package:pharma_nathi/services/manage_appointment_api.dart';
 import 'package:pharma_nathi/views/widgets/buttons.dart';
+import 'package:pharma_nathi/views/widgets/shared/success_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class ManageAppointment extends StatefulWidget {
   @override
@@ -195,10 +196,7 @@ class _ManageAppointmentState extends State<ManageAppointment> {
   }
 
   void _navigateTOWorkingHoursPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WorkingHours()),
-    );
+    Navigator.pop(context);
   }
 
   @override
@@ -776,6 +774,8 @@ class _ManageAppointmentState extends State<ManageAppointment> {
                   //* Now send the updated JSON data to the backend
                   APIService.sendDataToBackendFromJSONFile(context,
                       onSuccess: () {
+                    showSuccessSnackBar(context,
+                        'Your Appointment Type has been Update successfully');
                     _navigateTOWorkingHoursPage();
                   });
                 },
