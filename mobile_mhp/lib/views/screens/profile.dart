@@ -8,7 +8,7 @@ import 'package:pharma_nathi/routes/app_routes.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
 import 'package:pharma_nathi/views/screens/account.dart';
 import 'package:pharma_nathi/views/screens/manage_appointment.dart';
-import 'package:pharma_nathi/screens/pages/working_hours.dart';
+import 'package:pharma_nathi/views/screens/working_hours.dart';
 import 'package:pharma_nathi/views/widgets/buttons.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:provider/provider.dart';

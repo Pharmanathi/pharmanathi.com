@@ -86,27 +86,7 @@ class APIService {
 
       if (response.statusCode == 200) {
         log.i('Data sent successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const SizedBox(
-              width: 200,
-              child: Center(
-                child: Text(
-                  'Your Appointment Type has been Update successfully',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.symmetric(vertical: 150),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        );
+        onSuccess?.call();
       } else {
         http_helpers.Apihelper.handleError(context, response);
       }

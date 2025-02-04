@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import 'package:pharma_nathi/views/widgets/shared/success_snackbar.dart';
 import '../logging.dart';
 import '../helpers/http_helpers.dart' as http_helpers;
 
@@ -23,7 +24,7 @@ class WorkingHourApiService {
         return await http_helpers.Apihelper.httpRequestWithAuthorization(
           context,
           timeSlotAPIEndPoint,
-          'POST', // fetch Data(named fetchData) but does POST? perhaps a rename?
+          'POST', 
           scheduleJson,
         );
       });
