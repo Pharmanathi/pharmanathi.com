@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/logging.dart';
@@ -44,19 +45,22 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
     return ElevatedButton(
       onPressed: () => _showTimePicker(selectedTime, onChanged),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         elevation: 0,
         backgroundColor: Pallet.PURE_WHITE,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5), // Add border radius
         ),
       ),
-      child: Text(
-        selectedTime.format(context),
-        style: GoogleFonts.openSans(
-          fontWeight: FontWeight.bold,
-          color: Pallet.Black, // Change text color here
-          fontSize: 12, // Optional: adjust text size
+      child: SizedBox(
+        width: 54.w,
+        child: Text(
+          selectedTime.format(context),
+          style: GoogleFonts.openSans(
+            fontWeight: FontWeight.bold,
+            color: Pallet.Black, // Change text color here
+            fontSize: 12, // Optional: adjust text size
+          ),
         ),
       ),
     );
@@ -104,8 +108,8 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
       (i) => Row(
         children: [
           if (i > 0)
-            const SizedBox(
-              width: 60,
+            SizedBox(
+              width: 60.w,
             ),
           if (i >
               0) //* Only showing the remove button for rows after the first one
@@ -180,13 +184,16 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
                 },
               ),
             ),
-            const SizedBox(width: 10),
-            Text(
-              widget.day,
-              style:  GoogleFonts.openSans(
-                fontSize: 12,
-                color: Pallet.Black,
-                fontWeight: FontWeight.bold,
+            const SizedBox(width: 4),
+            SizedBox(
+              width: 30.w,
+              child: Text(
+                widget.day,
+                style:  GoogleFonts.openSans(
+                  fontSize: 12,
+                  color: Pallet.Black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(width: 15),

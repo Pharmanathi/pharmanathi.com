@@ -17,7 +17,6 @@ import 'package:pharma_nathi/views/widgets/terms_of_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:pharma_nathi/views/widgets/shared/showErrorSnackBar.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GoogleSignInWidget extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'openid']);
@@ -75,13 +74,6 @@ class GoogleSignInWidget extends StatelessWidget {
                               ? null
                               : () async {
                                   googleSignInBloc.isLoading.value = true;
-                                ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Using ${dotenv.get('API_BASE_URL')}'),
-                                          ),
-                                        );
                                   try {
                                     final googleUser =
                                         await _googleSignIn.signIn();
