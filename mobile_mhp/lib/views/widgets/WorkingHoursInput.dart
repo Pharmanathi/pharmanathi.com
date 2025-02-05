@@ -52,12 +52,15 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
           borderRadius: BorderRadius.circular(5), // Add border radius
         ),
       ),
-      child: Text(
-        selectedTime.format(context),
-        style: GoogleFonts.openSans(
-          fontWeight: FontWeight.bold,
-          color: Pallet.Black, // Change text color here
-          fontSize: 12, // Optional: adjust text size
+      child: SizedBox(
+        width: 50.w,
+        child: Text(
+          selectedTime.format(context),
+          style: GoogleFonts.openSans(
+            fontWeight: FontWeight.bold,
+            color: Pallet.Black, // Change text color here
+            fontSize: 12, // Optional: adjust text size
+          ),
         ),
       ),
     );
