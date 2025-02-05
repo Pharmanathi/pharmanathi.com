@@ -291,9 +291,12 @@ class _DoctorsState extends State<Doctors> {
           selectedButtonIndex == 0
               ? SingleChildScrollView(
                   child: isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? Padding(
+                        padding: const EdgeInsets.only(top:150.0),
+                        child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                      )
                       : filteredDoctorDetails.isEmpty
                           ? Center(
                               child: Column(
