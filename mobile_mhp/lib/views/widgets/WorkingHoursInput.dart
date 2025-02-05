@@ -53,7 +53,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
         ),
       ),
       child: SizedBox(
-        width: 54.w,
+        width: 50.w,
         child: Text(
           selectedTime.format(context),
           style: GoogleFonts.openSans(
@@ -196,7 +196,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 12),
             if (!isAvailable)
                Text(
                 'Unavailable',
