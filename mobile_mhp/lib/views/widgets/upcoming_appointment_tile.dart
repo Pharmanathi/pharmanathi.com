@@ -34,40 +34,38 @@ class UpcomingAppointmentTile extends StatelessWidget {
           ),
         );
       },
-      child: Flexible(
-        child: Container(
-          height:MediaQuery.of(context).size.height,
-          width: 170.w,
-          margin: EdgeInsets.only(right: 8.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 30, 8, 8),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(height: 18.sp),
-              Text(
-                appointment.patientName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                    fontSize: 16.sp, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text(
-                appointment.appointmentTime,
-                style: GoogleFonts.openSans(
-                    fontSize: 12.sp, color: Colors.grey),
-              ),
-              SizedBox(height: 8),
-              Text(
-                appointment.appointmentDate,
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-              ),
-            ]),
-          ),
+      child: Container(
+        height:MediaQuery.of(context).size.height,
+        width: 170.w,
+        margin: EdgeInsets.only(right: 8.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 30, 8, 8),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(height: 18.sp),
+            Text(
+              appointment.patientName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.openSans(
+                  fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              appointment.appointmentTime,
+              style: GoogleFonts.openSans(
+                  fontSize: 12.sp, color: Colors.grey),
+            ),
+            SizedBox(height: 8),
+            Text(
+              appointment.appointmentDate,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            ),
+          ]),
         ),
       ),
     );

@@ -211,19 +211,24 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                   );
                 } else {
                   // Show the time slots when available
+                  List<String> sortedValues = List.from(value)
+                    ..sort((a, b) =>
+                        a.split(' - ')[0].compareTo(b.split(' - ')[0]));
+
                   return SingleChildScrollView(
                     child: Wrap(
                       spacing: 10.0.sp,
                       runSpacing: 8.0.sp,
                       children: List.generate(
-                        value.length,
+                        sortedValues.length,
                         (index) => GestureDetector(
                           onTap: () {
                             setState(() {
                               _selectedButtonIndex = index;
-                              print('Selected time slot: ${value[index]}');
+                              print(
+                                  'Selected time slot: ${sortedValues[index]}');
                             });
-                            _onTimeSlotSelected(value[index]);
+                            _onTimeSlotSelected(sortedValues[index]);
                           },
                           child: Container(
                             height: 45.h,
@@ -235,7 +240,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                             ),
                             child: Center(
                               child: Text(
-                                '${value[index].split(' - ')[0]}', //* Display only the start time
+                                '${sortedValues[index].split(' - ')[0]}', //* Display only the start time
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16.0.sp,

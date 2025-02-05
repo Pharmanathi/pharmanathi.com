@@ -73,7 +73,7 @@ class AppiontmentDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 250,
+                            width: 240,
                             child: Text(
                               'Dr. $alteredname',
                               style: GoogleFonts.openSans(
