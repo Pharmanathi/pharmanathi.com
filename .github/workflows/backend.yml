@@ -48,6 +48,12 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Set up environment varibles
+        run: |
+          echo "${{ secrets.DJANGO_LOCAL_ENV }}" > .envs/.local/.django
+          echo "${{ secrets.POSTGRES_LOCAL_ENV }}" > .envs/.local/.postgres
+          echo "${{ secrets.VERIFI_LOCAL_ENV }}" > .envs/.local/.verifi
+
       - name: Build the Stack
         run: docker compose -f local.yml build
 
