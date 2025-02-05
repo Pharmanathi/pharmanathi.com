@@ -78,7 +78,6 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
       startTimes.removeAt(index);
       endTimes.removeAt(index);
       widget.daySchedule!.removeAt(index);
-      widget.onTimeChanged([index, null, null]);
     });
   }
 
@@ -86,7 +85,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
   Widget build(BuildContext context) {
     startTimes.clear();
     endTimes.clear();
-
+    
     if (widget.daySchedule != null && widget.daySchedule!.isNotEmpty) {
       isAvailable = true;
       widget.daySchedule!.forEach((tod) {
