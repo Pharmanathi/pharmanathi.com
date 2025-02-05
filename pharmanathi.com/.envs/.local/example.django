@@ -19,12 +19,12 @@ CELERY_FLOWER_PASSWORD=debug
 # ------------------------------------------------------------------------------
 DJANGO_ALLOWED_HOSTS=*,
 # Add amins using the fomat names1-email1_names2-email2
-ADMINS="Admin Name-Admin Email"
-SERVER_EMAIL=from@rmail
-DEFAULT_FROM_EMAIL=from@email
-EMAIL_HOST_USER=user@email
-EMAIL_HOST_PASSWORD=secret
-EMAIL_HOST=host.e.mail
+ADMINS="Peridot Admin-peridot.pharmanathi@gmail.com"
+SERVER_EMAIL=me@nehemie.dev
+DEFAULT_FROM_EMAIL=me@nehemie.dev
+EMAIL_HOST_USER=me@nehemie.dev
+EMAIL_HOST_PASSWORD="pass@Namecheap_#6"
+EMAIL_HOST=mail.privateemail.com
 EMAIL_USE_TLS=True
 EMAIL_PORT=587
 
@@ -38,8 +38,8 @@ SOCIAL_APP_GOOGLE_PATIENT_ANDROID='provider=provider,name=name,client_id=client_
 
 # ANYMAIL-MAILGUN
 # ------------------------------------------------------------------------------
-MAILGUN_API_KEY=MAILGUN_API_KEY
-MAILGUN_SENDING_DOMAIN=domain.com
+MAILGUN_API_KEY="dd258fd48d9209b776c9fae44c265e8e-51356527-7dda6284"
+MAILGUN_SENDING_DOMAIN="mg.nehemie.dev"
  # Use the default backend(django.core.mail.backends.smtp.EmailBackend) to lower cost/usage with MAILGUN
 DJANGO_EMAIL_BACKEND="anymail.backends.mailgun.EmailBackend"
 
@@ -47,4 +47,4 @@ DJANGO_EMAIL_BACKEND="anymail.backends.mailgun.EmailBackend"
 # PAYMENTS
 # ------------------------------------------------------------------------------
 PAYMENT_USER_EMAIL_FIELD="email"
-PAYMENT_PAYSTACK_PROVIDER_CONFIG="secret"
+PAYMENT_PAYSTACK_PROVIDER_CONFIG="initialization_url=https://api.paystack.co/transaction/initialize/,authorization=Bearer sk_test_0701afa3bb10cf76ba7507bd5720fe30036661c4,callback_url=https://test.pharmanathi.com/deeplink-gateway/?screen=/appointments"
