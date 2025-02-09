@@ -48,6 +48,8 @@ dependencies:
   sentry_flutter: ^8.8.0
   flutter_screenutil: ^5.9.3
   google_fonts: ^6.2.1
+  sqflite: ^2.4.1
+  firebase_messaging: ^15.2.2
 
 
 dev_dependencies:
