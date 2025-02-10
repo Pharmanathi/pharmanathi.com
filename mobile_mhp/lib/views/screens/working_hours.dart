@@ -195,11 +195,8 @@ class _WorkingHoursState extends State<WorkingHours> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    children: dayInputs,
-                  ),
+                Column(
+                  children: dayInputs,
                 ),
                 SizedBox(height: 20.h),
                 MyButtonWidgets(

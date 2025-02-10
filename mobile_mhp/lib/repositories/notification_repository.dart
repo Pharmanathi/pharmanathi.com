@@ -9,7 +9,7 @@ class NotificationRepository {
     return await _dbHelper.getNotifications();
   }
 
-  Future<void> markAsRead(String id) async {
-    await _dbHelper.markAsRead(id);
+  Future<void> markNotificationAsRead(String id) async {
+    await _dbHelper.markNotificationAsRead(id);
   }
 }
