@@ -26,7 +26,7 @@ class NotificationService {
     'high_importance_channel',
     'High Importance Notifications',
     description: 'This channel is used for important notifications.',
-    importance: Importance.max,
+    importance: Importance.high,
   );
 
   NotificationService();
@@ -40,7 +40,6 @@ class NotificationService {
 
   Future<void> initializeFirebase() async {
     try {
-      await Firebase.initializeApp();
       NotificationSettings settings = await _messaging.requestPermission();
 
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
