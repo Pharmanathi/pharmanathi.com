@@ -25,9 +25,9 @@ class NotificationsBloc {
   }
 
   // 🔹 Mark a notification as read
-  Future<void> markAsRead(String id) async {
+  Future<void> markNotificationAsRead(String id) async {
     try {
-      await _notificationRepository.markAsRead(id);
+      await _notificationRepository.markNotificationAsRead(id);
       await fetchNotifications(); // Fetch updated list after marking as read
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);

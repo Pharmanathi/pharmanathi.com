@@ -1,0 +1,225 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:uuid/uuid.dart';
+import 'package:logger/logger.dart';
+
+import 'package:pharma_nathi/helpers/database_helper.dart';
+import 'package:pharma_nathi/models/notification_model.dart';
+
+class NotificationService {
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  final BehaviorSubject<String?> selectNotificationSubject =
+      BehaviorSubject<String?>();
+  final BehaviorSubject<bool> notificationsEnabled =
+      BehaviorSubject<bool>.seeded(false);
+  final Logger _logger = Logger();
+
+  static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    description: 'This channel is used for important notifications.',
+    importance: Importance.max,
+  );
+
+  NotificationService();
+
+  Future<void> initialize() async {
+    await initializeFirebase();
+    await _initializeLocalNotifications();
+    await requestPermissions();
+    await _isAndroidPermissionGranted();
+  }
+
+  Future<void> initializeFirebase() async {
+    try {
+      await Firebase.initializeApp();
+      NotificationSettings settings = await _messaging.requestPermission();
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        FirebaseMessaging.onMessage.listen(_handleMessage);
+        FirebaseMessaging.onBackgroundMessage(
+            _firebaseMessagingBackgroundHandler);
+        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
+
+        //* Fetch and print the FCM token
+        String? token = await _messaging.getToken();
+        _logger.i("FCM Token: $token");
+
+        //* Fetch the APNS token for iOS
+        if (Platform.isIOS) {
+          String? apnsToken = await _messaging.getAPNSToken();
+          if (apnsToken != null) {
+            _logger.i("APNS Token: $apnsToken");
+          } else {
+            _logger.e("APNS token is null, notifications may not work on iOS.");
+          }
+        }
+      } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+        _logger.i('User denied notifications.');
+      }
+    } catch (e, stackTrace) {
+    _logger.e('Error initializing Firebase: $e');
+    await Sentry.captureException(
+      e,
+      stackTrace: stackTrace,
+    );
+  }
+  }
+
+  Future<void> _initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings(
+            '@mipmap/ic_launcher'); // Ensure this icon exists
+
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings();
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        selectNotificationSubject.add(response.payload);
+      },
+    );
+  }
+
+  Future<void> _isAndroidPermissionGranted() async {
+    if (Platform.isAndroid) {
+      final bool granted = await _flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.areNotificationsEnabled() ??
+          false;
+
+      notificationsEnabled.add(granted);
+    }
+  }
+
+  Future<void> requestPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+      await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              MacOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          _flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>();
+      final bool? granted =
+          await androidImplementation?.requestNotificationsPermission();
+      notificationsEnabled.add(granted ?? false);
+    }
+  }
+
+  Future<void> _handleMessage(RemoteMessage message) async {
+    await _handleNotification(message, false);
+  }
+
+  static Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    await Firebase.initializeApp();
+    await NotificationService()._handleNotification(message, true);
+  }
+
+  Future<void> _handleNotification(
+      RemoteMessage message, bool isBackground) async {
+    try {
+      final uuid = const Uuid();
+      final notification = NotificationModel(
+        id: message.messageId ?? uuid.v4(),
+        title: message.notification?.title ?? "No Title",
+        message: message.notification?.body ?? "No Message",
+        timestamp: DateTime.now(),
+        category: message.data['category'] ?? "General",
+        isRead: false,
+        screen: message.data['screen'] ?? "/home",
+      );
+
+      await _dbHelper.insertNotification(notification);
+
+      if (!isBackground && message.notification != null) {
+        await _showLocalNotification(message);
+      }
+    } catch (e, stackTrace) {
+    _logger.e('Error handling notification: $e');
+    await Sentry.captureException(
+      e,
+      stackTrace: stackTrace,
+    );
+  }
+  }
+
+  Future<void> _handleMessageOpenedApp(RemoteMessage message) async {
+    _logger.i("Notification tapped: ${message.data['screen']}");
+    selectNotificationSubject.add(message.data['screen']);
+  }
+
+  Future<void> _showLocalNotification(RemoteMessage message) async {
+    await _flutterLocalNotificationsPlugin.show(
+      message.messageId.hashCode,
+      message.notification?.title,
+      message.notification?.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _channel.id,
+          _channel.name,
+          channelDescription: _channel.description,
+          importance: Importance.max,
+          styleInformation: const DefaultStyleInformation(true, true),
+        ),
+        iOS: const DarwinNotificationDetails(),
+      ),
+    );
+  }
+
+  Future<List<NotificationModel>> getNotificationsFromDb() async {
+    try {
+      return await _dbHelper.getNotifications();
+    } catch (e) {
+      _logger.e('Error getting notifications from database: $e');
+      return [];
+    }
+  }
+
+  Future<void> markNotificationAsRead(String notificationId) async {
+    try {
+      await _dbHelper.markNotificationAsRead(notificationId);
+    } catch (e) {
+      _logger.e('Error marking notification as read: $e');
+    }
+  }
+
+  Future<void> deleteNotification(String notificationId) async {
+    try {
+      await _dbHelper.deleteNotification(notificationId);
+    } catch (e) {
+      _logger.e('Error deleting notification: $e');
+    }
+  }
+}

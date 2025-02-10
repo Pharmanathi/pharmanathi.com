@@ -141,7 +141,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
             });
           },
           onMarkAsRead: () async {
-            await _notificationsBloc.markAsRead(notification.id); // Mark as read via BLoC
+            await _notificationsBloc.markNotificationAsRead(notification.id);
           },
         );
       },
