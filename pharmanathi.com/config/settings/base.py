@@ -386,7 +386,7 @@ SERVER_EMAIL = env.str("SERVER_EMAIL", default="")
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="")
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")
-EMAIL_HOST = "mail.privateemail.com"  # env.str("EMAIL_HOST", default="")
+EMAIL_HOST = env.str("EMAIL_HOST", default="")
 EMAIL_USE_TLS = True
 EMAIL_PORT = env.str("EMAIL_PORT", default="")
 
