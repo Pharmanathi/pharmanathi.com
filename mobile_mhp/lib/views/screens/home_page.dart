@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_nathi/blocs/notification_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/helpers/http_helpers.dart';
 import 'package:pharma_nathi/logging.dart';
 import 'package:pharma_nathi/models/appointment.dart';
+import 'package:pharma_nathi/models/notification_model.dart';
 import 'package:pharma_nathi/repositories/appointment_repository.dart';
+import 'package:pharma_nathi/repositories/notification_repository.dart';
 import 'package:pharma_nathi/screens/components/UserProvider.dart';
+import 'package:pharma_nathi/views/screens/notifications_screen.dart';
 import 'package:pharma_nathi/views/widgets/bargraph/bargraph.dart';
 import 'package:pharma_nathi/views/widgets/navigationbar.dart';
 import 'package:pharma_nathi/views/widgets/upcoming_appointment_tile.dart';
@@ -75,12 +79,15 @@ class _HomePageState extends State<HomePage> {
       }).toList();
     });
   }
+  late NotificationsBloc _notificationsBloc;
 
   @override
   void initState() {
     super.initState();
     _appointmentRepository = context.read<AppointmentRepository>();
     _loadData();
+    _notificationsBloc = NotificationsBloc(NotificationRepository());
+    _notificationsBloc.fetchNotifications();
   }
 
   void _loadData() async {
@@ -123,6 +130,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _notificationsBloc.dispose();
     super.dispose();
   }
 
@@ -139,47 +147,98 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             SizedBox(height: 8.h),
-            Container(
-              height: 85.h,
-              color: Color(0xFFFFFFFF),
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Row(
-                  children: [
-                    SizedBox(width: 20.w),
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(userProvider.picture ?? ''),
-                      radius: 30.sp,
+           Container(
+      height: 85.h,
+      color: Color(0xFFFFFFFF),
+      child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Row(
+          children: [
+            SizedBox(width: 20.w),
+            CircleAvatar(
+              backgroundImage: NetworkImage(userProvider.picture ?? ''),
+              radius: 30.sp,
+            ),
+            SizedBox(width: 10.w),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome Back!',
+                  style: GoogleFonts.openSans(
+                      fontSize: 12.sp, color: Colors.grey),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Text(
+                    alteredname,
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
                     ),
-                    SizedBox(width: 10.w),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome Back!',
-                          style: GoogleFonts.openSans(
-                              fontSize: 12.sp, color: Pallet.NEUTRAL_300),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            ValueListenableBuilder<List<NotificationModel>?>(
+              valueListenable: _notificationsBloc.notificationsNotifier,
+              builder: (context, notifications, child) {
+                int unreadCount = notifications
+                        ?.where((notif) => !notif.isRead)
+                        .length ??
+                    0;
+
+                return Stack(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.notifications, size: 18.sp),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    if (unreadCount > 0)
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: Container(
+                          padding: EdgeInsets.all(4.sp),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 18.sp,
+                            minHeight: 18.sp,
+                          ),
                           child: Text(
-                            alteredname,
-                            style: GoogleFonts.openSans(
+                            unreadCount > 99 ? "99+" : unreadCount.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
                             ),
-                            softWrap: true,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
                   ],
-                ),
-              ),
+                );
+              },
             ),
+          ],
+        ),
+      ),
+    ),
             SizedBox(height: 10.h),
             Container(
               child: Padding(

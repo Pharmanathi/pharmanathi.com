@@ -57,9 +57,9 @@ class _AppiontmentDetailsState extends State<AppiontmentDetails> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 100, bottom: 5),
+                        padding: const EdgeInsets.only(left: 50, bottom: 5),
                         child: Text(
-                          'Booking',
+                          'Appointmment Details',
                           style: GoogleFonts.openSans(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,

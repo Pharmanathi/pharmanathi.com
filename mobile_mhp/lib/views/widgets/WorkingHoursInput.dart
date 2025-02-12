@@ -196,7 +196,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 5),
             if (!isAvailable)
                Text(
                 'Unavailable',
@@ -210,7 +210,7 @@ class _WorkingHoursInputState extends State<WorkingHoursInput> {
               ElevatedButton(
                 onPressed: _addTimeRow,
                 style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(2),
                     elevation: 0,
                     backgroundColor: Pallet.TRANSPARENT),
                 child: const Icon(Icons.add, color: Pallet.Black, size: 12),

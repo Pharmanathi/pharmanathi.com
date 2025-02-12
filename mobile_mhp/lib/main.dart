@@ -27,6 +27,8 @@ import 'screens/components/image_data.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+import 'services/notification_service.dart';
+
 // Global Navigator Key
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -35,6 +37,9 @@ Future<void> main() async {
   await _loadEnvironmentVariables();
   await _setPreferredOrientation();
   await _initializeFirebase();
+
+  final notificationService = NotificationService();
+  await notificationService.initialize(); 
 
   ApiProvider apiProvider = ApiProvider();
   AppointmentRepository appointmentRepository =
