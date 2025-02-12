@@ -7,7 +7,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     auto_mp_verification_task,
@@ -156,7 +155,9 @@ class Doctor(BaseCustomModel):
         updated(changed) if previous state from previous verification report differs from
         the current state.
         """
-        from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer as VRS
+        from pharmanathi_backend.users.api.serializers import (
+            VerificationReportUserStateSerializer as VRS,
+        )
 
         vrs = self.verification_reports
         p_state_before = VRS(self.user).data  # the proposed state before verification
@@ -264,7 +265,7 @@ class Doctor(BaseCustomModel):
         message = """
             Your MHP Profile has been validated.
             <br><br>
-            Should you require any further assitance, please feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            Should you require any further assitance, please feel free to reach us at <strong>support@pharmanathi.com</strong>.
             <br><br>
             Kindest regards,
             """
@@ -285,7 +286,7 @@ class Doctor(BaseCustomModel):
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
-            Should you require any further assitance, pleae feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            Should you require any further assitance, pleae feel free to reach us at <strong>support@pharmanathi.com</strong>.
             <br><br>
             Kindest regards,
             """
