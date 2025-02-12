@@ -11,17 +11,33 @@ import 'package:logger/logger.dart';
 import 'package:pharma_nathi/helpers/database_helper.dart';
 import 'package:pharma_nathi/models/notification_model.dart';
 
+//* Top-level background handler
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  await NotificationService.instance._handleNotification(message, true);
+}
+
 class NotificationService {
+  //* Singleton setup
+  NotificationService._internal();
+  static final NotificationService instance = NotificationService._internal();
+  factory NotificationService() => instance;
+
+  //* Dependencies
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  final Logger _logger = Logger();
+
+  //* Streams
   final BehaviorSubject<String?> selectNotificationSubject =
       BehaviorSubject<String?>();
   final BehaviorSubject<bool> notificationsEnabled =
       BehaviorSubject<bool>.seeded(false);
-  final Logger _logger = Logger();
 
+  //* Constants
   static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -29,8 +45,7 @@ class NotificationService {
     importance: Importance.high,
   );
 
-  NotificationService();
-
+  //* Initialization
   Future<void> initialize() async {
     await initializeFirebase();
     await _initializeLocalNotifications();
@@ -38,6 +53,7 @@ class NotificationService {
     await _isAndroidPermissionGranted();
   }
 
+  //* Firebase Initialization
   Future<void> initializeFirebase() async {
     try {
       NotificationSettings settings = await _messaging.requestPermission();
@@ -48,11 +64,11 @@ class NotificationService {
             _firebaseMessagingBackgroundHandler);
         FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
 
-        //* Fetch and print the FCM token
+        // Fetch and print the FCM token
         String? token = await _messaging.getToken();
         _logger.i("FCM Token: $token");
 
-        //* Fetch the APNS token for iOS
+        // Fetch the APNS token for iOS
         if (Platform.isIOS) {
           String? apnsToken = await _messaging.getAPNSToken();
           if (apnsToken != null) {
@@ -65,18 +81,15 @@ class NotificationService {
         _logger.i('User denied notifications.');
       }
     } catch (e, stackTrace) {
-    _logger.e('Error initializing Firebase: $e');
-    await Sentry.captureException(
-      e,
-      stackTrace: stackTrace,
-    );
-  }
+      _logger.e('Error initializing Firebase: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
   }
 
+  //* Local Notifications Initialization
   Future<void> _initializeLocalNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(
-            '@mipmap/ic_launcher'); // Ensure this icon exists
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     final DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings();
@@ -95,6 +108,7 @@ class NotificationService {
     );
   }
 
+  //* Android Permissions Check
   Future<void> _isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
       final bool granted = await _flutterLocalNotificationsPlugin
@@ -107,6 +121,7 @@ class NotificationService {
     }
   }
 
+  //* Permissions
   Future<void> requestPermissions() async {
     if (Platform.isIOS || Platform.isMacOS) {
       await _flutterLocalNotificationsPlugin
@@ -136,14 +151,9 @@ class NotificationService {
     }
   }
 
+  //* Message Handling
   Future<void> _handleMessage(RemoteMessage message) async {
     await _handleNotification(message, false);
-  }
-
-  static Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-    await NotificationService()._handleNotification(message, true);
   }
 
   Future<void> _handleNotification(
@@ -166,12 +176,9 @@ class NotificationService {
         await _showLocalNotification(message);
       }
     } catch (e, stackTrace) {
-    _logger.e('Error handling notification: $e');
-    await Sentry.captureException(
-      e,
-      stackTrace: stackTrace,
-    );
-  }
+      _logger.e('Error handling notification: $e');
+      await Sentry.captureException(e, stackTrace: stackTrace);
+    }
   }
 
   Future<void> _handleMessageOpenedApp(RemoteMessage message) async {
@@ -179,6 +186,7 @@ class NotificationService {
     selectNotificationSubject.add(message.data['screen']);
   }
 
+  //* Local Notifications
   Future<void> _showLocalNotification(RemoteMessage message) async {
     await _flutterLocalNotificationsPlugin.show(
       message.messageId.hashCode,
@@ -197,6 +205,7 @@ class NotificationService {
     );
   }
 
+  //* Database Operations
   Future<List<NotificationModel>> getNotificationsFromDb() async {
     try {
       return await _dbHelper.getNotifications();
