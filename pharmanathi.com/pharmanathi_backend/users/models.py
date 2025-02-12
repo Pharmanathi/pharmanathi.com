@@ -264,7 +264,7 @@ class Doctor(BaseCustomModel):
         message = """
             Your MHP Profile has been validated.
             <br><br>
-            Should you require any further assitance, please feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            Should you require any further assitance, please feel free to reach us at <strong>support@pharmanathi.com</strong>.
             <br><br>
             Kindest regards,
             """
@@ -285,7 +285,7 @@ class Doctor(BaseCustomModel):
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
-            Should you require any further assitance, pleae feel free to reach us at <strong>support@pharmanathi.coza</strong>.
+            Should you require any further assitance, pleae feel free to reach us at <strong>support@pharmanathi.com</strong>.
             <br><br>
             Kindest regards,
             """
