@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime
 
+from config import celery_app
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import mail_admins, send_mail
-
-from config import celery_app
 
 admin_logger = logging.getLogger(__name__)  # TODO: target a more specific logger here, admin and/or sentry
 
@@ -65,8 +64,9 @@ def auto_mp_verification_task(mp_pk):
         - Squash Migrations
     """
     import requests
-
-    from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer
+    from pharmanathi_backend.users.api.serializers import (
+        VerificationReportUserStateSerializer,
+    )
     from pharmanathi_backend.users.models import Doctor, VerificationReport
 
     mp = Doctor.objects.filter(pk=mp_pk).prefetch_related("specialities").get()
@@ -99,3 +99,10 @@ def update_user_social_profile_picture_url_task(user_pk: int, url: str) -> None:
     from pharmanathi_backend.users.models import User
 
     User.objects.filter(pk=user_pk).update(_profile_pic=url.replace("s96-c", "s192-c"))
+
+
+@celery_app.task
+def send_individual_notification_task(category, title, body, token, image_url=None):
+    from pharmanathi_backend.utils.fcm_client import send_individual_notification
+
+    return send_individual_notification(category, title, body, token, image_url)
