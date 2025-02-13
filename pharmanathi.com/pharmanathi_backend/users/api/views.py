@@ -1,4 +1,5 @@
 from datetime import datetime
+from threading import Thread
 
 from allauth.account import app_settings as allauth_account_settings
 from allauth.socialaccount.helpers import complete_social_login
@@ -12,6 +13,11 @@ from django.db.models import Exists, OuterRef, Prefetch
 from django.http import HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+from pharmanathi_backend.appointments.models import AppointmentType
+from pharmanathi_backend.appointments.serializers import (
+    DoctorPublicListMinimalSerializer,
+)
+from pharmanathi_backend.utils import user_is_doctor
 from rest_framework import permissions, serializers, status
 from rest_framework.decorators import action
 from rest_framework.decorators import permission_classes as permission_classes_decorator
@@ -20,11 +26,14 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from pharmanathi_backend.appointments.models import AppointmentType
-from pharmanathi_backend.appointments.serializers import DoctorPublicListMinimalSerializer
-from pharmanathi_backend.utils import user_is_doctor
-
-from ..models import Address, Doctor, InvalidationReason, PracticeLocation, Speciality, VerificationReport
+from ..models import (
+    Address,
+    Doctor,
+    InvalidationReason,
+    PracticeLocation,
+    Speciality,
+    VerificationReport,
+)
 from .serializers import (
     AddressModelSerializer,
     DoctorModelSerializer,
@@ -299,6 +308,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
         # Because Google profile picture's URL change.
         # TODO(nehemie): add tests
         user.update_picture_url(idinfo.get("picture"))
+        Thread(target=user.update_device_token, args=[request.GET.get("device_token", "")]).start()
 
         return attrs
 
