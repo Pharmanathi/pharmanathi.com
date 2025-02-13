@@ -1,4 +1,5 @@
 from datetime import datetime
+from threading import Thread
 
 from allauth.account import app_settings as allauth_account_settings
 from allauth.socialaccount.helpers import complete_social_login
@@ -299,6 +300,7 @@ class CustomSocialLoginSerializer(SocialLoginSerializer):
         # Because Google profile picture's URL change.
         # TODO(nehemie): add tests
         user.update_picture_url(idinfo.get("picture"))
+        Thread(target=user.update_device_token, args=[request.GET.get("device_token", "")]).start()
 
         return attrs
 

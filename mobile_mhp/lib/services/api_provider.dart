@@ -30,7 +30,7 @@ class ApiProvider {
   }
 
    Future<http.Response> signInWithGoogle(BuildContext context, String idToken) async {
-    final apiEndpoint = '${http_helpers.apiBaseURL}/google-login-by-id-token?is_doctor=true&id_token=$idToken';
+    final apiEndpoint = '${http_helpers.apiBaseURL}/google-login-by-id-token?is_doctor=true&id_token=$idToken&device_token=set-me-up-thabang';
     return await http_helpers.Apihelper.httpRequestWithAuthorization(
         context, apiEndpoint, 'GET', '');
   }

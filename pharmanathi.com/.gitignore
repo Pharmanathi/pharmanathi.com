@@ -285,3 +285,4 @@ pharmanathi_backend/media/
 coverage_html/
 .envs/
 !.ens/.local/example.*
+service-account.json
