@@ -2,14 +2,18 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from rest_framework.exceptions import ValidationError
-
 from pharmanathi_backend.payments.models import Payment
 from pharmanathi_backend.payments.providers.provider import get_provider
 from pharmanathi_backend.users.models import Doctor
-from pharmanathi_backend.users.tasks import mail_admins_task, mail_user_task, send_individual_notification_task
+from pharmanathi_backend.users.tasks import (
+    mail_admins_task,
+    mail_user_task,
+    send_individual_notification_task,
+)
 from pharmanathi_backend.utils import UTC_time_to_SA_time, get_default_timezone
+from pharmanathi_backend.utils.fcm_client import NotificationCategory
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -197,7 +201,7 @@ class Appointment(BaseCustomModel):
             mail_user_task.delay(self.doctor.user.email, "New Appointment Confirmed", message, message)
             mail_user_task.delay(self.patient.email, "Appointment Confirmed", message, message)
             send_individual_notification_task.delay(
-                "Appointment",
+                NotificationCategory.APPOINTMENT.value,
                 "New Appointment",
                 f"New appointment booking with reference {self.payment.reference.upper()}"
                 f'for {self.start_time.astimezone(get_default_timezone()).strftime("%B %d, %Y at %H:%M")}',
