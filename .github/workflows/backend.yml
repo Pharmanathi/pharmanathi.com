@@ -50,6 +50,7 @@ jobs:
 
       - name: Set up environment varibles
         run: |
+          echo "${{ secrets.FCM_SERVICE_ACCOUNT }}" > service-account.json
           echo "${{ secrets.DJANGO_LOCAL_ENV }}" > .envs/.local/.django
           echo "${{ secrets.POSTGRES_LOCAL_ENV }}" > .envs/.local/.postgres
           echo "${{ secrets.VERIFI_LOCAL_ENV }}" > .envs/.local/.verifi
