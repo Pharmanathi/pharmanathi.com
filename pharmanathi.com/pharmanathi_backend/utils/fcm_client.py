@@ -19,7 +19,7 @@ class NotificationCategory(Enum):
 
 
 def send_individual_notification(
-    category: str, title: str, body: str, token: str, image_url: str = None, data: Optional[dict] = None
+    category: str, title: str, body: str, token: str, image_url: str = None, data: dict | None = None
 ):
     """Sends individual notification to a single target device.
 
