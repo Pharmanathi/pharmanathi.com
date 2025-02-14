@@ -48,7 +48,7 @@ def send_individual_notification(
         },  # deprecate since UI takes care of this,
         notification=messaging.Notification(
             title=title,
-            body=body,  # "New appointment booking with reference ${reference} for Monday 27th October at 12:30.",
+            body=body,
             image=image_url,
         ),
         token=token,
