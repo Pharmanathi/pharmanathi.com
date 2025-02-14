@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional
 
 import firebase_admin
 from django.conf import settings
@@ -17,7 +18,9 @@ class NotificationCategory(Enum):
     PROFESSION = "Profession"
 
 
-def send_individual_notification(category: str, title: str, body: str, token: str, image_url: str = None):
+def send_individual_notification(
+    category: str, title: str, body: str, token: str, image_url: str = None, data: Optional[dict] = None
+):
     """Sends individual notification to a single target device.
 
     Args:
@@ -27,10 +30,12 @@ def send_individual_notification(category: str, title: str, body: str, token: st
         token (str): Recipient device token
         image_url (str, optional): URL to image to display in the notication. Note that this
                 is different from the app's icon. Defaults to None.
+        data (dict): Optional. overrides the firebase_admin.messaging.Message.data
 
     Returns:
         str: value from firebase_admin.messaging.send
     """
+    assert token and len(token) > 100, f"Device token was not supplied or seems invalid"
     assert category in list(
         map(lambda c: c.value, list(NotificationCategory))
     ), f"Invalid notification category. Got {category}, expected one of {list(NotificationCategory)}"
@@ -38,8 +43,9 @@ def send_individual_notification(category: str, title: str, body: str, token: st
     message = messaging.Message(
         data={
             "category": category,
-            "screen": "/appointments",  # deprecate since UI takes care of this
-        },
+            "screen": "/appointments",
+            **(data if data else {}),
+        },  # deprecate since UI takes care of this,
         notification=messaging.Notification(
             title=title,
             body=body,  # "New appointment booking with reference ${reference} for Monday 27th October at 12:30.",

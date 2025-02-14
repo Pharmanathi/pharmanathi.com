@@ -7,7 +7,6 @@ from django.core.validators import MaxLengthValidator, MinLengthValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
 from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     auto_mp_verification_task,
@@ -164,7 +163,9 @@ class Doctor(BaseCustomModel):
         updated(changed) if previous state from previous verification report differs from
         the current state.
         """
-        from pharmanathi_backend.users.api.serializers import VerificationReportUserStateSerializer as VRS
+        from pharmanathi_backend.users.api.serializers import (
+            VerificationReportUserStateSerializer as VRS,
+        )
 
         vrs = self.verification_reports
         p_state_before = VRS(self.user).data  # the proposed state before verification
@@ -291,11 +292,11 @@ class Doctor(BaseCustomModel):
 
         self._is_verified = False
         self.save()
-        temp_invaliadtion = InvalidationReason(text=reason)
+        temp_invalidation = InvalidationReason(text=reason)
         message = f"""
             Your MHP Profile has been invalidated for the following reasons:
             <br><br>
-            {temp_invaliadtion.text_email}
+            {temp_invalidation.text_email}
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
@@ -308,8 +309,9 @@ class Doctor(BaseCustomModel):
         send_individual_notification_task.delay(
             NotificationCategory.PROFESSION.value,
             "Attention Required",
-            "Your MHP Profile has been invalidated for the following reasons.",
+            "Your MHP Profile has been invalidated for the following reasons...",
             self.user.device_token,
+            data={"reasons": temp_invalidation.text_unquoted},
         )
 
     def update_specialities(self, speciality_list: list[Speciality]):
