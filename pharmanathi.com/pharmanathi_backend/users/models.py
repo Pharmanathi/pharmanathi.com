@@ -12,10 +12,12 @@ from pharmanathi_backend.users.managers import UserManager
 from pharmanathi_backend.users.tasks import (
     auto_mp_verification_task,
     mail_user_task,
+    send_individual_notification_task,
     set_rejection_reason_task,
     update_user_social_profile_picture_url_task,
 )
 from pharmanathi_backend.utils import get_default_timezone, to_aware_dt
+from pharmanathi_backend.utils.fcm_client import NotificationCategory
 from pharmanathi_backend.utils.helper_models import BaseCustomModel
 
 logger = Logger(__file__)
@@ -53,6 +55,7 @@ class User(BaseCustomModel, AbstractUser):
 
     contact_no = models.CharField("Contact Number", max_length=15, null=True)
     university = models.CharField("University", max_length=100, null=True)
+    device_token = models.TextField(null=True, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -74,6 +77,11 @@ class User(BaseCustomModel, AbstractUser):
 
     def update_picture_url(self, url: str) -> None:
         update_user_social_profile_picture_url_task.delay(self.pk, url)
+
+    def update_device_token(self, token: str) -> None:
+        if len(token) > 32 and self.device_token != token:
+            self.device_token = token
+            self.save()
 
     @property
     def image_url(self):
@@ -269,6 +277,12 @@ class Doctor(BaseCustomModel):
             Kindest regards,
             """
         mail_user_task.delay(self.user.email, "Medical Health Professional Profile Validated", message, message)
+        send_individual_notification_task.delay(
+            NotificationCategory.PROFESSION.value,
+            "Account Activated",
+            "Your MHP account is active. You now have access to all features of the Pharmanathi Medical Professional app.",
+            self.user.device_token,
+        )
 
     def invalidate_mhp_profile(self, creator, reason):
         assert self.pk
@@ -277,11 +291,11 @@ class Doctor(BaseCustomModel):
 
         self._is_verified = False
         self.save()
-        temp_invaliadtion = InvalidationReason(text=reason)
+        temp_invalidation = InvalidationReason(text=reason)
         message = f"""
-            Your MHP Profile has been invalidate for the following reasons:
+            Your MHP Profile has been invalidated for the following reasons:
             <br><br>
-            {temp_invaliadtion.text_email}
+            {temp_invalidation.text_email}
             <br>
             Please make the required adjustment to validate your MHP profile.
             <br><br>
@@ -291,6 +305,13 @@ class Doctor(BaseCustomModel):
             """
         mail_user_task.delay(self.user.email, "Medical Health Professional Profile Invalidation", message, message)
         set_rejection_reason_task.delay(self.id, reason, creator.id)
+        send_individual_notification_task.delay(
+            NotificationCategory.PROFESSION.value,
+            "Attention Required",
+            "Your MHP Profile has been invalidated for the following reasons...",
+            self.user.device_token,
+            data={"reasons": temp_invalidation.text_unquoted},
+        )
 
     def update_specialities(self, speciality_list: list[Speciality]):
         """Updates the specialities the MP is assciated with

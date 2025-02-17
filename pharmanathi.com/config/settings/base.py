@@ -376,7 +376,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
 }
-# EMAIL and ANYMAIL
+# EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
@@ -395,12 +395,6 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
-
-ANYMAIL = {
-    "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY", default=""),
-    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
-    "MAILGUN_SENDER_DOMAIN": env.str("MAILGUN_SENDING_DOMAIN", default=""),
-}
 
 # VERIFI
 # ------------------------------------------------------------------------------
