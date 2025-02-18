@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_nathi/config/color_const.dart';
+import 'package:pharma_nathi/routes/notification_routes.dart';
 import 'package:pharma_nathi/models/notification_model.dart';
-
 
 class NotificationCard extends StatelessWidget {
   final NotificationModel notification;
@@ -88,7 +88,10 @@ class NotificationCard extends StatelessWidget {
                       if (notification.shouldNavigate)
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, notification.screen);
+                            final route =
+                                Notificationrouting.getScreenForCategory(
+                                    notification.category);
+                            Navigator.pushNamed(context, route);
                           },
                           child: Text('View'),
                         ),

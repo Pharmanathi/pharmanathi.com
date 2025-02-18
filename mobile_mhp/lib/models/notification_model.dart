@@ -4,10 +4,9 @@ class NotificationModel {
   final String message;
   final DateTime timestamp;
   final String category;
-  bool isRead;  // Track read/unread state
-  final String screen;
+  bool isRead; 
   final bool shouldNavigate;
-  bool isExpanded;  // Track expanded/collapsed state
+  bool isExpanded;  
 
   NotificationModel({
     required this.id,
@@ -16,9 +15,8 @@ class NotificationModel {
     required this.timestamp,
     required this.category,
     this.isRead = false,
-    required this.screen,
     this.shouldNavigate = false,
-    this.isExpanded = false,  // Default to false
+    this.isExpanded = false, 
   });
 
   // Convert from JSON
@@ -30,9 +28,8 @@ class NotificationModel {
       timestamp: DateTime.parse(json['timestamp'] as String),
       category: json['category'] as String,
       isRead: json['isRead'] == 1,
-      screen: json['screen'] as String,
       shouldNavigate: json['shouldNavigate'] == 1,
-      isExpanded: json['isExpanded'] == 1,  // Convert from db value
+      isExpanded: json['isExpanded'] == 1, 
     );
   }
 
@@ -45,9 +42,8 @@ class NotificationModel {
       'timestamp': timestamp.toIso8601String(),
       'category': category,
       'isRead': isRead ? 1 : 0,
-      'screen': screen,
       'shouldNavigate': shouldNavigate ? 1 : 0,
-      'isExpanded': isExpanded ? 1 : 0,  // Store in db as 1 (expanded) or 0 (collapsed)
+      'isExpanded': isExpanded ? 1 : 0,  
     };
   }
 
@@ -59,7 +55,6 @@ class NotificationModel {
     DateTime? timestamp,
     String? category,
     bool? isRead,
-    String? screen,
     bool? shouldNavigate,
     bool? isExpanded,
   }) {
@@ -70,9 +65,8 @@ class NotificationModel {
       timestamp: timestamp ?? this.timestamp,
       category: category ?? this.category,
       isRead: isRead ?? this.isRead,
-      screen: screen ?? this.screen,
       shouldNavigate: shouldNavigate ?? this.shouldNavigate,
-      isExpanded: isExpanded ?? this.isExpanded, // Ensure isExpanded is updated
+      isExpanded: isExpanded ?? this.isExpanded, 
     );
   }
 }

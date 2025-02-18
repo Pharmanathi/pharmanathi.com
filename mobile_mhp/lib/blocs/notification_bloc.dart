@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:pharma_nathi/models/notification_model.dart';
+import 'package:pharma_nathi/repositories/notification_repository.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import '../models/notification_model.dart';
-import '../repositories/notification_repository.dart';
+
+
+final Logger _logger = Logger();
 
 class NotificationsBloc {
   final NotificationRepository _notificationRepository;
@@ -13,7 +17,7 @@ class NotificationsBloc {
 
   NotificationsBloc(this._notificationRepository);
 
-  // 🔹 Fetch notifications (without BuildContext)
+  //* Fetch notifications (without BuildContext)
   Future<void> fetchNotifications() async {
     try {
       final notifications = await _notificationRepository.getNotifications();
@@ -24,17 +28,40 @@ class NotificationsBloc {
     }
   }
 
-  // 🔹 Mark a notification as read
+  void _updateNotificationState(
+      String id, NotificationModel Function(NotificationModel) updateFn) {
+    final updatedNotifications = _notificationsNotifier.value!.map((n) {
+      return n.id == id ? updateFn(n) : n;
+    }).toList();
+
+    _notificationsNotifier.value = updatedNotifications;
+  }
+
+  //* Mark a notification as read
   Future<void> markNotificationAsRead(String id) async {
     try {
-      await _notificationRepository.markNotificationAsRead(id);
-      await fetchNotifications(); // Fetch updated list after marking as read
+      if (_notificationsNotifier.value == null ||
+          _notificationsNotifier.value!.isEmpty) {
+        _logger.w('No notifications available to mark as read.');
+        return;
+      }
+
+      final notification = _notificationsNotifier.value!.firstWhere(
+        (n) => n.id == id,
+        orElse: () => throw Exception('Notification with id $id not found'),
+      );
+
+      if (!notification.isRead) {
+        await _notificationRepository.markNotificationAsRead(id);
+        _updateNotificationState(id, (n) => n.copyWith(isRead: true));
+        _logger.i('Marked notification $id as read');
+      }
     } catch (e, stackTrace) {
+      _logger.e('Error marking notification as read: $e');
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
   }
 
-  // 🔹 Dispose method for releasing resources
   void dispose() {
     _notificationsNotifier.dispose();
   }

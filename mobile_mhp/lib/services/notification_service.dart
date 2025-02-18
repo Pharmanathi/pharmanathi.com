@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pharma_nathi/routes/notification_routes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -30,6 +31,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final Logger _logger = Logger();
+  String? _deviceToken;
 
   //* Streams
   final BehaviorSubject<String?> selectNotificationSubject =
@@ -64,15 +66,16 @@ class NotificationService {
             _firebaseMessagingBackgroundHandler);
         FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
 
-        // Fetch and print the FCM token
-        String? token = await _messaging.getToken();
-        _logger.i("FCM Token: $token");
+        //* Fetch and store the FCM token
+        _deviceToken = await _messaging.getToken();
+        _logger.i("FCM Token: $_deviceToken");
 
-        // Fetch the APNS token for iOS
+        //* Fetch and store the APNS token for iOS
         if (Platform.isIOS) {
           String? apnsToken = await _messaging.getAPNSToken();
           if (apnsToken != null) {
             _logger.i("APNS Token: $apnsToken");
+            _deviceToken = apnsToken; //* Use APNS token if available
           } else {
             _logger.e("APNS token is null, notifications may not work on iOS.");
           }
@@ -84,6 +87,10 @@ class NotificationService {
       _logger.e('Error initializing Firebase: $e');
       await Sentry.captureException(e, stackTrace: stackTrace);
     }
+  }
+
+  String? getDeviceToken() {
+    return _deviceToken;
   }
 
   //* Local Notifications Initialization
@@ -159,15 +166,20 @@ class NotificationService {
   Future<void> _handleNotification(
       RemoteMessage message, bool isBackground) async {
     try {
-      final uuid = const Uuid();
+      _logger.i('Received FCM data: ${message.data}');
+      _logger.i('Notification payload: ${message.notification?.toMap()}');
+
+      final category = message.data['category'] ?? 'general';
+      final shouldNavigate =
+          Notificationrouting.categoryToScreen.containsKey(category);
+
       final notification = NotificationModel(
-        id: message.messageId ?? uuid.v4(),
+        id: message.messageId ?? const Uuid().v4(),
         title: message.notification?.title ?? "No Title",
         message: message.notification?.body ?? "No Message",
         timestamp: DateTime.now(),
-        category: message.data['category'] ?? "General",
-        isRead: false,
-        screen: message.data['screen'] ?? "/home",
+        category: category,
+        shouldNavigate: shouldNavigate,
       );
 
       await _dbHelper.insertNotification(notification);
@@ -182,8 +194,10 @@ class NotificationService {
   }
 
   Future<void> _handleMessageOpenedApp(RemoteMessage message) async {
-    _logger.i("Notification tapped: ${message.data['screen']}");
-    selectNotificationSubject.add(message.data['screen']);
+    final category = message.data['category'] ?? 'general';
+    final screen = Notificationrouting.getScreenForCategory(category);
+    _logger.i("Navigating to: $screen");
+    selectNotificationSubject.add(screen);
   }
 
   //* Local Notifications

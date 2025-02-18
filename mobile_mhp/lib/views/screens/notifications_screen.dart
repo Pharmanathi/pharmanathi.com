@@ -5,8 +5,9 @@ import 'package:pharma_nathi/blocs/notification_bloc.dart';
 import 'package:pharma_nathi/config/color_const.dart';
 import 'package:pharma_nathi/models/notification_model.dart';
 import 'package:pharma_nathi/repositories/notification_repository.dart';
+import 'package:pharma_nathi/services/notification_service.dart';
 import 'package:pharma_nathi/views/widgets/notification_card.dart';
-import 'package:provider/provider.dart';
+
 
 class NotificationsScreen extends StatefulWidget {
   @override
@@ -16,13 +17,19 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen>
     with SingleTickerProviderStateMixin {
   late NotificationsBloc _notificationsBloc;
-  late TabController _tabController; // Controller for the TabBar
+  late TabController _tabController; 
 
   @override
   void initState() {
     super.initState();
+    NotificationService.instance.selectNotificationSubject.stream
+        .listen((route) {
+      if (mounted && route != null) {
+        Navigator.pushNamed(context, route);
+      }
+    });
     _notificationsBloc = NotificationsBloc(NotificationRepository());
-    _notificationsBloc.fetchNotifications(); // Fetch notifications on init
+    _notificationsBloc.fetchNotifications(); 
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -101,7 +108,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                 valueListenable: _notificationsBloc.notificationsNotifier,
                 builder: (context, notifications, _) {
                   if (notifications == null) {
-                    return Center(child: CircularProgressIndicator()); // Loading state
+                    return Center(child: CircularProgressIndicator()); 
                   }
 
                   return TabBarView(
@@ -135,7 +142,13 @@ class _NotificationsScreenState extends State<NotificationsScreen>
         return NotificationCard(
           notification: notification,
           isExpanded: notification.isExpanded,
-          onExpand: () {
+          onExpand: () async {
+            if (!notification.isRead) {
+              await _notificationsBloc.markNotificationAsRead(notification.id);
+              setState(() {
+                notification.isRead = true;
+              });
+            }
             setState(() {
               notification.isExpanded = !notification.isExpanded;
             });

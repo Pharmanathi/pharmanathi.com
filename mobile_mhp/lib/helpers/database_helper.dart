@@ -47,8 +47,6 @@ class DatabaseHelper {
         timestamp INTEGER NOT NULL,  -- Store timestamp as integer
         category TEXT NOT NULL,
         isRead INTEGER NOT NULL DEFAULT 0,
-        screen TEXT NOT NULL,
-        isExpanded INTEGER NOT NULL DEFAULT 0
       )
     ''');
   }
@@ -69,28 +67,6 @@ class DatabaseHelper {
       );
     } catch (e, stackTrace) {
       _logger.e('Error inserting notification: $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: stackTrace,
-      );
-    }
-  }
-
-  Future<void> insertNotificationsBulk(
-      List<NotificationModel> notifications) async {
-    try {
-      final db = await instance.database;
-      final batch = db.batch();
-      for (var notification in notifications) {
-        batch.insert(
-          'notifications',
-          notification.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
-      }
-      await batch.commit(noResult: true);
-    } catch (e, stackTrace) {
-      _logger.e('Error inserting bulk notifications: $e');
       await Sentry.captureException(
         e,
         stackTrace: stackTrace,
@@ -130,24 +106,6 @@ class DatabaseHelper {
       );
     } catch (e, stackTrace) {
       _logger.e('Error marking notification as read: $e');
-      await Sentry.captureException(
-        e,
-        stackTrace: stackTrace,
-      );
-    }
-  }
-
-  Future<void> updateExpandedState(String id, bool isExpanded) async {
-    try {
-      final db = await instance.database;
-      await db.update(
-        'notifications',
-        {'isExpanded': isExpanded ? 1 : 0},
-        where: 'id = ?',
-        whereArgs: [id],
-      );
-    } catch (e, stackTrace) {
-      _logger.e('Error updating expanded state: $e');
       await Sentry.captureException(
         e,
         stackTrace: stackTrace,
