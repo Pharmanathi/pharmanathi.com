@@ -46,7 +46,7 @@ class DatabaseHelper {
         message TEXT NOT NULL,
         timestamp INTEGER NOT NULL,  -- Store timestamp as integer
         category TEXT NOT NULL,
-        isRead INTEGER NOT NULL DEFAULT 0,
+        isRead INTEGER NOT NULL DEFAULT 0
       )
     ''');
   }
@@ -60,9 +60,12 @@ class DatabaseHelper {
   Future<void> insertNotification(NotificationModel notification) async {
     try {
       final db = await instance.database;
+      final notificationJson = notification.toJson();
+      notificationJson.remove("isExpanded");
+      notificationJson.remove("shouldNavigate");
       await db.insert(
         'notifications',
-        notification.toJson(),
+        notificationJson,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e, stackTrace) {
@@ -81,8 +84,8 @@ class DatabaseHelper {
 
       //* since the 'id' field is a UUID stored as a String
       return result.map((json) {
-        json['id'] =
-            json['id'].toString(); //* to ensure it's a String if necessary
+        // json['id'] =
+        //     json['id'].toString(); //* to ensure it's a String if necessary
         return NotificationModel.fromJson(json);
       }).toList();
     } catch (e, stackTrace) {
