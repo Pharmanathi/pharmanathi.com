@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from typing import Optional
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -99,3 +100,12 @@ def update_user_social_profile_picture_url_task(user_pk: int, url: str) -> None:
     from pharmanathi_backend.users.models import User
 
     User.objects.filter(pk=user_pk).update(_profile_pic=url.replace("s96-c", "s192-c"))
+
+
+@celery_app.task
+def send_individual_notification_task(
+    category: str, title: str, body: str, token: str, image_url=None, data: dict | None = None
+):
+    from pharmanathi_backend.utils.fcm_client import send_individual_notification
+
+    return send_individual_notification(category, title, body, token, image_url, data)

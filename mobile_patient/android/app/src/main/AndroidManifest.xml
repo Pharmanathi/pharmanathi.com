@@ -30,4 +30,20 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+     <!-- Required for all types of notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    
+    <!-- Required for scheduling notifications -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    
+    <!-- Required for vibration -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    
+    <!-- Required if you want to play custom notification sounds -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    
+    <!-- Required for notifications to work when app is in background -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 </manifest>
